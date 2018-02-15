@@ -16,7 +16,6 @@ public class EmarsConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor()).excludePathPatterns(
-                "/index",
                 "/login",
                 "/login/**",
                 "/error",

@@ -16,6 +16,9 @@ public class UserCookie {
 
     private final static Logger LOG = LoggerFactory.getLogger(UserCookie.class);
 
+    public static final String EMARS_USER = "_emars_user";
+    public static final String CURRENT_VERSION = "1";
+
     private static final String ENCRYPT_KEY = "A1B2C3D4A1B2C3D4A1B2C3D4A1B2C3D4";
 
     public static final String USERID = "userId";
@@ -156,10 +159,6 @@ public class UserCookie {
             e.printStackTrace();
         }
         String version = (String)userInfo.get("version");
-        Long tenantId =null;
-        if(userInfo.get("tenantId") != null){
-            tenantId = Long.valueOf(String.valueOf(userInfo.get("tenantId")));
-        }
 
         if(userId == null
                 || userName == null

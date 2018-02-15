@@ -17,7 +17,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     private final static Logger LOG = LoggerFactory.getLogger(LoginInterceptor.class);
 
-    private static final String EMARS_USER = "_emars_user";
+    public static final String EMARS_USER = "_emars_user";
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
