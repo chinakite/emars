@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head th:include="layout/layout :: htmlhead"></head>
+<body>
+<section layout:fragment="content">
+    <div class="page-header">
+        <h1>作品题材管理 / <span class="text-muted font-weight-light">作品题材主要指“玄幻”、“都市言情”等</span></h1>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading">
+            <div class="panel-title">作品题材列表</div>
+        </div>
+        <div class="panel-body">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="form-inline-input-1">题材名称</label>
+                    <input type="text" class="form-control" id="form-inline-input-1" placeholder="题材名称" />
+                </div>
+                <button type="submit" class="btn btn-primary">搜索</button>
+            </form>
+            <hr class="panel-wide-block" />
+            <div class="box">
+                <button type="button" class="btn"><i class="fa fa-plus"></i>&nbsp;新建</button>
+                <button type="button" class="btn"><i class="fa fa-remove"></i>&nbsp;删除</button>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th width="4%" class="text-center"><input type="checkbox" /></th>
+                    <th>名称</th>
+                    <th>描述</th>
+                    <th>评价系数</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center"><input type="checkbox" /></td>
+                        <td>都市情感</td>
+                        <td>都市情感</td>
+                        <td>1.6</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+</body>
+<script type='text/javascript'>
+</script>
+</html>
