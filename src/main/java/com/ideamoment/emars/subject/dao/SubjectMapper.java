@@ -1,7 +1,7 @@
 package com.ideamoment.emars.subject.dao;
 
 import com.ideamoment.emars.model.Subject;
-import com.sun.tools.javac.util.List;
+import java.util.List;
 import org.apache.ibatis.annotations.*;
 
 /**

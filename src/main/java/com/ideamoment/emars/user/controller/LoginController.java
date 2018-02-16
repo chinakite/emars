@@ -34,7 +34,7 @@ public class LoginController {
 
     @RequestMapping(value="/login/submit", method = RequestMethod.POST)
     @ResponseBody
-    public String login(HttpServletRequest request,
+    public JsonData login(HttpServletRequest request,
                         HttpServletResponse response,
                         String userName,
                         String password) {
@@ -58,7 +58,7 @@ public class LoginController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return JsonData.SUCCESS.toString();
+        return JsonData.SUCCESS;
     }
 
 }
