@@ -23,25 +23,25 @@ public interface SubjectMapper {
 
     @Select({"<script>",
                 "SELECT * FROM t_subject" +
-                "WHERE c_type = #{type} " +
-                "<if> test=\"key != null AND key != ''" +
+                "WHERE c_type = #{type} ",
+                "<if test=\"key != null AND key != ''\">" +
                         " AND c_name like %#{key}%" +
-                "</if>" +
-                " ORDER BY c_order asc" +
-            "<script>"})
+                "</if>",
+                " ORDER BY c_order asc",
+            "</script>"})
     List<Subject> listSubjects(@Param("type") String type, @Param("key") String key);
 
     @Select({"<script>",
                 "SELECT * FROM t_subject" +
-                "WHERE c_type = #{type} " +
-                "<if> test=\"mask = true" +
+                "WHERE c_type = #{type} ",
+                "<if test=\"mask = true\">" +
                         " AND c_name like %#{name}%" +
-                "</if>" +
-                "<if> test=\"mask = false" +
+                "</if>",
+                "<if test=\"mask = false\">" +
                         " AND c_name = #{name}" +
-                "<if>" +
-                " ORDER BY c_order asc" +
-            "<script>"})
+                "</if>",
+                " ORDER BY c_order asc",
+            "</script>"})
     List<Subject> querySubject(@Param("type") String type, @Param("name") String name, @Param("mask") boolean mask);
 
     @Select("SELECT MAX(C_ORDER) FROM t_subject WHERE c_type = #{type}")
