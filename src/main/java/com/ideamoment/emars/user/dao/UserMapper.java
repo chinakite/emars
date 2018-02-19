@@ -1,9 +1,7 @@
 package com.ideamoment.emars.user.dao;
 
 import com.ideamoment.emars.model.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,4 +20,10 @@ public interface UserMapper {
 
     @Select("select count(c_id) from t_user where c_id > 1")
     long countUser();
+
+    @Select("select * from t_user where c_account = #{account} and c_status = #{status}")
+    @Results(value ={
+
+    })
+    User findUser(@Param("account")String account, @Param("status")String status);
 }

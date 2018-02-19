@@ -1,5 +1,6 @@
 package com.ideamoment.emars.user.controller;
 
+import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.model.User;
 import com.ideamoment.emars.user.service.UserService;
 import com.ideamoment.emars.utils.JsonData;
@@ -41,24 +42,22 @@ public class LoginController {
         User user = userService.login(userName, password);
 
         if(user == null) {
-
+            return JsonData.error(ErrorCode.LOGIN_ERROR, "用户名或密码错误");
         }else{
+            Map<String, Object> userInfo = new HashMap<String, Object>();
+            userInfo.put("userId", "1");
+            userInfo.put("userName", userName);
+            userInfo.put("version", UserCookie.CURRENT_VERSION);
 
+            String cookieValue = UserCookie.generateCookieValue(userInfo);
+
+            Cookie cookie = new Cookie(UserCookie.EMARS_USER, cookieValue);
+            cookie.setMaxAge(UserCookie.EXPIRE_TIME);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
+            return JsonData.SUCCESS;
         }
-
-        Map<String, Object> userInfo = new HashMap<String, Object>();
-        userInfo.put("userId", "1");
-        userInfo.put("userName", userName);
-        userInfo.put("version", UserCookie.CURRENT_VERSION);
-
-        String cookieValue = UserCookie.generateCookieValue(userInfo);
-
-        Cookie cookie = new Cookie(UserCookie.EMARS_USER, cookieValue);
-        cookie.setMaxAge(UserCookie.EXPIRE_TIME);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
-        return JsonData.SUCCESS;
     }
 
 }
