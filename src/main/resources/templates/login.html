@@ -127,7 +127,7 @@
                 '/login/submit',
                 {"userName":userName, "password": password, "rememberMe": rememberMe},
                 function(data) {
-                    var result = $.parseJSON(data);
+                    var result = data;
                     if(result.code == '0') {
                         window.location.href = '/';
                     }else{
