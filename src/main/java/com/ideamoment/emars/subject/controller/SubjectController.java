@@ -21,10 +21,10 @@ public class SubjectController {
     private SubjectService subjectService;
 
     @RequestMapping(value = "/subjects", method = RequestMethod.GET)
-    public String querySubjects(int draw, int start, int length, String search) {
-        Page<Subject> subjects = subjectService.listTextSubjects(search, start, length);
+    public DataTableSource<Subject> querySubjects(int draw, int start, int length, String key) {
+        Page<Subject> subjects = subjectService.listTextSubjects(key, start, length);
         DataTableSource<Subject> dts = convertProductsToDataTableSource(draw, subjects);
-        return JsonData.success(subjects).toString();
+        return dts;
     }
 
     private DataTableSource<Subject> convertProductsToDataTableSource(int draw, Page<Subject> productsPage) {

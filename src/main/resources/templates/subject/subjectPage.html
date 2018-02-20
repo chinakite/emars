@@ -14,13 +14,13 @@
                     <div class="panel-title">作品题材列表</div>
                 </div>
                 <div class="panel-body">
-                    <form class="form-inline">
+                    <div class="form-inline">
                         <div class="form-group">
-                            <label for="form-inline-input-1">题材名称</label>
-                            <input type="text" class="form-control" id="form-inline-input-1" placeholder="题材名称" />
+                            <label for="searchKey">题材名称</label>
+                            <input id="searchKey" type="text" class="form-control" placeholder="题材名称" />
                         </div>
-                        <button type="submit" class="btn btn-primary">搜索</button>
-                    </form>
+                        <button class="btn btn-primary" onclick="searchSubjects();">搜索</button>
+                    </div>
                     <hr class="panel-wide-block" />
                     <div class="box">
                         <button type="button" class="btn" data-toggle="modal" data-target="#modal-default">
@@ -32,7 +32,7 @@
                     <table class="table table-striped table-bordered" id="subjectTbl">
                         <thead>
                         <tr>
-                            <th width="4%" class="text-center"><input type="checkbox" /></th>
+                            <th class="text-center"><input type="checkbox" /></th>
                             <th>名称</th>
                             <th>描述</th>
                             <th>操作</th>
@@ -55,6 +55,8 @@
         </section>
 
     </body>
-    <script type='text/javascript' th:src="@{/js/subject/subject-list.js}" layout:fragment="javascript"></script>
+    <div layout:fragment="scripts">
+        <script type='text/javascript' th:src="@{/js/subject/subject-list.js}"></script>
+    </div>
 
 </html>

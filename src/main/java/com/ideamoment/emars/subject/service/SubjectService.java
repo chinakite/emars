@@ -8,7 +8,7 @@ import com.ideamoment.emars.utils.Page;
  */
 public interface SubjectService {
 
-    Page<Subject> listTextSubjects(String key, int currentPage, int pageSize);
+    Page<Subject> listTextSubjects(String key, int offset, int pageSize);
 
     Subject createTextSubject(String name, String desc, String ratio);
 

@@ -19,24 +19,37 @@ public interface SubjectMapper {
     void updateSubject(@Param("subject") Subject subject);
 
     @Select("SELECT * FROM t_subject WHERE id = #{id}")
+    @Results(id = "subjectMap", value ={
+            @Result(property = "id", column = "c_id", id = true),
+            @Result(property = "name", column = "C_NAME"),
+            @Result(property = "desc", column = "C_DESC"),
+            @Result(property = "order", column = "C_ORDER"),
+            @Result(property = "type", column = "C_TYPE"),
+            @Result(property = "ratio", column = "C_RATIO"),
+            @Result(property = "creator", column = "C_CREATOR"),
+            @Result(property = "createTime", column = "C_CREATETIME"),
+            @Result(property = "modifier", column = "C_MODIFIER"),
+            @Result(property = "modifyTime", column = "C_MODIFYTIME")
+    })
     Subject findSubject(@Param("id") String id);
 
     @Select({"<script>",
             "SELECT * FROM t_subject",
             "WHERE c_type = #{type} ",
             "<if test='key != null'>",
-            " AND c_name like %#{key}%",
+            " AND c_name like concat(concat('%',#{key}),'%')",
             "</if>",
             " ORDER BY c_order asc",
             " LIMIT #{offset}, #{size}",
             "</script>"})
+    @ResultMap("subjectMap")
     List<Subject> listSubjects(@Param("type") String type, @Param("key") String key, @Param("offset")int offset, @Param("size")int size);
 
     @Select({"<script>",
             "SELECT COUNT(*) FROM t_subject",
             "WHERE c_type = #{type} ",
             "<if test='key != null'>",
-            " AND c_name like %#{key}%",
+            " AND c_name like concat(concat('%',#{key}),'%')",
             "</if>",
             "</script>"})
     long listSubjectsCount(@Param("type") String type, @Param("key") String key);
