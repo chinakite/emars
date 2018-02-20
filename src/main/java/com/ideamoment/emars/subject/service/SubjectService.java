@@ -1,15 +1,14 @@
 package com.ideamoment.emars.subject.service;
 
 import com.ideamoment.emars.model.Subject;
-
-import java.util.List;
+import com.ideamoment.emars.utils.Page;
 
 /**
  * Created by yukiwang on 2018/2/16.
  */
 public interface SubjectService {
 
-    List<Subject> listTextSubjects(String key);
+    Page<Subject> listTextSubjects(String key, int currentPage, int pageSize);
 
     Subject createTextSubject(String name, String desc, String ratio);
 

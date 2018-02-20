@@ -5,8 +5,11 @@ import com.ideamoment.emars.model.User;
 import com.ideamoment.emars.model.enumeration.ProductType;
 import com.ideamoment.emars.subject.dao.SubjectMapper;
 import com.ideamoment.emars.subject.service.SubjectService;
+import com.ideamoment.emars.utils.Page;
 import com.ideamoment.emars.utils.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -14,15 +17,29 @@ import java.util.List;
 /**
  * Created by yukiwang on 2018/2/16.
  */
+@Service
 public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private SubjectMapper subjectMapper;
 
     @Override
-    public List<Subject> listTextSubjects(String key) {
+    @Transactional
+    public Page<Subject> listTextSubjects(String key, int currentPage, int pageSize) {
         String type = ProductType.TEXT;
-        return subjectMapper.listSubjects(type, key);
+
+        long count = subjectMapper.listSubjectsCount(type, key);
+        int offset = currentPage * pageSize;
+
+        List<Subject> subjects = subjectMapper.listSubjects(type, key, offset, pageSize);
+
+        Page<Subject> result = new Page<Subject>();
+        result.setCurrentPage(currentPage);
+        result.setData(subjects);
+        result.setPageSize(pageSize);
+        result.setTotalRecord(count);
+
+        return result;
     }
 
     @Override

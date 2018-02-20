@@ -1,22 +1,40 @@
 package com.ideamoment.emars.subject.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
+import com.ideamoment.emars.model.Subject;
+import com.ideamoment.emars.subject.service.SubjectService;
+import com.ideamoment.emars.utils.DataTableSource;
+import com.ideamoment.emars.utils.JsonData;
+import com.ideamoment.emars.utils.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by yukiwang on 2018/2/15.
+ * Created by yukiwang on 2018/2/20.
  */
-@Controller
+@RestController
 @RequestMapping("system")
 public class SubjectController {
-    private final Logger logger = LoggerFactory.getLogger(SubjectController.class);
 
-    @RequestMapping(value = "/subjectPage", method = RequestMethod.GET)
-    public String subjectPage() {
-        return "subject/subjectPage";
+    @Autowired
+    private SubjectService subjectService;
+
+    @RequestMapping(value = "/subjects", method = RequestMethod.GET)
+    public String querySubjects(int draw, int start, int length, String search) {
+        Page<Subject> subjects = subjectService.listTextSubjects(search, start, length);
+        DataTableSource<Subject> dts = convertProductsToDataTableSource(draw, subjects);
+        return JsonData.success(subjects).toString();
     }
 
+    private DataTableSource<Subject> convertProductsToDataTableSource(int draw, Page<Subject> productsPage) {
+        DataTableSource<Subject> dts = new DataTableSource<Subject>();
+
+        dts.setDraw(draw);
+        dts.setRecordsTotal(productsPage.getTotalRecord());
+        dts.setRecordsFiltered(productsPage.getTotalRecord());
+        dts.setData(productsPage.getData());
+
+        return dts;
+    }
 }

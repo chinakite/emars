@@ -22,14 +22,24 @@ public interface SubjectMapper {
     Subject findSubject(@Param("id") String id);
 
     @Select({"<script>",
-                "SELECT * FROM t_subject" +
-                "WHERE c_type = #{type} ",
-                "<if test=\"key != null AND key != ''\">" +
-                        " AND c_name like %#{key}%" +
-                "</if>",
-                " ORDER BY c_order asc",
+            "SELECT * FROM t_subject",
+            "WHERE c_type = #{type} ",
+            "<if test='key != null'>",
+            " AND c_name like %#{key}%",
+            "</if>",
+            " ORDER BY c_order asc",
+            " LIMIT #{offset}, #{size}",
             "</script>"})
-    List<Subject> listSubjects(@Param("type") String type, @Param("key") String key);
+    List<Subject> listSubjects(@Param("type") String type, @Param("key") String key, @Param("offset")int offset, @Param("size")int size);
+
+    @Select({"<script>",
+            "SELECT COUNT(*) FROM t_subject",
+            "WHERE c_type = #{type} ",
+            "<if test='key != null'>",
+            " AND c_name like %#{key}%",
+            "</if>",
+            "</script>"})
+    long listSubjectsCount(@Param("type") String type, @Param("key") String key);
 
     @Select({"<script>",
                 "SELECT * FROM t_subject" +
