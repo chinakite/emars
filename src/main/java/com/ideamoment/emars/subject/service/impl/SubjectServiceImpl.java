@@ -69,12 +69,12 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject findSubject(String id) {
+    public Subject findSubject(long id) {
         return  subjectMapper.findSubject(id);
     }
 
     @Override
-    public int updateSubject(String id, String name, String desc, String ratio) {
+    public int updateSubject(long id, String name, String desc, String ratio) {
 //        UserContext uc = UserContext.getCurrentContext();
 //        User user = (User) uc.getContextAttribute(UserContext.SESSION_USER);
 //        Subject subject = subjectMapper.findSubject(id);
@@ -100,7 +100,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public int deleteSubject(String id) {
+    public int deleteSubject(long id) {
 
 //        boolean exists = subjectMapper.checkExistsProductsOfSubject(id);
 //        if(exists) {

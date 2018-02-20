@@ -31,7 +31,7 @@ public interface SubjectMapper {
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME")
     })
-    Subject findSubject(@Param("id") String id);
+    Subject findSubject(@Param("id") long id);
 
     @Select({"<script>",
             "SELECT * FROM t_subject",

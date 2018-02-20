@@ -27,6 +27,51 @@ public class SubjectController {
         return dts;
     }
 
+    @RequestMapping(value="/subject", method = RequestMethod.GET)
+    public JsonData findSubject(long id) {
+        Subject subject = subjectService.findSubject(id);
+        return JsonData.success(subject);
+    }
+
+    @RequestMapping(value="/textSubject", method = RequestMethod.POST)
+    public JsonData createTextSubject(String name, String desc, String ratio) {
+        Subject subject = subjectService.createTextSubject(name, desc, ratio);
+        return JsonData.SUCCESS;
+    }
+
+    @RequestMapping(value="/subject", method = RequestMethod.POST)
+    public JsonData updateSubject(long id, String name, String desc, String ratio) {
+        int r = subjectService.updateSubject(id, name, desc, ratio);
+        return JsonData.SUCCESS;
+    }
+
+    @RequestMapping(value="/subject", method = RequestMethod.DELETE)
+    public JsonData deleteSubject(long id) {
+        int r = subjectService.deleteSubject(id);
+        return JsonData.SUCCESS;
+    }
+
+    @RequestMapping(value="/batchDeleteSubject", method = RequestMethod.DELETE)
+    public JsonData batchDeleteSubject(String ids) {
+        String[] idArray = ids.split(",");
+
+        subjectService.batchDeleteSubjects(idArray);
+
+        return JsonData.SUCCESS;
+    }
+
+    @RequestMapping(value="/upSubject", method = RequestMethod.POST)
+    public JsonData upSubject(String id) {
+        int r = subjectService.upSubject(id);
+        return JsonData.SUCCESS;
+    }
+
+    @RequestMapping(value="/downSubject", method = RequestMethod.POST)
+    public JsonData downSubject(String id) {
+        int r = subjectService.downSubject(id);
+        return JsonData.SUCCESS;
+    }
+
     private DataTableSource<Subject> convertProductsToDataTableSource(int draw, Page<Subject> productsPage) {
         DataTableSource<Subject> dts = new DataTableSource<Subject>();
 

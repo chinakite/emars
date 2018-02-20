@@ -12,11 +12,11 @@ public interface SubjectService {
 
     Subject createTextSubject(String name, String desc, String ratio);
 
-    Subject findSubject(String id);
+    Subject findSubject(long id);
 
-    int updateSubject(String id, String name, String desc, String ratio);
+    int updateSubject(long id, String name, String desc, String ratio);
 
-    int deleteSubject(String id);
+    int deleteSubject(long id);
 
     void batchDeleteSubjects(String[] idArray);
 
