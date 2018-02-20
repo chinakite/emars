@@ -33,9 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Page<User> pageUsers(int currentPage, int pageSize) {
+    public Page<User> pageUsers(int offset, int pageSize) {
         long count = userMapper.countUser();
-        int offset = (currentPage - 1) * pageSize;
+        int currentPage = offset/pageSize + 1;
         List<User> users = userMapper.pageUsers(offset, pageSize);
 
         Page<User> result = new Page<User>();

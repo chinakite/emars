@@ -18,7 +18,7 @@ USERLIST.initUserTbl = function(){
                     "autoWidth": false,
                     "serverSide": true,
                     "ajax": {
-                        "url": '/users',
+                        "url": '/users?currentPage=1',
 
                     },
                     language: {

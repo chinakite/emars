@@ -17,8 +17,8 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value="/users", method=RequestMethod.GET)
-    public String queryUsers(int draw, int currentPage, int pageSize) {
-        Page<User> users = userService.pageUsers(currentPage, pageSize);
+    public String queryUsers(int draw, int start, int length) {
+        Page<User> users = userService.pageUsers(start, length);
         DataTableSource<User> dts = convertProductsToDataTableSource(draw, users);
         return JsonData.success(users).toString();
     }
