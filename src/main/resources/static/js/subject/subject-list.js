@@ -5,6 +5,14 @@ var subjectTable;
 
 $(document).ready(function(){
     SUBJECTLIST.initSubjectTbl();
+
+    $('#newSubject').pxValidate({
+        rules: {
+            'name': {
+                required: true
+            }
+        }
+    });
 });
 
 SUBJECTLIST.initSubjectTbl = function(){
@@ -20,9 +28,7 @@ SUBJECTLIST.initSubjectTbl = function(){
         "ajax": {
             "url": '/system/subjects',
             "data": function(d) {
-                console.log($('#searchKey').length);
                 var key = $('#searchKey').val();
-                console.log(key);
                 if(key && $.trim(key).length > 0) {
                     d.key = key;
                 }
@@ -74,4 +80,8 @@ SUBJECTLIST.initSubjectTbl = function(){
 
 function searchSubjects() {
     subjectTable.api().ajax.reload();
+}
+
+function submitSubject() {
+
 }

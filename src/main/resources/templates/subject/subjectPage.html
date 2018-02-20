@@ -23,7 +23,7 @@
                     </div>
                     <hr class="panel-wide-block" />
                     <div class="box">
-                        <button type="button" class="btn" data-toggle="modal" data-target="#modal-default">
+                        <button type="button" class="btn" data-toggle="modal" data-target="#newSubject">
                             <i class="fa fa-plus"></i>&nbsp;新建
                         </button>
                         <button type="button" class="btn"><i class="fa fa-remove"></i>&nbsp;删除</button>
@@ -50,7 +50,8 @@
                 </div>
             </div>
 
-            <div th:replace="elements/modal :: modal"></div>
+            <div th:replace="subject/newSubject :: newSubject"></div>
+
 
         </section>
 
