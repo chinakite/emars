@@ -84,8 +84,8 @@ function searchSubjects() {
 }
 
 function submitSubject() {
-    var sbjName = $('#inputName').val();
-    var sbjDesc = $('#inputDesc').val();
+    var sbjName = $('#name').val();
+    var sbjDesc = $('#desc').val();
     $.post(
         "/system/textSubject",
         {
@@ -95,5 +95,60 @@ function submitSubject() {
         function (json) {
             console.log(json);
         }
-    )
+    );
+}
+
+function popEditSubject(id) {
+    $.get(
+        "/system/subject",
+        {id: id},
+        function (json) {
+
+        }
+    );
+}
+
+function upSubject(id) {
+    $.post(
+        "/system/upSubject",
+        {"id": id},
+        function(json) {
+            var result = IDEA.parseJSON(json);
+            if(result.type == 'success') {
+                alert('移动成功');
+                loadSubjects();
+            }
+        }
+    );
+}
+
+function downSubject(id) {
+    $.post(
+        "/system/downSubject",
+        {"id": id},
+        function(json) {
+            var result = IDEA.parseJSON(json);
+            if(result.type == 'success') {
+                alert('移动成功');
+                loadSubjects();
+            }
+        }
+    );
+}
+
+function deleteSubject(id, name) {
+    var r = confirm("您真的要删除作品题材[" + name + "]吗？");
+    if(r) {
+        $.post(
+            "/system/subject/",
+            {'_method': "delete", 'id': id},
+            function(json) {
+                var result = IDEA.parseJSON(json);
+                if(result.type == 'success') {
+                    alert('删除成功');
+                    loadSubjects();
+                }
+            }
+        );
+    }
 }
