@@ -110,4 +110,15 @@ USERLIST.initUserTbl = function(){
 
 USERLIST.searchUser = function(){
     userTable.api().ajax.reload();
-}
+};
+
+USERLIST.checkAllRows = function(obj){
+    var checkAll = $(obj).prop('checked');
+    $('#userTbl tbody input[type=checkbox]').each(function(){
+        if(checkAll) {
+            $(this).prop('checked', true);
+        }else{
+            $(this).prop('checked', false);
+        }
+    });
+};
