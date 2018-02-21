@@ -2,6 +2,9 @@ package com.ideamoment.emars.subject.dao;
 
 import com.ideamoment.emars.model.Subject;
 import java.util.List;
+
+import com.ideamoment.emars.utils.mapper.SimpleInsertExtendedLanguageDriver;
+import com.ideamoment.emars.utils.mapper.SimpleUpdateExtendedLanguageDriver;
 import org.apache.ibatis.annotations.*;
 
 /**
@@ -10,15 +13,15 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface SubjectMapper {
 
-    //TODO 完善insert语句
-    @Insert("INSERT INTO t_subject")
-    void insertSubject(@Param("subject") Subject subject);
+    @Insert("INSERT INTO t_subject (#{subject})")
+    @Lang(SimpleInsertExtendedLanguageDriver.class)
+    void insertSubject(Subject subject);
 
-    //TODO 完善update语句
-    @Update("UPDATE t_subject")
-    void updateSubject(@Param("subject") Subject subject);
+    @Update("UPDATE t_subject (#{subject}) WHERE c_id = #{id}")
+    @Lang(SimpleUpdateExtendedLanguageDriver.class)
+    void updateSubject(Subject subject);
 
-    @Select("SELECT * FROM t_subject WHERE id = #{id}")
+    @Select("SELECT * FROM t_subject WHERE c_id = #{id}")
     @Results(id = "subjectMap", value ={
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "name", column = "C_NAME"),

@@ -6,13 +6,13 @@ var subjectTable;
 $(document).ready(function(){
     SUBJECTLIST.initSubjectTbl();
 
-    $('#newSubject').pxValidate({
-        rules: {
-            'name': {
-                required: true
-            }
-        }
-    });
+    // $('#newSubject').pxValidate({
+    //     rules: {
+    //         'name': {
+    //             required: true
+    //         }
+    //     }
+    // });
 });
 
 SUBJECTLIST.initSubjectTbl = function(){
@@ -84,5 +84,16 @@ function searchSubjects() {
 }
 
 function submitSubject() {
-
+    var sbjName = $('#inputName').val();
+    var sbjDesc = $('#inputDesc').val();
+    $.post(
+        "/system/textSubject",
+        {
+            'name': sbjName,
+            'desc': sbjDesc
+        },
+        function (json) {
+            console.log(json);
+        }
+    )
 }
