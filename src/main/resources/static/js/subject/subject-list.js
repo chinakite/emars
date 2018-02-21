@@ -59,6 +59,7 @@ SUBJECTLIST.initSubjectTbl = function(){
                 "data": "desc"
             },
             {
+                "width": "20%",
                 "render": function(data, type, full, meta) {
                     var htmlText = '<a onclick="popEditSubject(' + full.id + ');">编辑</a>  ';
                     if(full.order != 1) {
