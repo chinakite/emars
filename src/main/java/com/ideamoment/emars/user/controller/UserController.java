@@ -17,10 +17,10 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value="/users", method=RequestMethod.GET)
-    public String queryUsers(int draw, int start, int length) {
-        Page<User> users = userService.pageUsers(start, length);
+    public DataTableSource<User> queryUsers(int draw, int start, int length, String searchKey, String searchStatus) {
+        Page<User> users = userService.pageUsers(start, length, searchKey, searchStatus);
         DataTableSource<User> dts = convertProductsToDataTableSource(draw, users);
-        return JsonData.success(users).toString();
+        return dts;
     }
 
     private DataTableSource<User> convertProductsToDataTableSource(int draw, Page<User> productsPage) {

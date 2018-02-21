@@ -33,10 +33,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Page<User> pageUsers(int offset, int pageSize) {
+    public Page<User> pageUsers(int offset, int pageSize, String searchKey, String searchStatus) {
         long count = userMapper.countUser();
         int currentPage = offset/pageSize + 1;
-        List<User> users = userMapper.pageUsers(offset, pageSize);
+        if(searchKey != null && searchKey.trim().length() > 0) {
+            searchKey = "%" + searchKey + "%";
+        }
+        List<User> users = userMapper.pageUsers(offset, pageSize, searchKey, searchStatus);
 
         Page<User> result = new Page<User>();
         result.setCurrentPage(currentPage);

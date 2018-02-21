@@ -8,34 +8,45 @@
             <h1><span class="text-muted font-weight-light"><i class="page-header-icon ion-ios-keypad"></i>系统管理 / </span>用户管理</h1>
         </div>
 
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="searchKey">关键字</label>
+                <input id="searchKey" type="text" class="form-control" placeholder="用户名、姓名、邮箱、手机" />
+            </div>
+            <div class="form-group">
+                <label for="searchStatus">状态</label>
+                <select id="searchStatus" type="text" class="form-control">
+                    <option value="-1">全部</option>
+                    <option value="1">正常</option>
+                    <option value="0">已禁用</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="USERLIST.searchUser();">搜索</button>
+        </div>
+        <hr class="panel-wide-block" />
+        <div class="box">
+            <button type="button" class="btn" data-toggle="modal" data-target="#modal-default">
+                <i class="fa fa-plus"></i>&nbsp;新建
+            </button>
+            <button type="button" class="btn"><i class="fa fa-remove"></i>&nbsp;删除</button>
+        </div>
+
         <div class="table-primary">
             <table id="userTbl" class="table table-striped table-bordered">
                 <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th><label class="custom-control custom-checkbox custom-control-blank"><input type="checkbox"/></label></th>
                     <th>用户名</th>
                     <th>姓名</th>
                     <th>邮箱</th>
                     <th>电话</th>
                     <th>敬称</th>
+                    <th>状态</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="odd gradeX">
-                    <td><i class="fa-circle"></i></td>
-                    <td><input type="checkbox"/></td>
-                    <td><img src=""/></td>
-                    <td>Triden</td>
-                    <td>Internet
-                        Explorer 4.0</td>
-                    <td>Win 95+</td>
-                    <td>Win 95+</td>
-                    <td class="center"> 4</td>
-                    <td class="center">X</td>
-                </tr>
+
                 </tbody>
             </table>
         </div>

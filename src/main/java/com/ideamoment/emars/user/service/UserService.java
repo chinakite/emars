@@ -7,7 +7,7 @@ public interface UserService {
 
     User login(String account, String password);
 
-    Page<User> pageUsers(int currentPage, int pageSize);
+    Page<User> pageUsers(int currentPage, int pageSize, String searchKey, String searchStatus);
 
 
 }

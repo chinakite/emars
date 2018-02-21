@@ -9,7 +9,7 @@ $(document).ready(function(){
 
 USERLIST.initUserTbl = function(){
     userTable = $('#userTbl').dataTable({
-                    "processing": true,
+                    "processing": false,
                     "paging": true,
                     "lengthChange": false,
                     "searching": false,
@@ -18,8 +18,17 @@ USERLIST.initUserTbl = function(){
                     "autoWidth": false,
                     "serverSide": true,
                     "ajax": {
-                        "url": '/users?currentPage=1',
-
+                        "url": '/users',
+                        "data": function(d) {
+                            var key = $('#searchKey').val();
+                            if(key) {
+                                d.searchKey = key;
+                            }
+                            var status = $('#searchStatus').val();
+                            if(status) {
+                                d.searchStatus = status;
+                            }
+                        }
                     },
                     language: {
                         "paginate": {
@@ -38,64 +47,67 @@ USERLIST.initUserTbl = function(){
                         {},
                         {},
                         {},
-                        {},
                         {}
                     ],
                     "columnDefs": [
                         {
                             "targets": [0],
-                            "render": function(data, type, full) {
+                            "render": function(data, type, full, meta) {
+                                console.log(meta);
                                 return '<input type="checkbox" value="' + full.id + '" class="tblRowCheckbox"/>';
                             }
                         },
                         {
                             "targets": [1],
                             "render": function(data, type, full) {
-                                return '<input type="checkbox" value="' + full.id + '" class="tblRowCheckbox"/>';
+                                return full.account;
                             }
                         },
                         {
                             "targets": [2],
                             "render": function(data, type, full) {
-                                return '<input type="checkbox" value="' + full.id + '" class="tblRowCheckbox"/>';
+                                return full.name;
                             }
                         },
                         {
                             "targets": [3],
                             "render": function(data, type, full) {
-                                return '<input type="checkbox" value="' + full.id + '" class="tblRowCheckbox"/>';
+                                return full.email;
                             }
                         },
                         {
                             "targets": [4],
                             "render": function(data, type, full) {
-                                return '<input type="checkbox" value="' + full.id + '" class="tblRowCheckbox"/>';
+                                return full.mobile;
                             }
                         },
                         {
                             "targets": [5],
                             "render": function(data, type, full) {
-                                return '<input type="checkbox" value="' + full.id + '" class="tblRowCheckbox"/>';
+                                return full.honorific;
                             }
                         },
                         {
                             "targets": [6],
                             "render": function(data, type, full) {
-                                return '<input type="checkbox" value="' + full.id + '" class="tblRowCheckbox"/>';
+                                if(full.status == '1') {
+                                    return '<span class="label label-primary">正常</span>';
+                                }else{
+                                    return '<span class="label label-danger">已禁用</span>';
+                                }
                             }
                         },
                         {
                             "targets": [7],
                             "render": function(data, type, full) {
-                                return '<input type="checkbox" value="' + full.id + '" class="tblRowCheckbox"/>';
-                            }
-                        },
-                        {
-                            "targets": [8],
-                            "render": function(data, type, full) {
-                                return '<input type="checkbox" value="' + full.id + '" class="tblRowCheckbox"/>';
+                                return '';
                             }
                         }
                     ]
                 });
+    $('#userTbl_wrapper .table-header').hide();
 };
+
+USERLIST.searchUser = function(){
+    userTable.api().ajax.reload();
+}

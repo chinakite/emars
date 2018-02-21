@@ -6,7 +6,7 @@
 <nav th:fragment="header" class="navbar px-navbar">
     <!-- Header -->
     <div class="navbar-header">
-        <a class="navbar-brand px-demo-brand" href="index.html"><span class="px-demo-logo bg-primary"><span class="px-demo-logo-1"></span><span class="px-demo-logo-2"></span><span class="px-demo-logo-3"></span><span class="px-demo-logo-4"></span><span class="px-demo-logo-5"></span><span class="px-demo-logo-6"></span><span class="px-demo-logo-7"></span><span class="px-demo-logo-8"></span><span class="px-demo-logo-9"></span></span>数字音频版权云平台</a>
+        <a class="navbar-brand px-demo-brand" href="index.html"><span class="px-demo-logo bg-primary"><span class="px-demo-logo-1"></span><span class="px-demo-logo-2"></span><span class="px-demo-logo-3"></span><span class="px-demo-logo-4"></span><span class="px-demo-logo-5"></span><span class="px-demo-logo-6"></span><span class="px-demo-logo-7"></span><span class="px-demo-logo-8"></span><span class="px-demo-logo-9"></span></span>悦库时光音频资源管理系统</a>
     </div>
 
     <!-- Navbar togglers -->
@@ -144,7 +144,7 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                     <img src="/assets/demo/avatars/1.jpg" alt="" class="px-navbar-image" />
-                    <span class="hidden-md">John Doe</span>
+                    <span class="hidden-md" th:text="${curUserName}"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="pages-signin-v1.html"><i class="dropdown-icon fa fa-cog"></i>&nbsp;&nbsp;修改密码</a></li>
