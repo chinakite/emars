@@ -15,11 +15,11 @@ public interface SubjectMapper {
 
     @Insert("INSERT INTO t_subject (#{subject})")
     @Lang(SimpleInsertExtendedLanguageDriver.class)
-    void insertSubject(Subject subject);
+    boolean insertSubject(Subject subject);
 
     @Update("UPDATE t_subject (#{subject}) WHERE c_id = #{id}")
     @Lang(SimpleUpdateExtendedLanguageDriver.class)
-    void updateSubject(Subject subject);
+    boolean updateSubject(Subject subject);
 
     @Select("SELECT * FROM t_subject WHERE c_id = #{id}")
     @Results(id = "subjectMap", value ={
@@ -68,23 +68,33 @@ public interface SubjectMapper {
                 "</if>",
                 " ORDER BY c_order asc",
             "</script>"})
+    @ResultMap("subjectMap")
     List<Subject> querySubject(@Param("type") String type, @Param("name") String name, @Param("mask") boolean mask);
 
     @Select("SELECT MAX(C_ORDER) FROM t_subject WHERE c_type = #{type}")
     int queryMaxOrder(@Param("type") String type);
 
     @Select("SELECT * FROM t_subject WHERE c_type = #{type} AND c_name = #{name} AND c_id = #{id}")
-    List<Subject> querySubjectExceptSelf(@Param("type") String type, @Param("name")String name, @Param("id") String id);
+    @ResultMap("subjectMap")
+    List<Subject> querySubjectExceptSelf(@Param("type") String type, @Param("name")String name, @Param("id") long id);
 
-    @Select("SELECT if((id) > 0, true, false) from T_PRODUCT_SUBJECT where C_SUBJECT_ID = #{id} limit 1,1")
-    boolean checkExistsProductsOfSubject(@Param("id") String id);
+    @Select("SELECT if(count(c_id) > 0, true, false) from T_PRODUCT_SUBJECT where C_SUBJECT_ID = #{id}")
+    boolean checkExistsProductsOfSubject(@Param("id") long id);
 
     @Delete("DELETE FROM t_subject WHERE c_id = #{id}")
-    void deleteSubject(@Param("id") long id);
+    boolean deleteSubject(@Param("id") long id);
 
-    @Delete("DELETE FROM t_subject WHERE c_id in (#{idArray})")
-    void batchDeleteSubjects(@Param("idArray") String[] idArray);
+//    @Delete("DELETE FROM t_subject WHERE c_id in (#{idArray})")
+    @Delete({"<script>",
+            "DELETE FROM t_subject WHERE c_id in ",
+            "<foreach item='id' index='index' collection='ids'",
+            "open='(' separator=',' close=')'>",
+            "#{id}",
+            "</foreach>",
+            "</script>"})
+    boolean batchDeleteSubjects(@Param("ids") long[] ids);
 
     @Select("SELECT * FROM t_subject WHERE c_type = #{type} AND c_order = #{order}")
+    @ResultMap("subjectMap")
     Subject querySubjectByOrder(@Param("type") String type, @Param("order") int order);
 }

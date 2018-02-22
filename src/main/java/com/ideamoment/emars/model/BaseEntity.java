@@ -7,13 +7,13 @@ package com.ideamoment.emars.model;
  */
 public abstract class BaseEntity {
 
-    private String id;          //主键
+    private long id;          //主键
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 }

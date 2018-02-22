@@ -4,7 +4,7 @@
 
     <body>
         <!-- Modal -->
-        <div th:fragment="newSubject" class="modal fade" id="newSubject" tabindex="-1">
+        <div th:fragment="subjectModal" class="modal fade" id="subjectModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -13,6 +13,7 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" id="validation-form">
+                            <input type="hidden" id="id"/>
                             <div class="form-group">
                                 <label for="name" class="col-sm-3 control-label">名称</label>
                                 <div class="col-sm-8">
@@ -29,7 +30,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="submitSubject();">保存</button>
+                        <button type="button" class="btn btn-primary" onclick="SUBJECTLIST.submitSubject();">保存</button>
                     </div>
                 </div>
             </div>

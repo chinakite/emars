@@ -19,20 +19,25 @@
                             <label for="searchKey">题材名称</label>
                             <input id="searchKey" type="text" class="form-control" placeholder="题材名称" />
                         </div>
-                        <button class="btn btn-primary" onclick="searchSubjects();">搜索</button>
+                        <button class="btn btn-primary" onclick="SUBJECTLIST.searchSubjects();">搜索</button>
                     </div>
                     <hr class="panel-wide-block" />
                     <div class="box">
-                        <button type="button" class="btn" data-toggle="modal" data-target="#newSubject">
+                        <button type="button" class="btn" data-toggle="modal" onclick="SUBJECTLIST.popNewSubjectModal();">
                             <i class="fa fa-plus"></i>&nbsp;新建
                         </button>
-                        <button type="button" class="btn"><i class="fa fa-remove"></i>&nbsp;删除</button>
+                        <button type="button" class="btn" onclick="SUBJECTLIST.batchDeleteSubjects();"><i class="fa fa-remove"></i>&nbsp;删除</button>
                     </div>
 
                     <table class="table table-striped table-bordered" id="subjectTbl">
                         <thead>
                         <tr>
-                            <th><input type="checkbox" /></th>
+                            <th>
+                                <label class="custom-control custom-checkbox custom-control-blank" for="subjectTblCheckAllBtn">
+                                    <input type="checkbox" id="subjectTblCheckAllBtn" class="custom-control-input" onclick="SUBJECTLIST.checkAllRows(this);"/>
+                                    <span class="custom-control-indicator"></span>
+                                </label>
+                            </th>
                             <th>名称</th>
                             <th>描述</th>
                             <th>操作</th>
@@ -44,7 +49,7 @@
                 </div>
             </div>
 
-            <div th:replace="subject/newSubject :: newSubject"></div>
+            <div th:replace="subject/subjectModal :: subjectModal"></div>
 
 
         </section>

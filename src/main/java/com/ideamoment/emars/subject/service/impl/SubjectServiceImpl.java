@@ -1,5 +1,7 @@
 package com.ideamoment.emars.subject.service.impl;
 
+import com.ideamoment.emars.constants.ErrorCode;
+import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.model.Subject;
 import com.ideamoment.emars.model.User;
 import com.ideamoment.emars.model.enumeration.ProductType;
@@ -44,29 +46,28 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public Subject createTextSubject(String name, String desc, String ratio) {
-//        UserContext uc = UserContext.getCurrentContext();
-//        User user = (User) uc.getContextAttribute(UserContext.SESSION_USER);
-//
-//        List<Subject> existsSubjects = subjectMapper.querySubject(ProductType.TEXT, name, false);
-//
-//        if(existsSubjects.size() > 0) {
-//            throw duplicateException(name);
-//        }else{
-//            int maxOrder = subjectMapper.queryMaxOrder(ProductType.TEXT);
-//            Subject subject = new Subject();
-//            subject.setName(name);
-//            subject.setDesc(desc);
-//            subject.setRatio(ratio);
-//            subject.setOrder(maxOrder + 1);
-//            subject.setCreateTime(new Date());
-//            subject.setCreator(user.getId());
-//
-//            subjectMapper.insertSubject(subject);
-//
-//            return subject;
-//        }
-        return null;
+    public String createTextSubject(String name, String desc, String ratio) {
+        List<Subject> existsSubjects = subjectMapper.querySubject(ProductType.TEXT, name, false);
+
+        if(existsSubjects.size() > 0) {
+            return ErrorCode.SUBJECT_EXISTS;
+        }
+        int maxOrder = subjectMapper.queryMaxOrder(ProductType.TEXT);
+        Subject subject = new Subject();
+        subject.setName(name);
+        subject.setDesc(desc);
+        subject.setRatio(ratio);
+        subject.setOrder(maxOrder + 1);
+        subject.setCreateTime(new Date());
+        subject.setCreator(UserContext.getUserId());
+
+        boolean result = subjectMapper.insertSubject(subject);
+
+        if(result) {
+            return SuccessCode.SUCCESS;
+        }else{
+            return ErrorCode.UNKNOWN_ERROR;
+        }
     }
 
     @Override
@@ -77,92 +78,113 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public int updateSubject(long id, String name, String desc, String ratio) {
-//        UserContext uc = UserContext.getCurrentContext();
-//        User user = (User) uc.getContextAttribute(UserContext.SESSION_USER);
-//        Subject subject = subjectMapper.findSubject(id);
-//
-//        if(subject == null) {
-//            throw dataNotFoundException(id);
-//        }else{
-//            List<Subject> existsSubjects = subjectMapper.querySubjectExceptSelf(ProductType.TEXT, name, id);
-//
-//            if(existsSubjects.size() > 0) {
-//                throw duplicateException(name);
-//            }else{
-//                subject.setName(name);
-//                subject.setDesc(desc);
-//                subject.setRatio(ratio);
-//                subject.setModifier(user.getId());
-//                subject.setModifyTime(new Date());
-//                subjectMapper.updateSubject(subject);
-//                return 1;
-//            }
-//        }
-        return 0;
+    public String updateSubject(long id, String name, String desc, String ratio) {
+        Subject subject = subjectMapper.findSubject(id);
+
+        if(subject == null) {
+            return ErrorCode.SUBJECT_NOT_EXISTS;
+        }
+        List<Subject> existsSubjects = subjectMapper.querySubjectExceptSelf(ProductType.TEXT, name, id);
+
+        if(existsSubjects.size() > 0) {
+            return ErrorCode.SUBJECT_EXISTS;
+        }else{
+            subject.setName(name);
+            subject.setDesc(desc);
+            subject.setRatio(ratio);
+            subject.setModifier(UserContext.getUserId());
+            subject.setModifyTime(new Date());
+            boolean result = subjectMapper.updateSubject(subject);
+            if(result) {
+                return SuccessCode.SUCCESS;
+            }else{
+                return ErrorCode.UNKNOWN_ERROR;
+            }
+        }
+
     }
 
     @Override
     @Transactional
-    public int deleteSubject(long id) {
+    public String deleteSubject(long id) {
 
-//        boolean exists = subjectMapper.checkExistsProductsOfSubject(id);
-//        if(exists) {
-//            throw new IdeaDataException(IdeaDataExceptionCode.CANT_DELETE_DUE_ASSO_DATA, String.format("Can not delete subject[%s] due having products.", id));
-//        }else{
-//            subjectMapper.deleteSubject(id);
-//            return 1;
-//        }
-        return 0;
+        boolean exists = subjectMapper.checkExistsProductsOfSubject(id);
+        if(exists) {
+            return ErrorCode.SUBJECT_NOT_EXISTS;
+        }else{
+            boolean result = subjectMapper.deleteSubject(id);
+            if(result) {
+                return SuccessCode.SUCCESS;
+            }else{
+                return ErrorCode.UNKNOWN_ERROR;
+            }
+        }
     }
 
     @Override
     @Transactional
-    public void batchDeleteSubjects(String[] idArray) {
-        subjectMapper.batchDeleteSubjects(idArray);
+    public String batchDeleteSubjects(long[] idArray) {
+        boolean result = subjectMapper.batchDeleteSubjects(idArray);
+        if(result) {
+            return SuccessCode.SUCCESS;
+        }else{
+            return ErrorCode.UNKNOWN_ERROR;
+        }
     }
 
     @Override
     @Transactional
-    public int upSubject(String id) {
-//        Subject subject = subjectMapper.findSubject(id);
-//
-//        if(subject == null) {
-//            throw dataNotFoundException(id);
-//        }else{
-//            int order = subject.getOrder();
-//            Subject prevSubject = subjectMapper.querySubjectByOrder(ProductType.TEXT, order-1);
-//
-//            prevSubject.setOrder(order);
-//            subject.setOrder(order-1);
-//
-//            IdeaJdbc.update(prevSubject);
-//            subjectMapper.updateSubject(subject);
-//
-//            return 2;
-//        }
-        return 0;
+    public String upSubject(long id) {
+        Subject subject = subjectMapper.findSubject(id);
+
+        if(subject == null) {
+            return ErrorCode.SUBJECT_NOT_EXISTS;
+        }
+        int order = subject.getOrder();
+        Subject prevSubject = subjectMapper.querySubjectByOrder(ProductType.TEXT, order - 1);
+
+        prevSubject.setOrder(order);
+        prevSubject.setModifier(UserContext.getUserId());
+        prevSubject.setModifyTime(new Date());
+        subject.setOrder(order - 1);
+        subject.setModifier(UserContext.getUserId());
+        subject.setModifyTime(new Date());
+
+        boolean result1 = subjectMapper.updateSubject(prevSubject);
+        boolean result2 = subjectMapper.updateSubject(subject);
+        if(result1 && result2) {
+            return SuccessCode.SUCCESS;
+        }else{
+            return ErrorCode.UNKNOWN_ERROR;
+        }
+
     }
 
     @Override
     @Transactional
-    public int downSubject(String id) {
-//        Subject subject = subjectMapper.findSubject(Subject.class, id);
-//
-//        if(subject == null) {
-//            throw dataNotFoundException(id);
-//        }else{
-//            int order = subject.getOrder();
-//            Subject nextSubject = subjectMapper.querySubjectByOrder(ProductType.TEXT, order+1);
-//
-//            nextSubject.setOrder(order);
-//            subject.setOrder(order+1);
-//
-//            IdeaJdbc.update(nextSubject);
-//            subjectMapper.updateSubject(subject);
-//
-//            return 2;
-//        }
-        return 0;
+    public String downSubject(long id) {
+        Subject subject = subjectMapper.findSubject(id);
+
+        if(subject == null) {
+            return ErrorCode.SUBJECT_NOT_EXISTS;
+        }
+            int order = subject.getOrder();
+        Subject nextSubject = subjectMapper.querySubjectByOrder(ProductType.TEXT, order+1);
+
+        nextSubject.setOrder(order);
+        nextSubject.setModifier(UserContext.getUserId());
+        nextSubject.setModifyTime(new Date());
+        subject.setOrder(order + 1);
+        subject.setModifier(UserContext.getUserId());
+        subject.setModifyTime(new Date());
+
+        boolean result1 = subjectMapper.updateSubject(nextSubject);
+        boolean result2 = subjectMapper.updateSubject(subject);
+        if(result1 && result2) {
+            return SuccessCode.SUCCESS;
+        }else{
+            return ErrorCode.UNKNOWN_ERROR;
+        }
+
     }
 }

@@ -49,7 +49,11 @@ SUBJECTLIST.initSubjectTbl = function(){
                 "data": "id",
                 "width": "4%",
                 "render": function(data, type) {
-                    return '<input type="checkbox" value="' + data + '" />';
+                    var checkboxHtml = '<label class="custom-control custom-checkbox custom-control-blank" for="subjectTblCheck_' + data + '">'
+                        + '<input id="subjectTblCheck_' + data + '" type="checkbox" value="' + data + '" class="custom-control-input tblRowCheckbox" onclick="SUBJECTLIST.checkRow();"/>'
+                        + '<span class="custom-control-indicator"></span>'
+                        + '</label>';
+                    return checkboxHtml;
                 }
             },
             {
@@ -61,17 +65,19 @@ SUBJECTLIST.initSubjectTbl = function(){
             {
                 "width": "20%",
                 "render": function(data, type, full, meta) {
-                    var htmlText = '<a onclick="popEditSubject(' + full.id + ');">编辑</a>  ';
-                    if(full.order != 1) {
+                    var i = meta.settings.oAjaxData.start + meta.row;
+
+                    var htmlText = '<a onclick="SUBJECTLIST.popEditSubject(' + full.id + ');">编辑</a>  ';
+                    if(i != 0) {
                         htmlText += '<span class="small">|</span> ' +
-                            '<a onclick="upSubject(' + full.id + ');">上移</a> ';
+                            '<a onclick="SUBJECTLIST.upSubject(' + full.id + ');">上移</a> ';
                     }
-                    if(full.order != meta.settings.json.recordsTotal) {
+                    if(i != meta.settings.json.recordsTotal - 1) {
                         htmlText += '<span class="small">|</span> ' +
-                            '<a onclick="downSubject(' + full.id + ');">下移</a> ';
+                            '<a onclick="SUBJECTLIST.downSubject(' + full.id + ');">下移</a> ';
                     }
                     htmlText += '<span class="small">|</span> ' +
-                        '<a onclick="deleteSubject(' + full.id + ', \'' + full.name + '\');">删除</a>';
+                        '<a onclick="SUBJECTLIST.deleteSubject(' + full.id + ', \'' + full.name + '\');">删除</a>';
                     return htmlText;
                 }
             }
@@ -79,76 +85,181 @@ SUBJECTLIST.initSubjectTbl = function(){
     });
 };
 
-function searchSubjects() {
+SUBJECTLIST.searchSubjects = function () {
     subjectTable.api().ajax.reload();
 }
 
-function submitSubject() {
+SUBJECTLIST.checkAllRows = function(obj){
+    var checkAll = $(obj).prop('checked');
+    $('#subjectTbl tbody input[type=checkbox]').each(function(){
+        if(checkAll) {
+            $(this).prop('checked', true);
+        }else{
+            $(this).prop('checked', false);
+        }
+    });
+};
+
+SUBJECTLIST.checkRow = function() {
+    var checkedAll = true;
+    var checkboxes = $('#subjectTbl tbody input[type=checkbox]');
+    for(var i=0; i<checkboxes.length; i++) {
+        var checked = $(checkboxes[i]).prop('checked');
+        checkedAll = checkedAll & checked;
+    }
+    $('#subjectTblCheckAllBtn').prop('checked', checkedAll);
+};
+
+SUBJECTLIST.submitSubject = function () {
     var sbjName = $('#name').val();
     var sbjDesc = $('#desc').val();
-    $.post(
-        "/system/textSubject",
-        {
-            'name': sbjName,
-            'desc': sbjDesc
-        },
-        function (json) {
-            console.log(json);
-        }
-    );
+    var sbjId = $('#id').val();
+    if(sbjId) {
+        $.post(
+            "/system/subject",
+            {
+                'id': sbjId,
+                'name': sbjName,
+                'desc': sbjDesc
+            },
+            function (data) {
+                if(data.code == '0') {
+                    alert('作品题材保存成功！');
+                    $('#subjectModal').modal('hide');
+                    SUBJECTLIST.refreshSubjectTbl();
+                }else{
+                    alert(data.msg);
+                }
+            }
+        );
+    }else {
+        $.post(
+            "/system/textSubject",
+            {
+                'name': sbjName,
+                'desc': sbjDesc
+            },
+            function (data) {
+                if(data.code == '0') {
+                    alert('作品题材保存成功！');
+                    $('#subjectModal').modal('hide');
+                    SUBJECTLIST.refreshSubjectTbl();
+                }else{
+                    alert(data.msg);
+                }
+            }
+        );
+    }
+    
 }
 
-function popEditSubject(id) {
+SUBJECTLIST.popNewSubjectModal = function(){
+    SUBJECTLIST.clearSubjectModal();
+    $('#subjectModal').modal('show');
+};
+
+SUBJECTLIST.popEditSubject = function(id) {
+    SUBJECTLIST.clearSubjectModal();
+    $('#subjectModal').modal('show');
     $.get(
         "/system/subject",
         {id: id},
-        function (json) {
-
+        function (data) {
+            if(data.code == '0') {
+                $('#id').val(data.data['id']);
+                $('#name').val(data.data['name']);
+                $('#desc').val(data.data['desc']);
+            }else{
+                alert(data.msg);
+            }
         }
     );
 }
 
-function upSubject(id) {
+SUBJECTLIST.upSubject = function(id) {
     $.post(
         "/system/upSubject",
         {"id": id},
-        function(json) {
-            var result = IDEA.parseJSON(json);
-            if(result.type == 'success') {
+        function(data) {
+            if(data.code == '0') {
                 alert('移动成功');
-                loadSubjects();
+                SUBJECTLIST.refreshSubjectTbl();
+            }else{
+                alert(data.msg);
             }
         }
     );
 }
 
-function downSubject(id) {
+SUBJECTLIST.downSubject = function(id) {
     $.post(
         "/system/downSubject",
         {"id": id},
-        function(json) {
-            var result = IDEA.parseJSON(json);
-            if(result.type == 'success') {
+        function(data) {
+            if(data.code == '0') {
                 alert('移动成功');
-                loadSubjects();
+                SUBJECTLIST.refreshSubjectTbl();
+            }else{
+                alert(data.msg);
             }
         }
     );
 }
 
-function deleteSubject(id, name) {
+SUBJECTLIST.deleteSubject = function(id, name) {
     var r = confirm("您真的要删除作品题材[" + name + "]吗？");
     if(r) {
         $.post(
-            "/system/subject/",
-            {'_method': "delete", 'id': id},
-            function(json) {
-                var result = IDEA.parseJSON(json);
-                if(result.type == 'success') {
+            "/system/deleteSubject",
+            {'id': id},
+            function(data) {
+                if(data.code == '0') {
                     alert('删除成功');
-                    loadSubjects();
+                    SUBJECTLIST.refreshSubjectTbl();
+                }else{
+                    alert(data.msg);
                 }
             }
         );
     }
 }
+
+SUBJECTLIST.batchDeleteSubjects = function() {
+    var ids = [];
+    $('.tblRowCheckbox:checked').each(function(){
+        ids.push($(this).val());
+    });
+
+    if(ids.length == 0) {
+        alert('您没有选择任何记录。');
+        return ;
+    }
+
+    var r = confirm("您真的要删除这些作品题材吗？");
+    if(r) {
+        $.post(
+            "/system/batchDeleteSubject",
+            {
+                'ids': ids.join(',')
+            },
+            function(data) {
+                if(data.code == '0') {
+                    alert('删除成功');
+                    SUBJECTLIST.refreshSubjectTbl();
+                }else{
+                    alert(data.msg);
+                }
+            }
+        );
+    }
+}
+
+SUBJECTLIST.clearSubjectModal = function(){
+    $('#id').val('');
+    $('#name').val('');
+    $('#desc').val('');
+};
+
+SUBJECTLIST.refreshSubjectTbl = function() {
+    subjectTable.api().ajax.reload(null, false);
+};

@@ -10,18 +10,18 @@ public interface SubjectService {
 
     Page<Subject> listTextSubjects(String key, int offset, int pageSize);
 
-    Subject createTextSubject(String name, String desc, String ratio);
+    String createTextSubject(String name, String desc, String ratio);
 
     Subject findSubject(long id);
 
-    int updateSubject(long id, String name, String desc, String ratio);
+    String updateSubject(long id, String name, String desc, String ratio);
 
-    int deleteSubject(long id);
+    String deleteSubject(long id);
 
-    void batchDeleteSubjects(String[] idArray);
+    String batchDeleteSubjects(long[] idArray);
 
-    int upSubject(String id);
+    String upSubject(long id);
 
-    int downSubject(String id);
+    String downSubject(long id);
 
 }

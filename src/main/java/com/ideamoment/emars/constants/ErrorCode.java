@@ -16,6 +16,10 @@ public class ErrorCode {
     //超级管理员不能删除
     public static final String SUPERADMIN_CANT_OPERATE = "A-0005";
 
+    public static final String SUBJECT_EXISTS = "B-0003";
+
+    public static final String SUBJECT_NOT_EXISTS = "B-0004";
+
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 
     static {

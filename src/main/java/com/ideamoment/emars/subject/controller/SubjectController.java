@@ -1,5 +1,7 @@
 package com.ideamoment.emars.subject.controller;
 
+import com.ideamoment.emars.constants.ErrorCode;
+import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.model.Subject;
 import com.ideamoment.emars.subject.service.SubjectService;
 import com.ideamoment.emars.utils.DataTableSource;
@@ -34,42 +36,63 @@ public class SubjectController {
     }
 
     @RequestMapping(value="/textSubject", method = RequestMethod.POST)
-    public JsonData createTextSubject(String name, String desc, String ratio) {
-        Subject subject = subjectService.createTextSubject(name, desc, ratio);
-        return JsonData.SUCCESS;
+    public JsonData<Boolean> createTextSubject(String name, String desc, String ratio) {
+        String result = subjectService.createTextSubject(name, desc, ratio);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
     @RequestMapping(value="/subject", method = RequestMethod.POST)
-    public JsonData updateSubject(long id, String name, String desc, String ratio) {
-        int r = subjectService.updateSubject(id, name, desc, ratio);
-        return JsonData.SUCCESS;
+    public JsonData<Boolean> updateSubject(long id, String name, String desc, String ratio) {
+        String result = subjectService.updateSubject(id, name, desc, ratio);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
-    @RequestMapping(value="/subject", method = RequestMethod.DELETE)
-    public JsonData deleteSubject(long id) {
-        int r = subjectService.deleteSubject(id);
-        return JsonData.SUCCESS;
+    @RequestMapping(value="/deleteSubject", method = RequestMethod.POST)
+    public JsonData<Boolean> deleteSubject(long id) {
+        String result = subjectService.deleteSubject(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
-    @RequestMapping(value="/batchDeleteSubject", method = RequestMethod.DELETE)
-    public JsonData batchDeleteSubject(String ids) {
-        String[] idArray = ids.split(",");
-
-        subjectService.batchDeleteSubjects(idArray);
-
-        return JsonData.SUCCESS;
+    @RequestMapping(value="/batchDeleteSubject", method = RequestMethod.POST)
+    public JsonData<Boolean> batchDeleteSubject(long[] ids) {
+        String result = subjectService.batchDeleteSubjects(ids);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
     @RequestMapping(value="/upSubject", method = RequestMethod.POST)
-    public JsonData upSubject(String id) {
-        int r = subjectService.upSubject(id);
-        return JsonData.SUCCESS;
+    public JsonData<Boolean> upSubject(long id) {
+        String result = subjectService.upSubject(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
     @RequestMapping(value="/downSubject", method = RequestMethod.POST)
-    public JsonData downSubject(String id) {
-        int r = subjectService.downSubject(id);
-        return JsonData.SUCCESS;
+    public JsonData<Boolean> downSubject(long id) {
+        String result = subjectService.downSubject(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
     private DataTableSource<Subject> convertProductsToDataTableSource(int draw, Page<Subject> productsPage) {
