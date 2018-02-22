@@ -1,22 +1,14 @@
 ;
 
-var SUBJECTLIST = {};
-var subjectTable;
+var AUTHORLIST = {};
+var authorTable;
 
 $(document).ready(function(){
-    SUBJECTLIST.initSubjectTbl();
-
-    // $('#newSubject').pxValidate({
-    //     rules: {
-    //         'name': {
-    //             required: true
-    //         }
-    //     }
-    // });
+    AUTHORLIST.initAuthorTbl();
 });
 
-SUBJECTLIST.initSubjectTbl = function(){
-    subjectTable = $('#subjectTbl').dataTable({
+AUTHORLIST.initAuthorTbl = function(){
+    authorTable = $('#authorTbl').dataTable({
         "processing": true,
         "paging": true,
         "lengthChange": false,
@@ -26,7 +18,7 @@ SUBJECTLIST.initSubjectTbl = function(){
         "autoWidth": false,
         "serverSide": true,
         "ajax": {
-            "url": '/system/subjects',
+            "url": '/system/authors',
             "data": function(d) {
                 var key = $('#searchKey').val();
                 if(key && $.trim(key).length > 0) {
@@ -56,22 +48,17 @@ SUBJECTLIST.initSubjectTbl = function(){
                 "data": "name"
             },
             {
+                "data": "pseudonym"
+            },
+            {
                 "data": "desc"
             },
             {
                 "width": "20%",
-                "render": function(data, type, full, meta) {
-                    var htmlText = '<a onclick="popEditSubject(' + full.id + ');">编辑</a>  ';
-                    if(full.order != 1) {
-                        htmlText += '<span class="small">|</span> ' +
-                            '<a onclick="upSubject(' + full.id + ');">上移</a> ';
-                    }
-                    if(full.order != meta.settings.json.recordsTotal) {
-                        htmlText += '<span class="small">|</span> ' +
-                            '<a onclick="downSubject(' + full.id + ');">下移</a> ';
-                    }
+                "render": function(data, type, full) {
+                    var htmlText = '<a onclick="popEditAuthor(' + full.id + ');">编辑</a>  ';
                     htmlText += '<span class="small">|</span> ' +
-                        '<a onclick="deleteSubject(' + full.id + ', \'' + full.name + '\');">删除</a>';
+                        '<a onclick="deleteAuthor(' + full.id + ', \'' + full.name + '\');">删除</a>';
                     return htmlText;
                 }
             }
@@ -79,8 +66,8 @@ SUBJECTLIST.initSubjectTbl = function(){
     });
 };
 
-function searchSubjects() {
-    subjectTable.api().ajax.reload();
+function searchAuthors() {
+    authorTable.api().ajax.reload();
 }
 
 function submitSubject() {
@@ -98,9 +85,9 @@ function submitSubject() {
     );
 }
 
-function popEditSubject(id) {
+function popEditAuthor(id) {
     $.get(
-        "/system/subject",
+        "/system/author",
         {id: id},
         function (json) {
 
@@ -108,45 +95,17 @@ function popEditSubject(id) {
     );
 }
 
-function upSubject(id) {
-    $.post(
-        "/system/upSubject",
-        {"id": id},
-        function(json) {
-            var result = IDEA.parseJSON(json);
-            if(result.type == 'success') {
-                alert('移动成功');
-                loadSubjects();
-            }
-        }
-    );
-}
-
-function downSubject(id) {
-    $.post(
-        "/system/downSubject",
-        {"id": id},
-        function(json) {
-            var result = IDEA.parseJSON(json);
-            if(result.type == 'success') {
-                alert('移动成功');
-                loadSubjects();
-            }
-        }
-    );
-}
-
-function deleteSubject(id, name) {
-    var r = confirm("您真的要删除作品题材[" + name + "]吗？");
+function deleteAuthor(id, name) {
+    var r = confirm("您真的要删除作者[" + name + "]吗？");
     if(r) {
         $.post(
-            "/system/subject/",
+            "/system/author/",
             {'_method': "delete", 'id': id},
             function(json) {
                 var result = IDEA.parseJSON(json);
                 if(result.type == 'success') {
                     alert('删除成功');
-                    loadSubjects();
+                    loadAuthors();
                 }
             }
         );

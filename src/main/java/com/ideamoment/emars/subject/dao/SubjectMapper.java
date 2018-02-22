@@ -58,13 +58,13 @@ public interface SubjectMapper {
     long listSubjectsCount(@Param("type") String type, @Param("key") String key);
 
     @Select({"<script>",
-                "SELECT * FROM t_subject" +
+                "SELECT * FROM t_subject",
                 "WHERE c_type = #{type} ",
-                "<if test=\"mask = true\">" +
-                        " AND c_name like %#{name}%" +
+                "<if test='mask = true'>",
+                " AND c_name like concat(concat('%',#{name}),'%')",
                 "</if>",
-                "<if test=\"mask = false\">" +
-                        " AND c_name = #{name}" +
+                "<if test='mask = false'>",
+                " AND c_name = #{name}",
                 "</if>",
                 " ORDER BY c_order asc",
             "</script>"})
@@ -79,8 +79,8 @@ public interface SubjectMapper {
     @Select("SELECT if((id) > 0, true, false) from T_PRODUCT_SUBJECT where C_SUBJECT_ID = #{id} limit 1,1")
     boolean checkExistsProductsOfSubject(@Param("id") String id);
 
-    @Delete("DELETE FROM t_subject WHERE c_id = #{idArray}")
-    void deleteSubject(@Param("id") String id);
+    @Delete("DELETE FROM t_subject WHERE c_id = #{id}")
+    void deleteSubject(@Param("id") long id);
 
     @Delete("DELETE FROM t_subject WHERE c_id in (#{idArray})")
     void batchDeleteSubjects(@Param("idArray") String[] idArray);

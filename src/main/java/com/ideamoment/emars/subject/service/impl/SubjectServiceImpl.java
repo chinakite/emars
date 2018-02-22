@@ -43,6 +43,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional
     public Subject createTextSubject(String name, String desc, String ratio) {
 //        UserContext uc = UserContext.getCurrentContext();
 //        User user = (User) uc.getContextAttribute(UserContext.SESSION_USER);
@@ -69,11 +70,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional
     public Subject findSubject(long id) {
         return  subjectMapper.findSubject(id);
     }
 
     @Override
+    @Transactional
     public int updateSubject(long id, String name, String desc, String ratio) {
 //        UserContext uc = UserContext.getCurrentContext();
 //        User user = (User) uc.getContextAttribute(UserContext.SESSION_USER);
@@ -100,6 +103,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional
     public int deleteSubject(long id) {
 
 //        boolean exists = subjectMapper.checkExistsProductsOfSubject(id);
@@ -113,11 +117,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional
     public void batchDeleteSubjects(String[] idArray) {
         subjectMapper.batchDeleteSubjects(idArray);
     }
 
     @Override
+    @Transactional
     public int upSubject(String id) {
 //        Subject subject = subjectMapper.findSubject(id);
 //
@@ -139,6 +145,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional
     public int downSubject(String id) {
 //        Subject subject = subjectMapper.findSubject(Subject.class, id);
 //
