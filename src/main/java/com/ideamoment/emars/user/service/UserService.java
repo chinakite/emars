@@ -9,5 +9,17 @@ public interface UserService {
 
     Page<User> pageUsers(int currentPage, int pageSize, String searchKey, String searchStatus);
 
+    String addUser(User user);
 
+    User loadUser(Long id);
+
+    String modifyUser(Long id, User user);
+
+    String deleteUser(Long id);
+
+    String enableUser(Long id);
+
+    String disableUser(Long id);
+
+    String batchDeleteUser(String ids);
 }

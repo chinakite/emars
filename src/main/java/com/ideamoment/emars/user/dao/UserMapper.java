@@ -13,11 +13,14 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
+    @Select("select * from t_user where c_id = #{id}")
+    @ResultMap("userMap")
+    User findUserById(@Param("id") Long id);
 
+    @Select("select * from t_user where c_account = #{account}")
+    @ResultMap("userMap")
+    User queryUser(@Param("account") String account);
 
-    User queryUser(String account, String ignoreId);
-
-//    @Select("select * from t_user where c_id > 1 limit #{offset}, #{size}")
     @Select({
             "<script>",
             "select * from t_user where c_id > 1",
@@ -58,4 +61,21 @@ public interface UserMapper {
 
     @Insert("insert into t_user (c_name, c_account, c_email, c_password, c_mobile, c_gender, c_honorific, c_status, c_creator, c_createtime)values(#{name}, #{account}, #{email}, #{password}, #{mobile}, #{gender}, #{honorific}, #{status}, #{creator}, #{createTime})")
     boolean insertUser(User user);
+
+    @Update("update t_user set c_name=#{name}, c_account=#{account}, c_password=#{password}, c_email=#{email}, c_mobile=#{mobile}, c_status=#{status}, c_gender=#{gender}, c_honorific=#{honorific}, c_modifier=#{modifier}, c_modifytime=#{modifyTime} where c_id = #{id}")
+    boolean updateUser(User dbUser);
+
+    @Delete("delete from t_user where c_id = #{id}")
+    boolean deleteUser(@Param("id") Long id);
+
+    @Delete({
+            "<script>",
+            "delete from t_user where c_id in ",
+            "<foreach item='id' index='index' collection='ids'",
+            "open='(' separator=',' close=')'>",
+            "#{id}",
+            "</foreach>",
+            "</script>"
+    })
+    boolean batchDeleteUser(@Param("ids") Long[] ids);
 }

@@ -14,19 +14,19 @@ import java.util.Date;
  */
 public abstract class HistoriableEntity extends BaseEntity {
 
-    protected String creator;       //创建人
+    protected Long creator;       //创建人
 
     protected Date createTime;      //创建时间
 
-    protected String modifier;      //修改人
+    protected Long modifier;      //修改人
 
     protected Date modifyTime;      //修改时间
 
-    public String getCreator() {
+    public Long getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator) {
+    public void setCreator(Long creator) {
         this.creator = creator;
     }
 
@@ -38,11 +38,11 @@ public abstract class HistoriableEntity extends BaseEntity {
         this.createTime = createTime;
     }
 
-    public String getModifier() {
+    public Long getModifier() {
         return modifier;
     }
 
-    public void setModifier(String modifier) {
+    public void setModifier(Long modifier) {
         this.modifier = modifier;
     }
 

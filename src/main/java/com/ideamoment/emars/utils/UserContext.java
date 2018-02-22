@@ -20,4 +20,8 @@ public class UserContext {
         return UserContext.userInfo.get();
     }
 
+    public static Long getUserId(){
+        return (Long)UserContext.get().get(UserCookie.USERID);
+    };
+
 }
