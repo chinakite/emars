@@ -28,24 +28,25 @@
                         </button>
                         <button type="button" class="btn" onclick="SUBJECTLIST.batchDeleteSubjects();"><i class="fa fa-remove"></i>&nbsp;删除</button>
                     </div>
-
-                    <table class="table table-striped table-bordered" id="subjectTbl">
-                        <thead>
-                        <tr>
-                            <th>
-                                <label class="custom-control custom-checkbox custom-control-blank" for="subjectTblCheckAllBtn">
-                                    <input type="checkbox" id="subjectTblCheckAllBtn" class="custom-control-input" onclick="SUBJECTLIST.checkAllRows(this);"/>
-                                    <span class="custom-control-indicator"></span>
-                                </label>
-                            </th>
-                            <th>名称</th>
-                            <th>描述</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="table-primary">
+                        <table class="table table-striped table-bordered" id="subjectTbl">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <label class="custom-control custom-checkbox custom-control-blank" for="subjectTblCheckAllBtn">
+                                        <input type="checkbox" id="subjectTblCheckAllBtn" class="custom-control-input" onclick="SUBJECTLIST.checkAllRows(this);"/>
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </th>
+                                <th>名称</th>
+                                <th>描述</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
