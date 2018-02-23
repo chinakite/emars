@@ -1,5 +1,5 @@
 CREATE TABLE `t_user` (
-  `C_ID` varchar(32) NOT NULL,
+  `C_ID` bigint NOT NULL,
   `C_NAME` varchar(60) DEFAULT NULL,
   `C_ACCOUNT` varchar(60) DEFAULT NULL,
   `C_EMAIL` varchar(60) DEFAULT NULL,
@@ -10,6 +10,23 @@ CREATE TABLE `t_user` (
   `C_HONORIFIC` varchar(60) DEFAULT NULL,
   `C_LOGOURL` varchar(500) DEFAULT NULL,
   `C_STATUS` varchar(1) DEFAULT NULL,
+  `C_CREATOR` varchar(32) DEFAULT NULL,
+  `C_CREATETIME` datetime DEFAULT NULL,
+  `C_MODIFIER` varchar(32) DEFAULT NULL,
+  `C_MODIFYTIME` datetime DEFAULT NULL,
+  PRIMARY KEY (`C_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `t_email_setting` (
+  `C_ID` bigint NOT NULL,
+  `C_HOSTNAME` varchar(200) DEFAULT NULL,
+  `C_PORT` varchar(5) DEFAULT NULL,
+  `C_TYPE` varchar(2) DEFAULT NULL,
+  `C_FROM_EMAIL` varchar(200) DEFAULT NULL,
+  `C_FROM_NAME` varchar(200) DEFAULT NULL,
+  `C_USER_NAME` varchar(200) DEFAULT NULL,
+  `C_PASSWORD` varchar(50) DEFAULT NULL,
+  `C_SSL` varchar(2) DEFAULT NULL,
   `C_CREATOR` varchar(32) DEFAULT NULL,
   `C_CREATETIME` datetime DEFAULT NULL,
   `C_MODIFIER` varchar(32) DEFAULT NULL,

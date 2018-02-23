@@ -45,7 +45,7 @@ public interface UserMapper {
             @Result(property = "gender", column = "c_gender"),
             @Result(property = "honorific", column = "c_honorific"),
             @Result(property = "status", column = "c_status"),
-            @Result(property = "creator", column = "c_role"),
+            @Result(property = "creator", column = "c_creator"),
             @Result(property = "createTime", column = "c_createtime"),
             @Result(property = "modifier", column = "c_modifier"),
             @Result(property = "modifyTime", column = "c_modifytime")
