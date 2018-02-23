@@ -7,6 +7,7 @@ import com.ideamoment.emars.user.service.UserService;
 import com.ideamoment.emars.utils.DataTableSource;
 import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
+import com.ideamoment.emars.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,10 @@ public class UserController {
 
     @RequestMapping(value="/user", method=RequestMethod.POST)
     public JsonData<Boolean> addUser(User user) {
+        boolean valid = validate(user);
+        if(!valid) {
+            return JsonData.error(ErrorCode.FORM_INVALID, ErrorCode.ERROR_MSG.get(ErrorCode.FORM_INVALID));
+        }
         String result = userService.addUser(user);
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;
@@ -94,6 +99,16 @@ public class UserController {
         }else{
             return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
         }
+    }
+
+    private boolean validate(User user) {
+        return !(
+                StringUtils.isEmpty(user.getAccount())
+                || StringUtils.isEmpty(user.getPassword())
+                || StringUtils.isEmpty(user.getEmail())
+                || StringUtils.isEmpty(user.getName())
+        );
+
     }
 
     private DataTableSource<User> convertProductsToDataTableSource(int draw, Page<User> productsPage) {

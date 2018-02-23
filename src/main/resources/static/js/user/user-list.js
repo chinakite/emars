@@ -2,6 +2,7 @@
 
 var USERLIST = {};
 var userTable;
+var userInfoValid;
 
 $(document).ready(function(){
     USERLIST.initUserTbl();
@@ -116,7 +117,30 @@ USERLIST.initUserTbl = function(){
                         }
                     ]
                 });
+    //移除表格标题栏
     $('#userTbl_wrapper .table-header').hide();
+
+    //初始化表单校验器
+    // Initialize validator
+    userInfoValid = $('#userInfoForm').pxValidate({
+        rules: {
+            'inputAccount': {
+                required: true
+            },
+            'inputEmail': {
+                required: true,
+                email: true
+            },
+            'inputPassword': {
+                required: true,
+                minlength: 8,
+                maxlength: 20
+            },
+            'inputName': {
+                required: true
+            }
+        }
+    });
 };
 
 USERLIST.searchUser = function(){
@@ -146,11 +170,20 @@ USERLIST.checkRow = function() {
 
 USERLIST.popAddUserModal = function(){
     USERLIST.clearUserModal();
+
+    if(!$('#inputPasswordLabel').hasClass('required')) {
+        $('#inputPasswordLabel').addClass('required');
+    }
+
     $('#userInfoModal').modal('show');
 };
 
 USERLIST.popEditUserModal = function(id){
     USERLIST.clearUserModal();
+
+    if($('#inputPasswordLabel').hasClass('required')) {
+        $('#inputPasswordLabel').removeClass('required');
+    }
 
     $.get(
         '/user/' + id,
@@ -172,7 +205,7 @@ USERLIST.popEditUserModal = function(id){
                 }
                 $('#inputHonorific').val(data.data['honorific']);
             }else{
-                alert(data.msg);
+                EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     );
@@ -193,85 +226,92 @@ USERLIST.clearUserModal = function(){
 };
 
 USERLIST.submitUserInfo = function(){
-    var account = $('#inputAccount').val();
-    var name = $('#inputName').val();
-    var password = $('#inputPassword').val();
-    var email = $('#inputEmail').val();
-    var mobile = $('#inputMobile').val();
-    var gender = '1';
-    if($('#inputGenderFemale').prop('checked')) {
-        gender = '0';
-    }
-    var honorific = $('#inputHonorific').val();
+    var valid = $('#userInfoForm').validate();
+    if(valid) {
+        var account = $('#inputAccount').val();
+        var name = $('#inputName').val();
+        var password = $('#inputPassword').val();
+        var email = $('#inputEmail').val();
+        var mobile = $('#inputMobile').val();
+        var gender = '1';
+        if($('#inputGenderFemale').prop('checked')) {
+            gender = '0';
+        }
+        var honorific = $('#inputHonorific').val();
 
-    var id = $('#inputId').val();
-    if(id) {
-        $.ajax(
-            {
-                "url": "/user/"+id,
-                "type": "POST",
-                "data": {
-                    "id": id,
-                    "account": account,
-                    "name": name,
-                    "password": password,
-                    "email": email,
-                    "mobile": mobile,
-                    "gender": gender,
-                    "honorific": honorific
-                },
-                "success": function(data) {
-                    if(data.code == '0') {
-                        alert('用户信息保存成功！');
-                        $('#userInfoModal').modal('hide');
-                        USERLIST.refreshUserTbl();
-                    }else{
-                        alert(data.msg);
+        var id = $('#inputId').val();
+        if(id) {
+            $.ajax(
+                {
+                    "url": "/user/"+id,
+                    "type": "POST",
+                    "data": {
+                        "id": id,
+                        "account": account,
+                        "name": name,
+                        "password": password,
+                        "email": email,
+                        "mobile": mobile,
+                        "gender": gender,
+                        "honorific": honorific
+                    },
+                    "success": function(data) {
+                        if(data.code == '0') {
+                            EMARS_COMMONS.showSuccess("用户信息保存成功！");
+                            $('#userInfoModal').modal('hide');
+                            USERLIST.refreshUserTbl();
+                        }else{
+                            EMARS_COMMONS.showError(data.code, data.msg);
+                        }
                     }
                 }
-            }
-        );
+            );
+        }else{
+            $.ajax(
+                {
+                    "url": "/user",
+                    "type": "POST",
+                    "data": {
+                        "account": account,
+                        "name": name,
+                        "password": password,
+                        "email": email,
+                        "mobile": mobile,
+                        "gender": gender,
+                        "honorific": honorific
+                    },
+                    "success": function(data) {
+                        if(data.code == '0') {
+                            EMARS_COMMONS.showSuccess("用户信息保存成功！");
+                            $('#userInfoModal').modal('hide');
+                            USERLIST.refreshUserTbl();
+                        }else{
+                            EMARS_COMMONS.showError(data.code, data.msg);
+                        }
+                    }
+                }
+            );
+        }
     }else{
-        $.ajax(
-            {
-                "url": "/user",
-                "type": "POST",
-                "data": {
-                    "account": account,
-                    "name": name,
-                    "password": password,
-                    "email": email,
-                    "mobile": mobile,
-                    "gender": gender,
-                    "honorific": honorific
-                },
-                "success": function(data) {
-                    if(data.code == '0') {
-                        alert('用户信息保存成功！');
-                        $('#userInfoModal').modal('hide');
-                        USERLIST.refreshUserTbl();
-                    }else{
-                        alert(data.msg);
-                    }
-                }
-            }
-        );
+        return;
     }
 };
 
 USERLIST.deleteUser = function(id) {
-    $.post(
-        '/deleteUser/' + id,
-        {},
-        function(data) {
-            if(data.code == '0') {
-                alert('用户删除成功');
-                USERLIST.refreshUserTbl();
-            }else{
-                alert(data.msg);
+    EMARS_COMMONS.showPrompt("您确定要删除该用户吗？", function(){
+        $.post(
+            '/deleteUser/' + id,
+            {},
+            function(data) {
+                if(data.code == '0') {
+                    EMARS_COMMONS.showSuccess("用户删除成功！");
+                    USERLIST.refreshUserTbl();
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
             }
-        }
-    )
+        )
+    }, null);
 };
 
 USERLIST.enableUser = function(id) {
@@ -280,10 +320,10 @@ USERLIST.enableUser = function(id) {
         {},
         function(data) {
             if(data.code == '0') {
-                alert('用户启用成功');
+                EMARS_COMMONS.showSuccess("用户启用成功！");
                 USERLIST.refreshUserTbl();
             }else{
-                alert(data.msg);
+                EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     )
@@ -295,35 +335,39 @@ USERLIST.disableUser = function(id) {
         {},
         function(data) {
             if(data.code == '0') {
-                alert('用户禁用成功');
+                EMARS_COMMONS.showSuccess("用户禁用成功！");
                 USERLIST.refreshUserTbl();
             }else{
-                alert(data.msg);
+                EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     )
 };
 
 USERLIST.batchDeleteUser = function() {
-    var ids = '';
-    var checkedRows = $('#userTbl tbody input[type=checkbox]:checked');
-    for(var i=0; i<checkedRows.length; i++) {
-        if(i > 0) {
-            ids += ',';
-        }
-        ids += $(checkedRows[i]).val();
-    }
-
-    $.post(
-        '/batchDeleteUser',
-        {"ids": ids},
-        function(data) {
-            if(data.code == '0') {
-                alert('删除用户成功');
-                USERLIST.refreshUserTbl();
+    EMARS_COMMONS.showPrompt("您确定要删除这些用户吗？", function(){
+        var ids = '';
+        var checkedRows = $('#userTbl tbody input[type=checkbox]:checked');
+        for(var i=0; i<checkedRows.length; i++) {
+            if(i > 0) {
+                ids += ',';
             }
+            ids += $(checkedRows[i]).val();
         }
-    );
+
+        $.post(
+            '/batchDeleteUser',
+            {"ids": ids},
+            function(data) {
+                if(data.code == '0') {
+                    EMARS_COMMONS.showSuccess("用户删除成功！");
+                    USERLIST.refreshUserTbl();
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
+    }, null);
 };
 
 USERLIST.refreshUserTbl = function() {
