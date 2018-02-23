@@ -112,11 +112,11 @@ AUTHORLIST.submitAuthor = function() {
             },
             function (data) {
                 if(data.code == '0') {
-                    alert('作者保存成功！');
+                    EMARS_COMMONS.showSuccess("作者保存成功！");
                     $('#authorModal').modal('hide');
                     AUTHORLIST.refreshAuthorTbl();
                 }else{
-                    alert(data.msg);
+                    EMARS_COMMONS.showError(data.code, data.msg);
                 }
             }
         );
@@ -130,11 +130,11 @@ AUTHORLIST.submitAuthor = function() {
             },
             function (data) {
                 if(data.code == '0') {
-                    alert('作者保存成功！');
+                    EMARS_COMMONS.showSuccess("作者保存成功！");
                     $('#authorModal').modal('hide');
                     AUTHORLIST.refreshAuthorTbl();
                 }else{
-                    alert(data.msg);
+                    EMARS_COMMONS.showError(data.code, data.msg);
                 }
             }
         );
@@ -161,28 +161,27 @@ AUTHORLIST.popEditAuthor = function(id) {
                 $('#desc').val(data.data['desc']);
                 $('#pseudonym').val(data.data['pseudonym']);
             }else{
-                alert(data.msg);
+                EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     );
 }
 
 AUTHORLIST.deleteAuthor = function(id, name) {
-    var r = confirm("您真的要删除作者[" + name + "]吗？");
-    if(r) {
+    EMARS_COMMONS.showPrompt("您真的要删除作者[" + name + "]吗？", function() {
         $.post(
             "/system/deleteAuthor",
             {'id': id},
             function(data) {
                 if(data.code == '0') {
-                    alert('删除成功');
+                    EMARS_COMMONS.showSuccess("删除成功！");
                     AUTHORLIST.refreshAuthorTbl();
                 }else{
-                    alert(data.msg);
+                    EMARS_COMMONS.showError(data.code, data.msg);
                 }
             }
         );
-    }
+    }, null)
 }
 
 AUTHORLIST.batchDeleteAuthors = function() {
@@ -192,12 +191,11 @@ AUTHORLIST.batchDeleteAuthors = function() {
     });
 
     if(ids.length == 0) {
-        alert('您没有选择任何记录。');
+        EMARS_COMMONS.showError("未选中", "您没有选择任何记录");
         return ;
     }
 
-    var r = confirm("您真的要删除这些作者吗？");
-    if(r) {
+    EMARS_COMMONS.showPrompt("您真的要删除这些作者吗？", function() {
         $.post(
             "/system/batchDeleteAuthor",
             {
@@ -205,14 +203,14 @@ AUTHORLIST.batchDeleteAuthors = function() {
             },
             function(data) {
                 if(data.code == '0') {
-                    alert('删除成功');
+                    EMARS_COMMONS.showSuccess("删除成功！");
                     AUTHORLIST.refreshAuthorTbl();
                 }else{
-                    alert(data.msg);
+                    EMARS_COMMONS.showError(data.code, data.msg);
                 }
             }
         );
-    }
+    }, null)
 }
 
 

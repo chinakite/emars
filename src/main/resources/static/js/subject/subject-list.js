@@ -124,11 +124,11 @@ SUBJECTLIST.submitSubject = function () {
             },
             function (data) {
                 if(data.code == '0') {
-                    alert('作品题材保存成功！');
+                    EMARS_COMMONS.showSuccess("作品题材保存成功！");
                     $('#subjectModal').modal('hide');
                     SUBJECTLIST.refreshSubjectTbl();
                 }else{
-                    alert(data.msg);
+                    EMARS_COMMONS.showError(data.code, data.msg);
                 }
             }
         );
@@ -141,11 +141,11 @@ SUBJECTLIST.submitSubject = function () {
             },
             function (data) {
                 if(data.code == '0') {
-                    alert('作品题材保存成功！');
+                    EMARS_COMMONS.showSuccess("作品题材保存成功！");
                     $('#subjectModal').modal('hide');
                     SUBJECTLIST.refreshSubjectTbl();
                 }else{
-                    alert(data.msg);
+                    EMARS_COMMONS.showError(data.code, data.msg);
                 }
             }
         );
@@ -172,7 +172,7 @@ SUBJECTLIST.popEditSubject = function(id) {
                 $('#name').val(data.data['name']);
                 $('#desc').val(data.data['desc']);
             }else{
-                alert(data.msg);
+                EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     );
@@ -184,10 +184,10 @@ SUBJECTLIST.upSubject = function(id) {
         {"id": id},
         function(data) {
             if(data.code == '0') {
-                alert('移动成功');
+                EMARS_COMMONS.showSuccess("移动成功！");
                 SUBJECTLIST.refreshSubjectTbl();
             }else{
-                alert(data.msg);
+                EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     );
@@ -199,31 +199,31 @@ SUBJECTLIST.downSubject = function(id) {
         {"id": id},
         function(data) {
             if(data.code == '0') {
-                alert('移动成功');
+                EMARS_COMMONS.showSuccess("移动成功！");
                 SUBJECTLIST.refreshSubjectTbl();
             }else{
-                alert(data.msg);
+                EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     );
 }
 
 SUBJECTLIST.deleteSubject = function(id, name) {
-    var r = confirm("您真的要删除作品题材[" + name + "]吗？");
-    if(r) {
+    EMARS_COMMONS.showPrompt("您真的要删除作品题材[" + name + "]吗？", function() {
         $.post(
             "/system/deleteSubject",
             {'id': id},
             function(data) {
                 if(data.code == '0') {
-                    alert('删除成功');
+                    EMARS_COMMONS.showSuccess("删除成功！");
                     SUBJECTLIST.refreshSubjectTbl();
                 }else{
-                    alert(data.msg);
+                    EMARS_COMMONS.showError(data.code, data.msg);
                 }
             }
         );
-    }
+    }, null)
+    
 }
 
 SUBJECTLIST.batchDeleteSubjects = function() {
@@ -233,12 +233,10 @@ SUBJECTLIST.batchDeleteSubjects = function() {
     });
 
     if(ids.length == 0) {
-        alert('您没有选择任何记录。');
+        EMARS_COMMONS.showError("未选中", "您没有选择任何记录");
         return ;
     }
-
-    var r = confirm("您真的要删除这些作品题材吗？");
-    if(r) {
+    EMARS_COMMONS.showPrompt("您真的要删除作品题材吗？", function() {
         $.post(
             "/system/batchDeleteSubject",
             {
@@ -246,14 +244,14 @@ SUBJECTLIST.batchDeleteSubjects = function() {
             },
             function(data) {
                 if(data.code == '0') {
-                    alert('删除成功');
+                    EMARS_COMMONS.showSuccess("删除成功！");
                     SUBJECTLIST.refreshSubjectTbl();
                 }else{
-                    alert(data.msg);
+                    EMARS_COMMONS.showError(data.code, data.msg);
                 }
             }
         );
-    }
+    }, null)
 }
 
 SUBJECTLIST.clearSubjectModal = function(){
