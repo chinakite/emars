@@ -27,10 +27,6 @@ public class ErrorCode {
     //作者不能被删除
     public static final String AUTHOR_CANNOT_DELETE = "C-0005";
 
-    public static final String SUBJECT_EXISTS = "B-0003";
-
-    public static final String SUBJECT_NOT_EXISTS = "B-0004";
-
     public static final String EMAIL_SEND_ERROR = "C-0001";
 
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();

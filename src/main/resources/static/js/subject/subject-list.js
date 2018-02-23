@@ -5,14 +5,6 @@ var subjectTable;
 
 $(document).ready(function(){
     SUBJECTLIST.initSubjectTbl();
-
-    // $('#newSubject').pxValidate({
-    //     rules: {
-    //         'name': {
-    //             required: true
-    //         }
-    //     }
-    // });
 });
 
 SUBJECTLIST.initSubjectTbl = function(){
@@ -111,6 +103,34 @@ SUBJECTLIST.checkRow = function() {
 };
 
 SUBJECTLIST.submitSubject = function () {
+    var form  = $('#validation-subject').pxValidate({
+        rules: {
+            'name': {
+                required: true,
+                remote: {
+                    url: "/system/notExistsSubjects",
+                    type: "get",
+                    data: {
+                        name: function () {
+                            return $("#name").val();
+                        },
+                        id: function () {
+                            return $("#id").val();
+                        }
+                    }
+                }
+            }
+        },
+        messages: {
+            'name': {
+                required: '不能为空',
+                remote: '已存在'
+            }
+        }
+    });
+    if (!form.valid()) {
+        return;
+    }
     var sbjName = $('#name').val();
     var sbjDesc = $('#desc').val();
     var sbjId = $('#id').val();
@@ -255,6 +275,7 @@ SUBJECTLIST.batchDeleteSubjects = function() {
 }
 
 SUBJECTLIST.clearSubjectModal = function(){
+
     $('#id').val('');
     $('#name').val('');
     $('#desc').val('');

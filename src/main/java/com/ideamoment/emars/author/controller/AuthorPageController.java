@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AuthorPageController {
 
     @RequestMapping(value = "/authorPage", method = RequestMethod.GET)
-    public String subjectPage() {
+    public String authorPage() {
         return "author/authorPage";
     }
 

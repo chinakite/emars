@@ -4,15 +4,15 @@
 
     <body>
         <!-- Modal -->
-        <div th:fragment="subjectModal" class="modal fade" id="subjectModal" tabindex="-1">
+        <div th:fragment="productModal" class="modal fade" id="productModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">×</button>
-                        <h4 class="modal-title">新建作品题材</h4>
+                        <h4 class="modal-title">新建作品</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal" id="validation-subject">
+                        <form class="form-horizontal" id="validation-form">
                             <input type="hidden" id="id"/>
                             <div class="form-group">
                                 <label for="name" class="col-sm-3 control-label">名称</label>
@@ -20,17 +20,11 @@
                                     <input type="text" class="form-control" id="name" name="name" placeholder="名称" />
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="desc" class="col-sm-3 control-label">描述</label>
-                                <div class="col-sm-8">
-                                    <textarea class="form-control" name="desc" id="desc"></textarea>
-                                </div>
-                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="SUBJECTLIST.submitSubject();">保存</button>
+                        <button type="button" class="btn btn-primary" onclick="PRODUCTLIST.submitPorduct();">保存</button>
                     </div>
                 </div>
             </div>

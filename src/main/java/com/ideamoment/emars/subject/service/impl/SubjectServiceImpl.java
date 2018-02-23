@@ -47,7 +47,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     @Transactional
     public String createTextSubject(String name, String desc, String ratio) {
-        List<Subject> existsSubjects = subjectMapper.querySubject(ProductType.TEXT, name, false);
+        List<Subject> existsSubjects = subjectMapper.querySubject(ProductType.TEXT, name, false, null);
 
         if(existsSubjects.size() > 0) {
             return ErrorCode.SUBJECT_EXISTS;
@@ -68,6 +68,16 @@ public class SubjectServiceImpl implements SubjectService {
         }else{
             return ErrorCode.UNKNOWN_ERROR;
         }
+    }
+
+    @Override
+    @Transactional
+    public boolean notExistsSubjects(String name, Long id) {
+        List<Subject> existsSubjects = subjectMapper.querySubject(ProductType.TEXT, name, false, id);
+        if(existsSubjects.size() > 0) {
+            return false;
+        }
+        return true;
     }
 
     @Override

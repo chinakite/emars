@@ -35,6 +35,11 @@ public class SubjectController {
         return JsonData.success(subject);
     }
 
+    @RequestMapping(value="/notExistsSubjects", method = RequestMethod.GET)
+    public boolean notExistsSubjects(String name, Long id) {
+        return subjectService.notExistsSubjects(name, id);
+    }
+
     @RequestMapping(value="/textSubject", method = RequestMethod.POST)
     public JsonData<Boolean> createTextSubject(String name, String desc, String ratio) {
         String result = subjectService.createTextSubject(name, desc, ratio);

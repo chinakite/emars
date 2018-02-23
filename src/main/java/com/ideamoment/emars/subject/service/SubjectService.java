@@ -12,6 +12,8 @@ public interface SubjectService {
 
     String createTextSubject(String name, String desc, String ratio);
 
+    boolean notExistsSubjects(String name, Long id);
+
     Subject findSubject(long id);
 
     String updateSubject(long id, String name, String desc, String ratio);

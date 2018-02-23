@@ -60,16 +60,19 @@ public interface SubjectMapper {
     @Select({"<script>",
                 "SELECT * FROM t_subject",
                 "WHERE c_type = #{type} ",
-                "<if test='mask = true'>",
+                "<if test='mask == true'>",
                 " AND c_name like concat(concat('%',#{name}),'%')",
                 "</if>",
-                "<if test='mask = false'>",
+                "<if test='mask == false'>",
                 " AND c_name = #{name}",
+                "</if>",
+                "<if test='ignoreId != null'>",
+                " AND c_id != #{ignoreId}",
                 "</if>",
                 " ORDER BY c_order asc",
             "</script>"})
     @ResultMap("subjectMap")
-    List<Subject> querySubject(@Param("type") String type, @Param("name") String name, @Param("mask") boolean mask);
+    List<Subject> querySubject(@Param("type") String type, @Param("name") String name, @Param("mask") boolean mask, @Param("ignoreId") Long ignoreId);
 
     @Select("SELECT MAX(C_ORDER) FROM t_subject WHERE c_type = #{type}")
     int queryMaxOrder(@Param("type") String type);

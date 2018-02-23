@@ -23,7 +23,7 @@ public class AuthorController {
     private AuthorService authorService;
 
     @RequestMapping(value = "/authors", method = RequestMethod.GET)
-    public DataTableSource<Author> querySubjects(int draw, int start, int length, String key) {
+    public DataTableSource<Author> queryAuthors(int draw, int start, int length, String key) {
         Page<Author> authors = authorService.listAuthors(key, start, length);
         DataTableSource<Author> dts = convertProductsToDataTableSource(draw, authors);
         return dts;
