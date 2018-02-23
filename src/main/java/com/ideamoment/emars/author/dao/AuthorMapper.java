@@ -15,11 +15,11 @@ public interface AuthorMapper {
 
     @Insert("INSERT INTO t_author (#{author})")
     @Lang(SimpleInsertExtendedLanguageDriver.class)
-    void insertAuthor(Author author);
+    boolean insertAuthor(Author author);
 
     @Update("UPDATE t_author (#{author}) WHERE c_id = #{id}")
     @Lang(SimpleUpdateExtendedLanguageDriver.class)
-    void updateAuthor(Author author);
+    boolean updateAuthor(Author author);
 
     @Select("SELECT * FROM t_author WHERE c_id = #{id}")
     @Results(id = "authorMap", value ={
@@ -63,11 +63,20 @@ public interface AuthorMapper {
             "</if>",
             "</script>"})
     @ResultMap("authorMap")
-    Author queryAuthor(@Param("name") String name, @Param("ignoreId") long ignoreId);
+    Author queryAuthor(@Param("name") String name, @Param("ignoreId") Long ignoreId);
 
     @Delete("DELETE FROM t_author WHERE c_id = #{id}")
-    void deleteAuthor(@Param("id") long id);
+    boolean deleteAuthor(@Param("id") long id);
 
-    @Select("SELECT if((id) > 0, true, false) from T_PRODUCT where C_AUTHOR_ID = #{id} limit 1,1")
+    @Delete({"<script>",
+            "DELETE FROM t_author WHERE c_id in ",
+            "<foreach item='id' index='index' collection='ids'",
+            "open='(' separator=',' close=')'>",
+            "#{id}",
+            "</foreach>",
+            "</script>"})
+    boolean batchDeleteAuthors(@Param("ids") long[] ids);
+
+    @Select("SELECT if(count(c_id) > 0, true, false) from T_PRODUCT where C_AUTHOR_ID = #{id}")
     boolean existsProductsByAuthor(long id);
 }

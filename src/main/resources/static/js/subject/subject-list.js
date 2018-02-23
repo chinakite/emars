@@ -155,11 +155,13 @@ SUBJECTLIST.submitSubject = function () {
 
 SUBJECTLIST.popNewSubjectModal = function(){
     SUBJECTLIST.clearSubjectModal();
+    $('#subjectModal .modal-title').text("新建作品题材");
     $('#subjectModal').modal('show');
 };
 
 SUBJECTLIST.popEditSubject = function(id) {
     SUBJECTLIST.clearSubjectModal();
+    $('#subjectModal .modal-title').text("编辑作品题材");
     $('#subjectModal').modal('show');
     $.get(
         "/system/subject",

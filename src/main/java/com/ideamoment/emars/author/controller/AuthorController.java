@@ -1,6 +1,8 @@
 package com.ideamoment.emars.author.controller;
 
 import com.ideamoment.emars.author.service.AuthorService;
+import com.ideamoment.emars.constants.ErrorCode;
+import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.model.Author;
 import com.ideamoment.emars.utils.DataTableSource;
 import com.ideamoment.emars.utils.JsonData;
@@ -34,42 +36,63 @@ public class AuthorController {
     }
 
     @RequestMapping(value = "/createAuthor", method = RequestMethod.POST)
-    public JsonData createAuthor(String name, String desc, String pseudonym) {
-        Author author = authorService.createAuthor(name, desc, pseudonym);
-        return JsonData.SUCCESS;
+    public JsonData<Boolean> createAuthor(String name, String desc, String pseudonym) {
+        String result = authorService.createAuthor(name, desc, pseudonym);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
     @RequestMapping(value = "/author", method = RequestMethod.POST)
-    public JsonData updateAuthor(long id, String name, String desc, String pseudonym) {
-        int r = authorService.updateAuthor(id, name, desc, pseudonym);
-        return JsonData.SUCCESS;
+    public JsonData<Boolean> updateAuthor(long id, String name, String desc, String pseudonym) {
+        String result = authorService.updateAuthor(id, name, desc, pseudonym);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
-    @RequestMapping(value = "/author", method = RequestMethod.DELETE)
-    public JsonData deleteAuthor(long id) {
-        int r = authorService.deleteAuthor(id);
-        return JsonData.SUCCESS;
+    @RequestMapping(value = "/deleteAuthor", method = RequestMethod.POST)
+    public JsonData<Boolean> deleteAuthor(long id) {
+        String result = authorService.deleteAuthor(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
-    @RequestMapping(value = "/batchDeleteAuthor", method = RequestMethod.DELETE)
-    public JsonData batchDeleteAuthor(String ids) {
-        String[] idArray = ids.split(",");
-
-        authorService.batchDeleteAuthors(idArray);
-
-        return JsonData.SUCCESS;
+    @RequestMapping(value = "/batchDeleteAuthor", method = RequestMethod.POST)
+    public JsonData<Boolean> batchDeleteAuthor(long[] ids) {
+        String result =  authorService.batchDeleteAuthors(ids);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
     @RequestMapping(value = "/famousAuthor", method = RequestMethod.POST)
-    public JsonData famousAuthor(long id) {
-        int r = authorService.famousAuthor(id);
-        return JsonData.SUCCESS;
+    public JsonData<Boolean> famousAuthor(long id) {
+        String result = authorService.famousAuthor(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
     @RequestMapping(value="/unfamousAuthor", method=RequestMethod.POST)
-    public JsonData unfamousAuthor(long id) {
-        int r = authorService.unfamousAuthor(id);
-        return JsonData.SUCCESS;
+    public JsonData<Boolean> unfamousAuthor(long id) {
+        String result = authorService.unfamousAuthor(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
     private DataTableSource<Author> convertProductsToDataTableSource(int draw, Page<Author> productsPage) {

@@ -16,6 +16,16 @@ public class ErrorCode {
     public static final String USER_NOT_EXISTS = "A-0004";
     //超级管理员不能删除
     public static final String SUPERADMIN_CANT_OPERATE = "A-0005";
+    //作品题材已存在
+    public static final String SUBJECT_EXISTS = "B-0003";
+    //作品题材不存在
+    public static final String SUBJECT_NOT_EXISTS = "B-0004";
+    //作者已存在
+    public static final String AUTHOR_EXISTS = "C-0003";
+    //作者不存在
+    public static final String AUTHOR_NOT_EXISTS = "C-0004";
+    //作者不能被删除
+    public static final String AUTHOR_CANNOT_DELETE = "C-0005";
 
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 

@@ -84,7 +84,6 @@ public interface SubjectMapper {
     @Delete("DELETE FROM t_subject WHERE c_id = #{id}")
     boolean deleteSubject(@Param("id") long id);
 
-//    @Delete("DELETE FROM t_subject WHERE c_id in (#{idArray})")
     @Delete({"<script>",
             "DELETE FROM t_subject WHERE c_id in ",
             "<foreach item='id' index='index' collection='ids'",

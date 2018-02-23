@@ -12,15 +12,15 @@ public interface AuthorService {
 
     Author findAuthor(long id);
 
-    Author createAuthor(String name, String desc, String pseudonym);
+    String createAuthor(String name, String desc, String pseudonym);
 
-    int updateAuthor(long id, String name, String desc, String pseudonym);
+    String updateAuthor(long id, String name, String desc, String pseudonym);
 
-    int deleteAuthor(long id);
+    String deleteAuthor(long id);
 
-    void batchDeleteAuthors(String[] idArray);
+    String batchDeleteAuthors(long[] idArray);
 
-    int famousAuthor(long id);
+    String famousAuthor(long id);
 
-    int unfamousAuthor(long id);
+    String unfamousAuthor(long id);
 }
