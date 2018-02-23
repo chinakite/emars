@@ -8,6 +8,6 @@ public interface MailSettingService {
 
     boolean saveMailSetting(MailSetting mailSetting);
 
-    public String testSendMail(MailSetting email, String testEmail);
+    String testSendMail(MailSetting email, String testEmail);
 
 }

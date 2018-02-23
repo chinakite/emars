@@ -27,7 +27,8 @@ public class ErrorCode {
     //作者不能被删除
     public static final String AUTHOR_CANNOT_DELETE = "C-0005";
 
-    public static final String EMAIL_SEND_ERROR = "C-0001";
+    public static final String EMAIL_SEND_ERROR = "D-0001";
+    public static final String EMAIL_SAVE_ERROR = "D-0001";
 
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 
@@ -38,6 +39,7 @@ public class ErrorCode {
         ERROR_MSG.put(USER_NOT_EXISTS, "该用户不存在或已被删除");
         ERROR_MSG.put(SUPERADMIN_CANT_OPERATE, "不能操作超级管理员");
         ERROR_MSG.put(EMAIL_SEND_ERROR, "发送邮件时发生异常");
+        ERROR_MSG.put(EMAIL_SAVE_ERROR, "邮件设置保存失败");
     }
 
 }

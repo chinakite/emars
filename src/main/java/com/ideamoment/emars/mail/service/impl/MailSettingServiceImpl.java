@@ -5,9 +5,12 @@ import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.mail.dao.MailSettingMapper;
 import com.ideamoment.emars.mail.service.MailSettingService;
 import com.ideamoment.emars.model.MailSetting;
+import com.ideamoment.emars.utils.UserContext;
 import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class MailSettingServiceImpl implements MailSettingService {
@@ -26,13 +29,26 @@ public class MailSettingServiceImpl implements MailSettingService {
         Long id = mailSetting.getId();
         MailSetting dbMailSetting = mailSettingMapper.findMailSetting(id);
 
-        if(dbMailSetting != null) {
+        if(dbMailSetting == null) {
+            dbMailSetting = mailSetting;
+            dbMailSetting.setType("1");
+            dbMailSetting.setCreator(UserContext.getUserId());
+            dbMailSetting.setCreateTime(new Date());
 
+            return mailSettingMapper.insertMailSetting(dbMailSetting);
         }else{
-            
-        }
+            dbMailSetting.setHostName(mailSetting.getHostName());
+            dbMailSetting.setPort(mailSetting.getPort());
+            dbMailSetting.setFromEmail(mailSetting.getFromEmail());
+            dbMailSetting.setFromName(mailSetting.getFromName());
+            dbMailSetting.setUserName(mailSetting.getUserName());
+            dbMailSetting.setPassword(mailSetting.getPassword());
+            dbMailSetting.setSsl(mailSetting.getSsl());
+            dbMailSetting.setModifier(UserContext.getUserId());
+            dbMailSetting.setModifyTime(new Date());
 
-        return false;
+            return mailSettingMapper.updateMailSetting(dbMailSetting);
+        }
     }
 
     @Override

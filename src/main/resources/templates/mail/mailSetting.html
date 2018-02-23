@@ -15,37 +15,37 @@
         <div class="panel-body">
             <form class="form-horizontal">
                 <div class="form-group">
-                    <label for="inputHostName" class="col-md-3 control-label">服务器地址</label>
+                    <label for="inputHostName" class="col-md-3 control-label required">服务器地址</label>
                     <div class="col-md-7">
                         <input type="text" class="form-control" id="inputHostName" th:value="${hostName}" placeholder="SMTP服务器地址"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputPort" class="col-md-3 control-label">服务器端口</label>
+                    <label for="inputPort" class="col-md-3 control-label required">服务器端口</label>
                     <div class="col-md-7">
                         <input type="text" class="form-control" id="inputPort" th:value="${port}" placeholder="SMTP服务器端口"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputFromEmail" class="col-md-3 control-label">发件人邮箱</label>
+                    <label for="inputFromEmail" class="col-md-3 control-label required">发件人邮箱</label>
                     <div class="col-md-7">
                         <input type="text" class="form-control" id="inputFromEmail" th:value="${fromEmail}" placeholder="邮件将从这个邮箱发送出去"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputFromName" class="col-md-3 control-label">发件人名称</label>
+                    <label for="inputFromName" class="col-md-3 control-label required">发件人名称</label>
                     <div class="col-md-7">
                         <input type="text" class="form-control" id="inputFromName" th:value="${fromName}" placeholder="收件方显示的发件人名称"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputUserName" class="col-md-3 control-label">邮箱用户名</label>
+                    <label for="inputUserName" class="col-md-3 control-label required">邮箱用户名</label>
                     <div class="col-md-7">
                         <input type="text" class="form-control" id="inputUserName" th:value="${userName}" placeholder="登录邮件服务器的用户名"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputPassword" class="col-md-3 control-label">密码</label>
+                    <label for="inputPassword" class="col-md-3 control-label required">密码</label>
                     <div class="col-md-7">
                         <input type="password" class="form-control" id="inputPassword" th:value="${password}" placeholder="发件人密码"/>
                     </div>

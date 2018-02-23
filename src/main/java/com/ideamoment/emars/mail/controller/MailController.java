@@ -16,6 +16,34 @@ public class MailController {
     @Autowired
     private MailSettingService mailSettingService;
 
+    @RequestMapping(value="/mail/{id}", method = RequestMethod.POST)
+    public JsonData saveMailSetting(
+            String hostName,
+            String port,
+            String fromEmail,
+            String fromName,
+            String userName,
+            String password,
+            String ssl) {
+
+        MailSetting email = new MailSetting();
+        email.setId(1L);
+        email.setHostName(hostName);
+        email.setPort(port);
+        email.setFromEmail(fromEmail);
+        email.setFromName(fromName);
+        email.setUserName(userName);
+        email.setPassword(password);
+        email.setSsl(ssl);
+        boolean result = mailSettingService.saveMailSetting(email);
+
+        if(result) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(ErrorCode.EMAIL_SAVE_ERROR, ErrorCode.ERROR_MSG.get(ErrorCode.EMAIL_SAVE_ERROR));
+        }
+    }
+
     @RequestMapping(value="/testmail/{id}", method = RequestMethod.POST)
     public JsonData testSendMail(
             String hostName,
