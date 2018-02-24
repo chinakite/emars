@@ -25,6 +25,6 @@ public interface MailSettingMapper {
     @Insert("insert into t_email_setting (c_hostname, c_port, c_type, c_from_email, c_from_name, c_user_name, c_password, c_ssl, c_creator, c_createtime)values(#{hostName}, #{port}, '1', #{fromEmail}, #{fromName}, #{userName}, #{password}, #{ssl}, #{creator}, #{createTime})")
     boolean insertMailSetting(MailSetting mail);
 
-    @Update("update t_email_setting set c_hostname = #{hostName}, c_port=#{port}, c_from_email=#{fromEmail}, c_from_name=#{fromName}, c_user_name=#{userName}, c_password=#{password}, c_ssl=#{ssl}, c_modifier=#{modifier}, c_modifytime=#{modifyTIme} where c_id = 1")
+    @Update("update t_email_setting set c_hostname = #{hostName}, c_port=#{port}, c_from_email=#{fromEmail}, c_from_name=#{fromName}, c_user_name=#{userName}, c_password=#{password}, c_ssl=#{ssl}, c_modifier=#{modifier}, c_modifytime=#{modifyTime} where c_id = 1")
     boolean updateMailSetting(MailSetting mail);
 }

@@ -36,7 +36,6 @@ MAILSETTING.saveMailSetting = function() {
         function(data) {
             if(data.code == '0') {
                 EMARS_COMMONS.showSuccess("邮件设置保存成功");
-                $('#testEmailModal').modal('hide');
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
