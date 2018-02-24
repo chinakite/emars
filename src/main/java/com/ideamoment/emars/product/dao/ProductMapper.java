@@ -40,7 +40,7 @@ public interface ProductMapper {
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME"),
             @Result(property = "authorName", column = "AUTHORNAME"),
-            @Result(property = "subjectName", column = "SUBJECTNAME"),
+            @Result(property = "subjectName", column = "SUBJECTNAME")
 
     })
     ProductResultVo findProduct(@Param("id") long id);

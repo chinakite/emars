@@ -27,7 +27,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public Page<Subject> listTextSubjects(String key, int offset, int pageSize) {
+    public Page<Subject> subjects(String key, int offset, int pageSize) {
         String type = ProductType.TEXT;
 
         long count = subjectMapper.listSubjectsCount(type, key);
@@ -42,6 +42,14 @@ public class SubjectServiceImpl implements SubjectService {
         result.setTotalRecord(count);
 
         return result;
+    }
+
+    @Override
+    @Transactional
+    public List<Subject> listTextSubjects(String key) {
+        String type = ProductType.TEXT;
+        List<Subject> subjects = subjectMapper.listSubjectsWithoutPage(type, key);
+        return subjects;
     }
 
     @Override

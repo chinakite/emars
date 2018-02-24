@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Created by yukiwang on 2018/2/20.
  */
@@ -24,9 +26,15 @@ public class SubjectController {
 
     @RequestMapping(value = "/subjects", method = RequestMethod.GET)
     public DataTableSource<Subject> querySubjects(int draw, int start, int length, String key) {
-        Page<Subject> subjects = subjectService.listTextSubjects(key, start, length);
+        Page<Subject> subjects = subjectService.subjects(key, start, length);
         DataTableSource<Subject> dts = convertProductsToDataTableSource(draw, subjects);
         return dts;
+    }
+
+    @RequestMapping(value = "/textSubjects", method = RequestMethod.GET)
+    public JsonData<List<Subject>> testSubjects(String key) {
+        List<Subject> subjects = subjectService.listTextSubjects(key);
+        return JsonData.success(subjects);
     }
 
     @RequestMapping(value="/subject", method = RequestMethod.GET)

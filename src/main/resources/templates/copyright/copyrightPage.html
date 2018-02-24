@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head th:include="layout/layout :: htmlhead('合同管理')"></head>
+
+<body>
+<section layout:fragment="content">
+    <div class="page-header">
+        <h1>合同管理 / <span class="text-muted font-weight-light">所有合同信息在此管理。</span></h1>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading">
+            <div class="panel-title">合同列表</div>
+        </div>
+        <div class="panel-body">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="inputSearchCode">合同编号</label>
+                    <input id="inputSearchCode" type="text" class="form-control" placeholder="合同编号" />
+                </div>
+                <div class="form-group">
+                    <label for="inputSearchOwner">甲方</label>
+                    <input id="inputSearchOwner" type="text" class="form-control" placeholder="甲方关键字" />
+                </div>
+                <div class="form-group">
+                    <label for="inputSearchAudithState">审批状态</label>
+                    <select id="inputSearchAudithState" class="form-control">
+                        <option value="">全部</option>
+                        <option value="1">待主管审批</option>
+                        <option value="2">待经理审批</option>
+                        <option value="3">待总经理审批</option>
+                        <option value="4">业务审批完成</option>
+                        <option value="5">待法务审批</option>
+                        <option value="6">待法务确认</option>
+                        <option value="100">已完成</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="COPYRIGHTLIST.searchCopyrights();">搜索</button>
+            </div>
+            <hr class="panel-wide-block" />
+            <div class="box">
+                <button type="button" class="btn" data-toggle="modal" onclick="COPYRIGHTLIST.popNewCopyrightModal();">
+                    <i class="fa fa-plus"></i>&nbsp;新建
+                </button>
+                <button type="button" class="btn" onclick="COPYRIGHTLIST.batchDeleteCopyrights();"><i class="fa fa-remove"></i>&nbsp;删除</button>
+            </div>
+            <div class="table-primary">
+                <table class="table table-striped table-bordered" id="copyrightTbl">
+                    <thead>
+                    <tr>
+                        <th>
+                            <label class="custom-control custom-checkbox custom-control-blank" for="copyrightTblCheckAllBtn">
+                                <input type="checkbox" id="copyrightTblCheckAllBtn" class="custom-control-input" onclick="COPYRIGHTLIST.checkAllRows(this);"/>
+                                <span class="custom-control-indicator"></span>
+                            </label>
+                        </th>
+                        <th>合同编号</th>
+                        <th>甲方</th>
+                        <th>乙方联系人</th>
+                        <th>版权</th>
+                        <th>版权类型</th>
+                        <th>版权范围</th>
+                        <th>版权期限</th>
+                        <th>审批状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="copyright/copyrightModal :: copyrightModal"></div>
+
+
+</section>
+
+</body>
+<div layout:fragment="scripts">
+    <script type='text/javascript' th:src="@{/js/copyright/copyright-list.js}"></script>
+</div>
+
+</html>

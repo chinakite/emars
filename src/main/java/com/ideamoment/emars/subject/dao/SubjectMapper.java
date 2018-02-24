@@ -49,6 +49,18 @@ public interface SubjectMapper {
     List<Subject> listSubjects(@Param("type") String type, @Param("key") String key, @Param("offset")int offset, @Param("size")int size);
 
     @Select({"<script>",
+            "SELECT * FROM t_subject",
+            "WHERE c_type = #{type} ",
+            "<if test='key != null'>",
+            " AND c_name like concat(concat('%',#{key}),'%')",
+            "</if>",
+            " ORDER BY c_order asc",
+            "</script>"})
+    @ResultMap("subjectMap")
+    List<Subject> listSubjectsWithoutPage(@Param("type") String type, @Param("key") String key);
+
+
+    @Select({"<script>",
             "SELECT COUNT(*) FROM t_subject",
             "WHERE c_type = #{type} ",
             "<if test='key != null'>",
