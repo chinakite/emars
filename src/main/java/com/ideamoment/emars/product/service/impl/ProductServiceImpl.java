@@ -36,4 +36,10 @@ public class ProductServiceImpl implements ProductService{
 
         return result;
     }
+
+    @Override
+    @Transactional
+    public ProductResultVo findProduct(long id) {
+        return productMapper.findProduct(id);
+    }
 }

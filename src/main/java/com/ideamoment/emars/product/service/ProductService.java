@@ -10,4 +10,7 @@ import com.ideamoment.emars.utils.Page;
 public interface ProductService {
 
     Page<ProductResultVo> listProducts(ProductQueryVo condition, int offset, int pageSize);
+
+    ProductResultVo findProduct(long id);
+
 }

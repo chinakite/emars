@@ -4,6 +4,7 @@ import com.ideamoment.emars.model.ProductQueryVo;
 import com.ideamoment.emars.model.ProductResultVo;
 import com.ideamoment.emars.product.service.ProductService;
 import com.ideamoment.emars.utils.DataTableSource;
+import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by yukiwang on 2018/2/23.
  */
 @RestController
+@RequestMapping("product")
 public class ProductController {
 
     @Autowired
@@ -41,6 +43,12 @@ public class ProductController {
         Page<ProductResultVo> products = productService.listProducts(condition, start, length);
         DataTableSource<ProductResultVo> dts = convertProductsToDataTableSource(draw, products);
         return dts;
+    }
+
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    public JsonData findProduct(long id) {
+        ProductResultVo productResultVo = productService.findProduct(id);
+        return JsonData.success(productResultVo);
     }
 
 

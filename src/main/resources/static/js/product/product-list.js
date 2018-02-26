@@ -19,7 +19,7 @@ PRODUCTLIST.initProductTbl = function(){
         "autoWidth": false,
         "serverSide": true,
         "ajax": {
-            "url": '/products',
+            "url": '/product/products',
             "data": function(d) {
                 var productName = $('#inputSearchProductName').val();
                 if(productName && $.trim(productName).length > 0) {
@@ -97,7 +97,8 @@ PRODUCTLIST.initProductTbl = function(){
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="/product/productDetail?id=' + full.id + ' target="_blank">查看</a> ';
+                    var htmlText = '<a data-toggle="modal" href="/product/productDetail?id=' + full.id + '" data-target="#productDetail">查看</a>';
+                    // var htmlText = '<a href="/product/productDetail?id=' + full.id + ' target="_blank">查看</a> ';
 
                     if(full.state == '0' || full.state == '101') {
                         htmlText += '<span class="small">|</span> ';
@@ -114,8 +115,8 @@ PRODUCTLIST.initProductTbl = function(){
 
 PRODUCTLIST.popNewProductModal = function () {
     PRODUCTLIST.clearProductModal();
-    $('#subjectModal .modal-title').text("新建作品题材");
-    $('#subjectModal').modal('show');
+    $('#productModal .modal-title').text("新建作品题材");
+    $('#productModal').modal('show');
 }
 
 PRODUCTLIST.loadCategories = function () {
@@ -124,12 +125,15 @@ PRODUCTLIST.loadCategories = function () {
         function(data) {
             if(data.code == '0') {
                 var subjects = data.data;
-                var html = '<option value="">全部</option>';
+                var html = '';
                 for(var i = 0; i < subjects.length; i ++) {
                     var subject = subjects[i];
                     html += '<option value="' + subject.id + '">' + subject.name + '</option>';
                 }
-                $('#inputSearchSubject').empty().append(html);
+                $('#inputSubject').empty().append(html);
+                $('#inputSearchSubject').empty()
+                    .append('<option value="">全部</option>')
+                    .append(html);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
@@ -137,15 +141,17 @@ PRODUCTLIST.loadCategories = function () {
     )
 }
 
-PRODUCTLIST.popEditProduct = function () {
+PRODUCTLIST.popEditProduct = function (id) {
+    PRODUCTLIST.clearProductModal();
+    $('#productModal .modal-title').text("编辑作品");
+    $('#productModal').modal('show');
     $.get(
-        '<idp:url value="/evaluation/product"/>/'+id,
-        {},
-        function(json) {
-            var result = IDEA.parseJSON(json);
-            if(result.type == 'success') {
-                clearProductModal();
-                var prod = result.data;
+        "/product/product",
+        {id: id},
+        function(data) {
+            if(data.code == '0') {
+                PRODUCTLIST.clearProductModal();
+                var prod = data.data;
 
                 $('#inputId').val(prod.id);
                 $('#inputName').val(prod.name);
@@ -181,13 +187,13 @@ PRODUCTLIST.popEditProduct = function () {
                 }
                 $('#inputSummary').val(prod.summary);
                 if(prod.samples && prod.samples.length > 0) {
-                    $('#samplesShowDiv a').attr('href', '<idp:url value=""/>' + prod.samples[0].fileUrl);
+                    $('#samplesShowDiv a').attr('href', prod.samples[0].fileUrl);
                     $('#samplesUploadDiv').hide();
                     $('#samplesShowDiv').show();
                     $('#inputSamples').val(prod.samples[0].fileUrl);
                 }
                 if(prod.logoUrl) {
-                    $('#coverShowDiv a').attr('href', '<idp:url value=""/>' + prod.logoUrl);
+                    $('#coverShowDiv a').attr('href', prod.logoUrl);
                     $('#coverUploadDiv').hide();
                     $('#coverShowDiv').show();
                     $('#inputCover').val(prod.logoUrl);
@@ -196,7 +202,7 @@ PRODUCTLIST.popEditProduct = function () {
                     $('#copyrightsShowDiv').empty();
                     var copyrightFiles = '';
                     for(var i=0; i<prod.copyrightFiles.length; i++) {
-                        var html = "<li style='margin-bottom: 2px;'><a href='<idp:ctx/>" + prod.copyrightFiles[i].fileUrl + "' class='label bg-gray'>" + prod.copyrightFiles[i].name + "</a></li>";
+                        var html = "<li style='margin-bottom: 2px;'><a href='" + prod.copyrightFiles[i].fileUrl + "' class='label bg-gray'>" + prod.copyrightFiles[i].name + "</a></li>";
                         $('#copyrightsShowDiv').append(html);
                         if(i > 0) {
                             copyrightFiles += ",";
@@ -223,13 +229,44 @@ PRODUCTLIST.popEditProduct = function () {
                 }
 
                 $('#productModal').modal('show');
+
+            }else {
+                EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     );
 }
 
 PRODUCTLIST.clearProductModal = function () {
-    
+    $('#inputId').val('');
+    $('#inputName').val('');
+    $('#inputAuthorName').val('');
+    $('#inputAuthorPseudonym').val('');
+    $('#inputWordCount').val('');
+    $("#inputSubject option:first").prop("selected", 'selected');
+    $("#inputPublishState option:first").prop("selected", 'selected');
+    $("#inputPublishYear option:first").prop("selected", 'selected');
+    $('#inputPress').val('');
+    $("#inputFinishYear option:first").prop("selected", 'selected');
+    $('#inputWebsite').val('');
+    $('#inputSummary').val('');
+    $('#hasAudio').prop('checked', false);
+    $('#inputIsbn').val('');
+    $("#inputAudioCopyright option:first").prop("selected", 'selected');
+    $('#inputAudioDesc').val('');
+
+    $('#inputSamples').val('');
+    $('#uploadedFile').empty();
+    $('#samplesShowDiv').hide();
+
+    $('#inputCover').val('');
+    $('#uploadedCoverFile').empty();
+    $('#coverShowDiv').hide();
+
+    $('#inputCopyrights').val('');
+    $('#uploadedCopyrightFiles').empty();
+    $('#copyrightsShowDiv').hide();
+
 }
 
 PRODUCTLIST.searchProducts = function () {
