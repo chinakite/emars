@@ -4,6 +4,7 @@ import com.ideamoment.emars.model.ProductResultVo;
 import com.ideamoment.emars.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -23,8 +24,10 @@ public class ProductPageController {
     }
 
     @RequestMapping(value = "/productDetail")
-    public String productDetail(long id) {
-        ProductResultVo productResultVo = productService.findProduct(id);
+    public String productDetail(long id, Model model) {
+        ProductResultVo product = productService.findProduct(id);
+        model.addAttribute("product", product);
+
         return "product/productDetail";
     }
 

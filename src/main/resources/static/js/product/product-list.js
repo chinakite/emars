@@ -97,7 +97,7 @@ PRODUCTLIST.initProductTbl = function(){
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a data-toggle="modal" href="/product/productDetail?id=' + full.id + '" data-target="#productDetail">查看</a>';
+                    var htmlText = '<a href="javascript:;" onclick="PRODUCTLIST.popProductDetailModal(' + full.id + ')">查看</a>';
                     // var htmlText = '<a href="/product/productDetail?id=' + full.id + ' target="_blank">查看</a> ';
 
                     if(full.state == '0' || full.state == '101') {
@@ -268,6 +268,19 @@ PRODUCTLIST.clearProductModal = function () {
     $('#copyrightsShowDiv').hide();
 
 }
+
+PRODUCTLIST.popProductDetailModal = function(id){
+    $.get(
+        "/product/productDetail",
+        {id: id},
+        function(data) {
+            $('#productDetail').modal('show');
+            $("#productDetail .modal-body")
+                .empty()
+                .append(data);
+        }
+    )
+};
 
 PRODUCTLIST.searchProducts = function () {
     productTable.api().ajax.reload();

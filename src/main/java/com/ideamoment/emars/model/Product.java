@@ -4,6 +4,7 @@ import com.ideamoment.emars.model.enumeration.ProductState;
 import com.ideamoment.emars.model.enumeration.PublishState;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created by yukiwang on 2018/2/24.
@@ -30,6 +31,8 @@ public class Product extends HistoriableEntity {
     private String isbn;
     private String logoUrl;
     private boolean reserved;
+    private List<ProductSample> samples;
+
 
     public String getName() {
         return name;
@@ -236,5 +239,13 @@ public class Product extends HistoriableEntity {
 
     public void setReserved(boolean reserved) {
         this.reserved = reserved;
+    }
+
+    public List<ProductSample> getSamples() {
+        return samples;
+    }
+
+    public void setSamples(List<ProductSample> samples) {
+        this.samples = samples;
     }
 }

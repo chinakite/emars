@@ -7,6 +7,7 @@ public class ProductResultVo extends Product {
 
     private String authorName;
     private String subjectName;
+    private String authorPseudonym;
 
     public String getAuthorName() {
         return authorName;
@@ -22,5 +23,13 @@ public class ProductResultVo extends Product {
 
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
+    }
+
+    public String getAuthorPseudonym() {
+        return authorPseudonym;
+    }
+
+    public void setAuthorPseudonym(String authorPseudonym) {
+        this.authorPseudonym = authorPseudonym;
     }
 }

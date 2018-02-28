@@ -40,13 +40,15 @@ public interface ProductMapper {
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME"),
             @Result(property = "authorName", column = "AUTHORNAME"),
-            @Result(property = "subjectName", column = "SUBJECTNAME")
+            @Result(property = "subjectName", column = "SUBJECTNAME"),
+            @Result(property = "authorPseudonym", column = "AUTHORPSEUDONYM")
+
 
     })
     ProductResultVo findProduct(@Param("id") long id);
 
     @Select({"<script>",
-            "SELECT p.*, a.c_name AS AUTHORNAME, s.c_name AS SUBJECTNAME FROM t_product p LEFT JOIN t_author a ON p.c_author_id = a.c_id LEFT JOIN t_subject s ON p.c_subject_id = s.c_id",
+            "SELECT p.*, a.c_name AS AUTHORNAME, a.c_pseudonym AS AUTHORPSEUDONYM, s.c_name AS SUBJECTNAME FROM t_product p LEFT JOIN t_author a ON p.c_author_id = a.c_id LEFT JOIN t_subject s ON p.c_subject_id = s.c_id",
             "WHERE p.c_id > 0",
             "<if test='condition.productName != null'>",
             " AND p.C_NAME like concat(concat('%',#{condition.productName}),'%')",
