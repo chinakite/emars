@@ -1,5 +1,6 @@
 package com.ideamoment.emars.product.dao;
 
+import com.ideamoment.emars.model.Product;
 import com.ideamoment.emars.model.ProductQueryVo;
 import com.ideamoment.emars.model.ProductResultVo;
 import org.apache.ibatis.annotations.*;
@@ -11,6 +12,27 @@ import java.util.List;
  */
 @Mapper
 public interface ProductMapper {
+
+    @Insert("INSERT INTO t_product " +
+            "(`C_NAME`,`C_SUBJECT_ID`,`C_AUTHOR_ID`,`C_TYPE`,`C_PUBLISH_STATE`,`C_PUBLISH_YEAR`,`C_FINISH_YEAR`," +
+            "`C_STATE`,`C_WORD_COUNT`,`C_SECTION_COUNT`,`C_SECTION_LENGTH`,`C_PRESS`,`C_WEBSITE`,`C_SUMMARY`," +
+            "`C_HAS_AUDIO`,`C_AUDIO_COPYRIGHT`,`C_AUDIO_DESC`,`C_ISBN`,`C_LOGO_URL`,`C_RESERVED`,`C_CREATOR`," +
+            "`C_CREATETIME`) " +
+            "VALUES " +
+            "(#{name}, #{subjectId}, #{authorId}, #{type}, #{publishState}, #{publishYear}, #{finishYear}, " +
+            "#{state}, #{wordCount}, #{sectionCount}, #{sectionLength}, #{press}, #{website}, #{summary}, " +
+            "#{hasAudio}, #{audioCopyright}, #{audioDesc}, #{isbn}, #{logoUrl}, #{reserved}, #{creator}, " +
+            "#{creator}, #{createTime})")
+    boolean insertProduct(Product product);
+
+    @Update("UPDATE t_product SET `C_NAME`=#{name},`C_SUBJECT_ID`=#{subjectId},`C_AUTHOR_ID`=#{authorId}," +
+            "`C_TYPE`=#{type},`C_PUBLISH_STATE`=#{publishState},`C_PUBLISH_YEAR`=#{publishYear}," +
+            "`C_FINISH_YEAR`=#{finishYear},`C_STATE`=#{state},`C_WORD_COUNT`=#{wordCount}," +
+            "`C_SECTION_COUNT`=#{sectionCount},`C_SECTION_LENGTH`=#{sectionLength},`C_PRESS`=#{press}," +
+            "`C_WEBSITE`=#{website},`C_SUMMARY`=#{summary},`C_HAS_AUDIO`=#{hasAudio},`C_AUDIO_COPYRIGHT`=#{audioCopyright}," +
+            "`C_AUDIO_DESC`=#{audioDesc},`C_ISBN`=#{isbn},`C_LOGO_URL`=#{logoUrl},`C_RESERVED`=#{reserved}," +
+            "`C_MODIFIER`=#{modifier},`C_MODIFYTIME`=#{modifyTime} WHERE c_id = #{id}")
+    boolean updateProduct(Product product);
 
     @Select("SELECT * FROM t_product WHERE c_id = #{id}")
     @Results(id = "productMap", value = {
@@ -42,8 +64,6 @@ public interface ProductMapper {
             @Result(property = "authorName", column = "AUTHORNAME"),
             @Result(property = "subjectName", column = "SUBJECTNAME"),
             @Result(property = "authorPseudonym", column = "AUTHORPSEUDONYM")
-
-
     })
     ProductResultVo findProduct(@Param("id") long id);
 
@@ -98,4 +118,20 @@ public interface ProductMapper {
             "</script>"})
     long listProductsCount(ProductQueryVo condition);
 
+    //TODO not this table
+    @Select("SELECT if(count(c_id) > 0, true, false) from T_PRODUCT_COPYRIGHT_FILE where C_PRODUCT_ID = #{id}")
+    boolean existsCopyrightByProduct(@Param("id") long id);
+
+    @Delete("DELETE FROM t_product WHERE c_id = #{id}")
+    boolean deleteProduct(@Param("id") long id);
+
+    @Select({"<script>",
+            "SELECT * FROM t_product",
+            "WHERE c_name = #{name}",
+            "<if test='ignoreId != null'>",
+            " AND c_id != #{ignoreId}",
+            "</if>",
+            "</script>"})
+    @ResultMap("productMap")
+    Product queryProduct(@Param("name") String name, @Param("ignoreId") Long ignoreId);
 }

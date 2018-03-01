@@ -1,5 +1,8 @@
 package com.ideamoment.emars.product.service.impl;
 
+import com.ideamoment.emars.constants.ErrorCode;
+import com.ideamoment.emars.constants.SuccessCode;
+import com.ideamoment.emars.model.Product;
 import com.ideamoment.emars.model.ProductQueryVo;
 import com.ideamoment.emars.model.ProductResultVo;
 import com.ideamoment.emars.product.dao.ProductMapper;
@@ -41,5 +44,48 @@ public class ProductServiceImpl implements ProductService{
     @Transactional
     public ProductResultVo findProduct(long id) {
         return productMapper.findProduct(id);
+    }
+
+    @Override
+    @Transactional
+    public String deleteProduct(long id) {
+        boolean r = productMapper.existsCopyrightByProduct(id);
+        if(r) {
+            return ErrorCode.PRODUCT_CANNOT_DELETE;
+        }
+        boolean result = productMapper.deleteProduct(id);
+        return resultString(result);
+    }
+
+    @Override
+    @Transactional
+    public String createProduct(Product product) {
+        Product existsProduct = productMapper.queryProduct(product.getName(), null);
+
+        if(existsProduct != null) {
+            return ErrorCode.PRODUCT_EXISTS;
+        }
+        boolean result = productMapper.insertProduct(product);
+        return resultString(result);
+    }
+
+    @Override
+    @Transactional
+    public String updateProduct(Product product) {
+        Product existsProduct = productMapper.queryProduct(product.getName(), null);
+
+        if(existsProduct == null) {
+            return ErrorCode.PRODUCT_NOT_EXISTS;
+        }
+        boolean result = productMapper.updateProduct(product);
+        return resultString(result);
+    }
+
+    private String resultString(boolean result) {
+        if(result) {
+            return SuccessCode.SUCCESS;
+        }else{
+            return ErrorCode.UNKNOWN_ERROR;
+        }
     }
 }

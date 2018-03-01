@@ -1,5 +1,7 @@
 package com.ideamoment.emars.product.controller;
 
+import com.ideamoment.emars.constants.ErrorCode;
+import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.model.ProductQueryVo;
 import com.ideamoment.emars.model.ProductResultVo;
 import com.ideamoment.emars.product.service.ProductService;
@@ -49,6 +51,16 @@ public class ProductController {
     public JsonData findProduct(long id) {
         ProductResultVo productResultVo = productService.findProduct(id);
         return JsonData.success(productResultVo);
+    }
+
+    @RequestMapping(value = "/deleteProduct", method = RequestMethod.POST)
+    public JsonData<Boolean> deleteProduct(long id) {
+        String result = productService.deleteProduct(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
 

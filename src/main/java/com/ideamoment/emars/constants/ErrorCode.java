@@ -26,6 +26,12 @@ public class ErrorCode {
     public static final String AUTHOR_NOT_EXISTS = "C-0004";
     //作者不能被删除
     public static final String AUTHOR_CANNOT_DELETE = "C-0005";
+    //作品已存在
+    public static final String PRODUCT_EXISTS = "D-0003";
+    //作品不存在
+    public static final String PRODUCT_NOT_EXISTS = "D-0004";
+    //作品不能被删除
+    public static final String PRODUCT_CANNOT_DELETE = "D-0005";
 
     public static final String EMAIL_SEND_ERROR = "D-0001";
     public static final String EMAIL_SAVE_ERROR = "D-0001";

@@ -282,6 +282,29 @@ PRODUCTLIST.popProductDetailModal = function(id){
     )
 };
 
+PRODUCTLIST.deleteProduct = function (id, name) {
+    EMARS_COMMONS.showPrompt("您真的要删除作品[" + name + "]吗？", function() {
+        $.post(
+            "/product/deleteProduct",
+            {'id': id},
+            function(data) {
+                if(data.code == '0') {
+                    EMARS_COMMONS.showSuccess("删除成功！");
+                    PRODUCTLIST.refreshProductTbl();
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
+    }, null)
+}
+
 PRODUCTLIST.searchProducts = function () {
     productTable.api().ajax.reload();
+}
+
+
+PRODUCTLIST.refreshProductTbl = function () {
+    productTable.api().ajax.reload(null, false);
+
 }
