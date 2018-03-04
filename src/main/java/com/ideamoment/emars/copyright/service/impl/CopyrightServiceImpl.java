@@ -91,7 +91,7 @@ public class CopyrightServiceImpl implements CopyrightService {
 //                cc.setAuditState(CopyrightContractState.AUDIT_FINISH);
 //            }else{
 //                cc.setAuditState(CopyrightContractState.DIRECTOR_AUDIT);
-//                task.setRoleId(RoleType.COPYRIGHT_DIRECTOR);
+//                make.setRoleId(RoleType.COPYRIGHT_DIRECTOR);
 //            }
             ret = copyrightMapper.insertCopyright(cc);
         }else {
@@ -104,7 +104,7 @@ public class CopyrightServiceImpl implements CopyrightService {
 //                cc.setAuditState(CopyrightContractState.AUDIT_FINISH);
 //            }else{
 //                cc.setAuditState(CopyrightContractState.DIRECTOR_AUDIT);
-//                task.setRoleId(RoleType.COPYRIGHT_DIRECTOR);
+//                make.setRoleId(RoleType.COPYRIGHT_DIRECTOR);
 //            }
             ret = copyrightMapper.updateCopyright(cc);
 

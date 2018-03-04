@@ -92,6 +92,9 @@ public interface ProductMapper {
             "<if test='condition.state != null'>",
             " AND p.C_STATE like concat(concat('%',#{condition.state}),'%')",
             "</if>",
+            "<if test='condition.type != null'>",
+            " AND p.C_TYPE = #{condition.type}",
+            "</if>",
             " ORDER BY p.C_MODIFYTIME DESC ",
             " LIMIT #{offset}, #{size}",
             "</script>"})
@@ -118,6 +121,9 @@ public interface ProductMapper {
             "</if>",
             "<if test='state != null'>",
             " AND p.C_STATE like concat(concat('%',#{state}),'%')",
+            "</if>",
+            "<if test='type != null'>",
+            " AND p.C_TYPE = #{type}",
             "</if>",
             "</script>"})
     long listProductsCount(ProductQueryVo condition);

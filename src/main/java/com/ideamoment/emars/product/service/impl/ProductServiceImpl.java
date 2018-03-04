@@ -40,11 +40,11 @@ public class ProductServiceImpl implements ProductService{
         long count = productMapper.listProductsCount(condition);
         int currentPage = offset/pageSize + 1;
 
-        List<ProductResultVo> authors = productMapper.listProducts(condition, offset, pageSize);
+        List<ProductResultVo> products = productMapper.listProducts(condition, offset, pageSize);
 
         Page<ProductResultVo> result = new Page<ProductResultVo>();
         result.setCurrentPage(currentPage);
-        result.setData(authors);
+        result.setData(products);
         result.setPageSize(pageSize);
         result.setTotalRecord(count);
 

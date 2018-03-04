@@ -11,6 +11,7 @@ public class ProductQueryVo {
     private Long subjectId;
     private String publishState;
     private String state;
+    private String type;
 
 
     public String getProductName() {
@@ -59,5 +60,13 @@ public class ProductQueryVo {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
