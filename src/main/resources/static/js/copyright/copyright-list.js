@@ -46,17 +46,6 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
         },
         "columns": [
             {
-                "data": "id",
-                "width": "4%",
-                "render": function(data, type) {
-                    var checkboxHtml = '<label class="custom-control custom-checkbox custom-control-blank" for="copyrightTblCheck_' + data + '">'
-                        + '<input id="copyrightTblCheck_' + data + '" type="checkbox" value="' + data + '" class="custom-control-input tblRowCheckbox" onclick="COPYRIGHTLIST.checkRow();"/>'
-                        + '<span class="custom-control-indicator"></span>'
-                        + '</label>';
-                    return checkboxHtml;
-                }
-            },
-            {
                 "data": "code"
             },
             {
@@ -86,7 +75,7 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="/copyright/contractDetail?id=' + full.id + ' target="_blank">查看</a>  ';
+                    var htmlText = '<a href="javascript:;" onclick="COPYRIGHTLIST.popCopyrightDetailModal(' + full.id + ')">查看</a>';
                     return htmlText;
                 }
             }
@@ -94,6 +83,143 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
     });
 };
 
+COPYRIGHTLIST.popCopyrightDetailModal = function (id) {
+    $.get(
+        "/copyright/copyrightDetail",
+        {id: id},
+        function(data) {
+            $('#copyrightDetail').modal('show');
+            $("#copyrightDetail .modal-body")
+                .empty()
+                .append(data);
+        }
+    )
+}
+
+COPYRIGHTLIST.popNewCopyrightModal = function () {
+    COPYRIGHTLIST.clearCopyrightModal();
+    $('#copyrightModal .modal-title').text("新建合同");
+    $('#copyrightModal').modal('show');
+}
+
+COPYRIGHTLIST.submitCopyright = function () {
+    var contractId = $('#inputContractId').val();
+    var totalPrice = $('#inputTotalPrice').val();
+
+    var priceEles = $('input[id^=inputPrice_]');
+    var idarr = [];
+    var pricearr = [];
+    for(var i=0; i<priceEles.length; i++) {
+        var ele = priceEles[i];
+        var prodId = $(ele).attr('rel');
+        idarr.push(prodId);
+        pricearr.push($(ele).val());
+    }
+    var contractProductIds = idarr.join(',');
+    var prices = pricearr.join(',');
+
+    var owner = $('#inputOwner').val();
+    var ownerContact = $('#inputOwnerContact').val();
+    var ownerContactPhone = $('#inputOwnerContactPhone').val();
+    var ownerContactAddress = $('#inputOwnerContactAddress').val();
+    var ownerContactEmail = $('#inputOwnerContactEmail').val();
+
+    var buyer = $('#inputBuyer').val();
+    var buyerContact = $('#inputBuyerContact').val();
+    var buyerContactPhone = $('#inputBuyerContactPhone').val();
+    var buyerContactAddress = $('#inputBuyerContactAddress').val();
+    var buyerContactEmail = $('#inputBuyerContactEmail').val();
+
+    var checkPrivgs = $('input[name=inputPrivileges]:checked');
+    var privgArr = [];
+    for(var j=0; j<checkPrivgs.length; j++) {
+        privgArr.push($(checkPrivgs[j]).val());
+    }
+    var privileges = privgArr.join(',');
+    var privilegeType = $('#inputPrivilegeType').val();
+    var privilegeRange = $('#inputPrivilegeRange').val();
+    var privilegeDeadline = $('#inputPrivilegeDeadline').val();
+
+    var bankAccountName = $('#inputBankAccountName').val();
+    var bankAccountNo = $('#inputBankAccountNo').val();
+    var bank = $('#inputBank').val();
+
+    var type;
+    if(contractId) {
+        type = "1";
+    }else {
+        type = "0";
+    }
+
+    $.post(
+        "/copyright/createCopyrightContract",
+        {
+            'contractId': contractId,
+            'totalPrice': totalPrice,
+            'contractProductIds' : contractProductIds,
+            'prices': prices,
+            'owner': owner,
+            'ownerContact': ownerContact,
+            'ownerContactPhone': ownerContactPhone,
+            'ownerContactAddress': ownerContactAddress,
+            'ownerContactEmail': ownerContactEmail,
+            'buyer': buyer,
+            'buyerContact': buyerContact,
+            'buyerContactPhone': buyerContactPhone,
+            'buyerContactAddress': buyerContactAddress,
+            'buyerContactEmail': buyerContactEmail,
+            'privileges': privileges,
+            'privilegeType': privilegeType,
+            'privilegeRange': privilegeRange,
+            'privilegeDeadline': privilegeDeadline,
+            'bankAccountName': bankAccountName,
+            'bankAccountNo': bankAccountNo,
+            'bank': bank,
+            'submit': 1,
+            'type': type
+        },
+        function(data) {
+            if(data.code == '0') {
+                EMARS_COMMONS.showSuccess("合同保存成功！");
+                $('#copyrightModal').modal('hide');
+                COPYRIGHTLIST.refreshAuthorTbl();
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+}
+
+
 COPYRIGHTLIST.searchCopyrights = function () {
     copyrightTable.api().ajax.reload();
+}
+
+COPYRIGHTLIST.clearCopyrightModal = function () {
+    $("#inputContractId").val('');
+    $("#inputTotalPrice").val('');
+    $("#inputOwner").val('');
+    $("#inputOwnerContact").val('');
+    $("#inputOwnerContactPhone").val('');
+    $("#inputOwnerContactAddress").val('');
+    $("#inputOwnerContactEmail").val('');
+    $("#inputBuyer").val('');
+    $("#inputBuyerContact").val('');
+    $("#inputBuyerContactPhone").val('');
+    $("#inputBuyerContactAddress").val('');
+    $("#inputBuyerContactEmail").val('');
+    $("#audioEditPrg").prop('checked', false);
+    $("#broadcastPrg").prop('checked', false);
+    $("#netcastPrg").prop('checked', false);
+    $("#grantPrg").prop('checked', false);
+    $("#inputPrivilegeType option:first").prop("selected", 'selected');
+    $("#inputPrivilegeRange option:first").prop("selected", 'selected');
+    $("#inputPrivilegeDeadline option:first").prop("selected", 'selected');
+    $("#inputBankAccountName").val('');
+    $("#inputBank").val('');
+    $("#inputAccountNo").val('');
+}
+
+COPYRIGHTLIST.refreshAuthorTbl = function () {
+    copyrightTable.api().ajax.reload(null, false);
 }

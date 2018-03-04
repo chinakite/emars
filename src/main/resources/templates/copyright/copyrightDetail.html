@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <body>
+        <div class="px-content">
+            <div class="page-header p-y-4 text-xs-center">
+                <h1 class="font-weight-bold">合同编号: <span th:text="${contract.code}"></span></h1>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel">
+                        <div class="panel-title">甲方: <span th:text="${contract.owner}"></span></div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td class="text-right"><b>联系人</b></td>
+                                    <td><span th:text="${contract.ownerContact}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>联系电话</b></td>
+                                    <td><span th:text="${contract.ownerContactPhone}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>联系地址</b></td>
+                                    <td><span th:text="${contract.ownerContactAddress}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>电子邮箱</b></td>
+                                    <td><span th:text="${contract.ownerContactEmail}"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-title">授权信息</div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td class="text-right"><b>授权种类</b></td>
+                                    <td><span th:text="${contract.privilegesText}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>授权方式</b></td>
+                                    <td><span th:text="${contract.privilegeTypeText}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>授权范围</b></td>
+                                    <td><span th:text="${contract.privilegeRangeText}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>授权期限</b></td>
+                                    <td><span th:text="${contract.privilegeDeadline}"></span>年</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel">
+                        <div class="panel-title">乙方:<span th:text="${contract.buyer}"></span></div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td class="text-right"><b>联系人</b></td>
+                                    <td><span th:text="${contract.buyerContact}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>联系电话</b></td>
+                                    <td><span th:text="${contract.buyerContactPhone}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>联系地址</b></td>
+                                    <td><span th:text="${contract.buyerContactAddress}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>电子邮箱</b></td>
+                                    <td><span th:text="${contract.buyerContactEmail}"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-title">付款信息</div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td class="text-right"><b>账户名称</b></td>
+                                    <td><span th:text="${contract.bankAccountName}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>开户行</b></td>
+                                    <td><span th:text="${contract.bank}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><b>银行账号</b></td>
+                                    <td><span th:text="${contract.bankAccountNo}"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-title">
+                            作品列表
+                        </div>
+                        <div class="panel-body">
+                            <table class="table">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-title">
+                            审批信息
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-title">
+                            合同文档列表
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

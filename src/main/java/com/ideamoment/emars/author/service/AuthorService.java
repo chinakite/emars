@@ -12,6 +12,8 @@ public interface AuthorService {
 
     Author findAuthor(long id);
 
+    Author findAuthorByName(String name);
+
     String createAuthor(String name, String desc, String pseudonym);
 
     String updateAuthor(long id, String name, String desc, String pseudonym);

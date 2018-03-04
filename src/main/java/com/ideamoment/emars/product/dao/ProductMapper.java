@@ -22,17 +22,21 @@ public interface ProductMapper {
             "(#{name}, #{subjectId}, #{authorId}, #{type}, #{publishState}, #{publishYear}, #{finishYear}, " +
             "#{state}, #{wordCount}, #{sectionCount}, #{sectionLength}, #{press}, #{website}, #{summary}, " +
             "#{hasAudio}, #{audioCopyright}, #{audioDesc}, #{isbn}, #{logoUrl}, #{reserved}, #{creator}, " +
-            "#{creator}, #{createTime})")
+            "#{createTime})")
     boolean insertProduct(Product product);
 
-    @Update("UPDATE t_product SET `C_NAME`=#{name},`C_SUBJECT_ID`=#{subjectId},`C_AUTHOR_ID`=#{authorId}," +
-            "`C_TYPE`=#{type},`C_PUBLISH_STATE`=#{publishState},`C_PUBLISH_YEAR`=#{publishYear}," +
-            "`C_FINISH_YEAR`=#{finishYear},`C_STATE`=#{state},`C_WORD_COUNT`=#{wordCount}," +
-            "`C_SECTION_COUNT`=#{sectionCount},`C_SECTION_LENGTH`=#{sectionLength},`C_PRESS`=#{press}," +
-            "`C_WEBSITE`=#{website},`C_SUMMARY`=#{summary},`C_HAS_AUDIO`=#{hasAudio},`C_AUDIO_COPYRIGHT`=#{audioCopyright}," +
-            "`C_AUDIO_DESC`=#{audioDesc},`C_ISBN`=#{isbn},`C_LOGO_URL`=#{logoUrl},`C_RESERVED`=#{reserved}," +
-            "`C_MODIFIER`=#{modifier},`C_MODIFYTIME`=#{modifyTime} WHERE c_id = #{id}")
+    @Update("UPDATE t_product SET " +
+            "`C_NAME`=#{name},`C_SUBJECT_ID`=#{subjectId},`C_AUTHOR_ID`=#{authorId},`C_TYPE`=#{type}," +
+            "`C_PUBLISH_STATE`=#{publishState},`C_PUBLISH_YEAR`=#{publishYear},`C_FINISH_YEAR`=#{finishYear}," +
+            "`C_STATE`=#{state},`C_WORD_COUNT`=#{wordCount},`C_SECTION_COUNT`=#{sectionCount}," +
+            "`C_SECTION_LENGTH`=#{sectionLength},`C_PRESS`=#{press},`C_WEBSITE`=#{website},`C_SUMMARY`=#{summary}," +
+            "`C_HAS_AUDIO`=#{hasAudio},`C_AUDIO_COPYRIGHT`=#{audioCopyright},`C_AUDIO_DESC`=#{audioDesc}," +
+            "`C_ISBN`=#{isbn},`C_LOGO_URL`=#{logoUrl},`C_RESERVED`=#{reserved},`C_MODIFIER`=#{modifier}," +
+            "`C_MODIFYTIME`=#{modifyTime} WHERE c_id = #{id}")
     boolean updateProduct(Product product);
+
+    @Update("UPDATE t_product SET c_type = #{type} WHERE c_id = #{id}")
+    boolean updateProductState(@Param("id") long id, @Param("state") String state);
 
     @Select("SELECT * FROM t_product WHERE c_id = #{id}")
     @Results(id = "productMap", value = {
@@ -134,4 +138,25 @@ public interface ProductMapper {
             "</script>"})
     @ResultMap("productMap")
     Product queryProduct(@Param("name") String name, @Param("ignoreId") Long ignoreId);
+
+    @Select({"<script>",
+            "SELECT * FROM t_product",
+            "WHERE c_name = #{name}",
+            "<if test='id != null'>",
+            " AND c_id != #{id}",
+            "</if>",
+            "</script>"})
+    @ResultMap("productMap")
+    Product checkProductDuplicated(@Param("name") String name, @Param("id") long id);
+
+    @Select({"<script>",
+            "SELECT * FROM t_product",
+            "WHERE c_isbn = #{isbn}",
+            "<if test='id != null'>",
+            " AND c_id != #{id}",
+            "</if>",
+            "</script>"})
+    @ResultMap("productMap")
+    Product checkIsbnDuplicated(@Param("isbn") String isbn, @Param("id") long id);
+
 }

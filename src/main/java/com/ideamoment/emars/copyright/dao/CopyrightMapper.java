@@ -11,6 +11,34 @@ import java.util.List;
 @Mapper
 public interface CopyrightMapper {
 
+    @Insert("INSERT INTO t_copyright_contract" +
+            "(`C_CODE`,`C_OWNER`,`C_OWNER_CONTACT`,`C_OWNER_CONTACT_PHONE`,`C_OWNER_CONTACT_ADDRESS`," +
+            "`C_OWNER_CONTACT_EMAIL`,`C_BUYER`,`C_BUYER_CONTACT`,`C_BUYER_CONTACT_PHONE`,`C_BUYER_CONTACT_ADDRESS`," +
+            "`C_BUYER_CONTACT_EMAIL`,`C_PRIVILEGES`,`C_PRIVILEGE_TYPE`,`C_PRIVILEGE_RANGE`,`C_PRIVILEGE_DEADLINE`," +
+            "`C_BANK_ACCOUNT_NAME`,`C_BANK_ACCOUNT_NO`,`C_BANK`,`C_TOTAL_PRICE`,`C_AUDIT_STATE`,`C_FINISH_TIME`," +
+            "`C_CREATOR`,`C_CREATETIME`) " +
+            "values " +
+            "(#{code}, #{owner}, #{ownerContact}, #{ownerContactPhone}, #{ownerContactAddress}, " +
+            "#{ownerContactEmail}, #{buyer}, #{buyerContact}, #{buyerContactPhone}, #{buyerContactAddress}, " +
+            "#{buyerContactEmail}, #{privileges}, #{privilegeType}, #{privilegeRange}, #{privilegeDeadline}, " +
+            "#{bankAccountName}, #{bankAccountNo}, #{bank}, #{totalPrice}, #{auditState}, #{finishTime}, " +
+            "#{creator}, #{createTime})")
+    boolean insertCopyright(Copyright copyright);
+
+    @Update("UPDATE t_copyright_contract SET " +
+            "`C_CODE`=#{code},`C_OWNER`=#{owner},`C_OWNER_CONTACT`=#{ownerContact}," +
+            "`C_OWNER_CONTACT_PHONE`=#{ownerContactPhone},`C_OWNER_CONTACT_ADDRESS`=#{ownerContactAddress}," +
+            "`C_OWNER_CONTACT_EMAIL`=#{ownerContactEmail},`C_BUYER`=#{buyer},`C_BUYER_CONTACT`=#{buyerContact}," +
+            "`C_BUYER_CONTACT_PHONE`=#{buyerContactPhone},`C_BUYER_CONTACT_ADDRESS`=#{buyerContactAddress}," +
+            "`C_BUYER_CONTACT_EMAIL`=#{buyerContactEmail},`C_PRIVILEGES`=#{privileges}," +
+            "`C_PRIVILEGE_TYPE`=#{privilegeType},`C_PRIVILEGE_RANGE`=#{privilegeRange}," +
+            "`C_PRIVILEGE_DEADLINE`=#{privilegeDeadline},`C_BANK_ACCOUNT_NAME`=#{bankAccountName}," +
+            "`C_BANK_ACCOUNT_NO`=#{bankAccountNo},`C_BANK`=#{bank},`C_TOTAL_PRICE`=#{totalPrice}," +
+            "`C_AUDIT_STATE`=#{auditState},`C_FINISH_TIME`=#{finishTime},`C_MODIFIER`=#{modifier}," +
+            "`C_MODIFYTIME`=#{modifyTime} " +
+            "WHERE c_id = #{id}")
+    boolean updateCopyright(Copyright copyright);
+
     @Select("SELECT * FROM t_copyright_contract WHERE c_id = #{id}")
     @Results(id = "copyrightMap", value = {
             @Result(property = "id", column = "c_id", id = true),
@@ -75,5 +103,11 @@ public interface CopyrightMapper {
             "</if>",
             "</script>"})
     long listCopyrightsCount(Copyright condition);
+
+    @Select("select C_CODE from T_COPYRIGHT_CONTRACT where C_CODE like concat(concat('%',#{code}),'%') order by C_CODE desc limit 0,1")
+    String queryMaxContractCode(@Param("code") String code);
+
+    @Delete("delete from T_COPYRIGHT_CTRT_PROD where C_CONTRACT_ID = #{contractId}")
+    boolean deleteContractProduct(@Param("contractId") long contractId);
 
 }

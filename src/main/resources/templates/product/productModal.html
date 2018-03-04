@@ -167,18 +167,18 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">网络音频</label>
                                 <div class="col-sm-8">
-                                    <label class="custom-control custom-checkbox" for="inputHasAudio">
-                                        <input type="checkbox" id="inputHasAudio" class="custom-control-input" />
-                                        <span class="custom-control-indicator"></span>
-                                        有
-                                    </label>
+                                    <div class="checkbox">
+                                        <label for="inputHasAudio">
+                                            <input id="inputHasAudio" name="inputHasAudio" type="checkbox" /> 有
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="PRODUCTLIST.submitPorduct();">保存</button>
+                        <button type="button" class="btn btn-primary" onclick="PRODUCTLIST.submitProduct('1');">保存</button>
                     </div>
                 </div>
             </div>

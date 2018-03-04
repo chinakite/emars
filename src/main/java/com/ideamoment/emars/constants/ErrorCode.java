@@ -27,11 +27,20 @@ public class ErrorCode {
     //作者不能被删除
     public static final String AUTHOR_CANNOT_DELETE = "C-0005";
     //作品已存在
-    public static final String PRODUCT_EXISTS = "D-0003";
+    public static final String PRODUCT_EXISTS = "E-0003";
     //作品不存在
-    public static final String PRODUCT_NOT_EXISTS = "D-0004";
+    public static final String PRODUCT_NOT_EXISTS = "E-0004";
     //作品不能被删除
-    public static final String PRODUCT_CANNOT_DELETE = "D-0005";
+    public static final String PRODUCT_CANNOT_DELETE = "E-0005";
+    //同名作品已存在
+    public static final String PRODUCT_DUPLICATED = "E-0006";
+    //作品ISBN号系统中已存在
+    public static final String ISBN_DUPLICATED = "E-0007";
+    //添加作品创建作者错误
+    public static final String PRODUCT_AUTHOR_ERROR = "E-0007";
+
+    //NAME不能为空
+    public static final String NAME_REQUIED = "F-0001";
 
     public static final String EMAIL_SEND_ERROR = "D-0001";
     public static final String EMAIL_SAVE_ERROR = "D-0001";

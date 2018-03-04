@@ -59,17 +59,6 @@ PRODUCTLIST.initProductTbl = function(){
         },
         "columns": [
             {
-                "data": "id",
-                "width": "4%",
-                "render": function(data, type) {
-                    var checkboxHtml = '<label class="custom-control custom-checkbox custom-control-blank" for="productTblCheck_' + data + '">'
-                        + '<input id="productTblCheck_' + data + '" type="checkbox" value="' + data + '" class="custom-control-input tblRowCheckbox" onclick="AUTHORLIST.checkRow();"/>'
-                        + '<span class="custom-control-indicator"></span>'
-                        + '</label>';
-                    return checkboxHtml;
-                }
-            },
-            {
                 "data": "name"
             },
             {
@@ -155,15 +144,15 @@ PRODUCTLIST.popEditProduct = function (id) {
 
                 $('#inputId').val(prod.id);
                 $('#inputName').val(prod.name);
-                if(prod.author) {
-                    $('#inputAuthorName').val(prod.author.name);
-                    $('#inputAuthorPseudonym').val(prod.author.pseudonym);
+                if(prod.authorName) {
+                    $('#inputAuthorName').val(prod.authorName);
+                    $('#inputAuthorPseudonym').val(prod.authorPseudonym);
                 }else{
                     $('#inputAuthorName').val('');
                     $('#inputAuthorPseudonym').val('');
                 }
                 $('#inputWordCount').val(prod.wordCount);
-                var subj = $('#inputSubject').find('option[value=' + prod.subject.id + ']').index();
+                var subj = $('#inputSubject').find('option[value=' + prod.subjectId + ']').index();
                 $('#inputSubject')[0].selectedIndex = subj;
                 var pubState = $('#inputPublishState').find('option[value=' + prod.publishState + ']').index();
                 $('#inputPublishState')[0].selectedIndex = pubState;
@@ -236,6 +225,74 @@ PRODUCTLIST.popEditProduct = function (id) {
         }
     );
 }
+
+
+PRODUCTLIST.submitProduct = function(submit) {
+
+    var id = $('#inputId').val();
+    var name = $('#inputName').val();
+    var authorName = $('#inputAuthorName').val();
+    var authorPseudonym = $('#inputAuthorPseudonym').val();
+    var wordCount = $('#inputWordCount').val();
+    var subject = $('#inputSubject').val();
+    var publishState = $('#inputPublishState').val();
+    var publishYear = $('#inputPublishYear').val();
+    var press = $('#inputPress').val();
+    var finishYear = $('#inputFinishYear').val();
+    var website = $('#inputWebsite').val();
+    var summary = $('#inputSummary').val();
+    var hasAudio = $('input[name=hasAudio]:checked').val();
+    var audioCopyright = $('#inputAudioCopyright').val();
+    var audioDesc = $('#inputAudioDesc').val();
+    var samples = $('#inputSamples').val();
+    var isbn = $('#inputIsbn').val();
+    //var copyrights = $('#inputCopyrights').val();
+    var cover = $('#inputCover').val();
+    
+    var type;
+    if(id) {
+        type = "1";
+    }else {
+        type = "0";
+    }
+    
+
+    $.post(
+        "/product/createProduct",
+        {
+            'id': id,
+            'name': name,
+            'authorName': authorName,
+            'authorPseudonym': authorPseudonym,
+            'wordCount': wordCount,
+            'subject': subject,
+            'publishState': publishState,
+            'publishYear': publishYear,
+            'press': press,
+            'finishYear': finishYear,
+            'website': website,
+            'summary': summary,
+            'hasAudio': hasAudio,
+            'audioCopyright': audioCopyright,
+            'audioDesc': audioDesc,
+            'samples': samples,
+            'submit': submit,
+            'isbn': isbn,
+            'logoUrl' : cover,
+            'type': type
+        },
+        function(data) {
+            if(data.code == '0') {
+                EMARS_COMMONS.showSuccess("作者保存成功！");
+                $('#authorModal').modal('hide');
+                AUTHORLIST.refreshAuthorTbl();
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+}
+
 
 PRODUCTLIST.clearProductModal = function () {
     $('#inputId').val('');

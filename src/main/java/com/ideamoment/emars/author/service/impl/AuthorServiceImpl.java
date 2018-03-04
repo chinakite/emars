@@ -49,6 +49,13 @@ public class AuthorServiceImpl implements AuthorService{
 
     @Override
     @Transactional
+    public Author findAuthorByName(String name) {
+        Author author = authorMapper.queryAuthor(name, null);
+        return author;
+    }
+
+    @Override
+    @Transactional
     public String createAuthor(String name, String desc, String pseudonym) {
         Author existsAuthor = authorMapper.queryAuthor(name, null);
 

@@ -20,4 +20,6 @@ public interface ProductService {
 
     String updateProduct(Product product);
 
+    String saveProduct(Product product, String submit, boolean withoutEva, String type);
+
 }

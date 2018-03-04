@@ -33,6 +33,9 @@ public class Product extends HistoriableEntity {
     private boolean reserved;
     private List<ProductSample> samples;
 
+    private Author author;
+
+    private List<ProductCopyrightFile> copyrightFiles;
 
     public String getName() {
         return name;
@@ -247,5 +250,21 @@ public class Product extends HistoriableEntity {
 
     public void setSamples(List<ProductSample> samples) {
         this.samples = samples;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public List<ProductCopyrightFile> getCopyrightFiles() {
+        return copyrightFiles;
+    }
+
+    public void setCopyrightFiles(List<ProductCopyrightFile> copyrightFiles) {
+        this.copyrightFiles = copyrightFiles;
     }
 }

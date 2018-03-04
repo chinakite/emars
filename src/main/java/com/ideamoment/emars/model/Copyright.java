@@ -6,6 +6,7 @@ import com.ideamoment.emars.model.enumeration.PrivilegeType;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by yukiwang on 2018/2/25.
@@ -33,6 +34,8 @@ public class Copyright extends HistoriableEntity {
     private BigDecimal totalPrice;
     private String auditState;
     private Date finishTime;
+
+    private List<Product> products;
 
     public String getCode() {
         return code;
@@ -256,5 +259,13 @@ public class Copyright extends HistoriableEntity {
 
     public void setFinishTime(Date finishTime) {
         this.finishTime = finishTime;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
