@@ -73,9 +73,6 @@
 
             <hr class="panel-wide-block" />
             <div class="box">
-                <button type="button" class="btn" data-toggle="modal" onclick="PRODUCTLIST.popNewProductModal();">
-                    <i class="fa fa-plus"></i>&nbsp;新建
-                </button>
             </div>
             <div class="table-primary">
                 <table class="table table-striped table-bordered" id="productTbl">
@@ -97,6 +94,7 @@
         </div>
     </div>
 
+    <div th:replace="make/taskModal :: taskModal"></div>
 
 </section>
 

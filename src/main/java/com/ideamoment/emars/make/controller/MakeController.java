@@ -1,10 +1,14 @@
 package com.ideamoment.emars.make.controller;
 
+import com.ideamoment.emars.constants.ErrorCode;
+import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.make.service.MakeService;
+import com.ideamoment.emars.model.MakeTask;
 import com.ideamoment.emars.model.ProductQueryVo;
 import com.ideamoment.emars.model.ProductResultVo;
 import com.ideamoment.emars.product.service.ProductService;
 import com.ideamoment.emars.utils.DataTableSource;
+import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +48,35 @@ public class MakeController {
         DataTableSource<ProductResultVo> dts = convertProductsToDataTableSource(draw, products);
         return dts;
     }
+
+    @RequestMapping(value = "/makeTask", method = RequestMethod.POST)
+    public JsonData<Boolean> makeTask(
+            long productId,
+            long makerId,
+            long contractId,
+            Integer timePerSection,
+            String showType,
+            String showExpection,
+            Integer makeTime,
+            String desc
+    ) {
+        MakeTask makeTask = new MakeTask();
+        makeTask.setProductId(productId);
+        makeTask.setMakerId(makerId);
+        makeTask.setContractId(contractId);
+        makeTask.setShowType(showType);
+        makeTask.setShowExpection(showExpection);
+        makeTask.setMakeTime(makeTime);
+        makeTask.setDesc(desc);
+
+        String result = makeService.saveMakeTask(makeTask);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
 
     private DataTableSource<ProductResultVo> convertProductsToDataTableSource(int draw, Page<ProductResultVo> productsPage) {
         DataTableSource<ProductResultVo> dts = new DataTableSource<ProductResultVo>();

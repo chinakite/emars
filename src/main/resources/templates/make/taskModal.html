@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<!-- Modal -->
+<div th:fragment="taskModal" class="modal fade" id="taskModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">新建制作任务</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="validation-form">
+                    <input id="inputProductId" type="hidden"/>
+                    <div class="form-group">
+                        <label for="inputMaker" class="col-sm-3 control-label">制作团队</label>
+                        <div class="col-sm-8">
+                            <select id="inputMaker" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputContract" class="col-sm-3 control-label">制作合同</label>
+                        <div class="col-sm-8">
+                            <select id="inputContract" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTimePerSection" class="col-sm-3 control-label">单集时长</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputTimePerSection" name="inputTimePerSection" placeholder="分钟" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputShowType" class="col-sm-3 control-label">演播形式</label>
+                        <div class="col-sm-8">
+                            <select id="inputShowType" class="form-control">
+                                <option value="1">单播</option>
+                                <option value="2">对播</option>
+                                <option value="3">广播剧</option>
+                                <option value="9">其他</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputShowExpection" class="col-sm-3 control-label">演员要求</label>
+                        <div class="col-sm-8">
+                            <textarea id="inputShowExpection" class="form-control" rows="3" placeholder="描述演员要求..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputMakeTime" class="col-sm-3 control-label">制作周期</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputMakeTime" name="inputMakeTime" placeholder="天" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputDesc" class="col-sm-3 control-label">备注</label>
+                        <div class="col-sm-8">
+                            <textarea id="inputDesc" class="form-control" rows="3" placeholder="备注 ..."></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="MAKELIST.submitTask();">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

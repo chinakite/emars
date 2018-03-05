@@ -86,11 +86,11 @@ MAKELIST.initProductTbl = function(){
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="javascript:;" onclick="MAKETLIST.popProductDetailModal(' + full.id + ')">查看</a>';
+                    var htmlText = '<a href="javascript:;" onclick="MAKELIST.popProductDetailModal(' + full.id + ')">查看</a>';
 
                     if(!(full.taskCount) || full.taskCount == 0){
                         htmlText += ' <span class="small">|</span> ';
-                        htmlText += '<a onclick="MAKETLIST.popTaskModal(' + full.id + ');">创建任务</a>';
+                        htmlText += '<a onclick="MAKELIST.popTaskModal(' + full.id + ');">创建任务</a>';
                     }else{
                         htmlText += ' <span class="small">|</span> ';
                         htmlText += '<a href="/make/taskPage?productId=' + full.id +'">查看任务</a>';
@@ -125,6 +125,64 @@ MAKELIST.loadCategories = function () {
     )
 }
 
+MAKELIST.popTaskModal = function (productId) {
+    MAKELIST.clearTaskModal();
+    $('#inputProductId').val(productId);
+    $('#taskModal').modal('show');
+}
+
+MAKELIST.clearTaskModal = function () {
+    $('#inputProductId').val('');
+    $('#inputMaker option:first').prop("selected", 'selected');
+    $('#inputContract option:first').prop("selected", 'selected');
+    $('#inputTimePerSection').val('');
+    $('#inputShowType option:first').prop("selected", 'selected');
+    $('#inputShowExpection').val('');
+    $('#inputMakeTime').val('');
+    $('#inputDesc').val('');
+}
+
+MAKELIST.submitTask = function () {
+    var productId = $('#inputProductId').val();
+    // var makerId = $('#inputMaker').val();
+    // var contractId = $('#inputContract').val();
+    var makerId = 1;
+    var contractId = 1;
+
+    var timePerSection = $('#inputTimePerSection').val();
+    var showType = $('#inputShowType').val();
+    var showExpection = $('#inputShowExpection').val();
+    var makeTime = $('#inputMakeTime').val();
+    var desc = $('#inputDesc').val();
+
+    $.post(
+        "/make/makeTask",
+        {
+            'productId': productId,
+            'makerId': makerId,
+            'contractId': contractId,
+            'timePerSection': timePerSection,
+            'showType': showType,
+            'showExpection': showExpection,
+            'makeTime': makeTime,
+            'desc': desc
+        },
+        function(data) {
+            if(data.code == '0') {
+                EMARS_COMMONS.showSuccess("任务制作成功！");
+                $('#taskModal').modal('hide');
+                MAKELIST.refreshProductTbl();
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+}
+
 MAKELIST.searchProducts = function () {
     productTable.api().ajax.reload();
+}
+
+MAKELIST.refreshProductTbl = function () {
+    productTable.api().ajax.reload(null, false);
 }

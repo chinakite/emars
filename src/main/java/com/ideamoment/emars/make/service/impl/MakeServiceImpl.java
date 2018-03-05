@@ -1,17 +1,24 @@
 package com.ideamoment.emars.make.service.impl;
 
+import com.ideamoment.emars.constants.ErrorCode;
+import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.make.dao.MakeMapper;
 import com.ideamoment.emars.make.service.MakeService;
+import com.ideamoment.emars.model.MakeTask;
 import com.ideamoment.emars.model.Product;
 import com.ideamoment.emars.model.ProductQueryVo;
 import com.ideamoment.emars.model.ProductResultVo;
+import com.ideamoment.emars.model.enumeration.MakeTaskState;
 import com.ideamoment.emars.model.enumeration.ProductType;
 import com.ideamoment.emars.product.dao.ProductMapper;
 import com.ideamoment.emars.utils.Page;
+import com.ideamoment.emars.utils.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +35,7 @@ public class MakeServiceImpl implements MakeService {
     private MakeMapper makeMapper;
 
     @Override
+    @Transactional
     public Page<ProductResultVo> pageProducts(ProductQueryVo condition, int offset, int pageSize) {
         condition.setType(ProductType.TEXT);
 
@@ -59,5 +67,28 @@ public class MakeServiceImpl implements MakeService {
         result.setTotalRecord(count);
 
         return result;
+    }
+
+    @Override
+    @Transactional
+    public String saveMakeTask(MakeTask makeTask) {
+
+        Product product = productMapper.findProduct(makeTask.getProductId());
+
+        makeTask.setCreateTime(new Date());
+        makeTask.setCreator(UserContext.getUserId());
+        makeTask.setName(product.getName());
+        makeTask.setState(MakeTaskState.NEW);
+
+        boolean result = makeMapper.insertMakeTask(makeTask);
+        return resultString(result);
+    }
+
+    private String resultString(boolean result) {
+        if(result) {
+            return SuccessCode.SUCCESS;
+        }else{
+            return ErrorCode.UNKNOWN_ERROR;
+        }
     }
 }
