@@ -50,6 +50,11 @@ public class User extends HistoriableEntity {
      */
     private String status;
 
+    /**
+     * 角色
+     */
+    private String role;
+
 
 
 
@@ -123,5 +128,13 @@ public class User extends HistoriableEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

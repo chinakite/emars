@@ -89,8 +89,15 @@ public class MakeServiceImpl implements MakeService {
 
     @Override
     @Transactional
-    public MakeContract findCopyContract(long id) {
+    public MakeContract findMakeContract(long id) {
         MakeContract makeContract = makeContractMapper.findMakeContract(id);
+        return makeContract;
+    }
+
+    @Override
+    @Transactional
+    public MakeContract findMakeContractByProduct(long productId) {
+        MakeContract makeContract = makeContractMapper.findMakeContractByProduct(productId);
         return makeContract;
     }
 
@@ -121,6 +128,12 @@ public class MakeServiceImpl implements MakeService {
         }
 
         return resultString(ret);
+    }
+
+    @Override
+    @Transactional
+    public List<MakeContractDoc> listContractDocs(long contractId) {
+        return makeContractMapper.listContractDocs(contractId);
     }
 
     private synchronized String createCode(MakeContract mc) {

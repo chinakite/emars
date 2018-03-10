@@ -110,7 +110,7 @@ public class MakeController {
         if(id == null) {
             mc = new MakeContract();
         }else{
-            mc = makeService.findCopyContract(id);
+            mc = makeService.findMakeContract(id);
         }
 
         mc.setProductId(productId);

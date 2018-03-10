@@ -7,6 +7,7 @@ var pathname = window.location.pathname;
 $(document).ready(function(){
     MAKELIST.initProductTbl();
     MAKELIST.loadCategories();
+    MAKELIST.loadExtMakers();
 });
 
 MAKELIST.initProductTbl = function(){
@@ -91,7 +92,7 @@ MAKELIST.initProductTbl = function(){
                     if (pathname == "/make/taskProductPage") {
                         if (!(full.taskCount) || full.taskCount == 0) {
                             htmlText += ' <span class="small">|</span> ';
-                            htmlText += '<a onclick="MAKELIST.popTaskModal(' + full.id + ');">创建任务</a>';
+                            htmlText += '<a href="javascript:;" onclick="MAKELIST.popTaskModal(' + full.id + ');">创建任务</a>';
                         } else {
                             htmlText += ' <span class="small">|</span> ';
                             htmlText += '<a href="/make/taskPage?productId=' + full.id + '">查看任务</a>';
@@ -102,7 +103,7 @@ MAKELIST.initProductTbl = function(){
                             htmlText += '<a onclick="MAKELIST.popContractModal(' + full.id + ');">创建合同</a>';
                         }else if(full.state == '11' || full.state == '12' || full.state == '13' || full.state == '14'){
                             htmlText += ' <span class="small">|</span> ';
-                            htmlText += '<a href="/make/contractDetail?productId=' + full.id +'" target="_blank">查看合同</a>';
+                            htmlText += '<a href="javascript:;" onclick="MAKELIST.popMakeContractDetailModal(' + full.id +')">查看合同</a>';
                         }
                     }
                     return htmlText;
@@ -111,6 +112,25 @@ MAKELIST.initProductTbl = function(){
         ]
     });
 };
+
+MAKELIST.loadExtMakers = function () {
+    $.get(
+        "/system/extMakers",
+        function(data) {
+            if(data.code == '0') {
+                var makers = data.data;
+                var html = '';
+                for(var i = 0; i < makers.length; i ++) {
+                    var maker = makers[i];
+                    html += '<option value="' + maker.id + '">' + maker.name + '</option>';
+                }
+                $('#inputMaker').empty().append(html);
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    )
+}
 
 MAKELIST.loadCategories = function () {
     $.get(
@@ -144,6 +164,28 @@ MAKELIST.popContractModal = function (productId) {
     MAKELIST.clearContractModal();
     $('#inputProductId').val(productId);
     $('#contractModal').modal('show');
+}
+
+MAKELIST.popMakeContractDetailModal = function (productId) {
+    $.get(
+        "/make/makeContractDetail",
+        {productId: productId},
+        function(data) {
+            $('#makeContractDetail').modal('show');
+            $("#makeContractDetail .modal-body")
+                .empty()
+                .append(data);
+        }
+    )
+}
+
+MAKELIST.popUploadContractDoc = function (contractId) {
+    MAKELIST.clearDocModal();
+    $('#docModal').modal('show');
+}
+
+MAKELIST.clearDocModal = function () {
+    
 }
 
 MAKELIST.clearTaskModal = function () {
@@ -183,9 +225,8 @@ MAKELIST.clearContractModal = function () {
 
 MAKELIST.submitTask = function () {
     var productId = $('#inputProductId').val();
-    // var makerId = $('#inputMaker').val();
+    var makerId = $('#inputMaker').val();
     // var contractId = $('#inputContract').val();
-    var makerId = 1;
     var contractId = 1;
 
     var timePerSection = $('#inputTimePerSection').val();
@@ -220,10 +261,8 @@ MAKELIST.submitTask = function () {
 }
 
 MAKELIST.submitMakeContract = function () {
-    // var productId = $('#inputProductId').val();
-    // var makerId = $('#inputMaker').val();
-    var makerId = 1;
-    var productId = 1;
+    var productId = $('#inputProductId').val();
+    var makerId = $('#inputMaker').val();
     var targetType = $('#inputTargetType').val();
 
     var owner = $('#inputOwner').val();

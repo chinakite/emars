@@ -1,7 +1,10 @@
 package com.ideamoment.emars.make.dao;
 
 import com.ideamoment.emars.model.MakeContract;
+import com.ideamoment.emars.model.MakeContractDoc;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 /**
  * Created by yukiwang on 2018/3/10.
@@ -69,4 +72,26 @@ public interface MakeContractMapper {
 
     @Select("select C_CODE from T_MAKE_CONTRACT where C_CODE like concat(concat('%',#{code}),'%') order by C_CODE desc limit 0,1")
     String queryMaxContractCode(@Param("code") String code);
+
+    @Select("SELECT * FROM t_make_contract WHERE c_product_id = #{productId}")
+    @ResultMap("makeContractMap")
+    MakeContract findMakeContractByProduct(@Param("productId") long productId);
+
+    @Insert("INSERT INTO T_MAKE_CTRT_DOC " +
+            "(`C_CONTRACT_ID`,`C_TYPE`,`C_CREATOR_ID`,`C_CREATETIME`,`C_VERSION`,`C_FILE_URL`) " +
+            "VALUES " +
+            "(#{contractId}, #{type}, #{creatorId}, #{createTime}, #{version}, #{fileUrl})")
+    boolean insertMakeContractDoc(MakeContractDoc makeContractDoc);
+
+    @Select("SELECT * FROM T_MAKE_CTRT_DOC WHERE C_CONTRACT_ID = #{contractId} ORDER BY C_CREATETIME DESC")
+    @Results(id = "makeContractDocMap", value ={
+            @Result(property = "id", column = "c_id", id = true),
+            @Result(property = "contractId", column = "C_CONTRACT_ID"),
+            @Result(property = "type", column = "C_TYPE"),
+            @Result(property = "creatorId", column = "C_CREATOR_ID"),
+            @Result(property = "createTime", column = "C_CREATETIME"),
+            @Result(property = "version", column = "C_VERSION"),
+            @Result(property = "fileUrl", column = "C_FILE_URL")
+    })
+    List<MakeContractDoc> listContractDocs(@Param("contractId") long contractId);
 }

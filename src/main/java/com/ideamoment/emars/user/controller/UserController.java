@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class UserController {
 
@@ -99,6 +101,12 @@ public class UserController {
         }else{
             return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
         }
+    }
+
+    @RequestMapping(value="/system/extMakers", method=RequestMethod.GET)
+    public JsonData listExtMakers() {
+        List<User> users = userService.listExtMakers();
+        return JsonData.success(users);
     }
 
     private boolean validate(User user) {

@@ -78,4 +78,8 @@ public interface UserMapper {
             "</script>"
     })
     boolean batchDeleteUser(@Param("ids") Long[] ids);
+
+    @Select("SELECT * FROM T_USER WHERE C_ROLE like '%52%'")
+    @ResultMap("userMap")
+    List<User> listExtMakers();
 }

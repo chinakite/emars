@@ -193,4 +193,10 @@ public class UserServiceImpl implements UserService {
 
         return ErrorCode.UNKNOWN_ERROR;
     }
+
+    @Override
+    @Transactional
+    public List<User> listExtMakers() {
+        return userMapper.listExtMakers();
+    }
 }
