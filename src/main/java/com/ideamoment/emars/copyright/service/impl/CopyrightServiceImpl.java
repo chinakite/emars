@@ -127,6 +127,11 @@ public class CopyrightServiceImpl implements CopyrightService {
         return resultString(ret);
     }
 
+    @Override
+    public List<Copyright> listProductContracts(long productId) {
+        return copyrightMapper.listProductContracts(productId);
+    }
+
     private synchronized String createCode(Copyright cc) {
         Date curDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");

@@ -6,6 +6,7 @@ import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.model.enumeration.ProductState;
 import com.ideamoment.emars.model.enumeration.ProductType;
+import com.ideamoment.emars.product.dao.ProductCopyrightFileMapper;
 import com.ideamoment.emars.product.dao.ProductMapper;
 import com.ideamoment.emars.product.dao.ProductSampleMapper;
 import com.ideamoment.emars.product.service.ProductService;
@@ -33,6 +34,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ProductSampleMapper productSampleMapper;
+
+    @Autowired
+    private ProductCopyrightFileMapper productCopyrightFileMapper;
 
     @Override
     @Transactional
@@ -150,6 +154,12 @@ public class ProductServiceImpl implements ProductService{
         }
 
         return resultString(ret);
+    }
+
+    @Override
+    @Transactional
+    public List<ProductCopyrightFile> listProductCopyrightFiles(long productId) {
+        return productCopyrightFileMapper.listProductCopyrightFiles(productId);
     }
 
 

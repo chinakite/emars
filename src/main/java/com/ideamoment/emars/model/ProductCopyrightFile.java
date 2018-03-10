@@ -10,7 +10,7 @@ public class ProductCopyrightFile extends BaseEntity{
     private String name;
     private long productId;
     private String fileUrl;
-    private long creator;
+    private long creatorId;
     private Date createTime;
 
     public String getName() {
@@ -37,12 +37,12 @@ public class ProductCopyrightFile extends BaseEntity{
         this.fileUrl = fileUrl;
     }
 
-    public long getCreator() {
-        return creator;
+    public long getCreatorId() {
+        return creatorId;
     }
 
-    public void setCreator(long creator) {
-        this.creator = creator;
+    public void setCreatorId(long creatorId) {
+        this.creatorId = creatorId;
     }
 
     public Date getCreateTime() {

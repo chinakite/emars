@@ -110,4 +110,6 @@ public interface CopyrightMapper {
     @Delete("delete from T_COPYRIGHT_CTRT_PROD where C_CONTRACT_ID = #{contractId}")
     boolean deleteContractProduct(@Param("contractId") long contractId);
 
+    List<Copyright> listProductContracts(@Param("productId") long productId);
+
 }
