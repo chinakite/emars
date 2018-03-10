@@ -1,5 +1,6 @@
 package com.ideamoment.emars.make.service;
 
+import com.ideamoment.emars.model.MakeContract;
 import com.ideamoment.emars.model.MakeTask;
 import com.ideamoment.emars.model.ProductQueryVo;
 import com.ideamoment.emars.model.ProductResultVo;
@@ -13,5 +14,9 @@ public interface MakeService {
     Page<ProductResultVo> pageProducts(ProductQueryVo condition, int offset, int pageSize);
 
     String saveMakeTask(MakeTask makeTask);
+
+    MakeContract findCopyContract(long id);
+
+    String saveMakeContract(MakeContract makeContract, String type);
 
 }

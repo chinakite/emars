@@ -2,6 +2,7 @@
 
 var MAKELIST = {};
 var productTable;
+var pathname = window.location.pathname;
 
 $(document).ready(function(){
     MAKELIST.initProductTbl();
@@ -87,15 +88,23 @@ MAKELIST.initProductTbl = function(){
             {
                 "render": function(data, type, full) {
                     var htmlText = '<a href="javascript:;" onclick="MAKELIST.popProductDetailModal(' + full.id + ')">查看</a>';
-
-                    if(!(full.taskCount) || full.taskCount == 0){
-                        htmlText += ' <span class="small">|</span> ';
-                        htmlText += '<a onclick="MAKELIST.popTaskModal(' + full.id + ');">创建任务</a>';
-                    }else{
-                        htmlText += ' <span class="small">|</span> ';
-                        htmlText += '<a href="/make/taskPage?productId=' + full.id +'">查看任务</a>';
+                    if (pathname == "/make/taskProductPage") {
+                        if (!(full.taskCount) || full.taskCount == 0) {
+                            htmlText += ' <span class="small">|</span> ';
+                            htmlText += '<a onclick="MAKELIST.popTaskModal(' + full.id + ');">创建任务</a>';
+                        } else {
+                            htmlText += ' <span class="small">|</span> ';
+                            htmlText += '<a href="/make/taskPage?productId=' + full.id + '">查看任务</a>';
+                        }
+                    } else if(pathname == "/make/contractProductPage") {
+                        if(full.state == '10'){
+                            htmlText += ' <span class="small">|</span> ';
+                            htmlText += '<a onclick="MAKELIST.popContractModal(' + full.id + ');">创建合同</a>';
+                        }else if(full.state == '11' || full.state == '12' || full.state == '13' || full.state == '14'){
+                            htmlText += ' <span class="small">|</span> ';
+                            htmlText += '<a href="/make/contractDetail?productId=' + full.id +'" target="_blank">查看合同</a>';
+                        }
                     }
-
                     return htmlText;
                 }
             }
@@ -131,6 +140,12 @@ MAKELIST.popTaskModal = function (productId) {
     $('#taskModal').modal('show');
 }
 
+MAKELIST.popContractModal = function (productId) {
+    MAKELIST.clearContractModal();
+    $('#inputProductId').val(productId);
+    $('#contractModal').modal('show');
+}
+
 MAKELIST.clearTaskModal = function () {
     $('#inputProductId').val('');
     $('#inputMaker option:first').prop("selected", 'selected');
@@ -140,6 +155,30 @@ MAKELIST.clearTaskModal = function () {
     $('#inputShowExpection').val('');
     $('#inputMakeTime').val('');
     $('#inputDesc').val('');
+}
+
+MAKELIST.clearContractModal = function () {
+    $('#inputProductId').val('');
+    $('#inputTargetType option:first').prop("selected", 'selected');
+    $('#inputMaker option:first').prop("selected", 'selected');
+    $('#inputOwner').val();
+    $('#inputOwnerContact').val();
+    $('#inputOwnerContactPhone').val();
+    $('#inputOwnerContactAddress').val();
+    $('#inputOwnerContactEmail').val();
+    $('#inputWorker').val();
+    $('#inputWorkerContact').val();
+    $('#inputWorkerContactPhone').val();
+    $('#inputWorkerContactAddress').val();
+    $('#inputWorkerContactEmail').val();
+    $('#inputTotalSection').val();
+    $('#inputPrice').val();
+    $('#inputTotalPrice').val();
+    $('#inputPenalty').val();
+    $('#inputBankAccountName').val();
+    $('#inputBank').val();
+    $('#inputAccountNo').val();
+
 }
 
 MAKELIST.submitTask = function () {
@@ -170,7 +209,73 @@ MAKELIST.submitTask = function () {
         function(data) {
             if(data.code == '0') {
                 EMARS_COMMONS.showSuccess("任务制作成功！");
+                MAKELIST.clearTaskModal();
                 $('#taskModal').modal('hide');
+                MAKELIST.refreshProductTbl();
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+}
+
+MAKELIST.submitMakeContract = function () {
+    // var productId = $('#inputProductId').val();
+    // var makerId = $('#inputMaker').val();
+    var makerId = 1;
+    var productId = 1;
+    var targetType = $('#inputTargetType').val();
+
+    var owner = $('#inputOwner').val();
+    var ownerContact = $('#inputOwnerContact').val();
+    var ownerContactPhone = $('#inputOwnerContactPhone').val();
+    var ownerContactAddress = $('#inputOwnerContactAddress').val();
+    var ownerContactEmail = $('#inputOwnerContactEmail').val();
+
+    var worker = $('#inputWorker').val();
+    var workerContact = $('#inputWorkerContact').val();
+    var workerContactPhone = $('#inputWorkerContactPhone').val();
+    var workerContactAddress = $('#inputWorkerContactAddress').val();
+    var workerContactEmail = $('#inputWorkerContactEmail').val();
+
+    var totalPrice = $('#inputTotalPrice').val();
+    var price = $('#inputPrice').val();
+    var totalSection = $('#inputTotalSection').val();
+    var penalty = $('#inputPenalty').val();
+
+    var bankAccountName = $('#inputBankAccountName').val();
+    var bankAccountNo = $('#inputBankAccountNo').val();
+    var bank = $('#inputBank').val();
+    $.post(
+        "/make/makeContract",
+        {
+            'productId': productId,
+            'makerId': makerId,
+            'targetType': targetType,
+            'totalPrice': totalPrice,
+            'price': price,
+            'totalSection': totalSection,
+            'penalty': penalty,
+            'owner': owner,
+            'ownerContact': ownerContact,
+            'ownerContactPhone': ownerContactPhone,
+            'ownerContactAddress': ownerContactAddress,
+            'ownerContactEmail': ownerContactEmail,
+            'worker': worker,
+            'workerContact': workerContact,
+            'workerContactPhone': workerContactPhone,
+            'workerContactAddress': workerContactAddress,
+            'workerContactEmail': workerContactEmail,
+            'bankAccountName': bankAccountName,
+            'bankAccountNo': bankAccountNo,
+            'bank': bank,
+            'type': "0"
+        },
+        function(data) {
+            if(data.code == '0') {
+                EMARS_COMMONS.showSuccess("保存成功！");
+                MAKELIST.clearContractModal();
+                $('#contractModal').modal('hide');
                 MAKELIST.refreshProductTbl();
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);

@@ -16,4 +16,9 @@ public class MakePageController {
         return "make/taskProductPage";
     }
 
+    @RequestMapping(value = "/contractProductPage", method = RequestMethod.GET)
+    public String contractProductPage() {
+        return "make/contractProductPage";
+    }
+
 }
