@@ -28,10 +28,6 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
                 if(owner && $.trim(owner).length > 0) {
                     d.owner = owner;
                 }
-                var auditState = $('#inputSearchAudithState').val();
-                if(auditState && $.trim(auditState).length > 0) {
-                    d.auditState = auditState;
-                }
             }
 
         },
