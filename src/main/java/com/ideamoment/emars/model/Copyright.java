@@ -34,6 +34,7 @@ public class Copyright extends HistoriableEntity {
     private BigDecimal totalPrice;
     private String auditState;
     private Date finishTime;
+    private String contactType;
 
     private List<Product> products;
 
@@ -267,5 +268,13 @@ public class Copyright extends HistoriableEntity {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public String getContactType() {
+        return contactType;
+    }
+
+    public void setContactType(String contactType) {
+        this.contactType = contactType;
     }
 }
