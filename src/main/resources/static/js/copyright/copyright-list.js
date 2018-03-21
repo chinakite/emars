@@ -5,6 +5,8 @@ var copyrightTable;
 
 $(document).ready(function(){
     COPYRIGHTLIST.initCopyrightTbl();
+
+    $('#wizard-copyright').pxWizard();
 });
 
 COPYRIGHTLIST.initCopyrightTbl = function(){

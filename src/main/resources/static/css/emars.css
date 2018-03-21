@@ -1,3 +1,25 @@
 .btn-spacer-r {
     margin-right: 1em;
 }
+
+.list-group-item {
+    position: relative;
+}
+
+.product-list-item-info {
+    margin-right: 6em;
+}
+
+.product-list-item-toolbar {
+    position: absolute;
+    right: 1.5em;
+    top: 1.5em;
+}
+
+.product-list-item-toolbar-btn {
+    display: inline-block;
+    width: 1.8em;
+    height: 1.8em;
+    line-height: 1.8em;
+    text-align: center;
+}
