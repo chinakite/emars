@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <body>
+        <!-- Modal -->
+        <div th:fragment="productCommonModal" class="modal fade" id="productCommonModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">×</button>
+                        <h4 class="modal-title">添加作品</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" id="validation-form">
+                            <input type="hidden" id="id"/>
+                            <div class="form-group">
+                                <label for="inputName" class="col-sm-2 control-label">名称</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputName" name="inputName" placeholder="名称" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <label for="inputAuthorName" class="col-sm-2 control-label">作者</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="inputAuthorName" name="inputAuthorName" placeholder="作者" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-sm-6">
+                                    <label for="inputAuthorPseudonym" class="col-sm-2 control-label">作者笔名</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="inputAuthorPseudonym" name="inputAuthorPseudonym" placeholder="作者笔名" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputWordCount" class="col-sm-3 control-label">字数</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputWordCount" name="inputWordCount" placeholder="单位：万字" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputSubject" class="col-sm-3 control-label">作品题材</label>
+                                <div class="col-sm-8">
+                                    <select id="inputSubject" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPublishState" class="col-sm-3 control-label">出版状态</label>
+                                <div class="col-sm-8">
+                                    <select id="inputPublishState" class="form-control">
+                                        <option value="0">已出版</option>
+                                        <option value="1">网络签约</option>
+                                        <option value="2">网络未签约</option>
+                                        <option value="3">未公开</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPress" class="col-sm-3 control-label">出版社</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputPress" name="inputPress" placeholder="出版社" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputIsbn" class="col-sm-3 control-label">ISBN</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputIsbn" name="inputIsbn" placeholder="ISBN号" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputSummary" class="col-sm-3 control-label">内容简介</label>
+                                <div class="col-sm-8">
+                                    <textarea id="inputSummary" class="form-control" rows="4" placeholder="内容简介 ..."></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="PRODUCTLIST.submitProduct('1');">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
