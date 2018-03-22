@@ -6,7 +6,7 @@ var copyrightTable;
 $(document).ready(function(){
     COPYRIGHTLIST.initCopyrightTbl();
 
-    $('#wizard-copyright').pxWizard();
+    $('#copyrightWizard').pxWizard();
     $('.product-list-item').popover({});
 });
 
@@ -68,9 +68,6 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
                 "render": function(data, type, full) {
                     return full.privilegeDeadline + "年";
                 }
-            },
-            {
-                "data": "auditStateText",
             },
             {
                 "render": function(data, type, full) {
@@ -221,4 +218,9 @@ COPYRIGHTLIST.clearCopyrightModal = function () {
 
 COPYRIGHTLIST.refreshAuthorTbl = function () {
     copyrightTable.api().ajax.reload(null, false);
+}
+
+COPYRIGHTLIST.showAddProductPanel = function() {
+    $('#copyrightWizard').hide();
+    $('#addProductPanel').show();
 }
