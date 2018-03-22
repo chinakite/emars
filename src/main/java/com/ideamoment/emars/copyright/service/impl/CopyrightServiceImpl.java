@@ -128,6 +128,7 @@ public class CopyrightServiceImpl implements CopyrightService {
     }
 
     @Override
+    @Transactional
     public List<Copyright> listProductContracts(long productId) {
         return copyrightMapper.listProductContracts(productId);
     }

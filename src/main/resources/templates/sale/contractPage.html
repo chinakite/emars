@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head th:include="layout/layout :: htmlhead('运营合同管理')"></head>
+
+<body>
+<section layout:fragment="content">
+    <div class="page-header">
+        <h1>运营合同管理 / <span class="text-muted font-weight-light">所有运营合同信息在此管理。</span></h1>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading">
+            <div class="panel-title">合同列表</div>
+        </div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="form-group col-sm-4">
+                    <label for="inputSearchCode" class="col-md-4 control-label">合同编号</label>
+                    <div class="col-md-8">
+                        <input id="inputSearchCode" type="text" class="form-control" placeholder="合同编号" />
+                    </div>
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="inputSearchOwner" class="col-md-4 control-label">甲方</label>
+                    <div class="col-md-8">
+                        <input id="inputSearchOwner" type="text" class="form-control" placeholder="甲方关键字" />
+                    </div> 
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="inputSearchAudithState" class="col-md-4 control-label">合同状态</label>
+                    <div class="col-md-8">
+                        <select id="inputSearchAudithState" class="form-control">
+                            <option value="">全部</option>
+                            <option value="0">未完成</option>
+                            <option value="100">已完成</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group text-center col-sm-12">
+                    <button class="btn btn-primary" onclick="SALECONTRACTLIST.searchProducts();">搜索</button>
+                </div>
+            </div>
+
+            <hr class="panel-wide-block" />
+            <div class="box">
+            </div>
+            <div class="table-primary">
+                <table class="table table-striped table-bordered" id="saleContractTbl">
+                    <thead>
+                    <tr>
+                        <th>合同编号</th>
+                        <th>甲方</th>
+                        <th>乙方联系人</th>
+                        <th>版权</th>
+                        <th>版权类型</th>
+                        <th>版权范围</th>
+                        <th>版权期限</th>
+                        <th>合同状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--<div th:replace="sale/contractModal :: contractModal"></div>-->
+
+</section>
+
+</body>
+<div layout:fragment="scripts">
+    <script type='text/javascript' th:src="@{/js/sale/sale-contract-list.js}"></script>
+</div>
+
+</html>
