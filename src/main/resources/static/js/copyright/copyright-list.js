@@ -7,6 +7,7 @@ $(document).ready(function(){
     COPYRIGHTLIST.initCopyrightTbl();
 
     $('#wizard-copyright').pxWizard();
+    $('.product-list-item').popover({});
 });
 
 COPYRIGHTLIST.initCopyrightTbl = function(){
