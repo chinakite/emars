@@ -27,3 +27,17 @@
 .emars-modal-body {
 
 }
+
+.form-btnbar {
+    border-top: 1px solid #ececec;
+    margin-top: 1em;
+    padding-top: 1em;
+}
+
+.form-btnbar-back {
+    line-height: 2.5em;
+}
+
+#addProductPanel {
+    border: none;
+}

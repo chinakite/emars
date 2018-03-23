@@ -224,3 +224,12 @@ COPYRIGHTLIST.showAddProductPanel = function() {
     $('#copyrightWizard').hide();
     $('#addProductPanel').show();
 }
+
+COPYRIGHTLIST.hideAddProductPanel = function() {
+    $('#copyrightWizard').show();
+    $('#addProductPanel').hide();
+}
+
+COPYRIGHTLIST.addProduct = function() {
+
+}
