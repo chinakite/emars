@@ -19,11 +19,15 @@
                     <label for="inputSearchCode">合同编号</label>
                     <input id="inputSearchCode" type="text" class="form-control" placeholder="合同编号" />
                 </div>
-                <div class="form-group">
-                    <label for="inputSearchOwner">甲方</label>
-                    <input id="inputSearchOwner" type="text" class="form-control" placeholder="甲方关键字" />
+                <div class="form-group m-l-1">
+                    <label for="inputSearchCode">作品名称</label>
+                    <input id="inputSearchProduct" type="text" class="form-control" placeholder="作品关键字" />
                 </div>
-                <button class="btn btn-primary" onclick="COPYRIGHTLIST.searchCopyrights();">搜索</button>
+                <div class="form-group m-l-1">
+                    <label for="inputSearchOwner">授权方</label>
+                    <input id="inputSearchOwner" type="text" class="form-control" placeholder="授权方关键字" />
+                </div>
+                <button class="btn btn-primary m-l-1" onclick="COPYRIGHTLIST.searchCopyrights();">搜索</button>
             </div>
             <hr class="panel-wide-block" />
             <div class="box">
@@ -36,13 +40,11 @@
                     <thead>
                     <tr>
                         <th>合同编号</th>
-                        <th>甲方</th>
-                        <th>乙方联系人</th>
-                        <th>版权</th>
-                        <th>版权类型</th>
-                        <th>版权范围</th>
-                        <th>版权期限</th>
-                        <th>审批状态</th>
+                        <th>合同类型</th>
+                        <th>授权方</th>
+                        <th>签约公司</th>
+                        <th>签约日期</th>
+                        <th>经办人</th>
                         <th>操作</th>
                     </tr>
                     </thead>

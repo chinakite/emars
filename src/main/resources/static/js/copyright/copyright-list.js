@@ -48,26 +48,19 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
                 "data": "code"
             },
             {
+                "data": "type"
+            },
+            {
                 "data": "owner"
             },
             {
                 "data": "buyerContact"
             },
             {
-                "render": function (data, type, full) {
-                    return full.privilegesText.replace(/,/g, '<br/>');
-                }
-            },
-            {
                 "data": "privilegeTypeText"
             },
             {
                 "data": "privilegeRangeText"
-            },
-            {
-                "render": function(data, type, full) {
-                    return full.privilegeDeadline + "年";
-                }
             },
             {
                 "render": function(data, type, full) {
@@ -99,46 +92,15 @@ COPYRIGHTLIST.popNewCopyrightModal = function () {
 }
 
 COPYRIGHTLIST.submitCopyright = function () {
-    var contractId = $('#inputContractId').val();
-    var totalPrice = $('#inputTotalPrice').val();
+    var contractId = $('#inputContactId').val();
+    var contractCode = $('#inputContactCode').val();
+    var contractType = $('#inputContactCode').val();
+    var owner = $('#inputGranter').val();
+    var buyer = $('#inputGrantee').val();
+    var signDate = $('#inputSignDate').val();
+    var operator = $('#inputOperator').val();
 
-    var priceEles = $('input[id^=inputPrice_]');
-    var idarr = [];
-    var pricearr = [];
-    for(var i=0; i<priceEles.length; i++) {
-        var ele = priceEles[i];
-        var prodId = $(ele).attr('rel');
-        idarr.push(prodId);
-        pricearr.push($(ele).val());
-    }
-    var contractProductIds = idarr.join(',');
-    var prices = pricearr.join(',');
 
-    var owner = $('#inputOwner').val();
-    var ownerContact = $('#inputOwnerContact').val();
-    var ownerContactPhone = $('#inputOwnerContactPhone').val();
-    var ownerContactAddress = $('#inputOwnerContactAddress').val();
-    var ownerContactEmail = $('#inputOwnerContactEmail').val();
-
-    var buyer = $('#inputBuyer').val();
-    var buyerContact = $('#inputBuyerContact').val();
-    var buyerContactPhone = $('#inputBuyerContactPhone').val();
-    var buyerContactAddress = $('#inputBuyerContactAddress').val();
-    var buyerContactEmail = $('#inputBuyerContactEmail').val();
-
-    var checkPrivgs = $('input[name=inputPrivileges]:checked');
-    var privgArr = [];
-    for(var j=0; j<checkPrivgs.length; j++) {
-        privgArr.push($(checkPrivgs[j]).val());
-    }
-    var privileges = privgArr.join(',');
-    var privilegeType = $('#inputPrivilegeType').val();
-    var privilegeRange = $('#inputPrivilegeRange').val();
-    var privilegeDeadline = $('#inputPrivilegeDeadline').val();
-
-    var bankAccountName = $('#inputBankAccountName').val();
-    var bankAccountNo = $('#inputBankAccountNo').val();
-    var bank = $('#inputBank').val();
 
     var type;
     if(contractId) {
@@ -232,4 +194,13 @@ COPYRIGHTLIST.hideAddProductPanel = function() {
 
 COPYRIGHTLIST.addProduct = function() {
 
+}
+
+COPYRIGHTLIST.removeProduct = function(obj) {
+    $(obj).parent().parent().remove();
+}
+
+COPYRIGHTLIST.editProduct = function(obj) {
+    $('#copyrightWizard').hide();
+    $('#addProductPanel').show();
 }

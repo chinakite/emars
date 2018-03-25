@@ -123,8 +123,8 @@
                                         <p class="list-group-item-text">刘柏骧（柳迦柔） | 10.6万 | 978-7-5653-0254-1 | 悬疑推理</p>
                                     </div>
                                     <div class="product-list-item-toolbar">
-                                        <a href="#" class="product-list-item-toolbar-btn bg-info m-r-1"><i class="fa fa-edit"></i></a>
-                                        <a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="PRODUCTCOMMONS.removeProduct(this);"><i class="fa fa-remove"></i></a>
+                                        <a href="#" class="product-list-item-toolbar-btn bg-info m-r-1" onclick="COPYRIGHTLIST.editProduct();"><i class="fa fa-edit"></i></a>
+                                        <a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="COPYRIGHTLIST.removeProduct(this);"><i class="fa fa-remove"></i></a>
                                     </div>
                                 </div>
                                 <div class="list-group-item">
@@ -235,20 +235,82 @@
                                 <label for="inputDesc" class="col-sm-2 control-label">授权种类</label>
                                 <div class="col-sm-10">
                                     <label class="custom-control custom-checkbox checkbox-inline">
-                                        <input type="checkbox" class="custom-control-input">
+                                        <input type="checkbox" class="custom-control-input"/>
                                         <span class="custom-control-indicator"></span>
-                                        1
+                                        音频改编权
                                     </label>
                                     <label class="custom-control custom-checkbox checkbox-inline">
-                                        <input type="checkbox" class="custom-control-input" checked>
+                                        <input type="checkbox" class="custom-control-input" checked="true"/>
                                         <span class="custom-control-indicator"></span>
-                                        2
+                                        广播权
                                     </label>
                                     <label class="custom-control custom-checkbox checkbox-inline">
-                                        <input type="checkbox" class="custom-control-input">
+                                        <input type="checkbox" class="custom-control-input"/>
                                         <span class="custom-control-indicator"></span>
-                                        3
+                                        信息网络传播权
                                     </label>
+                                    <label class="custom-control custom-checkbox checkbox-inline">
+                                        <input type="checkbox" class="custom-control-input"/>
+                                        <span class="custom-control-indicator"></span>
+                                        广播剧改编权
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputGrant" class="col-sm-4 control-label">转授权</label>
+                                <div class="col-sm-8">
+                                    <select id="inputGrant" class="form-control">
+                                        <option value="1">有</option>
+                                        <option value="0">无</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputCopyrightType" class="col-sm-4 control-label">授权方式</label>
+                                <div class="col-sm-8">
+                                    <select id="inputCopyrightType" class="form-control">
+                                        <option value="1">专有许可使用</option>
+                                        <option value="0">非专有许可使用</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputCopyrightPrice" class="col-sm-4 control-label">授权费用</label>
+                                <div class="col-sm-8">
+                                    <input id="inputCopyrightPrice" class="form-control" type="text"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputSettlementType" class="col-sm-4 control-label">是否分成</label>
+                                <div class="col-sm-8">
+                                    <select id="inputSettlementType" class="form-control">
+                                        <option value="1">是</option>
+                                        <option value="0">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputCopyrightBegin" class="col-sm-4 control-label">开始日期</label>
+                                <div class="col-sm-8">
+                                    <input id="inputCopyrightBegin" class="form-control" type="text"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputCopyrightEnd" class="col-sm-4 control-label">结束日期</label>
+                                <div class="col-sm-8">
+                                    <input id="inputCopyrightEnd" class="form-control" type="text"/>
                                 </div>
                             </div>
                         </div>
