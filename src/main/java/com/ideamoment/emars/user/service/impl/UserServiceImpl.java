@@ -199,4 +199,9 @@ public class UserServiceImpl implements UserService {
     public List<User> listExtMakers() {
         return userMapper.listExtMakers();
     }
+
+    @Override
+    public List<User> listEnabledUsers() {
+        return userMapper.listUsers(StatusType.ENABLED);
+    }
 }

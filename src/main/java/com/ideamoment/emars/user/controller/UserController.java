@@ -29,6 +29,13 @@ public class UserController {
         return dts;
     }
 
+    @RequestMapping(value="/enabledUsers", method=RequestMethod.GET)
+    public List<User> enabledUsers() {
+        List<User> users = userService.listEnabledUsers();
+        return users;
+    }
+
+
     @RequestMapping(value="/user", method=RequestMethod.POST)
     public JsonData<Boolean> addUser(User user) {
         boolean valid = validate(user);

@@ -8,6 +8,48 @@ $(document).ready(function(){
 
     $('#copyrightWizard').pxWizard();
     $('.product-list-item').popover({});
+
+    $('#inputPublishState').change(function(){
+        var pubState = $(this).val();
+        if(pubState == 0) {
+            $('#inputPress').hide();
+            $('#inputIsbn').hide();
+        }else{
+            $('#inputPress').show();
+            $('#inputIsbn').show();
+        }
+    });
+
+    $('#inputContactType').select2({
+        dropdownParent: $("#copyrightModal"),
+        minimumResultsForSearch: -1
+    });
+
+    $.get('/enabledUsers', {}, function(data){
+        var result = data;
+        if(result) {
+            var optionsHtml = '';
+            for(var i=0; i<result.length; i++) {
+                optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+            }
+            $('#inputOperator').html(optionsHtml);
+        }
+        $('#inputOperator').select2({
+            dropdownParent: $("#copyrightModal")
+        });
+    });
+
+    $('#inputSignDate').datepicker({
+        format: 'yyyy-mm-dd'
+    });
+
+    $('#inputCopyrightBegin').datepicker({
+        format: 'yyyy-mm-dd'
+    });
+
+    $('#inputCopyrightEnd').datepicker({
+        format: 'yyyy-mm-dd'
+    });
 });
 
 COPYRIGHTLIST.initCopyrightTbl = function(){
@@ -193,7 +235,25 @@ COPYRIGHTLIST.hideAddProductPanel = function() {
 }
 
 COPYRIGHTLIST.addProduct = function() {
-
+    var name = $('#inputName').val();
+    var author = $('#inputAuthor').val();
+    var authorPseudonym = $('#inputAuthorPseudonym').val();
+    var wordCount = $('#inputWordCount').val();
+    var subject = $('#inputSubject').val();
+    var publishState = $('#inputPublishState').val();
+    var press = $('#inputPress').val();
+    var isbn = $('#inputIsbn').val();
+    var privilege1 = $('#inputPrivilege1').prop('checked');
+    var privilege2 = $('#inputPrivilege2').prop('checked');
+    var privilege3 = $('#inputPrivilege3').prop('checked');
+    var privilege4 = $('#inputPrivilege4').prop('checked');
+    var grant = $('#inputGrant').val();
+    var copyrightType = $('#inputCopyrightType').val();
+    var copyrightPrice = $('#inputCopyrightPrice').val();
+    var settlementType = $('#inputSettlementType').val();
+    var copyrightBegin = $('#inputCopyrightBegin').val();
+    var copyrightEnd = $('#inputCopyrightEnd').val();
+    var desc = $('#inputDesc').val();
 }
 
 COPYRIGHTLIST.removeProduct = function(obj) {

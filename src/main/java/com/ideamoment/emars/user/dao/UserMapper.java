@@ -82,4 +82,8 @@ public interface UserMapper {
     @Select("SELECT * FROM T_USER WHERE C_ROLE like '%52%'")
     @ResultMap("userMap")
     List<User> listExtMakers();
+
+    @Select("SELECT * FROM T_USER WHERE C_STATUS = #{status}")
+    @ResultMap("userMap")
+    List<User> listUsers(@Param("status") String status);
 }

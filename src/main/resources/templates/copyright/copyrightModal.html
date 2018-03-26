@@ -46,7 +46,7 @@
                                 <div class="form-group">
                                     <label for="inputContactType" class="col-sm-4 control-label">合同类型</label>
                                     <div class="col-sm-8">
-                                        <select type="text" class="form-control" id="inputContactType" name="inputContactType">
+                                        <select class="form-control" id="inputContactType" name="inputContactType" data-minimum-results-for-search="Infinity">
                                             <option value="wz">文字</option>
                                             <option value="yp">音频</option>
                                             <option value="wzgb">文字广播</option>
@@ -91,7 +91,9 @@
                                 <div class="form-group">
                                     <label for="inputOperator" class="col-sm-2 control-label">经手人</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputOperator" name="inputOperator"/>
+                                        <select class="form-control" id="inputOperator" name="inputOperator">
+
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -190,7 +192,11 @@
                             <div class="form-group">
                                 <label for="inputWordCount" class="col-sm-4 control-label">字数</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputWordCount" name="inputWordCount"/>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="inputWordCount" name="inputWordCount"/>
+                                        <span class="input-group-addon">万字</span>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -235,22 +241,22 @@
                                 <label for="inputDesc" class="col-sm-2 control-label">授权种类</label>
                                 <div class="col-sm-10">
                                     <label class="custom-control custom-checkbox checkbox-inline">
-                                        <input type="checkbox" class="custom-control-input"/>
+                                        <input id="inputPrivilege1" type="checkbox" class="custom-control-input"/>
                                         <span class="custom-control-indicator"></span>
                                         音频改编权
                                     </label>
                                     <label class="custom-control custom-checkbox checkbox-inline">
-                                        <input type="checkbox" class="custom-control-input" checked="true"/>
+                                        <input id="inputPrivilege2" type="checkbox" class="custom-control-input" checked="true"/>
                                         <span class="custom-control-indicator"></span>
                                         广播权
                                     </label>
                                     <label class="custom-control custom-checkbox checkbox-inline">
-                                        <input type="checkbox" class="custom-control-input"/>
+                                        <input id="inputPrivilege3" type="checkbox" class="custom-control-input"/>
                                         <span class="custom-control-indicator"></span>
                                         信息网络传播权
                                     </label>
                                     <label class="custom-control custom-checkbox checkbox-inline">
-                                        <input type="checkbox" class="custom-control-input"/>
+                                        <input id="inputPrivilege4" type="checkbox" class="custom-control-input"/>
                                         <span class="custom-control-indicator"></span>
                                         广播剧改编权
                                     </label>
@@ -283,7 +289,11 @@
                             <div class="form-group">
                                 <label for="inputCopyrightPrice" class="col-sm-4 control-label">授权费用</label>
                                 <div class="col-sm-8">
-                                    <input id="inputCopyrightPrice" class="form-control" type="text"/>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">￥</span>
+                                        <input id="inputCopyrightPrice" class="form-control" type="text"/>
+                                        <span class="input-group-addon">.00</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

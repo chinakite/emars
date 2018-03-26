@@ -26,4 +26,6 @@ public interface UserService {
     String batchDeleteUser(String ids);
 
     List<User> listExtMakers();
+
+    List<User> listEnabledUsers();
 }
