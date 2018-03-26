@@ -4,6 +4,8 @@ var COPYRIGHTLIST = {};
 var copyrightTable;
 
 $(document).ready(function(){
+    var env = new nunjucks.Environment(new nunjucks.WebLoader('/'));
+
     COPYRIGHTLIST.initCopyrightTbl();
 
     $('#copyrightWizard').pxWizard();
@@ -26,15 +28,33 @@ $(document).ready(function(){
     });
 
     $.get('/enabledUsers', {}, function(data){
-        var result = data;
-        if(result) {
-            var optionsHtml = '';
-            for(var i=0; i<result.length; i++) {
-                optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+        if(data) {
+            if(data.code == '0') {
+                var result = data.data;
+                var optionsHtml = '';
+                for(var i=0; i<result.length; i++) {
+                    optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+                }
+                $('#inputOperator').html(optionsHtml);
             }
-            $('#inputOperator').html(optionsHtml);
         }
         $('#inputOperator').select2({
+            dropdownParent: $("#copyrightModal")
+        });
+    });
+
+    $.get('/system/textSubjects', {}, function(data){
+        if(data) {
+            if(data.code == '0') {
+                var result = data.data;
+                var optionsHtml = '';
+                for(var i=0; i<result.length; i++) {
+                    optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+                }
+                $('#inputSubject').html(optionsHtml);
+            }
+        }
+        $('#inputSubject').select2({
             dropdownParent: $("#copyrightModal")
         });
     });
@@ -254,6 +274,20 @@ COPYRIGHTLIST.addProduct = function() {
     var copyrightBegin = $('#inputCopyrightBegin').val();
     var copyrightEnd = $('#inputCopyrightEnd').val();
     var desc = $('#inputDesc').val();
+
+    var productItem = {
+        name : name,
+        author: author,
+        authorPseudonym: authorPseudonym,
+        wordCount: wordCount,
+        isbn: isbn
+    };
+
+    var productItemHtml = nunjucks.render('../js/copyright/copyright_product_listitem.tmpl', productItem);
+    var productItemObj = $(productItemHtml).popover();
+
+    $('#copyrightProductList').append(productItemObj);
+    COPYRIGHTLIST.hideAddProductPanel();
 }
 
 COPYRIGHTLIST.removeProduct = function(obj) {

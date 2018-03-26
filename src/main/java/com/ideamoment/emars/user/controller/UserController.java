@@ -30,9 +30,9 @@ public class UserController {
     }
 
     @RequestMapping(value="/enabledUsers", method=RequestMethod.GET)
-    public List<User> enabledUsers() {
+    public JsonData<List<User>> enabledUsers() {
         List<User> users = userService.listEnabledUsers();
-        return users;
+        return JsonData.success(users);
     }
 
 

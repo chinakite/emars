@@ -118,37 +118,8 @@
                                     <i class="fa fa-plus"></i>&nbsp;添加作品
                                 </button>
                             </div>
-                            <div class="list-group">
-                                <div class="list-group-item">
-                                    <div class="product-list-item-info">
-                                        <h4 class="list-group-item-heading">女刑警队长</h4>
-                                        <p class="list-group-item-text">刘柏骧（柳迦柔） | 10.6万 | 978-7-5653-0254-1 | 悬疑推理</p>
-                                    </div>
-                                    <div class="product-list-item-toolbar">
-                                        <a href="#" class="product-list-item-toolbar-btn bg-info m-r-1" onclick="COPYRIGHTLIST.editProduct();"><i class="fa fa-edit"></i></a>
-                                        <a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="COPYRIGHTLIST.removeProduct(this);"><i class="fa fa-remove"></i></a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="product-list-item-info">
-                                        <h4 class="list-group-item-heading">女刑警队长</h4>
-                                        <p class="list-group-item-text">刘柏骧（柳迦柔） | 10.6万 | 978-7-5653-0254-1 | 悬疑推理</p>
-                                    </div>
-                                    <div class="product-list-item-toolbar">
-                                        <a href="#" class="product-list-item-toolbar-btn bg-info m-r-1"><i class="fa fa-edit"></i></a>
-                                        <a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="PRODUCTCOMMONS.removeProduct(this);"><i class="fa fa-remove"></i></a>
-                                    </div>
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="product-list-item-info">
-                                        <h4 class="list-group-item-heading">女刑警队长</h4>
-                                        <p class="list-group-item-text">刘柏骧（柳迦柔） | 10.6万 | 978-7-5653-0254-1 | 悬疑推理</p>
-                                    </div>
-                                    <div class="product-list-item-toolbar">
-                                        <a href="#" class="product-list-item-toolbar-btn bg-info m-r-1"><i class="fa fa-edit"></i></a>
-                                        <a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="PRODUCTCOMMONS.removeProduct(this);"><i class="fa fa-remove"></i></a>
-                                    </div>
-                                </div>
+                            <div id="copyrightProductList" class="list-group">
+
                             </div>
 
                             <div class="panel-wide-block p-x-3 p-t-3 b-t-1 bg-white text-xs-right">
@@ -334,166 +305,12 @@
                         </div>
                         <div class="form-btnbar col-sm-12">
                             <a href="#" onclick="COPYRIGHTLIST.hideAddProductPanel();">&lt;&lt;&nbsp;返回</a>
-                            <button type="button" class="btn btn-primary pull-right" onclick="">确定</button>
+                            <button type="button" class="btn btn-primary pull-right" onclick="COPYRIGHTLIST.addProduct();">确定</button>
                         </div>
                         <div class="clearfix"></div>
                     </form>
                 </div>
-
-                                <!--<form class="form-horizontal" id="validation-form">-->
-                    <!--<input type="hidden" id="inputContractId"/>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputTotalPrice" class="col-sm-3 control-label">总价</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" id="inputTotalPrice" name="inputTotalPrice" placeholder="总价(元)" />-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputOwner" class="col-sm-3 control-label">甲方</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputOwner" id="inputOwner" placeholder="授权方"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputOwnerContact" class="col-sm-3 control-label">联系人</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputOwnerContact" id="inputOwnerContact" placeholder="授权方联系人"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputOwnerContactPhone" class="col-sm-3 control-label">联系电话</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputOwnerContactPhone" id="inputOwnerContactPhone" placeholder="授权方联系电话"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputOwnerContactAddress" class="col-sm-3 control-label">联系地址</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputOwnerContactAddress" id="inputOwnerContactAddress" placeholder="授权方联系地址"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputOwnerContactEmail" class="col-sm-3 control-label">电子邮箱</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputOwnerContactEmail" id="inputOwnerContactEmail" placeholder="授权方电子邮箱"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputBuyer" class="col-sm-3 control-label">乙方</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputBuyer" id="inputBuyer" placeholder="被授权方"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputBuyerContact" class="col-sm-3 control-label">联系人</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputBuyerContact" id="inputBuyerContact" placeholder="被授权方联系人"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputBuyerContactPhone" class="col-sm-3 control-label">联系电话</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputBuyerContactPhone" id="inputBuyerContactPhone" placeholder="被授权方联系电话"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputBuyerContactAddress" class="col-sm-3 control-label">联系地址</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputBuyerContactAddress" id="inputBuyerContactAddress" placeholder="被授权方联系地址"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputBuyerContactEmail" class="col-sm-3 control-label">电子邮箱</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputBuyerContactEmail" id="inputBuyerContactEmail" placeholder="被授权方电子邮箱"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label class="col-sm-3 control-label">授权种类</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<div class="checkbox">-->
-                                <!--<label for="audioEditPrg">-->
-                                    <!--<input id="audioEditPrg" name="audioEditPrg" type="checkbox" /> 音频改编权-->
-                                <!--</label>-->
-                            <!--</div>-->
-                            <!--<div class="checkbox">-->
-                                <!--<label for="broadcastPrg">-->
-                                    <!--<input id="broadcastPrg" name="broadcastPrg" type="checkbox" /> 广播权-->
-                                <!--</label>-->
-                            <!--</div>-->
-                            <!--<div class="checkbox">-->
-                                <!--<label for="netcastPrg">-->
-                                    <!--<input id="netcastPrg" name="netcastPrg" type="checkbox" /> 信息网络传播权-->
-                                <!--</label>-->
-                            <!--</div>-->
-                            <!--<div class="checkbox">-->
-                                <!--<label for="grantPrg">-->
-                                    <!--<input id="grantPrg" name="grantPrg" type="checkbox" /> 再许可授权-->
-                                <!--</label>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputPrivilegeType" class="col-sm-3 control-label">授权方式</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<select id="inputPrivilegeType" class="form-control">-->
-                                <!--<option value="0">专有许可使用</option>-->
-                                <!--<option value="1">非专有许可使用</option>-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputPrivilegeRange" class="col-sm-3 control-label">授权范围</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<select id="inputPrivilegeRange" class="form-control">-->
-                                <!--<option value="0">中国大陆地区</option>-->
-                                <!--<option value="1">中国大陆及港澳台地区</option>-->
-                                <!--<option value="2">全球</option>-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputPrivilegeDeadline" class="col-sm-3 control-label">授权期限</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<select id="inputPrivilegeDeadline" class="form-control">-->
-                                <!--<option value="1">一年</option>-->
-                                <!--<option value="2">二年</option>-->
-                                <!--<option value="3">三年</option>-->
-                                <!--<option value="4">四年</option>-->
-                                <!--<option value="5">五年</option>-->
-                                <!--<option value="6">六年</option>-->
-                                <!--<option value="7">七年</option>-->
-                                <!--<option value="8">八年</option>-->
-                                <!--<option value="9">九年</option>-->
-                                <!--<option value="10">十年</option>-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputBankAccountName" class="col-sm-3 control-label">账户名称</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputBankAccountName" id="inputBankAccountName" placeholder="收款方账户名称"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputBank" class="col-sm-3 control-label">开户银行</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputBank" id="inputBank" placeholder="收款方开户银行"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="inputAccountNo" class="col-sm-3 control-label">账号</label>-->
-                        <!--<div class="col-sm-8">-->
-                            <!--<input type="text" class="form-control" name="inputAccountNo" id="inputAccountNo" placeholder="收款账号"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</form>-->
             </div>
-            <!--<div class="modal-footer">-->
-                <!--<button type="button" class="btn" data-dismiss="modal">关闭</button>-->
-                <!--<button type="button" class="btn btn-primary" onclick="COPYRIGHTLIST.submitCopyright();">保存</button>-->
-            <!--</div>-->
         </div>
     </div>
 </div>
