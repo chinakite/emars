@@ -14,11 +14,11 @@ $(document).ready(function(){
     $('#inputPublishState').change(function(){
         var pubState = $(this).val();
         if(pubState == 0) {
-            $('#inputPress').hide();
-            $('#inputIsbn').hide();
+            $('#pressCol').hide();
+            $('#isbnCol').hide();
         }else{
-            $('#inputPress').show();
-            $('#inputIsbn').show();
+            $('#pressCol').show();
+            $('#isbnCol').show();
         }
     });
 
@@ -259,7 +259,7 @@ COPYRIGHTLIST.addProduct = function() {
     var author = $('#inputAuthor').val();
     var authorPseudonym = $('#inputAuthorPseudonym').val();
     var wordCount = $('#inputWordCount').val();
-    var subject = $('#inputSubject').val();
+    var subjectData = $('#inputSubject').select2('data');
     var publishState = $('#inputPublishState').val();
     var press = $('#inputPress').val();
     var isbn = $('#inputIsbn').val();
@@ -275,16 +275,53 @@ COPYRIGHTLIST.addProduct = function() {
     var copyrightEnd = $('#inputCopyrightEnd').val();
     var desc = $('#inputDesc').val();
 
+    var privilegeText;
+    if(privilege1) {
+        privilegeText = '音频改编权';
+    }
+    if(privilege2) {
+        if(privilegeText) privilegeText += '、';
+        privilegeText += '广播权';
+    }
+    if(privilege3) {
+        if(privilegeText) privilegeText += '、';
+        privilegeText += '信息网络传播权';
+    }
+    if(privilege4) {
+        if(privilegeText) privilegeText += '、';
+        privilegeText += '广播剧改编权';
+    }
+
     var productItem = {
         name : name,
         author: author,
         authorPseudonym: authorPseudonym,
         wordCount: wordCount,
-        isbn: isbn
+        isbn: publishState == '1' ? isbn : "未出版",
+        subjectText: subjectData[0].text,
+        subjectId: subjectData[0].id,
+        press: press,
+        publishState: publishState,
+        publishStateText: publishState == '1' ? "已出版" : "未出版",
+        privilege1: privilege1,
+        privilege2: privilege2,
+        privilege3: privilege3,
+        privilege4: privilege4,
+        privilegeText: privilegeText,
+        grant: grant,
+        grantText: grant == '1' ? "有" : "无",
+        copyrightType: copyrightType,
+        copyrightTypeText: copyrightType == '1' ? '专有许可使用' : '非专有许可使用',
+        copyrightPrice: copyrightPrice,
+        settlementType: settlementType,
+        settlementTypeText: settlementType == '1' ? '是' : '否',
+        copyrightBegin: copyrightBegin,
+        copyrightEnd: copyrightEnd,
+        desc: desc
     };
 
     var productItemHtml = nunjucks.render('../js/copyright/copyright_product_listitem.tmpl', productItem);
-    var productItemObj = $(productItemHtml).popover();
+    var productItemObj = $(productItemHtml).popover().data('bindedData', productItem);
 
     $('#copyrightProductList').append(productItemObj);
     COPYRIGHTLIST.hideAddProductPanel();
@@ -295,6 +332,55 @@ COPYRIGHTLIST.removeProduct = function(obj) {
 }
 
 COPYRIGHTLIST.editProduct = function(obj) {
+    COPYRIGHTLIST.resetProduct();
+
+    var productItem = $(obj).parent().parent().data('bindedData');
+    $('#inputName').val(productItem.name);
+    $('#inputAuthor').val(productItem.author);
+    $('#inputAuthorPseudonym').val(productItem.authorPseudonym);
+    $('#inputWordCount').val(productItem.wordCount);
+    $('#inputSubject').select2('val', productItem.subjectId);
+    $('#inputPublishState').val(productItem.publishState);
+    $('#inputPress').val(productItem.press);
+    $('#inputIsbn').val(productItem.isbn);
+    if(productItem.privilege1)
+        $('#inputPrivilege1').prop('checked', true);
+    if(productItem.privilege2)
+        $('#inputPrivilege2').prop('checked', true);
+    if(productItem.privilege3)
+        $('#inputPrivilege3').prop('checked', true);
+    if(productItem.privilege4)
+        $('#inputPrivilege4').prop('checked', true);
+    $('#inputGrant').val(productItem.grant);
+    $('#inputCopyrightType').val(productItem.copyrightType);
+    $('#inputCopyrightPrice').val(productItem.copyrightPrice);
+    $('#inputSettlementType').val(productItem.settlementType);
+    $('#inputCopyrightBegin').val(productItem.copyrightBegin);
+    $('#inputCopyrightEnd').val(productItem.copyrightEnd);
+    $('#inputDesc').val(productItem.desc);
+
     $('#copyrightWizard').hide();
     $('#addProductPanel').show();
+}
+
+COPYRIGHTLIST.resetProduct = function() {
+    $('#inputName').val('');
+    $('#inputAuthor').val('');
+    $('#inputAuthorPseudonym').val('');
+    $('#inputWordCount').val('');
+    $('#inputSubject').select2('val', '1');
+    $('#inputPublishState').val('1');
+    $('#inputPress').val('');
+    $('#inputIsbn').val('');
+    $('#inputPrivilege1').prop('checked', false);
+    $('#inputPrivilege2').prop('checked', false);
+    $('#inputPrivilege3').prop('checked', false);
+    $('#inputPrivilege4').prop('checked', false);
+    $('#inputGrant').val('1');
+    $('#inputCopyrightType').val('1');
+    $('#inputCopyrightPrice').val('');
+    $('#inputSettlementType').val('0');
+    $('#inputCopyrightBegin').val('');
+    $('#inputCopyrightEnd').val('');
+    $('#inputDesc').val('');
 }
