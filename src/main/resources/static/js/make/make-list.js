@@ -8,6 +8,11 @@ $(document).ready(function(){
     MAKELIST.initProductTbl();
     MAKELIST.loadCategories();
     MAKELIST.loadExtMakers();
+    $('#makeContractWizard').pxWizard();
+    $('.select2-example').select2({
+        placeholder: 'Select value',
+        dropdownParent: $('#contractModal')
+    });
 });
 
 MAKELIST.initProductTbl = function(){
@@ -160,9 +165,9 @@ MAKELIST.popTaskModal = function (productId) {
     $('#taskModal').modal('show');
 }
 
-MAKELIST.popContractModal = function (productId) {
+MAKELIST.popContractModal = function () {
     MAKELIST.clearContractModal();
-    $('#inputProductId').val(productId);
+    // $('#inputProductId').val(productId);
     $('#contractModal').modal('show');
 }
 
