@@ -94,47 +94,47 @@ public class ProductController {
         author.setName(authorName);
         author.setPseudonym(authorPseudonym);
 
-        product.setAuthor(author);
-        if(!StringUtils.isEmpty(wordCount)) {
-            product.setWordCount(new BigDecimal(wordCount));
-        }
-        product.setSubjectId(subject);
-        product.setPublishState(publishState);
-        product.setPublishYear(publishYear);
-        product.setPress(press);
-        product.setFinishYear(finishYear);
-        product.setWebsite(website);
-        product.setSummary(summary);
-        product.setHasAudio(hasAudio);
-        product.setAudioCopyright(audioCopyright);
-        product.setAudioDesc(audioDesc);
-        product.setIsbn(isbn);
+//        product.setAuthor(author);
+//        if(!StringUtils.isEmpty(wordCount)) {
+//            product.setWordCount(new BigDecimal(wordCount));
+//        }
+//        product.setSubjectId(subject);
+//        product.setPublishState(publishState);
+//        product.setPublishYear(publishYear);
+//        product.setPress(press);
+//        product.setFinishYear(finishYear);
+//        product.setWebsite(website);
+//        product.setSummary(summary);
+//        product.setHasAudio(hasAudio);
+//        product.setAudioCopyright(audioCopyright);
+//        product.setAudioDesc(audioDesc);
+//        product.setIsbn(isbn);
 
-        List<ProductSample> sampleList = new ArrayList<ProductSample>();
-        if(samples != null) {
-            String[] sampleArray = samples.split(",");
-            for (String sampleUrl : sampleArray) {
-                ProductSample sample = new ProductSample();
-                sample.setFileUrl(sampleUrl);
-                sampleList.add(sample);
-            }
-            product.setSamples(sampleList);
-        }
-
-        if(logoUrl != null) {
-            product.setLogoUrl(logoUrl);
-        }
-
-        List<ProductCopyrightFile> cpFileList = new ArrayList<ProductCopyrightFile>();
-        if(copyrights != null) {
-            String[] cpFileArray = copyrights.split(",");
-            for(String copyrightFileUrl : cpFileArray) {
-                ProductCopyrightFile copyrightFile = new ProductCopyrightFile();
-                copyrightFile.setFileUrl(copyrightFileUrl);
-                cpFileList.add(copyrightFile);
-            }
-            product.setCopyrightFiles(cpFileList);
-        }
+//        List<ProductSample> sampleList = new ArrayList<ProductSample>();
+//        if(samples != null) {
+//            String[] sampleArray = samples.split(",");
+//            for (String sampleUrl : sampleArray) {
+//                ProductSample sample = new ProductSample();
+//                sample.setFileUrl(sampleUrl);
+//                sampleList.add(sample);
+//            }
+//            product.setSamples(sampleList);
+//        }
+//
+//        if(logoUrl != null) {
+//            product.setLogoUrl(logoUrl);
+//        }
+//
+//        List<ProductCopyrightFile> cpFileList = new ArrayList<ProductCopyrightFile>();
+//        if(copyrights != null) {
+//            String[] cpFileArray = copyrights.split(",");
+//            for(String copyrightFileUrl : cpFileArray) {
+//                ProductCopyrightFile copyrightFile = new ProductCopyrightFile();
+//                copyrightFile.setFileUrl(copyrightFileUrl);
+//                cpFileList.add(copyrightFile);
+//            }
+//            product.setCopyrightFiles(cpFileList);
+//        }
 
         String result = productService.saveProduct(product, submit, true, type);
         if(result.equals(SuccessCode.SUCCESS)) {

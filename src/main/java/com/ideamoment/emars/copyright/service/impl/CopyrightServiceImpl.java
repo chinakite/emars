@@ -6,6 +6,7 @@ import com.ideamoment.emars.copyright.dao.CopyrightContractProductMapper;
 import com.ideamoment.emars.copyright.dao.CopyrightMapper;
 import com.ideamoment.emars.copyright.service.CopyrightService;
 import com.ideamoment.emars.model.Copyright;
+import com.ideamoment.emars.model.CopyrightContract;
 import com.ideamoment.emars.model.CopyrightContractProduct;
 import com.ideamoment.emars.model.Product;
 import com.ideamoment.emars.model.enumeration.CopyrightContractState;
@@ -131,6 +132,17 @@ public class CopyrightServiceImpl implements CopyrightService {
     @Transactional
     public List<Copyright> listProductContracts(long productId) {
         return copyrightMapper.listProductContracts(productId);
+    }
+
+    @Override
+    public String createCopyrightContract(CopyrightContract copyrightContract) {
+        long userId = UserContext.getUserId();
+        copyrightContract.setCreator(userId);
+        copyrightContract.setCreateTime(new Date());
+
+        
+
+        return null;
     }
 
     private synchronized String createCode(Copyright cc) {

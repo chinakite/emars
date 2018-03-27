@@ -1,18 +1,16 @@
 package com.ideamoment.emars.copyright.controller;
 
-import com.ideamoment.emars.constants.ErrorCode;
-import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.copyright.service.CopyrightService;
 import com.ideamoment.emars.model.Copyright;
+import com.ideamoment.emars.model.CopyrightContract;
 import com.ideamoment.emars.utils.DataTableSource;
 import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigDecimal;
 
 /**
  * Created by yukiwang on 2018/2/24.
@@ -50,70 +48,57 @@ public class CopyrightController {
 
     @RequestMapping(value = "/createCopyrightContract", method = RequestMethod.POST)
     public JsonData<String> createCopyrightContract(
-            Long contractId,
-            String totalPrice,
-            long[] contractProductIds,
-            String prices,
-            String owner,
-            String ownerContact,
-            String ownerContactPhone,
-            String ownerContactAddress,
-            String ownerContactEmail,
-            String buyer,
-            String buyerContact,
-            String buyerContactPhone,
-            String buyerContactAddress,
-            String buyerContactEmail,
-            String privileges,
-            String privilegeType,
-            String privilegeRange,
-            String privilegeDeadline,
-            String bankAccountName,
-            String bank,
-            String bankAccountNo,
-            int submit,
-            String type
+            @RequestBody CopyrightContract copyrightContract
     ) {
-        Copyright cc = null;
-        if(contractId == null) {
-            cc = new Copyright();
-        }else{
-            cc = copyrightService.findCopyright(contractId);
+        System.out.println("aaaaa");
 
+        if(copyrightContract.getId() > 0) {
+
+        }else{
+//            copyrightService
         }
 
-        cc.setTotalPrice(new BigDecimal(totalPrice));
-        cc.setOwner(owner);
-        cc.setOwnerContact(ownerContact);
-        cc.setOwnerContactAddress(ownerContactAddress);
-        cc.setOwnerContactEmail(ownerContactEmail);
-        cc.setOwnerContactPhone(ownerContactPhone);
-
-        cc.setBuyer(buyer);
-        cc.setBuyerContact(buyerContact);
-        cc.setBuyerContactAddress(buyerContactAddress);
-        cc.setBuyerContactEmail(buyerContactEmail);
-        cc.setBuyerContactPhone(buyerContactPhone);
-
-        cc.setPrivileges(privileges);
-        cc.setPrivilegeType(privilegeType);
-        cc.setPrivilegeRange(privilegeRange);
-        cc.setPrivilegeDeadline(privilegeDeadline);
-
-        cc.setBank(bank);
-        cc.setBankAccountName(bankAccountName);
-        cc.setBankAccountNo(bankAccountNo);
-
-        long[] productIdArr = contractProductIds;
-        String[] priceArr = prices.split(",");
-
-        String result = copyrightService.saveCopyrightContract(cc, productIdArr, priceArr, submit, type);
-
-        if(result.equals(SuccessCode.SUCCESS)) {
-            return JsonData.SUCCESS;
-        }else{
-            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
-        }
+        return JsonData.SUCCESS;
+//        Copyright cc = null;
+//        if(contractId == null) {
+//            cc = new Copyright();
+//        }else{
+//            cc = copyrightService.findCopyright(contractId);
+//
+//        }
+//
+//        cc.setTotalPrice(new BigDecimal(totalPrice));
+//        cc.setOwner(owner);
+//        cc.setOwnerContact(ownerContact);
+//        cc.setOwnerContactAddress(ownerContactAddress);
+//        cc.setOwnerContactEmail(ownerContactEmail);
+//        cc.setOwnerContactPhone(ownerContactPhone);
+//
+//        cc.setBuyer(buyer);
+//        cc.setBuyerContact(buyerContact);
+//        cc.setBuyerContactAddress(buyerContactAddress);
+//        cc.setBuyerContactEmail(buyerContactEmail);
+//        cc.setBuyerContactPhone(buyerContactPhone);
+//
+//        cc.setPrivileges(privileges);
+//        cc.setPrivilegeType(privilegeType);
+//        cc.setPrivilegeRange(privilegeRange);
+//        cc.setPrivilegeDeadline(privilegeDeadline);
+//
+//        cc.setBank(bank);
+//        cc.setBankAccountName(bankAccountName);
+//        cc.setBankAccountNo(bankAccountNo);
+//
+//        long[] productIdArr = contractProductIds;
+//        String[] priceArr = prices.split(",");
+//
+//        String result = copyrightService.saveCopyrightContract(cc, productIdArr, priceArr, submit, type);
+//
+//        if(result.equals(SuccessCode.SUCCESS)) {
+//            return JsonData.SUCCESS;
+//        }else{
+//            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+//        }
 
     }
 

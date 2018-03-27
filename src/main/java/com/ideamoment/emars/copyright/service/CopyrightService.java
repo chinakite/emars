@@ -1,6 +1,7 @@
 package com.ideamoment.emars.copyright.service;
 
 import com.ideamoment.emars.model.Copyright;
+import com.ideamoment.emars.model.CopyrightContract;
 import com.ideamoment.emars.utils.Page;
 
 import java.util.List;
@@ -17,5 +18,7 @@ public interface CopyrightService {
     String saveCopyrightContract(Copyright cc, long[] productIdArr, String[] priceArr, int submit, String type);
 
     List<Copyright> listProductContracts(long productId);
+
+    String createCopyrightContract(CopyrightContract copyrightContract);
 
 }

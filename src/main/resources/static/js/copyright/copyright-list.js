@@ -9,6 +9,11 @@ $(document).ready(function(){
     COPYRIGHTLIST.initCopyrightTbl();
 
     $('#copyrightWizard').pxWizard();
+    $('#copyrightWizard').on('finish.px.wizard', function(_e) {
+        COPYRIGHTLIST.submitCopyright(_e);
+    });
+
+
     $('.product-list-item').popover({});
 
     $('#inputPublishState').change(function(){
@@ -153,61 +158,79 @@ COPYRIGHTLIST.popNewCopyrightModal = function () {
     $('#copyrightModal').modal('show');
 }
 
-COPYRIGHTLIST.submitCopyright = function () {
+COPYRIGHTLIST.submitCopyright = function (_e) {
     var contractId = $('#inputContactId').val();
     var contractCode = $('#inputContactCode').val();
-    var contractType = $('#inputContactCode').val();
-    var owner = $('#inputGranter').val();
-    var buyer = $('#inputGrantee').val();
+    var contractType = $('#inputContactType').val();
+    var granter = $('#inputGranter').val();
+    var grantee = $('#inputGrantee').val();
     var signDate = $('#inputSignDate').val();
     var operator = $('#inputOperator').val();
+    var projectCode = $('#inputProjectCode').val();
 
+    var productObjs = $('.product-list-item');
 
-
-    var type;
-    if(contractId) {
-        type = "1";
-    }else {
-        type = "0";
+    var products = [];
+    for(var i=0; i<productObjs.length; i++) {
+        var productItem = $(productObjs[i]).data('bindedData');
+        products[i] = productItem;
     }
 
-    $.post(
-        "/copyright/createCopyrightContract",
-        {
-            'contractId': contractId,
-            'totalPrice': totalPrice,
-            'contractProductIds' : contractProductIds,
-            'prices': prices,
-            'owner': owner,
-            'ownerContact': ownerContact,
-            'ownerContactPhone': ownerContactPhone,
-            'ownerContactAddress': ownerContactAddress,
-            'ownerContactEmail': ownerContactEmail,
-            'buyer': buyer,
-            'buyerContact': buyerContact,
-            'buyerContactPhone': buyerContactPhone,
-            'buyerContactAddress': buyerContactAddress,
-            'buyerContactEmail': buyerContactEmail,
-            'privileges': privileges,
-            'privilegeType': privilegeType,
-            'privilegeRange': privilegeRange,
-            'privilegeDeadline': privilegeDeadline,
-            'bankAccountName': bankAccountName,
-            'bankAccountNo': bankAccountNo,
-            'bank': bank,
-            'submit': 1,
-            'type': type
-        },
-        function(data) {
+    console.log(products);
+    var postData = {
+        'id': contractId,
+        'contractCode': contractCode,
+        'contractType' : contractType,
+        'granter': granter,
+        'grantee': grantee,
+        'signDate': signDate,
+        'operator': operator,
+        'projectCode': projectCode,
+        'products': products
+    };
+
+    $.ajax({
+        url: "/copyright/createCopyrightContract",
+        type: "POST",
+        data: JSON.stringify(postData),
+        dataType: "json",
+        contentType: "application/json",
+        success: function(data) {
             if(data.code == '0') {
                 EMARS_COMMONS.showSuccess("合同保存成功！");
                 $('#copyrightModal').modal('hide');
                 COPYRIGHTLIST.refreshAuthorTbl();
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
+                _e.preventDefault();
             }
         }
-    );
+    });
+
+    // $.post(
+    //     "/copyright/createCopyrightContract",
+    //     {
+    //         'contractId': contractId,
+    //         'contractCode': contractCode,
+    //         'contractType' : contractType,
+    //         'granter': granter,
+    //         'grantee': grantee,
+    //         'signDate': signDate,
+    //         'operator': operator,
+    //         'projectCode': projectCode,
+    //         'products': products
+    //     },
+    //     function(data) {
+    //         if(data.code == '0') {
+    //             EMARS_COMMONS.showSuccess("合同保存成功！");
+    //             $('#copyrightModal').modal('hide');
+    //             COPYRIGHTLIST.refreshAuthorTbl();
+    //         }else{
+    //             EMARS_COMMONS.showError(data.code, data.msg);
+    //             _e.preventDefault();
+    //         }
+    //     }
+    // );
 }
 
 
@@ -216,28 +239,16 @@ COPYRIGHTLIST.searchCopyrights = function () {
 }
 
 COPYRIGHTLIST.clearCopyrightModal = function () {
-    $("#inputContractId").val('');
-    $("#inputTotalPrice").val('');
-    $("#inputOwner").val('');
-    $("#inputOwnerContact").val('');
-    $("#inputOwnerContactPhone").val('');
-    $("#inputOwnerContactAddress").val('');
-    $("#inputOwnerContactEmail").val('');
-    $("#inputBuyer").val('');
-    $("#inputBuyerContact").val('');
-    $("#inputBuyerContactPhone").val('');
-    $("#inputBuyerContactAddress").val('');
-    $("#inputBuyerContactEmail").val('');
-    $("#audioEditPrg").prop('checked', false);
-    $("#broadcastPrg").prop('checked', false);
-    $("#netcastPrg").prop('checked', false);
-    $("#grantPrg").prop('checked', false);
-    $("#inputPrivilegeType option:first").prop("selected", 'selected');
-    $("#inputPrivilegeRange option:first").prop("selected", 'selected');
-    $("#inputPrivilegeDeadline option:first").prop("selected", 'selected');
-    $("#inputBankAccountName").val('');
-    $("#inputBank").val('');
-    $("#inputAccountNo").val('');
+    $("#inputContactCode").val('');
+    $("#inputContactType").val('wz').trigger('change');
+    $("#inputGranter").val('');
+    $("#inputGrantee").val('');
+    $("#inputSignDate").val('');
+    $("#inputSignMonth").text('');
+    $("#inputOperator").val('1').trigger('change');
+    $("#inputProjectCode").val('');
+    COPYRIGHTLIST.resetProduct();
+    $('#copyrightWizard').pxWizard('reset');
 }
 
 COPYRIGHTLIST.refreshAuthorTbl = function () {
@@ -245,6 +256,7 @@ COPYRIGHTLIST.refreshAuthorTbl = function () {
 }
 
 COPYRIGHTLIST.showAddProductPanel = function() {
+    COPYRIGHTLIST.resetProduct();
     $('#copyrightWizard').hide();
     $('#addProductPanel').show();
 }

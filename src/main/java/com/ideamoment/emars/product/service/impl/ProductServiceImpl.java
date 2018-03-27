@@ -112,30 +112,30 @@ public class ProductServiceImpl implements ProductService{
 
         Date curTime = new Date();
 
-        Author author = product.getAuthor();
-        Author productAuthor = findOrinsertAuthor(author.getName(), author.getPseudonym());
-        if(productAuthor == null) {
-            return ErrorCode.PRODUCT_AUTHOR_ERROR;
-        }
-        product.setAuthorId(productAuthor.getId());
+//        Author author = product.getAuthor();
+//        Author productAuthor = findOrinsertAuthor(author.getName(), author.getPseudonym());
+//        if(productAuthor == null) {
+//            return ErrorCode.PRODUCT_AUTHOR_ERROR;
+//        }
+//        product.setAuthorId(productAuthor.getId());
 
         product.setModifier(UserContext.getUserId());
         product.setModifyTime(curTime);
 
-        product.setType(ProductType.TEXT);
-        if("1".equals(submit)) {
-            if(withoutEva) {
-                product.setState(ProductState.NEW_WITHOUT_EVA);
-            }else{
-                product.setState(ProductState.DRAFT);
-            }
-        }else {
-            if(withoutEva) {
-                product.setState(ProductState.NEW_WITHOUT_EVA);
-            }else{
-                product.setState(ProductState.APPROVE_WAITING);
-            }
-        }
+//        product.setType(ProductType.TEXT);
+//        if("1".equals(submit)) {
+//            if(withoutEva) {
+//                product.setState(ProductState.NEW_WITHOUT_EVA);
+//            }else{
+//                product.setState(ProductState.DRAFT);
+//            }
+//        }else {
+//            if(withoutEva) {
+//                product.setState(ProductState.NEW_WITHOUT_EVA);
+//            }else{
+//                product.setState(ProductState.APPROVE_WAITING);
+//            }
+//        }
 
         if(("0").equals(type)) {
             product.setCreateTime(curTime);
@@ -145,13 +145,13 @@ public class ProductServiceImpl implements ProductService{
             ret = productMapper.updateProduct(product);
         }
 
-        List<ProductSample> samples = product.getSamples();
-        if(samples != null) {
-            for (ProductSample sample : samples) {
-                sample.setProductId(product.getId());
-                ret = productSampleMapper.insertProductSimpleMapper(sample);
-            }
-        }
+//        List<ProductSample> samples = product.getSamples();
+//        if(samples != null) {
+//            for (ProductSample sample : samples) {
+//                sample.setProductId(product.getId());
+//                ret = productSampleMapper.insertProductSimpleMapper(sample);
+//            }
+//        }
 
         return resultString(ret);
     }
@@ -177,12 +177,12 @@ public class ProductServiceImpl implements ProductService{
             return ErrorCode.PRODUCT_DUPLICATED;
         }
 
-        if(product.getIsbn() != null && product.getIsbn().trim().length() > 0) {
-            prods = productMapper.checkIsbnDuplicated(product.getIsbn(), id);
-            if(prods != null) {
-                return ErrorCode.ISBN_DUPLICATED;
-            }
-        }
+//        if(product.getIsbn() != null && product.getIsbn().trim().length() > 0) {
+//            prods = productMapper.checkIsbnDuplicated(product.getIsbn(), id);
+//            if(prods != null) {
+//                return ErrorCode.ISBN_DUPLICATED;
+//            }
+//        }
         return null;
     }
 

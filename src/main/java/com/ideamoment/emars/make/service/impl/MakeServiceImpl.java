@@ -117,7 +117,7 @@ public class MakeServiceImpl implements MakeService {
 
             long productId = makeContract.getProductId();
             Product product = productMapper.findProduct(productId);
-            product.setState(ProductState.MK_CONTRACT);
+//            product.setState(ProductState.MK_CONTRACT);
             product.setModifier(userId);
             product.setModifyTime(curDate);
             productMapper.updateProduct(product);
