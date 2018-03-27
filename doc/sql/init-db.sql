@@ -48,6 +48,39 @@ CREATE TABLE `t_author` (
   PRIMARY KEY (`C_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `t_copyright` (
+  `c_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `c_code` varchar(20) NOT NULL,
+  `c_type` varchar(2) NOT NULL,
+  `c_granter` varchar(256) NOT NULL,
+  `c_grantee` varchar(256) NOT NULL,
+  `c_signdate` date NOT NULL,
+  `c_operator` bigint(20) NOT NULL,
+  `c_project_code` varchar(20) DEFAULT NULL,
+  `c_creator` bigint(20) NOT NULL,
+  `c_createtime` datetime NOT NULL,
+  `c_modifier` bigint(20) DEFAULT NULL,
+  `c_modifytime` datetime DEFAULT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `t_product_info` (
+  `c_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `c_name` varchar(256) NOT NULL,
+  `c_author_id` bigint(20) DEFAULT NULL,
+  `c_wordcount` varchar(10) DEFAULT NULL,
+  `c_subject_id` bigint(20) DEFAULT NULL,
+  `c_publish_state` varchar(2) DEFAULT NULL,
+  `c_isbn` varchar(20) DEFAULT NULL,
+  `c_press` varchar(128) DEFAULT NULL,
+  `c_desc` varchar(512) DEFAULT NULL,
+  `c_creator` bigint(20) NOT NULL,
+  `c_createtime` datetime NOT NULL,
+  `c_modifier` bigint(20) DEFAULT NULL,
+  `c_modifytime` datetime DEFAULT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `t_copyright_contract` (
   `C_ID` bigint(32) NOT NULL AUTO_INCREMENT,
   `C_CODE` varchar(20) DEFAULT NULL,
