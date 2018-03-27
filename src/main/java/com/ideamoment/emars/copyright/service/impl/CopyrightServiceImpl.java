@@ -140,9 +140,11 @@ public class CopyrightServiceImpl implements CopyrightService {
         copyrightContract.setCreator(userId);
         copyrightContract.setCreateTime(new Date());
 
-        
+        copyrightMapper.insertCopyrightContract(copyrightContract);
 
-        return null;
+
+
+        return "success";
     }
 
     private synchronized String createCode(Copyright cc) {

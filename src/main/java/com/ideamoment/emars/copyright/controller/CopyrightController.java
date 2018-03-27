@@ -55,7 +55,7 @@ public class CopyrightController {
         if(copyrightContract.getId() > 0) {
 
         }else{
-//            copyrightService
+            copyrightService.createCopyrightContract(copyrightContract);
         }
 
         return JsonData.SUCCESS;

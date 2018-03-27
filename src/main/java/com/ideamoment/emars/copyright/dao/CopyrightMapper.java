@@ -1,6 +1,7 @@
 package com.ideamoment.emars.copyright.dao;
 
 import com.ideamoment.emars.model.Copyright;
+import com.ideamoment.emars.model.CopyrightContract;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -112,4 +113,6 @@ public interface CopyrightMapper {
 
     List<Copyright> listProductContracts(@Param("productId") long productId);
 
+    @Insert("insert into t_copyright (c_code, c_type, c_granter, c_grantee, c_signdate, c_operator, c_project_code, c_creator, c_createtime, c_modifier, c_modifytime)values(#{contractCode}, #{contractType}, #{granter}, #{grantee}, #{signDate}, #{operator}, #{projectCode}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
+    boolean insertCopyrightContract(CopyrightContract copyrightContract);
 }
