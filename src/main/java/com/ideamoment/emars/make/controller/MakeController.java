@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created by yukiwang on 2018/3/5.
@@ -47,6 +48,14 @@ public class MakeController {
         Page<ProductInfo> products = makeService.pageProducts(condition, start, length);
         DataTableSource<ProductInfo> dts = convertProductsToDataTableSource(draw, products);
         return dts;
+    }
+
+    @RequestMapping(value = "/products", method = RequestMethod.GET)
+    public List<ProductResultVo> products(
+    ) {
+        ProductQueryVo condition = new ProductQueryVo();
+        List<ProductResultVo> products = makeService.listProducts(condition);
+        return products;
     }
 
     @RequestMapping(value = "/makeTask", method = RequestMethod.POST)

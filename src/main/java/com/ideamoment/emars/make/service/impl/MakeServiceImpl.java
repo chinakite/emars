@@ -134,6 +134,12 @@ public class MakeServiceImpl implements MakeService {
         return makeContractMapper.listContractDocs(contractId);
     }
 
+    @Override
+    public List<ProductResultVo> listProducts(ProductQueryVo condition) {
+        List<ProductResultVo> products = productMapper.listProducts(condition, 0, 1000000000);
+        return products;
+    }
+
     private synchronized String createCode(MakeContract mc) {
         Date curDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");

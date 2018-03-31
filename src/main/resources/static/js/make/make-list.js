@@ -8,12 +8,52 @@ $(document).ready(function(){
     MAKELIST.initProductTbl();
     MAKELIST.loadCategories();
     MAKELIST.loadExtMakers();
+    MAKELIST.loadProductList();
     $('#makeContractWizard').pxWizard();
-    $('.select2-example').select2({
+    $('#product-list-select').select2({
         placeholder: 'Select value',
-        dropdownParent: $('#contractModal')
+        dropdownParent: $('#contractModal'),
+        templateSelection: productItem
     });
 });
+
+MAKELIST.loadProductList = function() {
+    $.get(
+        "/make/products",
+        function(data) {
+            var result = data;
+            if(result) {
+                var optionsHtml = '';
+                for(var i=0; i<result.length; i++) {
+                    optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+                }
+                $('#product-list-select').html(optionsHtml);
+            }
+        }
+    )
+}
+
+function productItem(product) {
+    console.log(product);
+    $.get(
+        "/product/product",
+        {id: product.id},
+        function(data) {
+            var product = data.data;
+            var html = '';
+            html += '<div class="list-group-item">' +
+                '<div class="product-list-item-info">' +
+                '<h4 class="list-group-item-heading">' + product['name'] + '</h4>' +
+                '<p class="list-group-item-text">' + product['authorName'] + '（' + product['authorPseudonym'] +'） | 10.6万 | ' + product['isbn'] + ' | 悬疑推理</p>' +
+                '</div>' +
+                '<div class="product-list-item-toolbar">' +
+                '<a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="COPYRIGHTLIST.removeProduct(this);"><i class="fa fa-remove"></i></a>' +
+                '</div>' +
+                '</div>';
+            $("#product-list-selected").append(html);
+        }
+    )
+}
 
 MAKELIST.initProductTbl = function(){
     productTable = $('#productTbl').dataTable({

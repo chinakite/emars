@@ -85,68 +85,24 @@
 
                         </form>
                         <form class="wizard-pane" id="wizard-product">
-                            <select class="form-control select2-example" multiple="multiple" style="width: 100%">
-                                <optgroup label="Alaskan/Hawaiian Time Zone">
-                                    <option value="AK">Alaska</option>
-                                    <option value="HI">Hawaii</option>
-                                </optgroup>
-                                <optgroup label="Pacific Time Zone">
-                                    <option value="CA">California</option>
-                                    <option value="NV">Nevada</option>
-                                    <option value="OR">Oregon</option>
-                                    <option value="WA" selected="selected">Washington</option>
-                                </optgroup>
-                                <optgroup label="Mountain Time Zone">
-                                    <option value="AZ">Arizona</option>
-                                    <option value="CO">Colorado</option>
-                                    <option value="ID">Idaho</option>
-                                    <option value="MT">Montana</option>
-                                    <option value="NE">Nebraska</option>
-                                    <option value="NM">New Mexico</option>
-                                    <option value="ND">North Dakota</option>
-                                    <option value="UT">Utah</option>
-                                    <option value="WY">Wyoming</option>
-                                </optgroup>
-                                <optgroup label="Central Time Zone">
-                                    <option value="AL">Alabama</option>
-                                    <option value="AR">Arkansas</option>
-                                    <option value="IL">Illinois</option>
-                                    <option value="IA">Iowa</option>
-                                    <option value="KS">Kansas</option>
-                                    <option value="KY">Kentucky</option>
-                                    <option value="LA">Louisiana</option>
-                                    <option value="MN">Minnesota</option>
-                                    <option value="MS">Mississippi</option>
-                                    <option value="MO">Missouri</option>
-                                    <option value="OK">Oklahoma</option>
-                                    <option value="SD">South Dakota</option>
-                                    <option value="TX">Texas</option>
-                                    <option value="TN">Tennessee</option>
-                                    <option value="WI">Wisconsin</option>
-                                </optgroup>
-                                <optgroup label="Eastern Time Zone">
-                                    <option value="CT">Connecticut</option>
-                                    <option value="DE">Delaware</option>
-                                    <option value="FL">Florida</option>
-                                    <option value="GA">Georgia</option>
-                                    <option value="IN">Indiana</option>
-                                    <option value="ME">Maine</option>
-                                    <option value="MD">Maryland</option>
-                                    <option value="MA">Massachusetts</option>
-                                    <option value="MI">Michigan</option>
-                                    <option value="NH" selected="selected">New Hampshire</option>
-                                    <option value="NJ">New Jersey</option>
-                                    <option value="NY">New York</option>
-                                    <option value="NC">North Carolina</option>
-                                    <option value="OH">Ohio</option>
-                                    <option value="PA">Pennsylvania</option>
-                                    <option value="RI">Rhode Island</option>
-                                    <option value="SC">South Carolina</option>
-                                    <option value="VT">Vermont</option>
-                                    <option value="VA">Virginia</option>
-                                    <option value="WV">West Virginia</option>
-                                </optgroup>
-                            </select>
+                            <div class="form-group">
+                                <label for="product-list-select" class="col-sm-3 control-label">选着作品</label>
+                                <select id="product-list-select" class="form-control" multiple="multiple" style="width: 100%">
+
+                                </select>
+                            </div>
+                            <div class="list-group" id="product-list-selected">
+                                <div class="list-group-item">
+                                    <div class="product-list-item-info">
+                                        <h4 class="list-group-item-heading">女刑警队长</h4>
+                                        <p class="list-group-item-text">刘柏骧（柳迦柔） | 10.6万 | 978-7-5653-0254-1 | 悬疑推理</p>
+                                    </div>
+                                    <div class="product-list-item-toolbar">
+                                        <a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="COPYRIGHTLIST.removeProduct(this);"><i class="fa fa-remove"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="panel-wide-block p-x-3 p-t-3 b-t-1 bg-white text-xs-right">
                                 <button type="button" class="btn btn-default" data-wizard-action="prev">上一步</button>
                                 <button type="button" class="btn btn-primary" data-wizard-action="finish">保存</button>
