@@ -2,6 +2,7 @@ package com.ideamoment.emars.copyright.service.impl;
 
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
+import com.ideamoment.emars.copyright.CopyrightProductInfo;
 import com.ideamoment.emars.copyright.dao.CopyrightContractProductMapper;
 import com.ideamoment.emars.copyright.dao.CopyrightMapper;
 import com.ideamoment.emars.copyright.service.CopyrightService;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -140,7 +142,23 @@ public class CopyrightServiceImpl implements CopyrightService {
         copyrightContract.setCreator(userId);
         copyrightContract.setCreateTime(new Date());
 
+        ArrayList<CopyrightProductInfo> products = copyrightContract.getProducts();
+        for(CopyrightProductInfo product : products) {
+            String productName = product.getName();
+            String productIsbn = product.getIsbn();
+            Product existedProduct = productMapper.checkProductDuplicated(productName, null);
+            if(existedProduct != null) {
+                continue;
+            }
+            existedProduct = productMapper.checkIsbnDuplicated(productIsbn, null);
+            if(existedProduct != null) {
+                continue;
+            }
+        }
+
         copyrightMapper.insertCopyrightContract(copyrightContract);
+
+        
 
 
 

@@ -153,7 +153,7 @@ public interface ProductMapper {
             "</if>",
             "</script>"})
     @ResultMap("productMap")
-    Product checkProductDuplicated(@Param("name") String name, @Param("id") long id);
+    Product checkProductDuplicated(@Param("name") String name, @Param("id") Long id);
 
     @Select({"<script>",
             "SELECT * FROM t_product",
@@ -163,6 +163,6 @@ public interface ProductMapper {
             "</if>",
             "</script>"})
     @ResultMap("productMap")
-    Product checkIsbnDuplicated(@Param("isbn") String isbn, @Param("id") long id);
+    Product checkIsbnDuplicated(@Param("isbn") String isbn, @Param("id") Long id);
 
 }
