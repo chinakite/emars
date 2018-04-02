@@ -173,4 +173,11 @@ public class CopyrightProductInfo {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+
+    public String getPrivileges() {
+        return (privilege1 ? "1" : "0")
+                + (privilege2 ? "1" : "0")
+                + (privilege3 ? "1" : "0")
+                + (privilege4 ? "1" : "0");
+    }
 }
