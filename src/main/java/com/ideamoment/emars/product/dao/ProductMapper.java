@@ -1,6 +1,7 @@
 package com.ideamoment.emars.product.dao;
 
 import com.ideamoment.emars.model.Product;
+import com.ideamoment.emars.model.ProductInfo;
 import com.ideamoment.emars.model.ProductQueryVo;
 import com.ideamoment.emars.model.ProductResultVo;
 import org.apache.ibatis.annotations.*;
@@ -164,5 +165,12 @@ public interface ProductMapper {
             "</script>"})
     @ResultMap("productMap")
     Product checkIsbnDuplicated(@Param("isbn") String isbn, @Param("id") Long id);
+
+    @Insert("insert into t_product_info (`c_name`,`c_author_id`,`c_wordcount`,`c_subject_id`,`c_publish_state`,`c_isbn`,`c_press`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`)" +
+            "values" +
+            "(#{name}, #{authorId}, #{wordCount}, #{subjectId}, #{publishState}, #{isbn}, #{press}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})"
+    )
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    boolean insertProductInfo(ProductInfo productInfo);
 
 }

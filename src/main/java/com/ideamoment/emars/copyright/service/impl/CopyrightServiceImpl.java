@@ -1,15 +1,13 @@
 package com.ideamoment.emars.copyright.service.impl;
 
+import com.ideamoment.emars.author.dao.AuthorMapper;
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.copyright.CopyrightProductInfo;
 import com.ideamoment.emars.copyright.dao.CopyrightContractProductMapper;
 import com.ideamoment.emars.copyright.dao.CopyrightMapper;
 import com.ideamoment.emars.copyright.service.CopyrightService;
-import com.ideamoment.emars.model.Copyright;
-import com.ideamoment.emars.model.CopyrightContract;
-import com.ideamoment.emars.model.CopyrightContractProduct;
-import com.ideamoment.emars.model.Product;
+import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.model.enumeration.CopyrightContractState;
 import com.ideamoment.emars.model.enumeration.ProductState;
 import com.ideamoment.emars.product.dao.ProductMapper;
@@ -23,6 +21,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +39,9 @@ public class CopyrightServiceImpl implements CopyrightService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private AuthorMapper authorMapper;
 
     @Override
     @Transactional
@@ -137,7 +139,9 @@ public class CopyrightServiceImpl implements CopyrightService {
     }
 
     @Override
+    @Transactional
     public String createCopyrightContract(CopyrightContract copyrightContract) {
+        Date curDate = Calendar.getInstance().getTime();
         long userId = UserContext.getUserId();
         copyrightContract.setCreator(userId);
         copyrightContract.setCreateTime(new Date());
@@ -156,9 +160,50 @@ public class CopyrightServiceImpl implements CopyrightService {
             }
         }
 
+        for(CopyrightProductInfo product : products) {
+            ProductInfo productInfo = new ProductInfo();
+            productInfo.setName(product.getName());
+            productInfo.setDesc(product.getDesc());
+            productInfo.setIsbn(product.getIsbn());
+            productInfo.setPress(product.getPress());
+            productInfo.setPublishState(product.getPublishState());
+            productInfo.setSubjectId(product.getSubjectId());
+            productInfo.setWordCount(product.getWordCount());
+            productInfo.setCreator(UserContext.getUserId());
+            productInfo.setCreateTime(curDate);
+
+            //处理作者逻辑
+            String authorName = product.getAuthorName();
+            String authorPseudonym = product.getAuthorPseudonym();
+            Author author = null;
+            if(authorPseudonym != null) {
+                author = authorMapper.findAuthorByPseudonym(authorPseudonym);
+            }
+            if(author != null) {
+                productInfo.setAuthorId(author.getId());
+            }else{
+                author = authorMapper.findAuthorByName(authorName);
+                if(author != null) {
+                    productInfo.setAuthorId(author.getId());
+                }else{
+                    author = new Author();
+                    author.setName(authorName);
+                    author.setPseudonym(authorPseudonym);
+                    author.setCreator(UserContext.getUserId());
+                    author.setCreateTime(curDate);
+                    authorMapper.insertAuthor(author);
+
+                    productInfo.setAuthorId(author.getId());
+                }
+            }
+
+
+        }
+
+
         copyrightMapper.insertCopyrightContract(copyrightContract);
 
-        
+
 
 
 

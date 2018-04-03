@@ -22,6 +22,9 @@ public class CopyrightProductInfo {
     private String copyrightEnd;
     private String desc;
 
+    private Long copyrightId;
+    private Long productId;
+
     public String getName() {
         return name;
     }
@@ -179,5 +182,21 @@ public class CopyrightProductInfo {
                 + (privilege2 ? "1" : "0")
                 + (privilege3 ? "1" : "0")
                 + (privilege4 ? "1" : "0");
+    }
+
+    public Long getCopyrightId() {
+        return copyrightId;
+    }
+
+    public void setCopyrightId(Long copyrightId) {
+        this.copyrightId = copyrightId;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }

@@ -15,6 +15,7 @@ public interface AuthorMapper {
 
     @Insert("INSERT INTO t_author (#{author})")
     @Lang(SimpleInsertExtendedLanguageDriver.class)
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertAuthor(Author author);
 
     @Update("UPDATE t_author (#{author}) WHERE c_id = #{id}")
@@ -79,4 +80,12 @@ public interface AuthorMapper {
 
     @Select("SELECT if(count(c_id) > 0, true, false) from T_PRODUCT where C_AUTHOR_ID = #{id}")
     boolean existsProductsByAuthor(long id);
+
+    @Select("select * from t_author where c_pseudonym = #{pseudonym}")
+    @ResultMap("authorMap")
+    Author findAuthorByPseudonym(@Param("pseudonym") String pseudonym);
+
+    @Select("select * from t_author where c_name = #{name}")
+    @ResultMap("authorMap")
+    Author findAuthorByName(@Param("name") String name);
 }
