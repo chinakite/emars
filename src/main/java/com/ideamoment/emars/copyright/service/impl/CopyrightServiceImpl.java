@@ -3,7 +3,7 @@ package com.ideamoment.emars.copyright.service.impl;
 import com.ideamoment.emars.author.dao.AuthorMapper;
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
-import com.ideamoment.emars.copyright.CopyrightProductInfo;
+import com.ideamoment.emars.model.CopyrightProductInfo;
 import com.ideamoment.emars.copyright.dao.CopyrightContractProductMapper;
 import com.ideamoment.emars.copyright.dao.CopyrightMapper;
 import com.ideamoment.emars.copyright.service.CopyrightService;
@@ -161,16 +161,8 @@ public class CopyrightServiceImpl implements CopyrightService {
         }
 
         for(CopyrightProductInfo product : products) {
-            ProductInfo productInfo = new ProductInfo();
-            productInfo.setName(product.getName());
-            productInfo.setDesc(product.getDesc());
-            productInfo.setIsbn(product.getIsbn());
-            productInfo.setPress(product.getPress());
-            productInfo.setPublishState(product.getPublishState());
-            productInfo.setSubjectId(product.getSubjectId());
-            productInfo.setWordCount(product.getWordCount());
-            productInfo.setCreator(UserContext.getUserId());
-            productInfo.setCreateTime(curDate);
+            product.setCreator(UserContext.getUserId());
+            product.setCreateTime(curDate);
 
             //处理作者逻辑
             String authorName = product.getAuthorName();
@@ -180,11 +172,11 @@ public class CopyrightServiceImpl implements CopyrightService {
                 author = authorMapper.findAuthorByPseudonym(authorPseudonym);
             }
             if(author != null) {
-                productInfo.setAuthorId(author.getId());
+                product.setAuthorId(author.getId());
             }else{
                 author = authorMapper.findAuthorByName(authorName);
                 if(author != null) {
-                    productInfo.setAuthorId(author.getId());
+                    product.setAuthorId(author.getId());
                 }else{
                     author = new Author();
                     author.setName(authorName);
@@ -193,20 +185,17 @@ public class CopyrightServiceImpl implements CopyrightService {
                     author.setCreateTime(curDate);
                     authorMapper.insertAuthor(author);
 
-                    productInfo.setAuthorId(author.getId());
+                    product.setAuthorId(author.getId());
                 }
             }
-
-
+            productMapper.insertProductInfo(product);
+            product.setProductId(product.getId());
         }
-
-
         copyrightMapper.insertCopyrightContract(copyrightContract);
-
-
-
-
-
+        for(CopyrightProductInfo product : products) {
+            product.setCopyrightId(copyrightContract.getId());
+            copyrightContractProductMapper.insertCopyrightProduct(product);
+        }
         return "success";
     }
 

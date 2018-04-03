@@ -50,8 +50,6 @@ public class CopyrightController {
     public JsonData<String> createCopyrightContract(
             @RequestBody CopyrightContract copyrightContract
     ) {
-        System.out.println("aaaaa");
-
         if(copyrightContract.getId() > 0) {
 
         }else{

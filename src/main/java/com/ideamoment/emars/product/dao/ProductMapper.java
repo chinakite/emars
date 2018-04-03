@@ -1,7 +1,7 @@
 package com.ideamoment.emars.product.dao;
 
+import com.ideamoment.emars.model.CopyrightProductInfo;
 import com.ideamoment.emars.model.Product;
-import com.ideamoment.emars.model.ProductInfo;
 import com.ideamoment.emars.model.ProductQueryVo;
 import com.ideamoment.emars.model.ProductResultVo;
 import org.apache.ibatis.annotations.*;
@@ -171,6 +171,6 @@ public interface ProductMapper {
             "(#{name}, #{authorId}, #{wordCount}, #{subjectId}, #{publishState}, #{isbn}, #{press}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})"
     )
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    boolean insertProductInfo(ProductInfo productInfo);
+    boolean insertProductInfo(CopyrightProductInfo productInfo);
 
 }

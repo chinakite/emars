@@ -1,7 +1,5 @@
 package com.ideamoment.emars.model;
 
-import com.ideamoment.emars.copyright.CopyrightProductInfo;
-
 import java.util.ArrayList;
 
 public class CopyrightContract extends HistoriableEntity {

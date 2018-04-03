@@ -1,6 +1,8 @@
-package com.ideamoment.emars.copyright;
+package com.ideamoment.emars.model;
 
-public class CopyrightProductInfo {
+import com.ideamoment.emars.model.HistoriableEntity;
+
+public class CopyrightProductInfo extends HistoriableEntity {
 
     private String name;
     private String authorName;
@@ -24,6 +26,7 @@ public class CopyrightProductInfo {
 
     private Long copyrightId;
     private Long productId;
+    private Long authorId;
 
     public String getName() {
         return name;
@@ -198,5 +201,13 @@ public class CopyrightProductInfo {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 }
