@@ -112,26 +112,26 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
         },
         "columns": [
             {
-                "data": "code"
+                "data": "contractCode"
             },
             {
-                "data": "type"
+                "data": "contractTypeText"
             },
             {
-                "data": "owner"
+                "data": "granter"
             },
             {
-                "data": "buyerContact"
+                "data": "grantee"
             },
             {
-                "data": "privilegeTypeText"
+                "data": "signDate"
             },
             {
-                "data": "privilegeRangeText"
+                "data": "operatorName"
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="javascript:;" onclick="COPYRIGHTLIST.popCopyrightDetailModal(' + full.id + ')">查看</a>';
+                    var htmlText = '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popCopyrightDetailModal(' + full.id + ')">查看</a>';
                     return htmlText;
                 }
             }

@@ -45,13 +45,13 @@ public class CopyrightServiceImpl implements CopyrightService {
 
     @Override
     @Transactional
-    public Page<Copyright> listCopyrights(Copyright condition, int offset, int pageSize) {
-        long count = copyrightMapper.listCopyrightsCount(condition);
+    public Page<CopyrightContract> listCopyrights(CopyrightContract condition, int offset, int pageSize) {
+        long count = copyrightMapper.countCopyrights(condition);
         int currentPage = offset/pageSize + 1;
 
-        List<Copyright> authors = copyrightMapper.listCopyrights(condition, offset, pageSize);
+        List<CopyrightContract> authors = copyrightMapper.listCopyrights(condition, offset, pageSize);
 
-        Page<Copyright> result = new Page<Copyright>();
+        Page<CopyrightContract> result = new Page<CopyrightContract>();
         result.setCurrentPage(currentPage);
         result.setData(authors);
         result.setPageSize(pageSize);
@@ -62,8 +62,8 @@ public class CopyrightServiceImpl implements CopyrightService {
 
     @Override
     @Transactional
-    public Copyright findCopyright(long id) {
-        Copyright copyright = copyrightMapper.findCopyright(id);
+    public CopyrightContract findCopyright(long id) {
+        CopyrightContract copyright = copyrightMapper.findCopyright(id);
         return copyright;
     }
 

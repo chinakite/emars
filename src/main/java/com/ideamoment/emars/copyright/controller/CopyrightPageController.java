@@ -2,6 +2,7 @@ package com.ideamoment.emars.copyright.controller;
 
 import com.ideamoment.emars.copyright.service.CopyrightService;
 import com.ideamoment.emars.model.Copyright;
+import com.ideamoment.emars.model.CopyrightContract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,7 @@ public class CopyrightPageController {
 
     @RequestMapping(value = "/copyrightDetail")
     public String copyrightDetail(long id, Model model) {
-        Copyright copyright = copyrightService.findCopyright(id);
+        CopyrightContract copyright = copyrightService.findCopyright(id);
         model.addAttribute("contract", copyright);
 
         return "copyright/copyrightDetail";

@@ -40,55 +40,39 @@ public interface CopyrightMapper {
             "WHERE c_id = #{id}")
     boolean updateCopyright(Copyright copyright);
 
-    @Select("SELECT * FROM t_copyright_contract WHERE c_id = #{id}")
+    @Select("SELECT * FROM t_copyright WHERE c_id = #{id}")
     @Results(id = "copyrightMap", value = {
             @Result(property = "id", column = "c_id", id = true),
-            @Result(property = "code", column = "C_CODE"),
-            @Result(property = "owner", column = "C_OWNER"),
-            @Result(property = "ownerContact", column = "C_OWNER_CONTACT"),
-            @Result(property = "ownerContactPhone", column = "C_OWNER_CONTACT_PHONE"),
-            @Result(property = "ownerContactAddress", column = "C_OWNER_CONTACT_ADDRESS"),
-            @Result(property = "ownerContactEmail", column = "C_OWNER_CONTACT_EMAIL"),
-            @Result(property = "buyer", column = "C_BUYER"),
-            @Result(property = "buyerContact", column = "C_BUYER_CONTACT"),
-            @Result(property = "buyerContactPhone", column = "C_BUYER_CONTACT_PHONE"),
-            @Result(property = "buyerContactAddress", column = "C_BUYER_CONTACT_ADDRESS"),
-            @Result(property = "buyerContactEmail", column = "C_BUYER_CONTACT_EMAIL"),
-            @Result(property = "privileges", column = "C_PRIVILEGES"),
-            @Result(property = "privilegeType", column = "C_PRIVILEGE_TYPE"),
-            @Result(property = "privilegeRange", column = "C_PRIVILEGE_RANGE"),
-            @Result(property = "privilegeDeadline", column = "C_PRIVILEGE_DEADLINE"),
-            @Result(property = "bankAccountName", column = "C_BANK_ACCOUNT_NAME"),
-            @Result(property = "bankAccountNo", column = "C_BANK_ACCOUNT_NO"),
-            @Result(property = "bank", column = "C_BANK"),
-            @Result(property = "totalPrice", column = "C_TOTAL_PRICE"),
-            @Result(property = "auditState", column = "C_AUDIT_STATE"),
-            @Result(property = "finishTime", column = "C_FINISH_TIME"),
+            @Result(property = "contractCode", column = "C_CODE"),
+            @Result(property = "contractType", column = "C_TYPE"),
+            @Result(property = "granter", column = "C_GRANTER"),
+            @Result(property = "grantee", column = "C_GRANTEE"),
+            @Result(property = "signDate", column = "c_signdate"),
+            @Result(property = "operator", column = "C_operator"),
+            @Result(property = "projectCode", column = "c_project_code"),
+            @Result(property = "creator", column = "C_CREATOR"),
             @Result(property = "createTime", column = "C_CREATETIME"),
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME"),
-            @Result(property = "authorName", column = "AUTHORNAME"),
-            @Result(property = "subjectName", column = "SUBJECTNAME")
+            @Result(property = "operatorName", column = "C_NAME")
     })
-    Copyright findCopyright(@Param("id") long id);
+    CopyrightContract findCopyright(@Param("id") long id);
 
     @Select({"<script>",
-            "SELECT * FROM t_copyright_contract",
-            "WHERE c_id > 0",
-            "<if test='condition.code != null'>",
-            " AND c_code = #{condition.code}",
+            "SELECT t_copyright.*, t_user.c_name FROM t_copyright, t_user",
+            "WHERE t_copyright.c_id > 0",
+            "<if test='condition.contractCode != null'>",
+            " AND t_copyright.c_code = #{condition.contractCode}",
             "</if>",
-            "<if test='condition.owner != null'>",
-            " AND c_owner like concat(concat('%',#{condition.owner}),'%')",
+            "<if test='condition.granter != null'>",
+            " AND t_copyright.c_granter like concat(concat('%',#{condition.granter}),'%')",
             "</if>",
-            "<if test='condition.auditState != null'>",
-            " AND c_audit_state = #{condition.auditState}",
-            "</if>",
+            " AND t_copyright.c_operator = t_user.c_id",
             " ORDER BY C_MODIFYTIME DESC ",
             " LIMIT #{offset}, #{size}",
             "</script>"})
     @ResultMap("copyrightMap")
-    List<Copyright> listCopyrights(@Param("condition") Copyright condition, @Param("offset") int offset, @Param("size") int size);
+    List<CopyrightContract> listCopyrights(@Param("condition") CopyrightContract condition, @Param("offset") int offset, @Param("size") int size);
 
     @Select({"<script>",
             "SELECT COUNT(*) FROM t_copyright_contract",
@@ -104,6 +88,18 @@ public interface CopyrightMapper {
             "</if>",
             "</script>"})
     long listCopyrightsCount(Copyright condition);
+
+    @Select({"<script>",
+            "SELECT COUNT(*) FROM t_copyright",
+            "WHERE c_id > 0",
+            "<if test='contractCode != null'>",
+            " AND c_code = #{contractCode}",
+            "</if>",
+            "<if test='granter != null'>",
+            " AND c_granter like concat(concat('%',#{granter}),'%')",
+            "</if>",
+            "</script>"})
+    long countCopyrights(CopyrightContract condition);
 
     @Select("select C_CODE from T_COPYRIGHT_CONTRACT where C_CODE like concat(concat('%',#{code}),'%') order by C_CODE desc limit 0,1")
     String queryMaxContractCode(@Param("code") String code);

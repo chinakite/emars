@@ -11,9 +11,9 @@ import java.util.List;
  */
 public interface CopyrightService {
 
-    Page<Copyright> listCopyrights(Copyright condition, int offset, int pageSize);
+    Page<CopyrightContract> listCopyrights(CopyrightContract condition, int offset, int pageSize);
 
-    Copyright findCopyright(long id);
+    CopyrightContract findCopyright(long id);
 
     String saveCopyrightContract(Copyright cc, long[] productIdArr, String[] priceArr, int submit, String type);
 

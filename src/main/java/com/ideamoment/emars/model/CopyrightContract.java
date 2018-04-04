@@ -1,5 +1,7 @@
 package com.ideamoment.emars.model;
 
+import com.ideamoment.emars.model.enumeration.CopyrightType;
+
 import java.util.ArrayList;
 
 public class CopyrightContract extends HistoriableEntity {
@@ -10,6 +12,8 @@ public class CopyrightContract extends HistoriableEntity {
     private String signDate;
     private String operator;
     private String projectCode;
+
+    private String operatorName;
 
     private ArrayList<CopyrightProductInfo> products = new ArrayList<CopyrightProductInfo>();
 
@@ -75,5 +79,26 @@ public class CopyrightContract extends HistoriableEntity {
 
     public void setProducts(ArrayList<CopyrightProductInfo> products) {
         this.products = products;
+    }
+
+    public String getContractTypeText() {
+        if(CopyrightType.COPYRIGHT_WZ.equals(this.contractType)) {
+            return CopyrightType.COPYRIGHT_WZ_TEXT;
+        }else if(CopyrightType.COPYRIGHT_YP.equals(this.contractType)){
+            return CopyrightType.COPYRIGHT_YP_TEXT;
+        }else if(CopyrightType.COPYRIGHT_SP.equals(this.contractType)){
+            return CopyrightType.COPYRIGHT_SP_TEXT;
+        }else if(CopyrightType.COPYRIGHT_WZGB.equals(this.contractType)){
+            return CopyrightType.COPYRIGHT_WZGB_TEXT;
+        }
+        return "";
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 }

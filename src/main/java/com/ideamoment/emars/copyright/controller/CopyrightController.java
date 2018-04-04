@@ -23,7 +23,7 @@ public class CopyrightController {
     private CopyrightService copyrightService;
 
     @RequestMapping(value = "/copyrights", method = RequestMethod.GET)
-    public DataTableSource<Copyright> queryCopyrights(
+    public DataTableSource<CopyrightContract> queryCopyrights(
             int draw,
             int start,
             int length,
@@ -31,18 +31,18 @@ public class CopyrightController {
             String owner,
             String auditState
     ) {
-        Copyright condition = new Copyright();
-        condition.setCode(code);
-        condition.setOwner(owner);
-        condition.setAuditState(auditState);
-        Page<Copyright> copyrights = copyrightService.listCopyrights(condition, start, length);
-        DataTableSource<Copyright> dts = convertProductsToDataTableSource(draw, copyrights);
+        CopyrightContract condition = new CopyrightContract();
+//        condition.setCode(code);
+//        condition.setOwner(owner);
+//        condition.setAuditState(auditState);
+        Page<CopyrightContract> copyrights = copyrightService.listCopyrights(condition, start, length);
+        DataTableSource<CopyrightContract> dts = convertProductsToDataTableSource(draw, copyrights);
         return dts;
     }
 
     @RequestMapping(value = "/copyright", method = RequestMethod.GET)
     public JsonData findCopyright(long id) {
-        Copyright copyright = copyrightService.findCopyright(id);
+        CopyrightContract copyright = copyrightService.findCopyright(id);
         return JsonData.success(copyright);
     }
 
@@ -101,8 +101,8 @@ public class CopyrightController {
     }
 
 
-    private DataTableSource<Copyright> convertProductsToDataTableSource(int draw, Page<Copyright> productsPage) {
-        DataTableSource<Copyright> dts = new DataTableSource<Copyright>();
+    private DataTableSource<CopyrightContract> convertProductsToDataTableSource(int draw, Page<CopyrightContract> productsPage) {
+        DataTableSource<CopyrightContract> dts = new DataTableSource<CopyrightContract>();
 
         dts.setDraw(draw);
         dts.setRecordsTotal(productsPage.getTotalRecord());
