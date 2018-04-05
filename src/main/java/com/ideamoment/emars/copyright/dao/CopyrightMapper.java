@@ -2,6 +2,7 @@ package com.ideamoment.emars.copyright.dao;
 
 import com.ideamoment.emars.model.Copyright;
 import com.ideamoment.emars.model.CopyrightContract;
+import com.ideamoment.emars.model.Grantee;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -112,4 +113,7 @@ public interface CopyrightMapper {
     @Insert("insert into t_copyright (c_code, c_type, c_granter, c_grantee, c_signdate, c_operator, c_project_code, c_creator, c_createtime, c_modifier, c_modifytime)values(#{contractCode}, #{contractType}, #{granter}, #{grantee}, #{signDate}, #{operator}, #{projectCode}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertCopyrightContract(CopyrightContract copyrightContract);
+
+    @Select("select count(c_id) from t_copyright where c_grantee_id = #{granteeId}")
+    long countCopyrightsByGrantee(@Param("granteeId") long granteeId);
 }
