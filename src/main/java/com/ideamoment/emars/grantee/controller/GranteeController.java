@@ -19,7 +19,7 @@ public class GranteeController {
     private GranteeService granteeService;
 
     @RequestMapping(value = "/grantees", method = RequestMethod.GET)
-    public DataTableSource<Grantee> queryAuthors(int draw, int start, int length, String key) {
+    public DataTableSource<Grantee> queryGrantees(int draw, int start, int length, String key) {
         Page<Grantee> grantees = granteeService.listGrantees(start, length);
         DataTableSource<Grantee> dts = convertGranteesToDataTableSource(draw, grantees);
         return dts;

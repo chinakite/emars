@@ -1,21 +1,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
-<head th:include="layout/layout :: htmlhead('签约公司管理')"></head>
+<head th:include="layout/layout :: htmlhead('授权方管理')"></head>
 
 <body>
 <section layout:fragment="content">
     <div class="page-header">
-        <h1>签约公司管理 / <span class="text-muted font-weight-light">版权合同乙方的签订主体。</span></h1>
+        <h1>授权方管理 / <span class="text-muted font-weight-light">版权合同甲方的签订主体。</span></h1>
     </div>
 
     <div class="panel">
         <div class="panel-heading">
-            <div class="panel-title">签约公司列表</div>
+            <div class="panel-title">授权方列表</div>
         </div>
         <div class="panel-body">
             <div class="box">
-                <button type="button" class="btn" data-toggle="modal" onclick="GRANTEELIST.popNewGranteeModal();">
+                <button type="button" class="btn" data-toggle="modal" onclick="GRANTERLIST.popNewGranterModal();">
                     <i class="fa fa-plus"></i>&nbsp;新建
                 </button>
             </div>
@@ -24,6 +24,8 @@
                     <thead>
                     <tr>
                         <th>名称</th>
+                        <th>联系人</th>
+                        <th>联系电话</th>
                         <th>备注</th>
                         <th>操作</th>
                     </tr>
@@ -36,14 +38,14 @@
         </div>
     </div>
 
-    <div th:replace="grantee/granteeModal :: granteeModal"></div>
+    <div th:replace="granter/granterModal :: granterModal"></div>
 
 
 </section>
 
 </body>
 <div layout:fragment="scripts">
-    <script type='text/javascript' th:src="@{/js/grantee/grantee-list.js}"></script>
+    <script type='text/javascript' th:src="@{/js/granter/granter-list.js}"></script>
 </div>
 
 </html>

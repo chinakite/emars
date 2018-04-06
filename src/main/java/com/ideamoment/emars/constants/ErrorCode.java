@@ -52,6 +52,13 @@ public class ErrorCode {
     //签约公司不能被删除
     public static final String GRANTEE_CANNOT_DELETE = "G-0005";
 
+    //授权方已存在
+    public static final String GRANTER_EXISTS = "H-0003";
+    //授权方不存在
+    public static final String GRANTER_NOT_EXISTS = "H-0004";
+    //授权方不能被删除
+    public static final String GRANTER_CANNOT_DELETE = "H-0005";
+
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 
     static {
@@ -65,6 +72,9 @@ public class ErrorCode {
         ERROR_MSG.put(GRANTEE_EXISTS, "该签约公司已存在");
         ERROR_MSG.put(GRANTEE_NOT_EXISTS, "该签约公司不存在");
         ERROR_MSG.put(GRANTEE_CANNOT_DELETE, "该签约公司有关联的版权合同，无法删除");
+        ERROR_MSG.put(GRANTER_EXISTS, "该授权方已存在");
+        ERROR_MSG.put(GRANTER_NOT_EXISTS, "该授权方不存在");
+        ERROR_MSG.put(GRANTER_CANNOT_DELETE, "该授权方有关联的版权合同，无法删除");
     }
 
 }

@@ -116,4 +116,7 @@ public interface CopyrightMapper {
 
     @Select("select count(c_id) from t_copyright where c_grantee_id = #{granteeId}")
     long countCopyrightsByGrantee(@Param("granteeId") long granteeId);
+
+    @Select("select count(c_id) from t_copyright where c_granter_id = #{granterId}")
+    long countCopyrightsByGranter(@Param("granterId")long id);
 }
