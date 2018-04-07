@@ -47,7 +47,7 @@ public interface CopyrightMapper {
             @Result(property = "contractCode", column = "C_CODE"),
             @Result(property = "contractType", column = "C_TYPE"),
             @Result(property = "granter", column = "C_GRANTER"),
-            @Result(property = "grantee", column = "C_GRANTEE"),
+            @Result(property = "granteeId", column = "C_GRANTEE_ID"),
             @Result(property = "signDate", column = "c_signdate"),
             @Result(property = "operator", column = "C_operator"),
             @Result(property = "projectCode", column = "c_project_code"),
@@ -55,12 +55,13 @@ public interface CopyrightMapper {
             @Result(property = "createTime", column = "C_CREATETIME"),
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME"),
-            @Result(property = "operatorName", column = "C_NAME")
+            @Result(property = "operatorName", column = "operatorName"),
+            @Result(property = "grantee", column = "grantee")
     })
     CopyrightContract findCopyright(@Param("id") long id);
 
     @Select({"<script>",
-            "SELECT t_copyright.*, t_user.c_name FROM t_copyright, t_user",
+            "SELECT t_copyright.*, t_user.c_name as operatorName, t_grantee.c_name as grantee FROM t_copyright, t_user, t_grantee",
             "WHERE t_copyright.c_id > 0",
             "<if test='condition.contractCode != null'>",
             " AND t_copyright.c_code = #{condition.contractCode}",
@@ -69,6 +70,7 @@ public interface CopyrightMapper {
             " AND t_copyright.c_granter like concat(concat('%',#{condition.granter}),'%')",
             "</if>",
             " AND t_copyright.c_operator = t_user.c_id",
+            " AND t_copyright.c_grantee_id = t_grantee.c_id",
             " ORDER BY C_MODIFYTIME DESC ",
             " LIMIT #{offset}, #{size}",
             "</script>"})
@@ -110,7 +112,7 @@ public interface CopyrightMapper {
 
     List<Copyright> listProductContracts(@Param("productId") long productId);
 
-    @Insert("insert into t_copyright (c_code, c_type, c_granter, c_grantee, c_signdate, c_operator, c_project_code, c_creator, c_createtime, c_modifier, c_modifytime)values(#{contractCode}, #{contractType}, #{granter}, #{grantee}, #{signDate}, #{operator}, #{projectCode}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
+    @Insert("insert into t_copyright (c_code, c_type, c_granter, c_grantee_id, c_signdate, c_operator, c_project_code, c_creator, c_createtime, c_modifier, c_modifytime)values(#{contractCode}, #{contractType}, #{granter}, #{granteeId}, #{signDate}, #{operator}, #{projectCode}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertCopyrightContract(CopyrightContract copyrightContract);
 

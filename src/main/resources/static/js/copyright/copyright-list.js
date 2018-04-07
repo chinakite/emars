@@ -64,6 +64,38 @@ $(document).ready(function(){
         });
     });
 
+    $.get('/system/allGrantees', {}, function(data){
+        if(data) {
+            if(data.code == '0') {
+                var result = data.data;
+                var optionsHtml = '';
+                for(var i=0; i<result.length; i++) {
+                    optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+                }
+                $('#inputGranteeId').html(optionsHtml);
+            }
+        }
+        $('#inputGranteeId').select2({
+            dropdownParent: $("#copyrightModal")
+        });
+    });
+
+    $.get('/system/allGranters', {}, function(data){
+        if(data) {
+            if(data.code == '0') {
+                var result = data.data;
+                var optionsHtml = '';
+                for(var i=0; i<result.length; i++) {
+                    optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+                }
+                $('#inputGranterId').html(optionsHtml);
+            }
+        }
+        $('#inputGranterId').select2({
+            dropdownParent: $("#copyrightModal")
+        });
+    });
+
     $('#inputSignDate').datepicker({
         format: 'yyyy-mm-dd'
     });
@@ -162,8 +194,8 @@ COPYRIGHTLIST.submitCopyright = function (_e) {
     var contractId = $('#inputContactId').val();
     var contractCode = $('#inputContactCode').val();
     var contractType = $('#inputContactType').val();
-    var granter = $('#inputGranter').val();
-    var grantee = $('#inputGrantee').val();
+    var granterId = $('#inputGranterId').val();
+    var granteeId = $('#inputGranteeId').val();
     var signDate = $('#inputSignDate').val();
     var operator = $('#inputOperator').val();
     var projectCode = $('#inputProjectCode').val();
@@ -181,8 +213,8 @@ COPYRIGHTLIST.submitCopyright = function (_e) {
         'id': contractId,
         'contractCode': contractCode,
         'contractType' : contractType,
-        'granter': granter,
-        'grantee': grantee,
+        'granterId': granterId,
+        'granteeId': granteeId,
         'signDate': signDate,
         'operator': operator,
         'projectCode': projectCode,

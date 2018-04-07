@@ -8,7 +8,9 @@ public class CopyrightContract extends HistoriableEntity {
     private String contractCode;
     private String contractType;
     private String granter;
+    private Long granterId;
     private String grantee;
+    private Long granteeId;
     private String signDate;
     private String operator;
     private String projectCode;
@@ -79,6 +81,22 @@ public class CopyrightContract extends HistoriableEntity {
 
     public void setProducts(ArrayList<CopyrightProductInfo> products) {
         this.products = products;
+    }
+
+    public Long getGranteeId() {
+        return granteeId;
+    }
+
+    public void setGranteeId(Long granteeId) {
+        this.granteeId = granteeId;
+    }
+
+    public Long getGranterId() {
+        return granterId;
+    }
+
+    public void setGranterId(Long granterId) {
+        this.granterId = granterId;
     }
 
     public String getContractTypeText() {

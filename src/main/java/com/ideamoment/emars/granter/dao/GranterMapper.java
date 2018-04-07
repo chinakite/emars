@@ -19,7 +19,11 @@ public interface GranterMapper {
 
     @Select("select * from t_granter ORDER BY C_MODIFYTIME DESC LIMIT #{offset}, #{size}")
     @ResultMap("granterMap")
-    List<Granter> listGranters(@Param("offset")int offset, @Param("size")int size);
+    List<Granter> pageGranters(@Param("offset")int offset, @Param("size")int size);
+
+    @Select("select * from t_granter ORDER BY C_MODIFYTIME DESC")
+    @ResultMap("granteeMap")
+    List<Granter> listGranters();
 
     @Select("select count(c_id) from t_granter")
     long countGranter();

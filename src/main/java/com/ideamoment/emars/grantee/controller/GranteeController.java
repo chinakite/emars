@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("system")
 public class GranteeController {
@@ -20,9 +22,15 @@ public class GranteeController {
 
     @RequestMapping(value = "/grantees", method = RequestMethod.GET)
     public DataTableSource<Grantee> queryGrantees(int draw, int start, int length, String key) {
-        Page<Grantee> grantees = granteeService.listGrantees(start, length);
+        Page<Grantee> grantees = granteeService.pageGrantees(start, length);
         DataTableSource<Grantee> dts = convertGranteesToDataTableSource(draw, grantees);
         return dts;
+    }
+
+    @RequestMapping(value = "/allGrantees", method = RequestMethod.GET)
+    public JsonData<List<Grantee>> allGrantees() {
+        List<Grantee> result = granteeService.listGrantees();
+        return JsonData.success(result);
     }
 
     @RequestMapping(value = "/createGrantee", method = RequestMethod.POST)

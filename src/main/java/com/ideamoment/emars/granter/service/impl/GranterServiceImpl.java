@@ -25,11 +25,11 @@ public class GranterServiceImpl implements GranterService {
 
     @Override
     @Transactional
-    public Page<Granter> listGranters(int offset, int pageSize) {
+    public Page<Granter> pageGranters(int offset, int pageSize) {
         long count = granterMapper.countGranter();
         int currentPage = offset/pageSize + 1;
 
-        List<Granter> granters = granterMapper.listGranters(offset, pageSize);
+        List<Granter> granters = granterMapper.pageGranters(offset, pageSize);
 
         Page<Granter> result = new Page<Granter>();
         result.setCurrentPage(currentPage);
@@ -38,6 +38,12 @@ public class GranterServiceImpl implements GranterService {
         result.setTotalRecord(count);
 
         return result;
+    }
+
+    @Override
+    @Transactional
+    public List<Granter> listGranters() {
+        return granterMapper.listGranters();
     }
 
     @Override

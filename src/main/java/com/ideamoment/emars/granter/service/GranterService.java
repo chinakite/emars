@@ -3,8 +3,12 @@ package com.ideamoment.emars.granter.service;
 import com.ideamoment.emars.model.Granter;
 import com.ideamoment.emars.utils.Page;
 
+import java.util.List;
+
 public interface GranterService {
-    Page<Granter> listGranters(int offset, int pageSize);
+    Page<Granter> pageGranters(int offset, int pageSize);
+
+    List<Granter> listGranters();
 
     String createGranter(String name, String contact, String phone, String desc);
 
