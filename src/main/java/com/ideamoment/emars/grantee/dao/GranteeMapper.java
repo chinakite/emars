@@ -12,7 +12,11 @@ public interface GranteeMapper {
     @Results(id = "granteeMap", value = {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "name", column = "c_name"),
-            @Result(property = "desc", column = "c_desc")
+            @Result(property = "desc", column = "c_desc"),
+            @Result(property = "creator", column = "C_CREATOR"),
+            @Result(property = "createTime", column = "C_CREATETIME"),
+            @Result(property = "modifier", column = "C_MODIFIER"),
+            @Result(property = "modifyTime", column = "C_MODIFYTIME")
     })
     Grantee findGrantee(@Param("id") Long id);
 

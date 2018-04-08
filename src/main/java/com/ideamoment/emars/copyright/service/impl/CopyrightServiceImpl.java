@@ -12,6 +12,7 @@ import com.ideamoment.emars.model.enumeration.CopyrightContractState;
 import com.ideamoment.emars.model.enumeration.ProductState;
 import com.ideamoment.emars.product.dao.ProductMapper;
 import com.ideamoment.emars.utils.Page;
+import com.ideamoment.emars.utils.StringUtils;
 import com.ideamoment.emars.utils.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -168,7 +169,7 @@ public class CopyrightServiceImpl implements CopyrightService {
             String authorName = product.getAuthorName();
             String authorPseudonym = product.getAuthorPseudonym();
             Author author = null;
-            if(authorPseudonym != null) {
+            if(StringUtils.isNotEmpty(authorPseudonym)) {
                 author = authorMapper.findAuthorByPseudonym(authorPseudonym);
             }
             if(author != null) {

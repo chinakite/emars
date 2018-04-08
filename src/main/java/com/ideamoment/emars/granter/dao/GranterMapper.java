@@ -13,7 +13,11 @@ public interface GranterMapper {
             @Result(property = "name", column = "c_name"),
             @Result(property = "contact", column = "c_contact"),
             @Result(property = "phone", column = "c_phone"),
-            @Result(property = "desc", column = "c_desc")
+            @Result(property = "desc", column = "c_desc"),
+            @Result(property = "creator", column = "C_CREATOR"),
+            @Result(property = "createTime", column = "C_CREATETIME"),
+            @Result(property = "modifier", column = "C_MODIFIER"),
+            @Result(property = "modifyTime", column = "C_MODIFYTIME")
     })
     Granter findGranter(@Param("id") Long id);
 
@@ -22,7 +26,7 @@ public interface GranterMapper {
     List<Granter> pageGranters(@Param("offset")int offset, @Param("size")int size);
 
     @Select("select * from t_granter ORDER BY C_MODIFYTIME DESC")
-    @ResultMap("granteeMap")
+    @ResultMap("granterMap")
     List<Granter> listGranters();
 
     @Select("select count(c_id) from t_granter")
