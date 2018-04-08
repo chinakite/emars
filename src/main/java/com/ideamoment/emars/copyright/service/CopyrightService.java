@@ -21,4 +21,5 @@ public interface CopyrightService {
 
     String createCopyrightContract(CopyrightContract copyrightContract);
 
+    String removeCopyright(Long id);
 }

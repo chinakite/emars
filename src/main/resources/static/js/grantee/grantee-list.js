@@ -136,7 +136,7 @@ GRANTEELIST.deleteGrantee = function(id, name) {
                 }
             }
         );
-    }, null)
+    }, null);
 }
 
 GRANTEELIST.refreshGranteeTbl = function () {

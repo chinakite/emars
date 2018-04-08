@@ -1,5 +1,7 @@
 package com.ideamoment.emars.copyright.controller;
 
+import com.ideamoment.emars.constants.ErrorCode;
+import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.copyright.service.CopyrightService;
 import com.ideamoment.emars.model.Copyright;
 import com.ideamoment.emars.model.CopyrightContract;
@@ -57,49 +59,18 @@ public class CopyrightController {
         }
 
         return JsonData.SUCCESS;
-//        Copyright cc = null;
-//        if(contractId == null) {
-//            cc = new Copyright();
-//        }else{
-//            cc = copyrightService.findCopyright(contractId);
-//
-//        }
-//
-//        cc.setTotalPrice(new BigDecimal(totalPrice));
-//        cc.setOwner(owner);
-//        cc.setOwnerContact(ownerContact);
-//        cc.setOwnerContactAddress(ownerContactAddress);
-//        cc.setOwnerContactEmail(ownerContactEmail);
-//        cc.setOwnerContactPhone(ownerContactPhone);
-//
-//        cc.setBuyer(buyer);
-//        cc.setBuyerContact(buyerContact);
-//        cc.setBuyerContactAddress(buyerContactAddress);
-//        cc.setBuyerContactEmail(buyerContactEmail);
-//        cc.setBuyerContactPhone(buyerContactPhone);
-//
-//        cc.setPrivileges(privileges);
-//        cc.setPrivilegeType(privilegeType);
-//        cc.setPrivilegeRange(privilegeRange);
-//        cc.setPrivilegeDeadline(privilegeDeadline);
-//
-//        cc.setBank(bank);
-//        cc.setBankAccountName(bankAccountName);
-//        cc.setBankAccountNo(bankAccountNo);
-//
-//        long[] productIdArr = contractProductIds;
-//        String[] priceArr = prices.split(",");
-//
-//        String result = copyrightService.saveCopyrightContract(cc, productIdArr, priceArr, submit, type);
-//
-//        if(result.equals(SuccessCode.SUCCESS)) {
-//            return JsonData.SUCCESS;
-//        }else{
-//            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
-//        }
-
     }
 
+    @RequestMapping(value = "/removeCopyright", method = RequestMethod.POST)
+    public JsonData<String> removeCopyright(Long id) {
+        String result = copyrightService.removeCopyright(id);
+
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
 
     private DataTableSource<CopyrightContract> convertProductsToDataTableSource(int draw, Page<CopyrightContract> productsPage) {
         DataTableSource<CopyrightContract> dts = new DataTableSource<CopyrightContract>();
@@ -111,4 +82,6 @@ public class CopyrightController {
 
         return dts;
     }
+
+
 }

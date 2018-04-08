@@ -200,6 +200,14 @@ public class CopyrightServiceImpl implements CopyrightService {
         return "success";
     }
 
+    @Override
+    public String removeCopyright(Long id) {
+        boolean result = copyrightMapper.deleteCopyrightProducts(id);
+        result = result && copyrightMapper.deleteCopyrightProductsRelations(id);
+        result = result && copyrightMapper.deleteCopyright(id);
+        return resultString(result);
+    }
+
     private synchronized String createCode(Copyright cc) {
         Date curDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");

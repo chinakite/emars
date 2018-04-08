@@ -163,7 +163,9 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popCopyrightDetailModal(' + full.id + ')">查看</a>';
+                    var htmlText = '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popCopyrightDetailModal(' + full.id + ')">查看</a>'
+                                 + '&nbsp;&nbsp;|&nbsp;&nbsp;'
+                                 + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.deleteCopyright(\'' + full.id + '\',\'' + full.code +'\')">删除</a>';
                     return htmlText;
                 }
             }
@@ -231,38 +233,13 @@ COPYRIGHTLIST.submitCopyright = function (_e) {
             if(data.code == '0') {
                 EMARS_COMMONS.showSuccess("合同保存成功！");
                 $('#copyrightModal').modal('hide');
-                COPYRIGHTLIST.refreshAuthorTbl();
+                COPYRIGHTLIST.refreshCopyrightTbl();
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
                 _e.preventDefault();
             }
         }
     });
-
-    // $.post(
-    //     "/copyright/createCopyrightContract",
-    //     {
-    //         'contractId': contractId,
-    //         'contractCode': contractCode,
-    //         'contractType' : contractType,
-    //         'granter': granter,
-    //         'grantee': grantee,
-    //         'signDate': signDate,
-    //         'operator': operator,
-    //         'projectCode': projectCode,
-    //         'products': products
-    //     },
-    //     function(data) {
-    //         if(data.code == '0') {
-    //             EMARS_COMMONS.showSuccess("合同保存成功！");
-    //             $('#copyrightModal').modal('hide');
-    //             COPYRIGHTLIST.refreshAuthorTbl();
-    //         }else{
-    //             EMARS_COMMONS.showError(data.code, data.msg);
-    //             _e.preventDefault();
-    //         }
-    //     }
-    // );
 }
 
 
@@ -283,7 +260,7 @@ COPYRIGHTLIST.clearCopyrightModal = function () {
     $('#copyrightWizard').pxWizard('reset');
 }
 
-COPYRIGHTLIST.refreshAuthorTbl = function () {
+COPYRIGHTLIST.refreshCopyrightTbl = function () {
     copyrightTable.api().ajax.reload(null, false);
 }
 
@@ -427,4 +404,21 @@ COPYRIGHTLIST.resetProduct = function() {
     $('#inputCopyrightBegin').val('');
     $('#inputCopyrightEnd').val('');
     $('#inputDesc').val('');
-}
+};
+
+COPYRIGHTLIST.deleteCopyright = function(id, code) {
+    EMARS_COMMONS.showPrompt("您真的要合同号为[" + name + "]的版权合同吗？", function() {
+        $.post(
+            "/copyright/removeCopyright",
+            {'id': id},
+            function(data) {
+                if(data.code == '0') {
+                    EMARS_COMMONS.showSuccess("删除成功！");
+                    GRANTEELIST.refreshCopyrightTbl();
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
+    }, null);
+};

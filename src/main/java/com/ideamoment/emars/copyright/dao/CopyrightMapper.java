@@ -121,4 +121,13 @@ public interface CopyrightMapper {
 
     @Select("select count(c_id) from t_copyright where c_granter_id = #{granterId}")
     long countCopyrightsByGranter(@Param("granterId")long id);
+
+    @Delete("delete from t_product_info where c_id in (select cp.c_product_id from t_copyright_product cp where cp.c_copyright_id = #{id})")
+    boolean deleteCopyrightProducts(@Param("id") Long id);
+
+    @Delete("delete from t_copyright_product where c_copyright_id = #{id}")
+    boolean deleteCopyrightProductsRelations(@Param("id") Long id);
+
+    @Delete("delete from t_copyright where c_id = #{id}")
+    boolean deleteCopyright(@Param("id") Long id);
 }

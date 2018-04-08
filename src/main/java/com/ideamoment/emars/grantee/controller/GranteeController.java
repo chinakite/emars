@@ -44,7 +44,7 @@ public class GranteeController {
     }
 
     @RequestMapping(value = "/deleteGrantee", method = RequestMethod.POST)
-    public JsonData<Boolean> deleteGrantee(long id) {
+    public JsonData<String> deleteGrantee(long id) {
         String result = granteeService.deleteGrantee(id);
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;
