@@ -69,9 +69,6 @@ public interface CopyrightMapper {
             "<if test='condition.contractCode != null'>",
             " AND t_copyright.c_code = #{condition.contractCode}",
             "</if>",
-            "<if test='condition.granter != null'>",
-            " AND t_copyright.c_granter like concat(concat('%',#{condition.granter}),'%')",
-            "</if>",
             " AND t_copyright.c_operator = t_user.c_id",
             " AND t_copyright.c_grantee_id = t_grantee.c_id",
             " ORDER BY C_MODIFYTIME DESC ",
@@ -101,9 +98,6 @@ public interface CopyrightMapper {
             "<if test='contractCode != null'>",
             " AND c_code = #{contractCode}",
             "</if>",
-            "<if test='granter != null'>",
-            " AND c_granter like concat(concat('%',#{granter}),'%')",
-            "</if>",
             "</script>"})
     long countCopyrights(CopyrightContract condition);
 
@@ -115,7 +109,7 @@ public interface CopyrightMapper {
 
     List<Copyright> listProductContracts(@Param("productId") long productId);
 
-    @Insert("insert into t_copyright (c_code, c_type, c_granter, c_grantee_id, c_signdate, c_operator, c_project_code, c_creator, c_createtime, c_modifier, c_modifytime)values(#{contractCode}, #{contractType}, #{granter}, #{granteeId}, #{signDate}, #{operator}, #{projectCode}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
+    @Insert("insert into t_copyright (c_code, c_type, c_granter_id, c_grantee_id, c_signdate, c_operator, c_project_code, c_creator, c_createtime, c_modifier, c_modifytime)values(#{contractCode}, #{contractType}, #{granter}, #{granteeId}, #{signDate}, #{operator}, #{projectCode}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertCopyrightContract(CopyrightContract copyrightContract);
 
@@ -153,7 +147,7 @@ public interface CopyrightMapper {
             "from t_product_info p, t_copyright_product cp " +
             "where cp.c_copyright_id = #{copyrightId} " +
             "and cp.c_product_id = p.c_id")
-    @Results(id = "copyrightMap", value = {
+    @Results(id = "copyrightProductInfoMap", value = {
             @Result(property = "id", column = "id", id = true),
             @Result(property = "name", column = "name"),
             @Result(property = "authorId", column = "authorId"),

@@ -196,8 +196,8 @@ COPYRIGHTLIST.popNewCopyrightModal = function () {
 
 COPYRIGHTLIST.popEditCopyrightModal = function (id) {
     $.get(
-        '/copyright/',
-        {},
+        '/copyright/copyright',
+        {id: id},
         function(data){
 
         }
