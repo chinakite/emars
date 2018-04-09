@@ -65,6 +65,13 @@ public class CopyrightServiceImpl implements CopyrightService {
     @Transactional
     public CopyrightContract findCopyright(long id) {
         CopyrightContract copyright = copyrightMapper.findCopyright(id);
+        ArrayList<CopyrightProductInfo> products = copyrightMapper.queryCopyrightProductInfoes(id);
+        for(CopyrightProductInfo product : products) {
+            Author author = authorMapper.findAuthor(product.getAuthorId());
+            product.setAuthorName(author.getName());
+            product.setAuthorPseudonym(author.getPseudonym());
+        }
+        copyright.setProducts(products);
         return copyright;
     }
 

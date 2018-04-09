@@ -2,9 +2,12 @@ package com.ideamoment.emars.copyright.dao;
 
 import com.ideamoment.emars.model.Copyright;
 import com.ideamoment.emars.model.CopyrightContract;
+import com.ideamoment.emars.model.CopyrightProductInfo;
 import com.ideamoment.emars.model.Grantee;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +49,7 @@ public interface CopyrightMapper {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "contractCode", column = "C_CODE"),
             @Result(property = "contractType", column = "C_TYPE"),
-            @Result(property = "granter", column = "C_GRANTER"),
+            @Result(property = "granterId", column = "C_GRANTER_ID"),
             @Result(property = "granteeId", column = "C_GRANTEE_ID"),
             @Result(property = "signDate", column = "c_signdate"),
             @Result(property = "operator", column = "C_operator"),
@@ -130,4 +133,43 @@ public interface CopyrightMapper {
 
     @Delete("delete from t_copyright where c_id = #{id}")
     boolean deleteCopyright(@Param("id") Long id);
+
+    @Select("select p.c_id as id, " +
+            "p.c_name as name, " +
+            "p.c_author_id as authorId, " +
+            "p.c_wordcount as wordCount, " +
+            "p.c_subject_id as subjectId, " +
+            "p.c_publish_state as publishState, " +
+            "p.c_isbn as isbn, " +
+            "p.c_press as press, " +
+            "cp.c_price as price, " +
+            "cp.c_privileges as privilegesText, " +
+            "cp.c_grant as grantType, " +
+            "cp.c_copyright_type as copyrightType, " +
+            "cp.c_beign as beginDate, " +
+            "cp.c_end as endDate, " +
+            "cp.c_settlement_type as settlementType, " +
+            "cp.c_desc as descText " +
+            "from t_product_info p, t_copyright_product cp " +
+            "where cp.c_copyright_id = #{copyrightId} " +
+            "and cp.c_product_id = p.c_id")
+    @Results(id = "copyrightMap", value = {
+            @Result(property = "id", column = "id", id = true),
+            @Result(property = "name", column = "name"),
+            @Result(property = "authorId", column = "authorId"),
+            @Result(property = "wordCount", column = "wordCount"),
+            @Result(property = "subjectId", column = "subjectId"),
+            @Result(property = "publishState", column = "publishState"),
+            @Result(property = "isbn", column = "isbn"),
+            @Result(property = "press", column = "press"),
+            @Result(property = "price", column = "price"),
+            @Result(property = "privilegesText", column = "privilegesText"),
+            @Result(property = "grant", column = "grantType"),
+            @Result(property = "copyrightType", column = "copyrightType"),
+            @Result(property = "copyrightBegin", column = "beginDate"),
+            @Result(property = "copyrightEnd", column = "endDate"),
+            @Result(property = "settlementType", column = "settlementType"),
+            @Result(property = "desc", column = "descText")
+    })
+    ArrayList<CopyrightProductInfo> queryCopyrightProductInfoes(@Param("copyrightId") long id);
 }

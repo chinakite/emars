@@ -165,6 +165,8 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
                 "render": function(data, type, full) {
                     var htmlText = '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popCopyrightDetailModal(' + full.id + ')">查看</a>'
                                  + '&nbsp;&nbsp;|&nbsp;&nbsp;'
+                                 + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popEditCopyrightModal(\'' + full.id + '\')">编辑</a>'
+                                 + '&nbsp;&nbsp;|&nbsp;&nbsp;'
                                  + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.deleteCopyright(\'' + full.id + '\',\'' + full.code +'\')">删除</a>';
                     return htmlText;
                 }
@@ -190,7 +192,20 @@ COPYRIGHTLIST.popNewCopyrightModal = function () {
     COPYRIGHTLIST.clearCopyrightModal();
     $('#copyrightModal .modal-title').text("新建合同");
     $('#copyrightModal').modal('show');
-}
+};
+
+COPYRIGHTLIST.popEditCopyrightModal = function (id) {
+    $.get(
+        '/copyright/',
+        {},
+        function(data){
+
+        }
+    );
+    COPYRIGHTLIST.clearCopyrightModal();
+    $('#copyrightModal .modal-title').text("编辑合同");
+    $('#copyrightModal').modal('show');
+};
 
 COPYRIGHTLIST.submitCopyright = function (_e) {
     var contractId = $('#inputContactId').val();

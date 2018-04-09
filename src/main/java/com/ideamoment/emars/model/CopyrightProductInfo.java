@@ -16,6 +16,7 @@ public class CopyrightProductInfo extends HistoriableEntity {
     private boolean privilege2;
     private boolean privilege3;
     private boolean privilege4;
+    private String privilegesText;
     private String grant;
     private String copyrightType;
     private String copyrightPrice;
@@ -209,5 +210,13 @@ public class CopyrightProductInfo extends HistoriableEntity {
 
     public void setAuthorId(Long authorId) {
         this.authorId = authorId;
+    }
+
+    public String getPrivilegesText() {
+        return privilegesText;
+    }
+
+    public void setPrivilegesText(String privilegesText) {
+        this.privilegesText = privilegesText;
     }
 }
