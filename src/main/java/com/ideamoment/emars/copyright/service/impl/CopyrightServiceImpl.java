@@ -208,10 +208,146 @@ public class CopyrightServiceImpl implements CopyrightService {
     }
 
     @Override
+    @Transactional
     public String removeCopyright(Long id) {
         boolean result = copyrightMapper.deleteCopyrightProducts(id);
         result = result && copyrightMapper.deleteCopyrightProductsRelations(id);
         result = result && copyrightMapper.deleteCopyright(id);
+        return resultString(result);
+    }
+
+    @Override
+    @Transactional
+    public String updateCopyrightContract(CopyrightContract copyrightContract) {
+        CopyrightContract existedCopyrightContract = copyrightMapper.findCopyright(copyrightContract.getId());
+
+        if(existedCopyrightContract == null) {
+            return ErrorCode.COPYRIGHT_NOT_EXISTS;
+        }
+
+        Date curDate = new Date();
+        existedCopyrightContract.setContractCode(copyrightContract.getContractCode());
+        existedCopyrightContract.setContractType(copyrightContract.getContractType());
+        existedCopyrightContract.setGranterId(copyrightContract.getGranterId());
+        existedCopyrightContract.setGranteeId(copyrightContract.getGranteeId());
+        existedCopyrightContract.setOperator(copyrightContract.getOperator());
+        existedCopyrightContract.setSignDate(copyrightContract.getSignDate());
+        existedCopyrightContract.setProjectCode(copyrightContract.getProjectCode());
+        existedCopyrightContract.setModifier(UserContext.getUserId());
+        existedCopyrightContract.setModifyTime(curDate);
+
+        boolean result = copyrightMapper.updateCopyrightContract(existedCopyrightContract);
+
+        ArrayList<CopyrightProductInfo> products = copyrightContract.getProducts();
+        ArrayList<Long> curProductIds = new ArrayList<Long>();
+        for(CopyrightProductInfo productInfo : products) {
+            if(productInfo.getId() > 0) {
+                curProductIds.add(productInfo.getId());
+            }
+        }
+
+        ArrayList<Long> toDeleteProductIds = null;
+        if(curProductIds.size() > 0) {
+            toDeleteProductIds = copyrightMapper.queryCopyrightProductIdsToDelete(copyrightContract.getId(), curProductIds);
+        }else{
+            toDeleteProductIds = copyrightMapper.queryCopyrightProductIds(copyrightContract.getId());
+        }
+
+        if(toDeleteProductIds != null && toDeleteProductIds.size() > 0) {
+            for(Long productId : toDeleteProductIds) {
+                copyrightMapper.deleteCopyrightProductInfo(copyrightContract.getId(), productId);
+                productMapper.deleteProductInfo(productId);
+            }
+        }
+
+        for(CopyrightProductInfo product : products) {
+            if(product.getId() == 0) {
+                String productName = product.getName();
+                String productIsbn = product.getIsbn();
+                Product existedProduct = productMapper.checkProductDuplicated(productName, null);
+                if(existedProduct != null) {
+                    continue;
+                }
+                existedProduct = productMapper.checkIsbnDuplicated(productIsbn, null);
+                if(existedProduct != null) {
+                    continue;
+                }
+
+                product.setCreator(UserContext.getUserId());
+                product.setCreateTime(curDate);
+
+                //处理作者逻辑
+                String authorName = product.getAuthorName();
+                String authorPseudonym = product.getAuthorPseudonym();
+                Author author = null;
+                if(StringUtils.isNotEmpty(authorPseudonym)) {
+                    author = authorMapper.findAuthorByPseudonym(authorPseudonym);
+                }
+                if(author != null) {
+                    product.setAuthorId(author.getId());
+                }else{
+                    author = authorMapper.findAuthorByName(authorName);
+                    if(author != null) {
+                        product.setAuthorId(author.getId());
+                    }else{
+                        author = new Author();
+                        author.setName(authorName);
+                        author.setPseudonym(authorPseudonym);
+                        author.setCreator(UserContext.getUserId());
+                        author.setCreateTime(curDate);
+                        authorMapper.insertAuthor(author);
+
+                        product.setAuthorId(author.getId());
+                    }
+                }
+                productMapper.insertProductInfo(product);
+                product.setProductId(product.getId());
+                product.setCopyrightId(copyrightContract.getId());
+                copyrightContractProductMapper.insertCopyrightProduct(product);
+            }else{
+                String productName = product.getName();
+                String productIsbn = product.getIsbn();
+                Product existedProduct = productMapper.checkProductDuplicated(productName, product.getId());
+                if(existedProduct != null) {
+                    continue;
+                }
+                existedProduct = productMapper.checkIsbnDuplicated(productIsbn, product.getId());
+                if(existedProduct != null) {
+                    continue;
+                }
+
+                product.setCreator(UserContext.getUserId());
+                product.setCreateTime(curDate);
+
+                //处理作者逻辑
+                String authorName = product.getAuthorName();
+                String authorPseudonym = product.getAuthorPseudonym();
+                Author author = null;
+                if(StringUtils.isNotEmpty(authorPseudonym)) {
+                    author = authorMapper.findAuthorByPseudonym(authorPseudonym);
+                }
+                if(author != null) {
+                    product.setAuthorId(author.getId());
+                }else{
+                    author = authorMapper.findAuthorByName(authorName);
+                    if(author != null) {
+                        product.setAuthorId(author.getId());
+                    }else{
+                        author = new Author();
+                        author.setName(authorName);
+                        author.setPseudonym(authorPseudonym);
+                        author.setCreator(UserContext.getUserId());
+                        author.setCreateTime(curDate);
+                        authorMapper.insertAuthor(author);
+
+                        product.setAuthorId(author.getId());
+                    }
+                }
+                productMapper.updateProductInfo(product);
+                copyrightContractProductMapper.updateContractProductInfo(product);
+            }
+        }
+
         return resultString(result);
     }
 

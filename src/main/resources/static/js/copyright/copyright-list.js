@@ -27,7 +27,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#inputContactType').select2({
+    $('#inputContractType').select2({
         dropdownParent: $("#copyrightModal"),
         minimumResultsForSearch: -1
     });
@@ -199,18 +199,86 @@ COPYRIGHTLIST.popEditCopyrightModal = function (id) {
         '/copyright/copyright',
         {id: id},
         function(data){
+            if(data.code == '0') {
+                var copyright = data.data;
+                COPYRIGHTLIST.clearCopyrightModal();
+                $('#copyrightModal .modal-title').text("编辑合同");
 
+                $('#inputContractId').val(copyright.id);
+                $('#inputContractCode').val(copyright.contractCode);
+                $('#inputContractType').val(copyright.contractType).trigger('change');
+                $('#inputGranterId').val(copyright.granterId).trigger('change');
+                $('#inputGranteeId').val(copyright.granteeId).trigger('change');
+                $('#inputSignDate').val(copyright.signDate);
+                $('#inputOperator').val(copyright.operator).trigger('change');
+                $('#inputProjectCode').val(copyright.projectCode);
+
+                var products = copyright.products;
+                if(products && products.length > 0) {
+                    for(var i=0; i<products.length; i++) {
+                        var productItem = products[i];
+                        if(productItem.publishState != '1') {
+                            productItem.isbn = '未出版';
+                            productItem.publishStateText = '未出版';
+                        }else{
+                            productItem.publishStateText = '已出版';
+                        }
+                        var privilege1 = (productItem.privileges.charAt(0) == '1');
+                        var privilege2 = (productItem.privileges.charAt(1) == '1');
+                        var privilege3 = (productItem.privileges.charAt(2) == '1');
+                        var privilege4 = (productItem.privileges.charAt(3) == '1');
+                        var privilegeText;
+                        if(privilege1) {
+                            privilegeText = '音频改编权';
+                        }
+                        if(privilege2) {
+                            if(privilegeText) privilegeText += '、';
+                            privilegeText += '广播权';
+                        }
+                        if(privilege3) {
+                            if(privilegeText) privilegeText += '、';
+                            privilegeText += '信息网络传播权';
+                        }
+                        if(privilege4) {
+                            if(privilegeText) privilegeText += '、';
+                            privilegeText += '广播剧改编权';
+                        }
+                        productItem.privilegeText = privilegeText;
+                        if(productItem.grant == '1') {
+                            productItem.grantText = '有';
+                        }else{
+                            productItem.grantText = '无';
+                        }
+                        if(productItem.copyrightType == '1') {
+                            productItem.copyrightTypeText = '专有许可使用';
+                        }else{
+                            productItem.copyrightTypeText = '非专有许可使用';
+                        }
+                        if(productItem.settlementType == '1') {
+                            productItem.settlementTypeText = '是';
+                        }else{
+                            productItem.settlementTypeText = '否';
+                        }
+
+                        var productItemHtml = nunjucks.render('../js/copyright/copyright_product_listitem.tmpl', productItem);
+                        var productItemObj = $(productItemHtml).popover().data('bindedData', productItem);
+
+                        $('#copyrightProductList').append(productItemObj);
+                    }
+                }
+
+                $('#copyrightModal').modal('show');
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
         }
     );
-    COPYRIGHTLIST.clearCopyrightModal();
-    $('#copyrightModal .modal-title').text("编辑合同");
-    $('#copyrightModal').modal('show');
 };
 
 COPYRIGHTLIST.submitCopyright = function (_e) {
-    var contractId = $('#inputContactId').val();
-    var contractCode = $('#inputContactCode').val();
-    var contractType = $('#inputContactType').val();
+    var contractId = $('#inputContractId').val();
+    var contractCode = $('#inputContractCode').val();
+    var contractType = $('#inputContractType').val();
     var granterId = $('#inputGranterId').val();
     var granteeId = $('#inputGranteeId').val();
     var signDate = $('#inputSignDate').val();
@@ -239,7 +307,7 @@ COPYRIGHTLIST.submitCopyright = function (_e) {
     };
 
     $.ajax({
-        url: "/copyright/createCopyrightContract",
+        url: "/copyright/saveCopyrightContract",
         type: "POST",
         data: JSON.stringify(postData),
         dataType: "json",
@@ -263,14 +331,17 @@ COPYRIGHTLIST.searchCopyrights = function () {
 }
 
 COPYRIGHTLIST.clearCopyrightModal = function () {
-    $("#inputContactCode").val('');
-    $("#inputContactType").val('wz').trigger('change');
-    $("#inputGranter").val('');
-    $("#inputGrantee").val('');
+    $("#inputContractCode").val('');
+    $("#inputContractType").val('wz').trigger('change');
+    $("#inputGranterId").val('43').trigger('change');
+    $("#inputGranteeId").val('43').trigger('change');
     $("#inputSignDate").val('');
     $("#inputSignMonth").text('');
     $("#inputOperator").val('1').trigger('change');
     $("#inputProjectCode").val('');
+
+    $('#copyrightProductList').empty();
+
     COPYRIGHTLIST.resetProduct();
     $('#copyrightWizard').pxWizard('reset');
 }

@@ -48,12 +48,12 @@ public class CopyrightController {
         return JsonData.success(copyright);
     }
 
-    @RequestMapping(value = "/createCopyrightContract", method = RequestMethod.POST)
-    public JsonData<String> createCopyrightContract(
+    @RequestMapping(value = "/saveCopyrightContract", method = RequestMethod.POST)
+    public JsonData<String> saveCopyrightContract(
             @RequestBody CopyrightContract copyrightContract
     ) {
         if(copyrightContract.getId() > 0) {
-
+            copyrightService.updateCopyrightContract(copyrightContract);
         }else{
             copyrightService.createCopyrightContract(copyrightContract);
         }

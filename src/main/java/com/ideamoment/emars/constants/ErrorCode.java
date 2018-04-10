@@ -59,6 +59,10 @@ public class ErrorCode {
     //授权方不能被删除
     public static final String GRANTER_CANNOT_DELETE = "H-0005";
 
+    //版权不存在
+    public static final String COPYRIGHT_NOT_EXISTS = "I-0004";
+
+
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 
     static {

@@ -173,4 +173,14 @@ public interface ProductMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertProductInfo(CopyrightProductInfo productInfo);
 
+    @Delete("delete from t_product_info where c_id = #{productId}")
+    boolean deleteProductInfo(@Param("productId") long productId);
+
+    @Update("update t_product_info set " +
+            "c_name=#{name}, c_author_id=#{authorId}, c_wordcount=#{wordCount}, " +
+            "c_subject_id=#{subjectId}, c_publish_state=#{publishState}, c_isbn=#{isbn}, " +
+            "c_press=#{press}, c_desc=#{desc}, c_modifier=#{modifier}, c_modifytime=#{modifyTime} " +
+            "where c_id = #{id}"
+    )
+    boolean updateProductInfo(CopyrightProductInfo product);
 }

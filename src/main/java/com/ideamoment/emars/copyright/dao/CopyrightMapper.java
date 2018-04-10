@@ -44,6 +44,20 @@ public interface CopyrightMapper {
             "WHERE c_id = #{id}")
     boolean updateCopyright(Copyright copyright);
 
+    @Update("update t_copyright set " +
+            "c_code = #{contractCode}," +
+            "c_type = #{contractType}," +
+            "c_granter_id = #{granterId}," +
+            "c_grantee_id = #{granteeId}," +
+            "c_signdate = #{signDate}," +
+            "c_operator = #{operator}," +
+            "c_project_code = #{projectCode}," +
+            "c_modifier = #{modifier}," +
+            "c_modifytime = #{modifyTime} " +
+            "where c_id = #{id}"
+    )
+    boolean updateCopyrightContract(CopyrightContract copyright);
+
     @Select("SELECT * FROM t_copyright WHERE c_id = #{id}")
     @Results(id = "copyrightMap", value = {
             @Result(property = "id", column = "c_id", id = true),
@@ -109,7 +123,7 @@ public interface CopyrightMapper {
 
     List<Copyright> listProductContracts(@Param("productId") long productId);
 
-    @Insert("insert into t_copyright (c_code, c_type, c_granter_id, c_grantee_id, c_signdate, c_operator, c_project_code, c_creator, c_createtime, c_modifier, c_modifytime)values(#{contractCode}, #{contractType}, #{granter}, #{granteeId}, #{signDate}, #{operator}, #{projectCode}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
+    @Insert("insert into t_copyright (c_code, c_type, c_granter_id, c_grantee_id, c_signdate, c_operator, c_project_code, c_creator, c_createtime, c_modifier, c_modifytime)values(#{contractCode}, #{contractType}, #{granterId}, #{granteeId}, #{signDate}, #{operator}, #{projectCode}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertCopyrightContract(CopyrightContract copyrightContract);
 
@@ -156,7 +170,7 @@ public interface CopyrightMapper {
             @Result(property = "publishState", column = "publishState"),
             @Result(property = "isbn", column = "isbn"),
             @Result(property = "press", column = "press"),
-            @Result(property = "price", column = "price"),
+            @Result(property = "copyrightPrice", column = "price"),
             @Result(property = "privilegesText", column = "privilegesText"),
             @Result(property = "grant", column = "grantType"),
             @Result(property = "copyrightType", column = "copyrightType"),
@@ -166,4 +180,19 @@ public interface CopyrightMapper {
             @Result(property = "desc", column = "descText")
     })
     ArrayList<CopyrightProductInfo> queryCopyrightProductInfoes(@Param("copyrightId") long id);
+
+    @Select({"<script>",
+            "select cp.c_product_id from t_copyright_product cp where cp.c_copyright_id = #{copyrightId} and cp.c_product_id not in ",
+            "<foreach item=\"productId\" index=\"index\" collection=\"curProductIds\" open=\"(\" separator=\",\" close=\")\">",
+            "#{productId}",
+            "</foreach>",
+            "</script>"
+    })
+    ArrayList<Long> queryCopyrightProductIdsToDelete(@Param("copyrightId") long copyrightId, @Param("curProductIds") List<Long> curProductIds);
+
+    @Select("select cp.c_product_id from t_copyright_product cp where cp.c_copyright_id = #{copyrightId}")
+    ArrayList<Long> queryCopyrightProductIds(@Param("copyrightId") long copyrightId);
+
+    @Delete("delete from t_copyright_product where c_copyright_id = #{copyrightId} and c_product_id = #{productId}")
+    boolean deleteCopyrightProductInfo(long copyrightId, @Param("productId") Long productId);
 }
