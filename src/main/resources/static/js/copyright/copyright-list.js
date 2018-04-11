@@ -362,6 +362,7 @@ COPYRIGHTLIST.hideAddProductPanel = function() {
 }
 
 COPYRIGHTLIST.addProduct = function() {
+    var id = $('#inputProductId').val();
     var name = $('#inputName').val();
     var author = $('#inputAuthor').val();
     var authorPseudonym = $('#inputAuthorPseudonym').val();
@@ -400,8 +401,9 @@ COPYRIGHTLIST.addProduct = function() {
     }
 
     var productItem = {
+        id: id,
         name : name,
-        author: author,
+        authorName: author,
         authorPseudonym: authorPseudonym,
         wordCount: wordCount,
         isbn: publishState == '1' ? isbn : "未出版",
@@ -430,20 +432,26 @@ COPYRIGHTLIST.addProduct = function() {
     var productItemHtml = nunjucks.render('../js/copyright/copyright_product_listitem.tmpl', productItem);
     var productItemObj = $(productItemHtml).popover().data('bindedData', productItem);
 
-    $('#copyrightProductList').append(productItemObj);
+    if(productItem.id) {
+        $('.product-list-item[rel=' + productItem.id + ']').replaceWith(productItemObj);
+    }else{
+        $('#copyrightProductList').append(productItemObj);
+    }
+
     COPYRIGHTLIST.hideAddProductPanel();
 }
 
 COPYRIGHTLIST.removeProduct = function(obj) {
     $(obj).parent().parent().remove();
-}
+};
 
 COPYRIGHTLIST.editProduct = function(obj) {
     COPYRIGHTLIST.resetProduct();
 
     var productItem = $(obj).parent().parent().data('bindedData');
+    $('#inputProductId').val(productItem.id);
     $('#inputName').val(productItem.name);
-    $('#inputAuthor').val(productItem.author);
+    $('#inputAuthor').val(productItem.authorName);
     $('#inputAuthorPseudonym').val(productItem.authorPseudonym);
     $('#inputWordCount').val(productItem.wordCount);
     $('#inputSubject').select2('val', productItem.subjectId);
@@ -468,9 +476,10 @@ COPYRIGHTLIST.editProduct = function(obj) {
 
     $('#copyrightWizard').hide();
     $('#addProductPanel').show();
-}
+};
 
 COPYRIGHTLIST.resetProduct = function() {
+    $('#inputProductId').val('');
     $('#inputName').val('');
     $('#inputAuthor').val('');
     $('#inputAuthorPseudonym').val('');

@@ -19,7 +19,7 @@ public interface CopyrightContractProductMapper {
     boolean insertCopyrightContractProduct(CopyrightContractProduct copyrightContractProduct);
 
     @Insert("INSERT INTO t_copyright_product" +
-            "(`c_copyright_id`,`c_product_id`,`c_price`,`c_privileges`,`c_grant`,`c_copyright_type`,`c_settlement_type`,`c_beign`,`c_end`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`) " +
+            "(`c_copyright_id`,`c_product_id`,`c_price`,`c_privileges`,`c_grant`,`c_copyright_type`,`c_settlement_type`,`c_begin`,`c_end`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`) " +
             "VALUES" +
             "(#{copyrightId}, #{productId}, #{copyrightPrice}, #{privileges}, #{grant}, #{copyrightType}, #{settlementType}, #{copyrightBegin}, #{copyrightEnd}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
     boolean insertCopyrightProduct(CopyrightProductInfo copyrightProductInfo);

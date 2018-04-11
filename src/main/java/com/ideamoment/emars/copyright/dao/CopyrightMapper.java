@@ -154,7 +154,7 @@ public interface CopyrightMapper {
             "cp.c_privileges as privilegesText, " +
             "cp.c_grant as grantType, " +
             "cp.c_copyright_type as copyrightType, " +
-            "cp.c_beign as beginDate, " +
+            "cp.c_begin as beginDate, " +
             "cp.c_end as endDate, " +
             "cp.c_settlement_type as settlementType, " +
             "cp.c_desc as descText " +
