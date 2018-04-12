@@ -81,19 +81,26 @@ $(document).ready(function(){
     });
 
     $.get('/system/allGranters', {}, function(data){
+        var defaultGranterId;
         if(data) {
             if(data.code == '0') {
                 var result = data.data;
                 var optionsHtml = '';
                 for(var i=0; i<result.length; i++) {
+                    defaultGranterId = result[i]['id'];
                     optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
                 }
                 $('#inputGranterId').html(optionsHtml);
             }
         }
         $('#inputGranterId').select2({
-            dropdownParent: $("#copyrightModal")
+            dropdownParent: $("#copyrightModal"),
+            placeholder : '请选择',
         });
+        // console.log(defaultGranterId);
+        // if(defaultGranterId) {
+        //     $('#inputGranterId').val(defaultGranterId).trigger('change');
+        // }
     });
 
     $('#inputSignDate').datepicker({
@@ -521,5 +528,5 @@ COPYRIGHTLIST.deleteCopyright = function(id, code) {
 };
 
 COPYRIGHTLIST.popUploadCopyrightFileModal = function(id) {
-
+    $('#fileModal').modal('show');
 };
