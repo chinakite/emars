@@ -167,6 +167,8 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
                                  + '&nbsp;&nbsp;|&nbsp;&nbsp;'
                                  + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popEditCopyrightModal(\'' + full.id + '\')">编辑</a>'
                                  + '&nbsp;&nbsp;|&nbsp;&nbsp;'
+                                 + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popUploadCopyrightFileModal(\'' + full.id + '\')">权属文件</a>'
+                                 + '&nbsp;&nbsp;|&nbsp;&nbsp;'
                                  + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.deleteCopyright(\'' + full.id + '\',\'' + full.code +'\')">删除</a>';
                     return htmlText;
                 }
@@ -516,4 +518,8 @@ COPYRIGHTLIST.deleteCopyright = function(id, code) {
             }
         );
     }, null);
+};
+
+COPYRIGHTLIST.popUploadCopyrightFileModal = function(id) {
+
 };

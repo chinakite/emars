@@ -85,6 +85,12 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.7.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>cn.javaer</groupId>
+			<artifactId>aliyun-spring-boot-starter-oss</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

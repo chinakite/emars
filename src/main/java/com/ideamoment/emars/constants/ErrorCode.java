@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class ErrorCode {
     public static final String UNKNOWN_ERROR = "0-0001";
     public static final String FORM_INVALID = "0-0002";
+    public static final String UPLOAD_ERROR = "0-0003";
 
     //登录登出
     public static final String UNAUTH_ERROR = "A-0001";
@@ -66,6 +67,7 @@ public class ErrorCode {
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 
     static {
+        ERROR_MSG.put(UPLOAD_ERROR, "上传文件时发生了错误，请联系管理员。");
         ERROR_MSG.put(UNKNOWN_ERROR, "系统发生了未知错误，请联系管理员。");
         ERROR_MSG.put(FORM_INVALID, "服务器端校验不通过，请正确输入。");
         ERROR_MSG.put(USER_EXISTS, "该用户名已存在");
