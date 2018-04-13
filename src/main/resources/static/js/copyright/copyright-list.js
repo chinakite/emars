@@ -104,7 +104,12 @@ $(document).ready(function(){
     });
 
     $('#inputSignDate').datepicker({
-        format: 'yyyy-mm-dd'
+        format: 'yyyy-mm-dd',
+        language: 'cn'
+    }).on('changeDate', function(e){
+        var month = e.date.getMonth() + 1;
+        var week = parseInt(COPYRIGHTLIST.getWeekOfMonth(e.date));
+        $('#inputSignMonth').text(month + "月第" + week + "周");
     });
 
     $('#inputCopyrightBegin').datepicker({
@@ -174,8 +179,6 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
                                  + '&nbsp;&nbsp;|&nbsp;&nbsp;'
                                  + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popEditCopyrightModal(\'' + full.id + '\')">编辑</a>'
                                  + '&nbsp;&nbsp;|&nbsp;&nbsp;'
-                                 + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popUploadCopyrightFileModal(\'' + full.id + '\')">权属文件</a>'
-                                 + '&nbsp;&nbsp;|&nbsp;&nbsp;'
                                  + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.deleteCopyright(\'' + full.id + '\',\'' + full.code +'\')">删除</a>';
                     return htmlText;
                 }
@@ -218,7 +221,8 @@ COPYRIGHTLIST.popEditCopyrightModal = function (id) {
                 $('#inputContractType').val(copyright.contractType).trigger('change');
                 $('#inputGranterId').val(copyright.granterId).trigger('change');
                 $('#inputGranteeId').val(copyright.granteeId).trigger('change');
-                $('#inputSignDate').val(copyright.signDate);
+                $('#inputSignDate').datepicker('setDate', copyright.signDate);
+
                 $('#inputOperator').val(copyright.operator).trigger('change');
                 $('#inputProjectCode').val(copyright.projectCode);
 
@@ -527,6 +531,12 @@ COPYRIGHTLIST.deleteCopyright = function(id, code) {
     }, null);
 };
 
-COPYRIGHTLIST.popUploadCopyrightFileModal = function(id) {
-    $('#fileModal').modal('show');
+COPYRIGHTLIST.getWeekOfMonth = function(d) {
+    var day = d.getDate();
+    day-=(d.getDay()==0?6:d.getDay()-1);
+
+    day+=7;
+
+    prefixes = ['0', '1', '2', '3', '4', '5'];
+    return prefixes[0 | (day) / 7];
 };
