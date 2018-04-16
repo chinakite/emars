@@ -76,7 +76,8 @@ $(document).ready(function(){
             }
         }
         $('#inputGranteeId').select2({
-            dropdownParent: $("#copyrightModal")
+            dropdownParent: $("#copyrightModal"),
+            placeholder : '请选择'
         });
     });
 
@@ -95,12 +96,8 @@ $(document).ready(function(){
         }
         $('#inputGranterId').select2({
             dropdownParent: $("#copyrightModal"),
-            placeholder : '请选择',
+            placeholder : '请选择'
         });
-        // console.log(defaultGranterId);
-        // if(defaultGranterId) {
-        //     $('#inputGranterId').val(defaultGranterId).trigger('change');
-        // }
     });
 
     $('#inputSignDate').datepicker({
