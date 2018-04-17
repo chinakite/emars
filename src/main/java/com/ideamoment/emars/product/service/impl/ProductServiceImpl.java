@@ -40,13 +40,13 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
-    public Page<ProductResultVo> listProducts(ProductQueryVo condition, int offset, int pageSize) {
+    public Page<ProductInfo> listProducts(ProductInfo condition, int offset, int pageSize) {
         long count = productMapper.listProductsCount(condition);
         int currentPage = offset/pageSize + 1;
 
-        List<ProductResultVo> products = productMapper.listProducts(condition, offset, pageSize);
+        List<ProductInfo> products = productMapper.listProducts(condition, offset, pageSize);
 
-        Page<ProductResultVo> result = new Page<ProductResultVo>();
+        Page<ProductInfo> result = new Page<ProductInfo>();
         result.setCurrentPage(currentPage);
         result.setData(products);
         result.setPageSize(pageSize);

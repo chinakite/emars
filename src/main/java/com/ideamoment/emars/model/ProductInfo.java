@@ -6,7 +6,7 @@ public class ProductInfo extends HistoriableEntity {
     private String authorName;
     private String authorPseudonym;
     private String wordCount;
-    private String subjectId;
+    private Long subjectId;
     private String publishState;
     private String isbn;
     private String press;
@@ -46,11 +46,11 @@ public class ProductInfo extends HistoriableEntity {
         this.wordCount = wordCount;
     }
 
-    public String getSubjectId() {
+    public Long getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(String subjectId) {
+    public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
     }
 

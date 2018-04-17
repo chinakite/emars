@@ -39,16 +39,14 @@ public class MakeServiceImpl implements MakeService {
 
     @Override
     @Transactional
-    public Page<ProductResultVo> pageProducts(ProductQueryVo condition, int offset, int pageSize) {
-        condition.setType(ProductType.TEXT);
-
+    public Page<ProductInfo> pageProducts(ProductInfo condition, int offset, int pageSize) {
         long count = productMapper.listProductsCount(condition);
         int currentPage = offset/pageSize + 1;
 
-        List<ProductResultVo> products = productMapper.listProducts(condition, offset, pageSize);
+        List<ProductInfo> products = productMapper.listProducts(condition, offset, pageSize);
 
         List<Long> productIds = new ArrayList<Long>();
-        for(Product prod : products) {
+        for(ProductInfo prod : products) {
             productIds.add(prod.getId());
         }
 
@@ -63,7 +61,7 @@ public class MakeServiceImpl implements MakeService {
 //        }
 
 
-        Page<ProductResultVo> result = new Page<ProductResultVo>();
+        Page<ProductInfo> result = new Page<ProductInfo>();
         result.setCurrentPage(currentPage);
         result.setData(products);
         result.setPageSize(pageSize);

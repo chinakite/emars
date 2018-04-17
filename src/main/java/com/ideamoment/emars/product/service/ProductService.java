@@ -1,9 +1,6 @@
 package com.ideamoment.emars.product.service;
 
-import com.ideamoment.emars.model.Product;
-import com.ideamoment.emars.model.ProductCopyrightFile;
-import com.ideamoment.emars.model.ProductQueryVo;
-import com.ideamoment.emars.model.ProductResultVo;
+import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.utils.Page;
 
 import java.util.List;
@@ -13,7 +10,7 @@ import java.util.List;
  */
 public interface ProductService {
 
-    Page<ProductResultVo> listProducts(ProductQueryVo condition, int offset, int pageSize);
+    Page<ProductInfo> listProducts(ProductInfo condition, int offset, int pageSize);
 
     ProductResultVo findProduct(long id);
 

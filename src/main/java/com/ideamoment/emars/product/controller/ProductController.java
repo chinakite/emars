@@ -28,7 +28,7 @@ public class ProductController {
     private ProductService productService;
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public DataTableSource<ProductResultVo> queryProducts(
+    public DataTableSource<ProductInfo> queryProducts(
             int draw,
             int start,
             int length,
@@ -39,15 +39,12 @@ public class ProductController {
             String publishState,
             String state
     ) {
-        ProductQueryVo condition = new ProductQueryVo();
-        condition.setProductName(productName);
-        condition.setAuthorName(authorName);
+        ProductInfo condition = new ProductInfo();
+        condition.setName(productName);
         condition.setIsbn(isbn);
         condition.setSubjectId(subjectId);
-        condition.setPublishState(publishState);
-        condition.setState(state);
-        Page<ProductResultVo> products = productService.listProducts(condition, start, length);
-        DataTableSource<ProductResultVo> dts = convertProductsToDataTableSource(draw, products);
+        Page<ProductInfo> products = productService.listProducts(condition, start, length);
+        DataTableSource<ProductInfo> dts = convertProductsToDataTableSource(draw, products);
         return dts;
     }
 
@@ -164,8 +161,8 @@ public class ProductController {
         }
     }
 
-    private DataTableSource<ProductResultVo> convertProductsToDataTableSource(int draw, Page<ProductResultVo> productsPage) {
-        DataTableSource<ProductResultVo> dts = new DataTableSource<ProductResultVo>();
+    private DataTableSource<ProductInfo> convertProductsToDataTableSource(int draw, Page<ProductInfo> productsPage) {
+        DataTableSource<ProductInfo> dts = new DataTableSource<ProductInfo>();
 
         dts.setDraw(draw);
         dts.setRecordsTotal(productsPage.getTotalRecord());

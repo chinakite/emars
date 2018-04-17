@@ -3,10 +3,7 @@ package com.ideamoment.emars.make.controller;
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.make.service.MakeService;
-import com.ideamoment.emars.model.MakeContract;
-import com.ideamoment.emars.model.MakeTask;
-import com.ideamoment.emars.model.ProductQueryVo;
-import com.ideamoment.emars.model.ProductResultVo;
+import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.product.service.ProductService;
 import com.ideamoment.emars.utils.DataTableSource;
 import com.ideamoment.emars.utils.JsonData;
@@ -30,7 +27,7 @@ public class MakeController {
     private MakeService makeService;
 
     @RequestMapping(value = "/dtProducts", method = RequestMethod.GET)
-    public DataTableSource<ProductResultVo> dtProducts(
+    public DataTableSource<ProductInfo> dtProducts(
             int draw,
             int start,
             int length,
@@ -41,15 +38,14 @@ public class MakeController {
             String publishState,
             String state
     ) {
-        ProductQueryVo condition = new ProductQueryVo();
-        condition.setProductName(productName);
+        ProductInfo condition = new ProductInfo();
+        condition.setName(productName);
         condition.setAuthorName(authorName);
         condition.setIsbn(isbn);
         condition.setSubjectId(subjectId);
         condition.setPublishState(publishState);
-        condition.setState(state);
-        Page<ProductResultVo> products = makeService.pageProducts(condition, start, length);
-        DataTableSource<ProductResultVo> dts = convertProductsToDataTableSource(draw, products);
+        Page<ProductInfo> products = makeService.pageProducts(condition, start, length);
+        DataTableSource<ProductInfo> dts = convertProductsToDataTableSource(draw, products);
         return dts;
     }
 
@@ -147,8 +143,8 @@ public class MakeController {
         }
     }
 
-    private DataTableSource<ProductResultVo> convertProductsToDataTableSource(int draw, Page<ProductResultVo> productsPage) {
-        DataTableSource<ProductResultVo> dts = new DataTableSource<ProductResultVo>();
+    private DataTableSource<ProductInfo> convertProductsToDataTableSource(int draw, Page<ProductInfo> productsPage) {
+        DataTableSource<ProductInfo> dts = new DataTableSource<ProductInfo>();
 
         dts.setDraw(draw);
         dts.setRecordsTotal(productsPage.getTotalRecord());

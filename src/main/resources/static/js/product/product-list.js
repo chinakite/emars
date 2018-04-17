@@ -62,10 +62,20 @@ PRODUCTLIST.initProductTbl = function(){
                 "data": "name"
             },
             {
-                "data": "authorName"
+                "render": function (data, type, full) {
+                    if(full.authorPseudonym) {
+                        return full.authorName + "（" + full.authorPseudonym + "）";
+                    }else{
+                        return full.authorName;
+                    }
+
+                }
             },
             {
-                "data": "publishStateText"
+                "data": "isbn"
+            },
+            {
+                "data": "subjectName"
             },
             {
                 "render": function (data, type, full) {
@@ -77,9 +87,6 @@ PRODUCTLIST.initProductTbl = function(){
                         return '';
                     }
                 }
-            },
-            {
-                "data": "subjectName"
             },
             {
                 "data": "stateText"

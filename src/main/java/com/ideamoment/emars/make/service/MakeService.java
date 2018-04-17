@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface MakeService {
 
-    Page<ProductResultVo> pageProducts(ProductQueryVo condition, int offset, int pageSize);
+    Page<ProductInfo> pageProducts(ProductInfo condition, int offset, int pageSize);
 
     String saveMakeTask(MakeTask makeTask);
 
