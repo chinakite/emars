@@ -8,16 +8,6 @@
         <div class="row m-t-1">
             <div class="col-md-4 col-lg-3">
                 <div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt="" class="page-profile-v1-avatar" /></div>
-                <div class="m-y-3 text-xs-center">
-                    <span></span><a class="btn btn-success"><i class="fa fa-check"></i>&nbsp;&nbsp;下载样章</a>
-                </div>
-                <div class="panel panel-transparent">
-                    <div class="panel-heading p-x-1">
-                        <span class="panel-title">作品简介</span>
-                    </div>
-                    <div class="panel-body p-a-1" th:text="${product.summary}">
-                    </div>
-                </div>
                 <div class="panel panel-transparent">
                     <div class="panel-heading p-x-1">
                         <span class="panel-title">作品信息</span>
@@ -28,8 +18,6 @@
                         <p class="list-group-item p-x-1 b-a-0"><strong>题材:</strong> <span th:text="${product.subjectName}"></span></p>
                         <p class="list-group-item p-x-1 b-a-0"><strong>字数:</strong> <span th:text="${product.wordCount}"></span>&nbsp;万字</p>
                         <p class="list-group-item p-x-1 b-a-0"><strong>出版状态:</strong> <span th:text="${product.publishStateText}"></span></p>
-                        <p class="list-group-item p-x-1 b-a-0" th:if="${product.publishState == '0'}"><strong>出版年份:</strong> <span th:text="${product.publishYear}"></span></p>
-                        <p class="list-group-item p-x-1 b-a-0" th:if="${product.publishState != '0'}"><strong>完结年份:</strong> <span th:text="${product.finishYear}"></span></p>
                         <p class="list-group-item p-x-1 b-a-0"><strong>ISBN:</strong> <span th:text="${product.isbn}"></span></p>
                     </div>
                 </div>

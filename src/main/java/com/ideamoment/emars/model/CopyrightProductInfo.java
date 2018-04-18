@@ -12,6 +12,8 @@ public class CopyrightProductInfo extends HistoriableEntity {
     private String publishState;
     private String isbn;
     private String press;
+    private String type;
+    private String stockIn;
     private boolean privilege1;
     private boolean privilege2;
     private boolean privilege3;
@@ -218,5 +220,21 @@ public class CopyrightProductInfo extends HistoriableEntity {
 
     public void setPrivilegesText(String privilegesText) {
         this.privilegesText = privilegesText;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getStockIn() {
+        return stockIn;
+    }
+
+    public void setStockIn(String stockIn) {
+        this.stockIn = stockIn;
     }
 }

@@ -12,15 +12,15 @@ public interface ProductService {
 
     Page<ProductInfo> listProducts(ProductInfo condition, int offset, int pageSize);
 
-    ProductResultVo findProduct(long id);
+    ProductInfo findProduct(long id);
 
     String deleteProduct(long id);
 
-    String createProduct(Product product);
+    String createProduct(ProductInfo product);
 
-    String updateProduct(Product product);
+    String updateProduct(ProductInfo product);
 
-    String saveProduct(Product product, String submit, boolean withoutEva, String type);
+    String saveProduct(ProductInfo product, String submit, boolean withoutEva, String type);
 
     List<ProductCopyrightFile> listProductCopyrightFiles(long productId);
 

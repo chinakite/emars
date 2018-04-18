@@ -74,7 +74,7 @@ public class MakeServiceImpl implements MakeService {
     @Transactional
     public String saveMakeTask(MakeTask makeTask) {
 
-        Product product = productMapper.findProduct(makeTask.getProductId());
+        ProductInfo product = productMapper.findProduct(makeTask.getProductId());
 
         makeTask.setCreateTime(new Date());
         makeTask.setCreator(UserContext.getUserId());
@@ -114,7 +114,7 @@ public class MakeServiceImpl implements MakeService {
             ret = makeContractMapper.insertMakeContract(makeContract);
 
             long productId = makeContract.getProductId();
-            Product product = productMapper.findProduct(productId);
+            ProductInfo product = productMapper.findProduct(productId);
 //            product.setState(ProductState.MK_CONTRACT);
             product.setModifier(userId);
             product.setModifyTime(curDate);

@@ -25,10 +25,6 @@ PRODUCTLIST.initProductTbl = function(){
                 if(productName && $.trim(productName).length > 0) {
                     d.productName = productName;
                 }
-                var authorName = $('#inputSearchAuthorName').val();
-                if(authorName && $.trim(authorName).length > 0) {
-                    d.authorName = authorName;
-                }
                 var isbn = $('#inputSearchIsbn').val();
                 if(isbn && $.trim(isbn).length > 0) {
                     d.isbn = isbn;
@@ -36,14 +32,6 @@ PRODUCTLIST.initProductTbl = function(){
                 var subjectId = $('#inputSearchSubject').val();
                 if(subjectId && $.trim(subjectId).length > 0) {
                     d.subjectId = subjectId;
-                }
-                var publishState = $('#inputSearchPublishState').val();
-                if(publishState && $.trim(publishState).length > 0) {
-                    d.publishState = publishState;
-                }
-                var state = $('#inputSearchState').val();
-                if(state && $.trim(state).length > 0) {
-                    d.state = state;
                 }
             }
 
@@ -78,30 +66,22 @@ PRODUCTLIST.initProductTbl = function(){
                 "data": "subjectName"
             },
             {
-                "render": function (data, type, full) {
-                    if(full.publishYear) {
-                        return full.publishYear;
-                    }else if(full.finishYear){
-                        return full.finishYear;
+                "render": function(data, type, full) {
+                    if(full.type == 'wz') {
+                        return full.wordCount + "万字";
                     }else{
-                        return '';
+                        return full.wordCount + "集";
                     }
                 }
             },
             {
-                "data": "stateText"
+                "data": "stockInText"
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="javascript:;" onclick="PRODUCTLIST.popProductDetailModal(' + full.id + ')">查看</a>';
-                    // var htmlText = '<a href="/product/productDetail?id=' + full.id + ' target="_blank">查看</a> ';
-
-                    if(full.state == '0' || full.state == '101') {
-                        htmlText += '<span class="small">|</span> ';
+                    var htmlText = '<a href="/product/productDetail/' + full.id + '" target="_blank">查看</a>';
+                        htmlText += '<span class="small">&nbsp;|&nbsp;</span> ';
                         htmlText += '<a onclick="PRODUCTLIST.popEditProduct(' + full.id + ');">编辑</a>  ';
-                        htmlText += '<span class="small">|</span> ' +
-                            '<a onclick="PRODUCTLIST.deleteProduct(' + full.id + ', \'' + full.name + '\');">删除</a>';
-                    }
                     return htmlText;
                 }
             }

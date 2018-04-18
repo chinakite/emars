@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
-    public ProductResultVo findProduct(long id) {
+    public ProductInfo findProduct(long id) {
         return productMapper.findProduct(id);
     }
 
@@ -74,8 +74,8 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
-    public String createProduct(Product product) {
-        Product existsProduct = productMapper.queryProduct(product.getName(), null);
+    public String createProduct(ProductInfo product) {
+        ProductInfo existsProduct = productMapper.queryProduct(product.getName(), null);
 
         if(existsProduct != null) {
             return ErrorCode.PRODUCT_EXISTS;
@@ -86,8 +86,8 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
-    public String updateProduct(Product product) {
-        Product existsProduct = productMapper.queryProduct(product.getName(), null);
+    public String updateProduct(ProductInfo product) {
+        ProductInfo existsProduct = productMapper.queryProduct(product.getName(), null);
 
         if(existsProduct == null) {
             return ErrorCode.PRODUCT_NOT_EXISTS;
@@ -98,7 +98,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
-    public String saveProduct(Product product, String submit, boolean withoutEva, String type) {
+    public String saveProduct(ProductInfo product, String submit, boolean withoutEva, String type) {
         boolean ret;
         String name = product.getName();
         if(name == null || "".equals(name.trim())) {
@@ -171,8 +171,8 @@ public class ProductServiceImpl implements ProductService{
         }
     }
 
-    private String checkDuplicated(Product product, long id) {
-        Product prods = productMapper.checkProductDuplicated(product.getName(), id);
+    private String checkDuplicated(ProductInfo product, long id) {
+        ProductInfo prods = productMapper.checkProductDuplicated(product.getName(), id);
         if(prods != null) {
             return ErrorCode.PRODUCT_DUPLICATED;
         }

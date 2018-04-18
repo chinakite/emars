@@ -10,6 +10,7 @@ import com.ideamoment.emars.copyright.service.CopyrightService;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.model.enumeration.CopyrightContractState;
 import com.ideamoment.emars.model.enumeration.ProductState;
+import com.ideamoment.emars.model.enumeration.StockInType;
 import com.ideamoment.emars.product.dao.ProductMapper;
 import com.ideamoment.emars.utils.Page;
 import com.ideamoment.emars.utils.StringUtils;
@@ -158,7 +159,7 @@ public class CopyrightServiceImpl implements CopyrightService {
         for(CopyrightProductInfo product : products) {
             String productName = product.getName();
             String productIsbn = product.getIsbn();
-            Product existedProduct = productMapper.checkProductDuplicated(productName, null);
+            ProductInfo existedProduct = productMapper.checkProductDuplicated(productName, null);
             if(existedProduct != null) {
                 continue;
             }
@@ -171,6 +172,8 @@ public class CopyrightServiceImpl implements CopyrightService {
         for(CopyrightProductInfo product : products) {
             product.setCreator(UserContext.getUserId());
             product.setCreateTime(curDate);
+            product.setType(copyrightContract.getContractType());
+            product.setStockIn(StockInType.NOT_STOCK_IN);
 
             //处理作者逻辑
             String authorName = product.getAuthorName();
@@ -264,7 +267,7 @@ public class CopyrightServiceImpl implements CopyrightService {
             if(product.getId() == 0) {
                 String productName = product.getName();
                 String productIsbn = product.getIsbn();
-                Product existedProduct = productMapper.checkProductDuplicated(productName, null);
+                ProductInfo existedProduct = productMapper.checkProductDuplicated(productName, null);
                 if(existedProduct != null) {
                     continue;
                 }
@@ -307,7 +310,7 @@ public class CopyrightServiceImpl implements CopyrightService {
             }else{
                 String productName = product.getName();
                 String productIsbn = product.getIsbn();
-                Product existedProduct = productMapper.checkProductDuplicated(productName, product.getId());
+                ProductInfo existedProduct = productMapper.checkProductDuplicated(productName, product.getId());
                 if(existedProduct != null) {
                     continue;
                 }

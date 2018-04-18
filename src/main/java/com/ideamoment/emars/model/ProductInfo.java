@@ -1,5 +1,8 @@
 package com.ideamoment.emars.model;
 
+import com.ideamoment.emars.model.enumeration.PublishState;
+import com.ideamoment.emars.model.enumeration.StockInType;
+
 public class ProductInfo extends HistoriableEntity {
 
     private String name;
@@ -10,6 +13,8 @@ public class ProductInfo extends HistoriableEntity {
     private String publishState;
     private String isbn;
     private String press;
+    private String type;
+    private String stockIn;
 
     private long authorId;
     private String subjectName;
@@ -92,5 +97,43 @@ public class ProductInfo extends HistoriableEntity {
 
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getStockIn() {
+        return stockIn;
+    }
+
+    public void setStockIn(String stockIn) {
+        this.stockIn = stockIn;
+    }
+
+    public String getStockInText() {
+        if(StockInType.STOCK_IN.equals(this.stockIn)) {
+            return StockInType.STOCK_IN_TEXT;
+        }else{
+            return StockInType.NOT_STOCK_IN_TEXT;
+        }
+    }
+
+    public String getPublishStateText() {
+        if(PublishState.PUBLISHED.equals(this.publishState)) {
+            return PublishState.PUBLISHED_TEXT;
+        }else if(PublishState.NET_SIGNED.equals(this.publishState)) {
+            return PublishState.NET_SIGNED_TEXT;
+        }else if(PublishState.NET_UN_SIGNED.equals(this.publishState)) {
+            return PublishState.NET_UN_SIGNED_TEXT;
+        }else if(PublishState.UN_PUBLIC.equals(this.publishState)) {
+            return PublishState.UN_PUBLIC_TEXT;
+        }else{
+            return "未知";
+        }
     }
 }
