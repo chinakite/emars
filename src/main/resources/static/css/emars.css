@@ -38,6 +38,53 @@
     line-height: 2.5em;
 }
 
+.file-list-item {
+    position: relative;
+    padding: 8px 20px;
+}
+
+.file-list-title, .file-list-description, .file-list-time {
+    display: block;
+    margin-right: 66px;
+}
+
+.file-list-title {
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.file-list-description {
+    color: #6d6d6d;
+    font-size: 11px;
+}
+
+.file-list-time {
+    color: #a1a7ab;
+    font-size: 11px;
+    font-style: italic;
+}
+
+.file-list-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    width: 26px;
+    height: 26px;
+    margin-top: -13px;
+    text-align: center;
+    border-radius: 2px;
+    font-size: 14px;
+    line-height: 26px;
+}
+
+.panel .file-list-item .file-list-icon-1 {
+    right: 20px;
+}
+
+.panel .file-list-item .file-list-icon-2 {
+    right: 56px;
+}
+
 #addProductPanel {
     border: none;
 }

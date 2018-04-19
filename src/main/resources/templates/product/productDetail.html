@@ -1,147 +1,188 @@
-<!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head th:include="layout/layout :: htmlhead(${product.name})"></head>
 
 <body>
-    <div class="px-content">
-
+    <section layout:fragment="content">
         <div class="row m-t-1">
             <div class="col-md-4 col-lg-3">
-                <div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt="" class="page-profile-v1-avatar" /></div>
+                <div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt=""/>
+                </div>
+                <div class="m-y-3 text-xs-center">
+                    <a href="#" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;&nbsp;打包文件</a>&nbsp;&nbsp;
+                </div>
                 <div class="panel panel-transparent">
                     <div class="panel-heading p-x-1">
-                        <span class="panel-title">作品信息</span>
+                        <span class="panel-title">基本信息</span>
                     </div>
-                    <div class="list-group m-y-1">
-                        <p class="list-group-item p-x-1 b-a-0"><strong>作者:</strong> <span th:text="${product.authorName}"></span></p>
-                        <p class="list-group-item p-x-1 b-a-0"><strong>作者笔名:</strong> <span th:text="${product.authorPseudonym}"></span></p>
-                        <p class="list-group-item p-x-1 b-a-0"><strong>题材:</strong> <span th:text="${product.subjectName}"></span></p>
-                        <p class="list-group-item p-x-1 b-a-0"><strong>字数:</strong> <span th:text="${product.wordCount}"></span>&nbsp;万字</p>
-                        <p class="list-group-item p-x-1 b-a-0"><strong>出版状态:</strong> <span th:text="${product.publishStateText}"></span></p>
-                        <p class="list-group-item p-x-1 b-a-0"><strong>ISBN:</strong> <span th:text="${product.isbn}"></span></p>
+                    <div class="panel-body p-a-1">
+                        <p>
+                            <label>ISBN：</label><span th:text="${product.isbn}"></span>
+                        </p>
+                        <p>
+                            <label>题材：</label><span th:text="${product.subjectName}"></span>
+                        </p>
+                        <p>
+                            <label>字数：</label><span th:text="${product.wordCount}"></span>万字
+                        </p>
+                        <p>
+                            <label>入库状态：</label><span th:text="${product.stockInText}"></span>
+                        </p>
                     </div>
                 </div>
             </div>
-
-            <hr class="page-wide-block visible-xs visible-sm" />
+            <hr class="page-wide-block visible-xs visible-sm"/>
 
             <div class="col-md-8 col-lg-9">
-                <h1 class="font-size-20 m-y-4" th:text="${product.name}"></h1>
+                <h1 class="font-size-20 m-y-4"><span th:text="${product.name}"></span><span class="m-l-1 font-weight-normal font-size-14" th:text="${product.authorName + '（' + product.authorPseudonym + '）'}"></span></h1>
 
                 <ul class="nav nav-tabs" id="profile-tabs">
                     <li class="active">
-                        <a href="#copyrightInfo" data-toggle="tab">
+                        <a href="#copyright-tab" data-toggle="tab">
                             版权信息
                         </a>
                     </li>
                     <li>
-                        <a href="#makeInfo" data-toggle="tab">
+                        <a href="#make-tab" data-toggle="tab">
                             制作信息
                         </a>
                     </li>
                     <li>
-                        <a href="#settings" data-toggle="tab">
-                            运营信息
+                        <a href="#sale-tab" data-toggle="tab">
+                            营销信息
                         </a>
                     </li>
                     <li>
-                        <a href="#gallery" data-toggle="tab">
+                        <a href="#gallery-tab" data-toggle="tab">
                             相册
                         </a>
                     </li>
                 </ul>
 
-                <div class="tab-content p-a-0 bg-white">
-                    <div class="tab-pane fade in active" id="copyrightInfo">
-                        <div class="panel">
-                            <div class="panel-title">权属文件</div>
-                            <div class="panel-body">
-                                <table id="copyrightFileTbl" class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>文件名</th>
-                                            <th>创建时间</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="cf : ${copyrightFiles}">
-                                            <td th:text="${cf.name}"></td>
-                                            <td th:text="${cf.createTime}"></td>
-                                            <td><a th:href="${cf.fileUrl}">下载</a></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <hr class="m-y-0" />
-                            <div class="panel-title">版权合同</div>
-                            <div class="panel-body">
-                                <table id="copyrightTbl" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>合同编号</th>
-                                        <th>甲方</th>
-                                        <th>乙方联系人</th>
-                                        <th>创建时间</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
+                <div class="tab-content tab-content-bordered p-a-0 bg-white">
+                    <div class="tab-pane fade in active" id="copyright-tab">
+                        <div class="col-md-6 m-t-2">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">合同</span>
+                                    <div class="panel-heading-controls">
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless"><i class="fa fa-plus"></i> 添加</button>
+                                    </div>
+                                </div>
 
-                                    </tbody>
-                                </table>
+                                <div class="file-list-item">
+                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
+                                    <div class="file-list-description">这个合同还需要再谈一次</div>
+                                    <div class="file-list-time">2018-04-05 13:24:12</div>
+                                    <div class="file-list-icon file-list-icon-1 fa fa-download bg-success"></div>
+                                    <div class="file-list-icon file-list-icon-2 fa fa-remove bg-danger"></div>
+                                </div>
+
+                                <div class="file-list-item">
+                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
+                                    <div class="file-list-description">这个合同还需要再谈一次</div>
+                                    <div class="file-list-time">2018-04-05</div>
+                                    <div class="file-list-icon file-list-icon-1 fa fa-hdd-o bg-success"></div>
+                                    <div class="file-list-icon file-list-icon-2 fa fa-remove bg-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <div class="panel-title">作者身份证</div>
+                                </div>
+
+                                <div class="file-list-item">
+                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
+                                    <div class="file-list-description">这个合同还需要再谈一次</div>
+                                    <div class="file-list-time">2018-04-05</div>
+                                    <div class="file-list-icon file-list-icon-1 fa fa-hdd-o bg-success"></div>
+                                </div>
+
+                                <div class="file-list-item">
+                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
+                                    <div class="file-list-description">这个合同还需要再谈一次</div>
+                                    <div class="file-list-time">2018-04-05</div>
+                                    <div class="file-list-icon file-list-icon-1 fa fa-hdd-o bg-success"></div>
+                                </div>
+                            </div>
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <div class="panel-title">出版合同</div>
+                                </div>
+
+                                <div class="file-list-item">
+                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
+                                    <div class="file-list-description">这个合同还需要再谈一次</div>
+                                    <div class="file-list-time">2018-04-05</div>
+                                    <div class="file-list-icon file-list-icon-1 fa fa-hdd-o bg-success"></div>
+                                </div>
+
+                                <div class="file-list-item">
+                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
+                                    <div class="file-list-description">这个合同还需要再谈一次</div>
+                                    <div class="file-list-time">2018-04-05</div>
+                                    <div class="file-list-icon file-list-icon-1 fa fa-hdd-o bg-success"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 m-t-2">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <div class="panel-title">授权书</div>
+                                </div>
+
+                                <div class="file-list-item">
+                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
+                                    <div class="file-list-description">这个合同还需要再谈一次</div>
+                                    <div class="file-list-time">2018-04-05</div>
+                                    <div class="file-list-icon file-list-icon-1 fa fa-hdd-o bg-success"></div>
+                                </div>
+
+                                <div class="file-list-item">
+                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
+                                    <div class="file-list-description">这个合同还需要再谈一次</div>
+                                    <div class="file-list-time">2018-04-05</div>
+                                    <div class="file-list-icon file-list-icon-1 fa fa-hdd-o bg-success"></div>
+                                </div>
+                            </div>
+
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <div class="panel-title">版权页</div>
+                                </div>
+
+                                <div class="file-list-item">
+                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
+                                    <div class="file-list-description">这个合同还需要再谈一次</div>
+                                    <div class="file-list-time">2018-04-05</div>
+                                    <div class="file-list-icon file-list-icon-1 fa fa-hdd-o bg-success"></div>
+                                </div>
+
+                                <div class="file-list-item">
+                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
+                                    <div class="file-list-description">这个合同还需要再谈一次</div>
+                                    <div class="file-list-time">2018-04-05</div>
+                                    <div class="file-list-icon file-list-icon-1 fa fa-hdd-o bg-success"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="makeInfo">
-                        <div class="panel">
-                            <div class="panel-title">制作任务</div>
-                            <div class="panel-body">
-                                <table id="makeTaskTbl" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>制作团队</th>
-                                        <th>合同编号</th>
-                                        <th>单集时长</th>
-                                        <th>演播形式</th>
-                                        <th>制作周期</th>
-                                        <th>状态</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <hr class="m-y-0" />
-                            <div class="panel-title">制作合同</div>
-                            <div class="panel-body">
-                                <table id="makeContractTbl" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>合同编号</th>
-                                        <th>甲方</th>
-                                        <th>乙方联系人</th>
-                                        <th>创建时间</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="tab-pane fade" id="make-tab">
                     </div>
-                    <div class="tab-pane fade" id="settings">
+                    <div class="tab-pane fade" id="sale-tab">
                     </div>
-                    <div class="tab-pane fade" id="gallery">
+                    <div class="tab-pane fade" id="gallery-tab">
                     </div>
                 </div>
             </div>
         </div>
 
-    </div>
+    </section>
 </body>
+<div layout:fragment="scripts">
+    <script type='text/javascript' th:src="@{/js/product/product-list.js}"></script>
+</div>
+
 </html>

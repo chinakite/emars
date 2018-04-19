@@ -36,7 +36,7 @@ public interface ProductMapper {
     @Update("UPDATE t_product SET c_type = #{type} WHERE c_id = #{id}")
     boolean updateProductState(@Param("id") long id, @Param("state") String state);
 
-    @Select("SELECT * FROM t_product WHERE c_id = #{id}")
+    @Select("SELECT p.*, a.c_name AS authorName, a.c_pseudonym AS authorPseudonym, s.c_name AS subjectName FROM t_product_info p LEFT JOIN t_author a ON p.c_author_id = a.c_id LEFT JOIN t_subject s ON p.c_subject_id = s.c_id WHERE p.c_id = #{id}")
     @Results(id = "productMap", value = {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "name", column = "C_NAME"),
