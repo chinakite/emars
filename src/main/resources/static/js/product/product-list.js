@@ -6,6 +6,12 @@ var productTable;
 $(document).ready(function(){
     PRODUCTLIST.initProductTbl();
     PRODUCTLIST.loadCategories();
+
+    var myDropzone = new Dropzone("#uploadFiles", {
+        url: "/upload",//文件提交地址
+        method:"post",  //也可用put
+        paramName:"file"
+    });
 });
 
 PRODUCTLIST.initProductTbl = function(){
@@ -88,12 +94,6 @@ PRODUCTLIST.initProductTbl = function(){
         ]
     });
 };
-
-PRODUCTLIST.popNewProductModal = function () {
-    PRODUCTLIST.clearProductModal();
-    $('#productModal .modal-title').text("新建作品题材");
-    $('#productModal').modal('show');
-}
 
 PRODUCTLIST.loadCategories = function () {
     $.get(
@@ -350,5 +350,9 @@ PRODUCTLIST.searchProducts = function () {
 
 PRODUCTLIST.refreshProductTbl = function () {
     productTable.api().ajax.reload(null, false);
+
+}
+
+PRODUCTLIST.popUploadFileModal = function() {
 
 }
