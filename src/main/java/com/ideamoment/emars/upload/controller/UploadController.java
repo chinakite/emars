@@ -36,11 +36,11 @@ public class UploadController {
 
     @RequestMapping(value = "/upload", method = { RequestMethod.POST })
     @ResponseBody
-    public JsonData<List<String>> upload(HttpServletRequest request, HttpServletResponse response) {
+    public JsonData<List<UploadFileMeta>> upload(HttpServletRequest request, HttpServletResponse response) {
         try {
             // 创建一个通用的多部分解析器
             CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-            List<String> files = new ArrayList<String>();
+            List<UploadFileMeta> files = new ArrayList<UploadFileMeta>();
             // 判断 request 是否有文件上传,即多部分请求
             if (multipartResolver.isMultipart(request)) {
                 // 转换成多部分request
@@ -53,16 +53,22 @@ public class UploadController {
                     if (file != null) {
                         // 取得当前上传文件的文件名称
                         String fileName = file.getOriginalFilename();
+
                         // 如果名称不为空,说明该文件存在，否则说明该文件不存在
                         if (fileName.trim() != "") {
+                            UploadFileMeta meta = new UploadFileMeta();
+                            meta.setName(fileName);
+
                             File newFile = new File(fileName);
                             FileOutputStream outStream = new FileOutputStream(newFile); // 文件输出流用于将数据写入文件
                             outStream.write(file.getBytes());
                             outStream.close(); // 关闭文件输出流
                             file.transferTo(newFile);
                             // 上传到阿里云
-                            files.add(upload(newFile));
+                            String path = upload(newFile);
+                            meta.setPath(path);
                             newFile.delete();
+                            files.add(meta);
                         }
                     }
                 }
@@ -97,10 +103,28 @@ public class UploadController {
             oe.printStackTrace();
         } catch (ClientException ce) {
             ce.printStackTrace();
-        } finally {
-            // 关闭OSS服务，一定要关闭
-            ossClient.shutdown();
         }
         return null;
+    }
+
+    class UploadFileMeta {
+        private String name;
+        private String path;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
     }
 }

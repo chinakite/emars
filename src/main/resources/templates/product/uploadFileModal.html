@@ -12,10 +12,15 @@
                 <h4 class="modal-title">上传版权文件</h4>
             </div>
             <div class="modal-body">
-                <form id="files-form">
-                    <div class="form-group">
-                        <label for="uploadFiles" class="control-label">文件</label>
-                        <div id="uploadFiles" class="dropzone"></div>
+                <input type="hidden" id="uploadFileType" value=""/>
+                <form action="/upload" id="dropzonejs" class="dropzone-box">
+                    <div class="dz-default dz-message">
+                        <div class="dz-upload-icon"></div>
+                        将文件拖到这里<br/>
+                        <span class="dz-text-small">或 点击选择文件</span>
+                    </div>
+                    <div class="fallback">
+                        <input name="file" type="file" multiple="multiple"/>
                     </div>
                 </form>
             </div>

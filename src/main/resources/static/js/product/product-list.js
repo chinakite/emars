@@ -2,15 +2,39 @@
 
 var PRODUCTLIST = {};
 var productTable;
+var dropzoneObj;
 
 $(document).ready(function(){
     PRODUCTLIST.initProductTbl();
     PRODUCTLIST.loadCategories();
 
-    var myDropzone = new Dropzone("#uploadFiles", {
-        url: "/upload",//文件提交地址
-        method:"post",  //也可用put
-        paramName:"file"
+    $('#dropzonejs').dropzone({
+        parallelUploads: 1,
+        maxFilesize:     50000,
+        filesizeBase:    1000,
+
+        resize: function(file) {
+            return {
+                srcX:      0,
+                srcY:      0,
+                srcWidth:  file.width,
+                srcHeight: file.height,
+                trgWidth:  file.width,
+                trgHeight: file.height,
+            };
+        },
+        init: function() {
+            dropzoneObj = this;
+            this.on("success", function (file, message) {
+                console.log(message);
+            });
+            this.on("error", function (file, message) {
+                console.log(message);
+            });
+            this.on('resetFiles', function() {
+                this.removeAllFiles();
+            });
+        }
     });
 });
 
@@ -341,18 +365,25 @@ PRODUCTLIST.deleteProduct = function (id, name) {
             }
         );
     }, null)
-}
+};
 
 PRODUCTLIST.searchProducts = function () {
     productTable.api().ajax.reload();
-}
-
+};
 
 PRODUCTLIST.refreshProductTbl = function () {
     productTable.api().ajax.reload(null, false);
 
-}
+};
 
-PRODUCTLIST.popUploadFileModal = function() {
+PRODUCTLIST.popUploadFileModal = function(type) {
+    PRODUCTLIST.clearUploadFileModal();
+    $('#uploadFileType').val(type);
+    $('#uploadFileModal').modal('show');
+};
 
-}
+PRODUCTLIST.clearUploadFileModal = function() {
+    dropzoneObj.emit("resetFiles");
+    $('#uploadFileType').val('');
+    $('#uploadFileModal').modal('show');
+};
