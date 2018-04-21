@@ -11,9 +11,11 @@ $(document).ready(function(){
     MAKELIST.loadProductList();
     $('#makeContractWizard').pxWizard();
     $('#product-list-select').select2({
-        placeholder: 'Select value',
+        placeholder: '选择作品',
         dropdownParent: $('#contractModal'),
-        templateSelection: productItem
+        minimumSelectionLength: 1,
+        allowClear: true,
+        // templateSelection: productItem
     });
 });
 
@@ -33,11 +35,11 @@ MAKELIST.loadProductList = function() {
     )
 }
 
-function productItem(product) {
-    console.log(product);
+function productItem(selectProduct) {
+    $("#product-list-selected").empty();
     $.get(
         "/product/product",
-        {id: product.id},
+        {id: selectProduct.id},
         function(data) {
             var product = data.data;
             var html = '';
@@ -46,13 +48,21 @@ function productItem(product) {
                 '<h4 class="list-group-item-heading">' + product['name'] + '</h4>' +
                 '<p class="list-group-item-text">' + product['authorName'] + '（' + product['authorPseudonym'] +'） | 10.6万 | ' + product['isbn'] + ' | 悬疑推理</p>' +
                 '</div>' +
-                '<div class="product-list-item-toolbar">' +
-                '<a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="COPYRIGHTLIST.removeProduct(this);"><i class="fa fa-remove"></i></a>' +
-                '</div>' +
+                // '<div class="product-list-item-toolbar">' +
+                // '<a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="MAKELIST.removeProduct(this);"><i class="fa fa-remove"></i></a>' +
+                // '</div>' +
                 '</div>';
             $("#product-list-selected").append(html);
+
         }
     )
+    return selectProduct.text;
+
+}
+
+
+MAKELIST.removeProduct = function(obj) {
+    $(obj).parent().parent().remove();
 }
 
 MAKELIST.initProductTbl = function(){
