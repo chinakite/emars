@@ -13,6 +13,8 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" id="uploadFileType" value=""/>
+                <input type="hidden" id="uploadFileProductId"/>
+                <input type="hidden" id="fileMetas"/>
                 <form action="/upload" id="dropzonejs" class="dropzone-box">
                     <div class="dz-default dz-message">
                         <div class="dz-upload-icon"></div>
@@ -26,7 +28,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="AUTHORLIST.submitAuthor();">保存</button>
+                <button type="button" class="btn btn-primary" onclick="PRODUCTLIST.submitProductFiles();">保存</button>
             </div>
         </div>
     </div>

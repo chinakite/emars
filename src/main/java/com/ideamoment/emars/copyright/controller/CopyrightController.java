@@ -5,6 +5,7 @@ import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.copyright.service.CopyrightService;
 import com.ideamoment.emars.model.Copyright;
 import com.ideamoment.emars.model.CopyrightContract;
+import com.ideamoment.emars.model.CopyrightFile;
 import com.ideamoment.emars.utils.DataTableSource;
 import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yukiwang on 2018/2/24.
@@ -64,6 +68,18 @@ public class CopyrightController {
     @RequestMapping(value = "/removeCopyright", method = RequestMethod.POST)
     public JsonData<String> removeCopyright(Long id) {
         String result = copyrightService.removeCopyright(id);
+
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
+    @RequestMapping(value = "/saveCopyrightFiles", method = RequestMethod.POST)
+    public JsonData<String> saveCopyrightFiles(@RequestBody ArrayList<CopyrightFile> copyrightFiles) {
+//        String result = "0";
+        String result = copyrightService.saveCopyrightFiles(copyrightFiles);
 
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;

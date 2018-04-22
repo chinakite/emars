@@ -2,6 +2,7 @@ package com.ideamoment.emars.copyright.service;
 
 import com.ideamoment.emars.model.Copyright;
 import com.ideamoment.emars.model.CopyrightContract;
+import com.ideamoment.emars.model.CopyrightFile;
 import com.ideamoment.emars.utils.Page;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface CopyrightService {
     String removeCopyright(Long id);
 
     String updateCopyrightContract(CopyrightContract copyrightContract);
+
+    String saveCopyrightFiles(List<CopyrightFile> copyrightFiles);
 }

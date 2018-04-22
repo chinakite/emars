@@ -354,6 +354,22 @@ public class CopyrightServiceImpl implements CopyrightService {
         return resultString(result);
     }
 
+    @Override
+    @Transactional
+    public String saveCopyrightFiles(List<CopyrightFile> copyrightFiles) {
+        Long userId = UserContext.getUserId();
+        Date curDate = new Date();
+
+        boolean result = true;
+        for(CopyrightFile copyrightFile : copyrightFiles) {
+            copyrightFile.setCreator(userId);
+            copyrightFile.setCreateTime(curDate);
+            result = result && copyrightMapper.insertCopyrightFile(copyrightFile);
+        }
+
+        return resultString(result);
+    }
+
     private synchronized String createCode(Copyright cc) {
         Date curDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");

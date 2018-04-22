@@ -1,9 +1,6 @@
 package com.ideamoment.emars.copyright.dao;
 
-import com.ideamoment.emars.model.Copyright;
-import com.ideamoment.emars.model.CopyrightContract;
-import com.ideamoment.emars.model.CopyrightProductInfo;
-import com.ideamoment.emars.model.Grantee;
+import com.ideamoment.emars.model.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Service;
 
@@ -195,4 +192,7 @@ public interface CopyrightMapper {
 
     @Delete("delete from t_copyright_product where c_copyright_id = #{copyrightId} and c_product_id = #{productId}")
     boolean deleteCopyrightProductInfo(long copyrightId, @Param("productId") Long productId);
+
+    @Insert("insert into t_copyright_file (c_name, c_type, c_path, c_product_id, c_creator, c_createtime)values(#{name}, #{type}, #{path}, #{productId}, #{creator}, #{createTime})")
+    boolean insertCopyrightFile(CopyrightFile copyrightFile);
 }
