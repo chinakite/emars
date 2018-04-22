@@ -152,7 +152,7 @@ GRANTERLIST.deleteGranter = function(id, name) {
                 }
             }
         );
-    }, null)
+    }, null);
 }
 
 GRANTERLIST.refreshGranterTbl = function () {

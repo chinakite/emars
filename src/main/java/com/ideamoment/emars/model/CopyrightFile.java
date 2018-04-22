@@ -1,5 +1,7 @@
 package com.ideamoment.emars.model;
 
+import java.text.SimpleDateFormat;
+
 public class CopyrightFile extends HistoriableEntity {
 
     private Long productId;
@@ -46,5 +48,14 @@ public class CopyrightFile extends HistoriableEntity {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public String getCreateTimeText() {
+        if(this.createTime != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            return sdf.format(this.createTime);
+        }else{
+            return "";
+        }
     }
 }

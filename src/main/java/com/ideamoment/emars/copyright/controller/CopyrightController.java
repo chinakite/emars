@@ -78,9 +78,24 @@ public class CopyrightController {
 
     @RequestMapping(value = "/saveCopyrightFiles", method = RequestMethod.POST)
     public JsonData<String> saveCopyrightFiles(@RequestBody ArrayList<CopyrightFile> copyrightFiles) {
-//        String result = "0";
         String result = copyrightService.saveCopyrightFiles(copyrightFiles);
 
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
+    @RequestMapping(value="/contractFiles", method = RequestMethod.GET)
+    public JsonData<List<CopyrightFile>> loadCopyrightContractFiles(String productId) {
+        List<CopyrightFile> files = copyrightService.loadCopyrightContractFiles(productId);
+        return JsonData.success(files);
+    }
+
+    @RequestMapping(value="/deleteCopyrightFile", method = RequestMethod.POST)
+    public JsonData<String> deleteCopyrightFile(String id) {
+        String result = copyrightService.deleteCopyrightFile(id);
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;
         }else{

@@ -9,6 +9,7 @@ import com.ideamoment.emars.copyright.dao.CopyrightMapper;
 import com.ideamoment.emars.copyright.service.CopyrightService;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.model.enumeration.CopyrightContractState;
+import com.ideamoment.emars.model.enumeration.CopyrightFileType;
 import com.ideamoment.emars.model.enumeration.ProductState;
 import com.ideamoment.emars.model.enumeration.StockInType;
 import com.ideamoment.emars.product.dao.ProductMapper;
@@ -367,6 +368,19 @@ public class CopyrightServiceImpl implements CopyrightService {
             result = result && copyrightMapper.insertCopyrightFile(copyrightFile);
         }
 
+        return resultString(result);
+    }
+
+    @Override
+    @Transactional
+    public List<CopyrightFile> loadCopyrightContractFiles(String productId) {
+        return copyrightMapper.queryCopyrightFiles(productId, CopyrightFileType.CONTRACT);
+    }
+
+    @Override
+    @Transactional
+    public String deleteCopyrightFile(String id) {
+        boolean result = copyrightMapper.deleteCopyrightFile(id);
         return resultString(result);
     }
 

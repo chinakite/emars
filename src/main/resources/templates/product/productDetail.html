@@ -13,6 +13,7 @@
                     <a href="#" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;&nbsp;打包文件</a>&nbsp;&nbsp;
                 </div>
                 <div class="panel panel-transparent">
+                    <input type="hidden" id="productId" th:value="${product.id}"/>
                     <div class="panel-heading p-x-1">
                         <span class="panel-title">基本信息</span>
                     </div>
@@ -67,24 +68,12 @@
                                 <div class="panel-heading">
                                     <span class="panel-title">合同</span>
                                     <div class="panel-heading-controls">
-                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" onclick="PRODUCTLIST.popUploadFileModal('1', 'cpr_contract');"><i class="fa fa-plus"></i> 添加</button>
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" onclick="PRODUCTPAGE.popUploadFileModal('cpr_contract');"><i class="fa fa-plus"></i> 添加</button>
                                     </div>
                                 </div>
 
-                                <div class="file-list-item">
-                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
-                                    <div class="file-list-description">这个合同还需要再谈一次</div>
-                                    <div class="file-list-time">2018-04-05 13:24:12</div>
-                                    <div class="file-list-icon file-list-icon-1 fa fa-download bg-success"></div>
-                                    <div class="file-list-icon file-list-icon-2 fa fa-remove bg-danger"></div>
-                                </div>
+                                <div id="copyrightContractFileList">
 
-                                <div class="file-list-item">
-                                    <div class="file-list-title text-default">合同——2017-wz-024.pdf</div>
-                                    <div class="file-list-description">这个合同还需要再谈一次</div>
-                                    <div class="file-list-time">2018-04-05</div>
-                                    <div class="file-list-icon file-list-icon-1 fa fa-hdd-o bg-success"></div>
-                                    <div class="file-list-icon file-list-icon-2 fa fa-remove bg-danger"></div>
                                 </div>
                             </div>
 
@@ -183,7 +172,7 @@
     </section>
 </body>
 <div layout:fragment="scripts">
-    <script type='text/javascript' th:src="@{/js/product/product-list.js}"></script>
+    <script type='text/javascript' th:src="@{/js/product/product-page.js}"></script>
 </div>
 
 </html>

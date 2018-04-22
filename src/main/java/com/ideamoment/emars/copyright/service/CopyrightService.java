@@ -27,4 +27,8 @@ public interface CopyrightService {
     String updateCopyrightContract(CopyrightContract copyrightContract);
 
     String saveCopyrightFiles(List<CopyrightFile> copyrightFiles);
+
+    List<CopyrightFile> loadCopyrightContractFiles(String productId);
+
+    String deleteCopyrightFile(String id);
 }

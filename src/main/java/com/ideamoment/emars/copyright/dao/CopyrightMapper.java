@@ -191,8 +191,24 @@ public interface CopyrightMapper {
     ArrayList<Long> queryCopyrightProductIds(@Param("copyrightId") long copyrightId);
 
     @Delete("delete from t_copyright_product where c_copyright_id = #{copyrightId} and c_product_id = #{productId}")
-    boolean deleteCopyrightProductInfo(long copyrightId, @Param("productId") Long productId);
+    boolean deleteCopyrightProductInfo(@Param("copyrightId") long copyrightId, @Param("productId") Long productId);
 
     @Insert("insert into t_copyright_file (c_name, c_type, c_path, c_product_id, c_creator, c_createtime)values(#{name}, #{type}, #{path}, #{productId}, #{creator}, #{createTime})")
     boolean insertCopyrightFile(CopyrightFile copyrightFile);
+
+    @Select("select * from t_copyright_file where c_product_id = #{productId} and c_type = #{type}")
+    @Results(id = "copyrightFileMap", value = {
+            @Result(property = "id", column = "c_id", id = true),
+            @Result(property = "name", column = "c_name"),
+            @Result(property = "type", column = "c_type"),
+            @Result(property = "path", column = "c_path"),
+            @Result(property = "productId", column = "c_product_id"),
+            @Result(property = "desc", column = "c_desc"),
+            @Result(property = "creator", column = "c_creator"),
+            @Result(property = "createTime", column = "c_createtime")
+    })
+    List<CopyrightFile> queryCopyrightFiles(@Param("productId") String productId, @Param("type") String type);
+
+    @Delete("delete from t_copyright_file where c_id = #{id}")
+    boolean deleteCopyrightFile(String id);
 }

@@ -7,44 +7,6 @@ var dropzoneObj;
 $(document).ready(function(){
     PRODUCTLIST.initProductTbl();
     PRODUCTLIST.loadCategories();
-
-    $('#dropzonejs').dropzone({
-        parallelUploads: 1,
-        maxFilesize:     50000,
-        filesizeBase:    1000,
-
-        resize: function(file) {
-            return {
-                srcX:      0,
-                srcY:      0,
-                srcWidth:  file.width,
-                srcHeight: file.height,
-                trgWidth:  file.width,
-                trgHeight: file.height,
-            };
-        },
-        init: function() {
-            dropzoneObj = this;
-            this.on("success", function (file, message) {
-                var fileMetaDatas = message.data;
-                var fileMetas = $('#fileMetas').data('postData');
-                if(!fileMetas) {
-                    fileMetas = [];
-                }
-                for(var i=0; i<fileMetaDatas.length; i++) {
-                    fileMetas.push(fileMetaDatas[i]);
-                }
-                $('#fileMetas').data('postData', fileMetas);
-                console.log($('#fileMetas').data('postData'));
-            });
-            this.on("error", function (file, message) {
-                console.log(message);
-            });
-            this.on('resetFiles', function() {
-                this.removeAllFiles();
-            });
-        }
-    });
 });
 
 PRODUCTLIST.initProductTbl = function(){
@@ -383,50 +345,4 @@ PRODUCTLIST.searchProducts = function () {
 PRODUCTLIST.refreshProductTbl = function () {
     productTable.api().ajax.reload(null, false);
 
-};
-
-PRODUCTLIST.popUploadFileModal = function(productId, type) {
-    PRODUCTLIST.clearUploadFileModal();
-    $('#uploadFileType').val(type);
-    $('#uploadFileProductId').val(productId);
-    $('#uploadFileModal').modal('show');
-};
-
-PRODUCTLIST.clearUploadFileModal = function() {
-    dropzoneObj.emit("resetFiles");
-    $('#uploadFileType').val('');
-    $('#uploadFileProductId').val('');
-    $('#uploadFileModal').modal('show');
-};
-
-PRODUCTLIST.submitProductFiles = function() {
-    var fileType = $('#uploadFileType').val();
-    var productId = $('#uploadFileProductId').val();
-    var fileMetas = $('#fileMetas').data('postData');
-    for(var i=0; i<fileMetas.length; i++) {
-        if(fileType == 'cpr_contract') {
-            fileMetas[i].type = '1';
-        }
-        fileMetas[i].productId = productId;
-    }
-    $.ajax(
-        {
-            url: '/copyright/saveCopyrightFiles',
-            data: JSON.stringify(fileMetas),
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json",
-            success: function(data) {
-                if(data.code == '0') {
-                    EMARS_COMMONS.showSuccess("文件保存成功！");
-                    $('#uploadFileModal').modal('hide');
-                }else{
-                    EMARS_COMMONS.showError(data.code, data.msg);
-                }
-            },
-            error: function(data) {
-
-            }
-        }
-    );
 };
