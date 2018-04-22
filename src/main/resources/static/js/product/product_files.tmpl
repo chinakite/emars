@@ -1,0 +1,9 @@
+{% for file in files %}
+<div class="file-list-item">
+    <div class="file-list-title text-default">{{file.name}}</div>
+    <div class="file-list-description">{{file.desc}}</div>
+    <div class="file-list-time">{{file.createTime}}</div>
+    <div class="file-list-icon file-list-icon-1 fa fa-download bg-success"></div>
+    <div class="file-list-icon file-list-icon-2 fa fa-remove bg-danger"></div>
+</div>
+{% endfor %}
