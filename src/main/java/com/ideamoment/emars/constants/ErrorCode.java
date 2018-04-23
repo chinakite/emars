@@ -46,11 +46,11 @@ public class ErrorCode {
     public static final String EMAIL_SEND_ERROR = "D-0001";
     public static final String EMAIL_SAVE_ERROR = "D-0001";
 
-    //签约公司已存在
+    //签约主体已存在
     public static final String GRANTEE_EXISTS = "G-0003";
-    //签约公司不存在
+    //签约主体不存在
     public static final String GRANTEE_NOT_EXISTS = "G-0004";
-    //签约公司不能被删除
+    //签约主体不能被删除
     public static final String GRANTEE_CANNOT_DELETE = "G-0005";
 
     //授权方已存在
@@ -75,9 +75,9 @@ public class ErrorCode {
         ERROR_MSG.put(SUPERADMIN_CANT_OPERATE, "不能操作超级管理员");
         ERROR_MSG.put(EMAIL_SEND_ERROR, "发送邮件时发生异常");
         ERROR_MSG.put(EMAIL_SAVE_ERROR, "邮件设置保存失败");
-        ERROR_MSG.put(GRANTEE_EXISTS, "该签约公司已存在");
-        ERROR_MSG.put(GRANTEE_NOT_EXISTS, "该签约公司不存在");
-        ERROR_MSG.put(GRANTEE_CANNOT_DELETE, "该签约公司有关联的版权合同，无法删除");
+        ERROR_MSG.put(GRANTEE_EXISTS, "该签约主体已存在");
+        ERROR_MSG.put(GRANTEE_NOT_EXISTS, "该签约主体不存在");
+        ERROR_MSG.put(GRANTEE_CANNOT_DELETE, "该签约主体有关联的版权合同，无法删除");
         ERROR_MSG.put(GRANTER_EXISTS, "该授权方已存在");
         ERROR_MSG.put(GRANTER_NOT_EXISTS, "该授权方不存在");
         ERROR_MSG.put(GRANTER_CANNOT_DELETE, "该授权方有关联的版权合同，无法删除");

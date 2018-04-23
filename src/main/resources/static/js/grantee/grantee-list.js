@@ -51,13 +51,13 @@ GRANTEELIST.initGranteeTbl = function(){
 
 GRANTEELIST.popNewGranteeModal = function(){
     GRANTEELIST.clearGranteeModal();
-    $('#granteeModal .modal-title').text("新建签约公司");
+    $('#granteeModal .modal-title').text("新建签约主体");
     $('#granteeModal').modal('show');
 };
 
 GRANTEELIST.popEditGrantee = function(id) {
     GRANTEELIST.clearGranteeModal();
-    $('#granteeModal .modal-title').text("编辑签约公司");
+    $('#granteeModal .modal-title').text("编辑签约主体");
     $('#granteeModal').modal('show');
     $.get(
         "/system/grantee",
@@ -94,7 +94,7 @@ GRANTEELIST.submitGrantee = function() {
             },
             function (data) {
                 if(data.code == '0') {
-                    EMARS_COMMONS.showSuccess("签约公司保存成功！");
+                    EMARS_COMMONS.showSuccess("签约主体保存成功！");
                     $('#granteeModal').modal('hide');
                     GRANTEELIST.refreshGranteeTbl();
                 }else{
@@ -111,7 +111,7 @@ GRANTEELIST.submitGrantee = function() {
             },
             function (data) {
                 if(data.code == '0') {
-                    EMARS_COMMONS.showSuccess("签约公司保存成功！");
+                    EMARS_COMMONS.showSuccess("签约主体保存成功！");
                     $('#granteeModal').modal('hide');
                     GRANTEELIST.refreshGranteeTbl();
                 }else{
@@ -123,7 +123,7 @@ GRANTEELIST.submitGrantee = function() {
 };
 
 GRANTEELIST.deleteGrantee = function(id, name) {
-    EMARS_COMMONS.showPrompt("您真的要删除签约公司[" + name + "]吗？", function() {
+    EMARS_COMMONS.showPrompt("您真的要删除签约主体[" + name + "]吗？", function() {
         $.post(
             "/system/deleteGrantee",
             {'id': id},
