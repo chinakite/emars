@@ -9,6 +9,7 @@ import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
 import com.ideamoment.emars.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -112,6 +113,33 @@ public class ProductController {
     @RequestMapping(value = "/deleteProduct", method = RequestMethod.POST)
     public JsonData<Boolean> deleteProduct(long id) {
         String result = productService.deleteProduct(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
+    @RequestMapping(value = "/savePics", method = RequestMethod.POST)
+    public JsonData<String> savePics(@RequestBody ArrayList<ProductPicture> pics) {
+        String result = productService.saveProductPictures(pics);
+
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
+    @RequestMapping(value="/productPicFiles", method = RequestMethod.GET)
+    public JsonData<List<ProductPicture>> loadProductPictureFiles(String productId) {
+        List<ProductPicture> pics = productService.loadProductPictureFiles(productId);
+        return JsonData.success(pics);
+    }
+
+    @RequestMapping(value="/deletePicture", method = RequestMethod.POST)
+    public JsonData<String> deletePicture(String id) {
+        String result = productService.deletePicture(id);
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;
         }else{

@@ -3,6 +3,7 @@ package com.ideamoment.emars.product.service;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.utils.Page;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,4 +25,9 @@ public interface ProductService {
 
     List<ProductCopyrightFile> listProductCopyrightFiles(long productId);
 
+    String saveProductPictures(ArrayList<ProductPicture> pics);
+
+    List<ProductPicture> loadProductPictureFiles(String productId);
+
+    String deletePicture(String id);
 }

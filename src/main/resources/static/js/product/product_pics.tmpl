@@ -1,0 +1,11 @@
+{% for file in files %}
+<div class="widget-products-item col-xs-6 col-sm-4 col-xl-3">
+    <a href="#" class="widget-products-image">
+        <img src="{{file.path}}"/>
+        <span class="widget-products-overlay"></span>
+    </a>
+    <a href="#" class="widget-products-title">
+        {{file.name}}
+    </a>
+</div>
+{% endfor %}

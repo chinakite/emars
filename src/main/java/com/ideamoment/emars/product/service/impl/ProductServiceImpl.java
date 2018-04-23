@@ -8,6 +8,7 @@ import com.ideamoment.emars.model.enumeration.ProductState;
 import com.ideamoment.emars.model.enumeration.ProductType;
 import com.ideamoment.emars.product.dao.ProductCopyrightFileMapper;
 import com.ideamoment.emars.product.dao.ProductMapper;
+import com.ideamoment.emars.product.dao.ProductPictureMapper;
 import com.ideamoment.emars.product.dao.ProductSampleMapper;
 import com.ideamoment.emars.product.service.ProductService;
 import com.ideamoment.emars.utils.Page;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private ProductPictureMapper productPictureMapper;
 
     @Autowired
     private AuthorService authorService;
@@ -160,6 +165,35 @@ public class ProductServiceImpl implements ProductService{
     @Transactional
     public List<ProductCopyrightFile> listProductCopyrightFiles(long productId) {
         return productCopyrightFileMapper.listProductCopyrightFiles(productId);
+    }
+
+    @Override
+    @Transactional
+    public String saveProductPictures(ArrayList<ProductPicture> pics) {
+        Long userId = UserContext.getUserId();
+        Date curDate = new Date();
+
+        boolean result = true;
+        for(ProductPicture pic : pics) {
+            pic.setCreator(userId);
+            pic.setCreateTime(curDate);
+            result = result && productPictureMapper.insertPicture(pic);
+        }
+
+        return resultString(result);
+    }
+
+    @Override
+    @Transactional
+    public List<ProductPicture> loadProductPictureFiles(String productId) {
+        return productPictureMapper.queryProductPictures(productId);
+    }
+
+    @Override
+    @Transactional
+    public String deletePicture(String id) {
+        boolean result = productPictureMapper.deleteProductPicture(id);
+        return resultString(result);
     }
 
 

@@ -60,20 +60,31 @@ PRODUCTPAGE.clearUploadFileModal = function() {
 };
 
 PRODUCTPAGE.submitProductFiles = function() {
+    var saveCopyrightFileUrl = '/copyright/saveCopyrightFiles';
+    var saveProdPicUrl = '/product/savePics';
     var fileType = $('#uploadFileType').val();
     var productId = $('#uploadFileProductId').val();
     var fileMetas = $('#fileMetas').data('postData');
+    var postUrl;
     for(var i=0; i<fileMetas.length; i++) {
         if(fileType == 'cpr_contract') {
             fileMetas[i].type = '1';
+            postUrl = saveCopyrightFileUrl;
         }else if(fileType == 'cpr_copyright_page') {
             fileMetas[i].type = '2';
+            postUrl = saveCopyrightFileUrl;
         }else if(fileType == 'cpr_grant_paper') {
             fileMetas[i].type = '3';
+            postUrl = saveCopyrightFileUrl;
         }else if(fileType == 'cpr_author_id_card') {
             fileMetas[i].type = '4';
+            postUrl = saveCopyrightFileUrl;
         }else if(fileType == 'cpr_publish_contract') {
             fileMetas[i].type = '5';
+            postUrl = saveCopyrightFileUrl;
+        }else if(fileType == 'prod_pic') {
+            fileMetas[i].type = '0';
+            postUrl = saveProdPicUrl;
         }else{
             fileMetas[i].type = '0';
         }
@@ -81,7 +92,7 @@ PRODUCTPAGE.submitProductFiles = function() {
     }
     $.ajax(
         {
-            url: '/copyright/saveCopyrightFiles',
+            url: postUrl,
             data: JSON.stringify(fileMetas),
             type: "POST",
             dataType: "json",
@@ -100,6 +111,8 @@ PRODUCTPAGE.submitProductFiles = function() {
                         PRODUCTPAGE.refreshProductAuthorIdCardFiles($('#productId').val());
                     }else if(fileType == 'cpr_publish_contract') {
                         PRODUCTPAGE.refreshProductPublishContractFiles($('#productId').val());
+                    }else if(fileType == 'prod_pic') {
+                        PRODUCTPAGE.refreshProductPicFiles($('#productId').val());
                     }
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
@@ -119,6 +132,7 @@ PRODUCTPAGE.refreshProductFiles = function() {
     PRODUCTPAGE.refreshProductAuthorIdCardFiles(productId);
     PRODUCTPAGE.refreshProductGrantPaperFiles(productId);
     PRODUCTPAGE.refreshProductPublishContractFiles(productId);
+    PRODUCTPAGE.refreshProductPicFiles(productId);
 };
 
 PRODUCTPAGE.refreshProductCopyrightContractFiles = function(productId) {
@@ -201,7 +215,34 @@ PRODUCTPAGE.refreshProductPublishContractFiles = function(productId) {
     );
 };
 
+PRODUCTPAGE.refreshProductPicFiles = function(productId) {
+    $.get(
+        '/product/productPicFiles',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var files = data.data;
+                var filesHtml = nunjucks.render('../../../js/product/product_pics.tmpl', {files: files});
+                $('#prodPicFileList').html(filesHtml);
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+};
+
 PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
+    var deleteUrl;
+    if(type == 'cpr_contract'
+        || type == 'cpr_copyright_page'
+        || type == 'cpr_grant_paper'
+        || type == 'cpr_author_id_card'
+        || type == 'cpr_publish_contract'
+    ){
+        deleteUrl = "/copyright/deleteCopyrightFile";
+    }else if(type == 'prod_pic'){
+        deleteUrl = "/product/deletePicture";
+    }
     EMARS_COMMONS.showPrompt("您真的要删除文件[" + name + "]吗？", function() {
         $.post(
             "/copyright/deleteCopyrightFile",
@@ -219,6 +260,8 @@ PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
                         PRODUCTPAGE.refreshProductAuthorIdCardFiles($('#productId').val());
                     }else if(fileType == 'cpr_publish_contract') {
                         PRODUCTPAGE.refreshProductPublishContractFiles($('#productId').val());
+                    }else if(fileType == 'prod_pic'){
+                        PRODUCTPAGE.refreshProductPicFiles($('#productId').val());
                     }
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
