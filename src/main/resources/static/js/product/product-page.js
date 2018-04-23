@@ -66,6 +66,16 @@ PRODUCTPAGE.submitProductFiles = function() {
     for(var i=0; i<fileMetas.length; i++) {
         if(fileType == 'cpr_contract') {
             fileMetas[i].type = '1';
+        }else if(fileType == 'cpr_copyright_page') {
+            fileMetas[i].type = '2';
+        }else if(fileType == 'cpr_grant_paper') {
+            fileMetas[i].type = '3';
+        }else if(fileType == 'cpr_author_id_card') {
+            fileMetas[i].type = '4';
+        }else if(fileType == 'cpr_publish_contract') {
+            fileMetas[i].type = '5';
+        }else{
+            fileMetas[i].type = '0';
         }
         fileMetas[i].productId = productId;
     }
@@ -80,7 +90,17 @@ PRODUCTPAGE.submitProductFiles = function() {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("文件保存成功！");
                     $('#uploadFileModal').modal('hide');
-                    PRODUCTPAGE.refreshProductCopyrightContractFiles($('#productId').val());
+                    if(fileType == 'cpr_contract') {
+                        PRODUCTPAGE.refreshProductCopyrightContractFiles($('#productId').val());
+                    }else if(fileType == 'cpr_copyright_page') {
+                        PRODUCTPAGE.refreshProductCopyrightPageFiles($('#productId').val());
+                    }else if(fileType == 'cpr_grant_paper') {
+                        PRODUCTPAGE.refreshProductGrantPaperFiles($('#productId').val());
+                    }else if(fileType == 'cpr_author_id_card') {
+                        PRODUCTPAGE.refreshProductAuthorIdCardFiles($('#productId').val());
+                    }else if(fileType == 'cpr_publish_contract') {
+                        PRODUCTPAGE.refreshProductPublishContractFiles($('#productId').val());
+                    }
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
                 }
@@ -95,6 +115,10 @@ PRODUCTPAGE.submitProductFiles = function() {
 PRODUCTPAGE.refreshProductFiles = function() {
     var productId = $('#productId').val();
     PRODUCTPAGE.refreshProductCopyrightContractFiles(productId);
+    PRODUCTPAGE.refreshProductCopyrightPageFiles(productId);
+    PRODUCTPAGE.refreshProductAuthorIdCardFiles(productId);
+    PRODUCTPAGE.refreshProductGrantPaperFiles(productId);
+    PRODUCTPAGE.refreshProductPublishContractFiles(productId);
 };
 
 PRODUCTPAGE.refreshProductCopyrightContractFiles = function(productId) {
@@ -113,6 +137,70 @@ PRODUCTPAGE.refreshProductCopyrightContractFiles = function(productId) {
     );
 };
 
+PRODUCTPAGE.refreshProductCopyrightPageFiles = function(productId) {
+    $.get(
+        '/copyright/copyrightPageFiles',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var files = data.data;
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files});
+                $('#copyrightPageFileList').html(filesHtml);
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+};
+
+PRODUCTPAGE.refreshProductAuthorIdCardFiles = function(productId) {
+    $.get(
+        '/copyright/authorIdCardFiles',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var files = data.data;
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files});
+                $('#copyrightAuthorIdCardFileList').html(filesHtml);
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+};
+
+PRODUCTPAGE.refreshProductGrantPaperFiles = function(productId) {
+    $.get(
+        '/copyright/grantPaperFiles',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var files = data.data;
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files});
+                $('#copyrightGrantPaperFileList').html(filesHtml);
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+};
+
+PRODUCTPAGE.refreshProductPublishContractFiles = function(productId) {
+    $.get(
+        '/copyright/publishContractFiles',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var files = data.data;
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files});
+                $('#copyrightPublishContractFileList').html(filesHtml);
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+};
+
 PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
     EMARS_COMMONS.showPrompt("您真的要删除文件[" + name + "]吗？", function() {
         $.post(
@@ -123,6 +211,14 @@ PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
                     EMARS_COMMONS.showSuccess("删除成功！");
                     if(type == 'cpr_contract') {
                         PRODUCTPAGE.refreshProductCopyrightContractFiles($('#productId').val());
+                    }else if(fileType == 'cpr_copyright_page') {
+                        PRODUCTPAGE.refreshProductCopyrightPageFiles($('#productId').val());
+                    }else if(fileType == 'cpr_grant_paper') {
+                        PRODUCTPAGE.refreshProductGrantPaperFiles($('#productId').val());
+                    }else if(fileType == 'cpr_author_id_card') {
+                        PRODUCTPAGE.refreshProductAuthorIdCardFiles($('#productId').val());
+                    }else if(fileType == 'cpr_publish_contract') {
+                        PRODUCTPAGE.refreshProductPublishContractFiles($('#productId').val());
                     }
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);

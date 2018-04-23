@@ -6,6 +6,7 @@ import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
 import com.ideamoment.emars.constants.ErrorCode;
+import com.ideamoment.emars.constants.AliyunOSSConstants;
 import com.ideamoment.emars.utils.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,6 @@ import java.util.*;
 @Controller
 public class UploadController {
 
-    private static final String BUCKET_NAME = "emars-dev";
     private static final String FILE_HOST = "http://emars-dev.oss-cn-hangzhou.aliyuncs.com/";
 
     @Autowired
@@ -89,13 +89,13 @@ public class UploadController {
             UUID uuid  =  UUID.randomUUID();
             String uuidKey = UUID.randomUUID().toString();
 
-            DateFormat df = new SimpleDateFormat("yyyymmdd");
+            DateFormat df = new SimpleDateFormat("yyyyMMdd");
             String dateStr = df.format(new Date());
 
             // 创建文件路径
             String fileUrl = dateStr + "/" + uuidKey;
             // 上传文件
-            PutObjectResult result = ossClient.putObject(new PutObjectRequest(BUCKET_NAME, fileUrl, file));
+            PutObjectResult result = ossClient.putObject(new PutObjectRequest(AliyunOSSConstants.BUCKET_NAME, fileUrl, file));
             if (null != result) {
                 return FILE_HOST + fileUrl;
             }

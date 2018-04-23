@@ -384,6 +384,41 @@ public class CopyrightServiceImpl implements CopyrightService {
         return resultString(result);
     }
 
+    @Override
+    @Transactional
+    public CopyrightFile findCopyrightFile(Long fileId) {
+        CopyrightFile file = copyrightMapper.findCopyrightFile(fileId);
+        if(file == null) {
+            return file;
+        }else{
+            return file;
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<CopyrightFile> loadCopyrightPageFiles(String productId) {
+        return copyrightMapper.queryCopyrightFiles(productId, CopyrightFileType.COPYRIGHT_PAGE);
+    }
+
+    @Override
+    @Transactional
+    public List<CopyrightFile> loadAuthorIdCardFiles(String productId) {
+        return copyrightMapper.queryCopyrightFiles(productId, CopyrightFileType.AUTHOR_ID_CARD);
+    }
+
+    @Override
+    @Transactional
+    public List<CopyrightFile> loadGrantPaperFiles(String productId) {
+        return copyrightMapper.queryCopyrightFiles(productId, CopyrightFileType.GRANT_PAPER);
+    }
+
+    @Override
+    @Transactional
+    public List<CopyrightFile> loadPublishContractFiles(String productId) {
+        return copyrightMapper.queryCopyrightFiles(productId, CopyrightFileType.PUBLISH_CONTRACT);
+    }
+
     private synchronized String createCode(Copyright cc) {
         Date curDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");

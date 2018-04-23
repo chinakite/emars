@@ -211,4 +211,8 @@ public interface CopyrightMapper {
 
     @Delete("delete from t_copyright_file where c_id = #{id}")
     boolean deleteCopyrightFile(String id);
+
+    @Select("select * from t_copyright_file where c_id = #{id}")
+    @ResultMap("copyrightFileMap")
+    CopyrightFile findCopyrightFile(@Param("id") Long fileId);
 }

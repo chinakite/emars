@@ -31,4 +31,14 @@ public interface CopyrightService {
     List<CopyrightFile> loadCopyrightContractFiles(String productId);
 
     String deleteCopyrightFile(String id);
+
+    CopyrightFile findCopyrightFile(Long fileId);
+
+    List<CopyrightFile> loadCopyrightPageFiles(String productId);
+
+    List<CopyrightFile> loadAuthorIdCardFiles(String productId);
+
+    List<CopyrightFile> loadGrantPaperFiles(String productId);
+
+    List<CopyrightFile> loadPublishContractFiles(String productId);
 }
