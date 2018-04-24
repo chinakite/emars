@@ -2,7 +2,6 @@
 
 var PRODUCTLIST = {};
 var productTable;
-var dropzoneObj;
 
 $(document).ready(function(){
     PRODUCTLIST.initProductTbl();
@@ -83,6 +82,10 @@ PRODUCTLIST.initProductTbl = function(){
                     var htmlText = '<a href="/product/productDetail/' + full.id + '" target="_blank">查看</a>';
                         htmlText += '<span class="small">&nbsp;|&nbsp;</span> ';
                         htmlText += '<a onclick="PRODUCTLIST.popEditProduct(' + full.id + ');">编辑</a>  ';
+                        if(full.stockIn == '0') {
+                            htmlText += '<span class="small">&nbsp;|&nbsp;</span> ';
+                            htmlText += '<a href="javascript:void(0);" onclick="PRODUCTLIST.stockInProduct(' + full.id + ',\''+full.name+'\');">入库</a>  ';
+                        }
                     return htmlText;
                 }
             }
@@ -335,7 +338,7 @@ PRODUCTLIST.deleteProduct = function (id, name) {
                 }
             }
         );
-    }, null)
+    }, null);
 };
 
 PRODUCTLIST.searchProducts = function () {
@@ -345,4 +348,21 @@ PRODUCTLIST.searchProducts = function () {
 PRODUCTLIST.refreshProductTbl = function () {
     productTable.api().ajax.reload(null, false);
 
+};
+
+PRODUCTLIST.stockInProduct = function(id, name) {
+    EMARS_COMMONS.showPrompt("您真的对作品[" + name + "]执行入库操作吗？", function() {
+        $.post(
+            "/product/stockIn",
+            {'id': id},
+            function(data) {
+                if(data.code == '0') {
+                    EMARS_COMMONS.showSuccess("入库成功！");
+                    PRODUCTLIST.refreshProductTbl();
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
+    }, null);
 };

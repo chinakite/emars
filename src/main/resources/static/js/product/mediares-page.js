@@ -60,29 +60,13 @@ PRODUCTPAGE.clearUploadFileModal = function() {
 };
 
 PRODUCTPAGE.submitProductFiles = function() {
-    var saveCopyrightFileUrl = '/copyright/saveCopyrightFiles';
     var saveProdPicUrl = '/product/savePics';
     var fileType = $('#uploadFileType').val();
     var productId = $('#uploadFileProductId').val();
     var fileMetas = $('#fileMetas').data('postData');
     var postUrl;
     for(var i=0; i<fileMetas.length; i++) {
-        if(fileType == 'cpr_contract') {
-            fileMetas[i].type = '1';
-            postUrl = saveCopyrightFileUrl;
-        }else if(fileType == 'cpr_copyright_page') {
-            fileMetas[i].type = '2';
-            postUrl = saveCopyrightFileUrl;
-        }else if(fileType == 'cpr_grant_paper') {
-            fileMetas[i].type = '3';
-            postUrl = saveCopyrightFileUrl;
-        }else if(fileType == 'cpr_author_id_card') {
-            fileMetas[i].type = '4';
-            postUrl = saveCopyrightFileUrl;
-        }else if(fileType == 'cpr_publish_contract') {
-            fileMetas[i].type = '5';
-            postUrl = saveCopyrightFileUrl;
-        }else if(fileType == 'prod_pic') {
+        if(fileType == 'prod_pic') {
             fileMetas[i].type = '0';
             postUrl = saveProdPicUrl;
         }else{
@@ -101,17 +85,7 @@ PRODUCTPAGE.submitProductFiles = function() {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("文件保存成功！");
                     $('#uploadFileModal').modal('hide');
-                    if(fileType == 'cpr_contract') {
-                        PRODUCTPAGE.refreshProductCopyrightContractFiles($('#productId').val());
-                    }else if(fileType == 'cpr_copyright_page') {
-                        PRODUCTPAGE.refreshProductCopyrightPageFiles($('#productId').val());
-                    }else if(fileType == 'cpr_grant_paper') {
-                        PRODUCTPAGE.refreshProductGrantPaperFiles($('#productId').val());
-                    }else if(fileType == 'cpr_author_id_card') {
-                        PRODUCTPAGE.refreshProductAuthorIdCardFiles($('#productId').val());
-                    }else if(fileType == 'cpr_publish_contract') {
-                        PRODUCTPAGE.refreshProductPublishContractFiles($('#productId').val());
-                    }else if(fileType == 'prod_pic') {
+                    if(fileType == 'prod_pic') {
                         PRODUCTPAGE.refreshProductPicFiles($('#productId').val());
                     }
                 }else{
@@ -142,7 +116,7 @@ PRODUCTPAGE.refreshProductCopyrightContractFiles = function(productId) {
         function(data) {
             if(data.code == '0') {
                 var files = data.data;
-                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: true});
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: false});
                 $('#copyrightContractFileList').html(filesHtml);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
@@ -158,7 +132,7 @@ PRODUCTPAGE.refreshProductCopyrightPageFiles = function(productId) {
         function(data) {
             if(data.code == '0') {
                 var files = data.data;
-                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: true});
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: false});
                 $('#copyrightPageFileList').html(filesHtml);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
@@ -174,7 +148,7 @@ PRODUCTPAGE.refreshProductAuthorIdCardFiles = function(productId) {
         function(data) {
             if(data.code == '0') {
                 var files = data.data;
-                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: true});
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: false});
                 $('#copyrightAuthorIdCardFileList').html(filesHtml);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
@@ -190,7 +164,7 @@ PRODUCTPAGE.refreshProductGrantPaperFiles = function(productId) {
         function(data) {
             if(data.code == '0') {
                 var files = data.data;
-                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: true});
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: false});
                 $('#copyrightGrantPaperFileList').html(filesHtml);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
@@ -206,7 +180,7 @@ PRODUCTPAGE.refreshProductPublishContractFiles = function(productId) {
         function(data) {
             if(data.code == '0') {
                 var files = data.data;
-                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: true});
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: false});
                 $('#copyrightPublishContractFileList').html(filesHtml);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
@@ -233,34 +207,17 @@ PRODUCTPAGE.refreshProductPicFiles = function(productId) {
 
 PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
     var deleteUrl;
-    if(type == 'cpr_contract'
-        || type == 'cpr_copyright_page'
-        || type == 'cpr_grant_paper'
-        || type == 'cpr_author_id_card'
-        || type == 'cpr_publish_contract'
-    ){
-        deleteUrl = "/copyright/deleteCopyrightFile";
-    }else if(type == 'prod_pic'){
+    if(type == 'prod_pic'){
         deleteUrl = "/product/deletePicture";
     }
     EMARS_COMMONS.showPrompt("您真的要删除文件[" + name + "]吗？", function() {
         $.post(
-            "/copyright/deleteCopyrightFile",
+            deleteUrl,
             {'id': id},
             function(data) {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("删除成功！");
-                    if(type == 'cpr_contract') {
-                        PRODUCTPAGE.refreshProductCopyrightContractFiles($('#productId').val());
-                    }else if(fileType == 'cpr_copyright_page') {
-                        PRODUCTPAGE.refreshProductCopyrightPageFiles($('#productId').val());
-                    }else if(fileType == 'cpr_grant_paper') {
-                        PRODUCTPAGE.refreshProductGrantPaperFiles($('#productId').val());
-                    }else if(fileType == 'cpr_author_id_card') {
-                        PRODUCTPAGE.refreshProductAuthorIdCardFiles($('#productId').val());
-                    }else if(fileType == 'cpr_publish_contract') {
-                        PRODUCTPAGE.refreshProductPublishContractFiles($('#productId').val());
-                    }else if(fileType == 'prod_pic'){
+                    if(fileType == 'prod_pic'){
                         PRODUCTPAGE.refreshProductPicFiles($('#productId').val());
                     }
                 }else{

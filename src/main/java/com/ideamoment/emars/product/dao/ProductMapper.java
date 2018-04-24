@@ -23,13 +23,11 @@ public interface ProductMapper {
             "#{createTime})")
     boolean insertProduct(ProductInfo product);
 
-    @Update("UPDATE t_product SET " +
+    @Update("UPDATE t_product_info SET " +
             "`C_NAME`=#{name},`C_SUBJECT_ID`=#{subjectId},`C_AUTHOR_ID`=#{authorId},`C_TYPE`=#{type}," +
-            "`C_PUBLISH_STATE`=#{publishState},`C_PUBLISH_YEAR`=#{publishYear},`C_FINISH_YEAR`=#{finishYear}," +
-            "`C_STATE`=#{state},`C_WORD_COUNT`=#{wordCount},`C_SECTION_COUNT`=#{sectionCount}," +
-            "`C_SECTION_LENGTH`=#{sectionLength},`C_PRESS`=#{press},`C_WEBSITE`=#{website},`C_SUMMARY`=#{summary}," +
-            "`C_HAS_AUDIO`=#{hasAudio},`C_AUDIO_COPYRIGHT`=#{audioCopyright},`C_AUDIO_DESC`=#{audioDesc}," +
-            "`C_ISBN`=#{isbn},`C_LOGO_URL`=#{logoUrl},`C_RESERVED`=#{reserved},`C_MODIFIER`=#{modifier}," +
+            "`C_PUBLISH_STATE`=#{publishState},`C_WORDCOUNT`=#{wordCount}," +
+            "`C_PRESS`=#{press},`C_STOCKIN`=#{stockIn},`C_DESC`=#{desc}," +
+            "`C_ISBN`=#{isbn},`C_MODIFIER`=#{modifier}," +
             "`C_MODIFYTIME`=#{modifyTime} WHERE c_id = #{id}")
     boolean updateProduct(ProductInfo product);
 
@@ -70,6 +68,9 @@ public interface ProductMapper {
             "<if test='condition.subjectId != null'>",
             " AND p.C_SUBJECT_ID = #{condition.subjectId}",
             "</if>",
+            "<if test='condition.stockIn != null'>",
+            " AND p.C_STOCKIN = #{condition.stockIn}",
+            "</if>",
             " ORDER BY p.C_MODIFYTIME DESC ",
             " LIMIT #{offset}, #{size}",
             "</script>"})
@@ -87,6 +88,9 @@ public interface ProductMapper {
             "</if>",
             "<if test='subjectId != null'>",
             " AND p.C_SUBJECT_ID = #{subjectId}",
+            "</if>",
+            "<if test='stockIn != null'>",
+            " AND p.C_STOCKIN = #{stockIn}",
             "</if>",
             "</script>"})
     long listProductsCount(ProductInfo condition);

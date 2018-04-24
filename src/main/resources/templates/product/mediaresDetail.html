@@ -1,0 +1,147 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head th:include="layout/layout :: htmlhead(${product.name})"></head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="row m-t-1">
+            <div class="col-md-4 col-lg-3">
+                <div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt=""/>
+                </div>
+                <div class="m-y-3 text-xs-center">
+                    <a href="#" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;&nbsp;打包文件</a>&nbsp;&nbsp;
+                </div>
+                <div class="panel panel-transparent">
+                    <input type="hidden" id="productId" th:value="${product.id}"/>
+                    <div class="panel-heading p-x-1">
+                        <span class="panel-title">基本信息</span>
+                    </div>
+                    <div class="panel-body p-a-1">
+                        <p>
+                            <label>ISBN：</label><span th:text="${product.isbn}"></span>
+                        </p>
+                        <p>
+                            <label>题材：</label><span th:text="${product.subjectName}"></span>
+                        </p>
+                        <p>
+                            <label>字数：</label><span th:text="${product.wordCount}"></span>万字
+                        </p>
+                        <p>
+                            <label>入库状态：</label><span th:text="${product.stockInText}"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <hr class="page-wide-block visible-xs visible-sm"/>
+
+            <div class="col-md-8 col-lg-9">
+                <h1 class="font-size-20 m-y-4"><span th:text="${product.name}"></span><span class="m-l-1 font-weight-normal font-size-14" th:text="${product.authorName + '（' + product.authorPseudonym + '）'}"></span></h1>
+
+                <ul class="nav nav-tabs" id="profile-tabs">
+                    <li class="active">
+                        <a href="#copyright-tab" data-toggle="tab">
+                            版权信息
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#make-tab" data-toggle="tab">
+                            制作信息
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#sale-tab" data-toggle="tab">
+                            营销信息
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#gallery-tab" data-toggle="tab">
+                            相册
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content tab-content-bordered p-a-0 bg-white">
+                    <div class="tab-pane fade in active" id="copyright-tab">
+                        <div class="col-md-6 m-t-2">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">合同</span>
+                                </div>
+
+                                <div id="copyrightContractFileList">
+
+                                </div>
+                            </div>
+
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">作者身份证</span>
+                                </div>
+
+                                <div id="copyrightAuthorIdCardFileList">
+
+                                </div>
+                            </div>
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">出版合同</span>
+                                </div>
+
+                                <div id="copyrightPublishContractFileList">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 m-t-2">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">授权书</span>
+                                </div>
+
+                                <div id="copyrightGrantPaperFileList">
+
+                                </div>
+                            </div>
+
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">版权页</span>
+                                </div>
+
+                                <div id="copyrightPageFileList">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="make-tab">
+                    </div>
+                    <div class="tab-pane fade" id="sale-tab">
+                    </div>
+                    <div class="tab-pane fade" id="gallery-tab">
+                        <div class="panel-body p-t-4">
+                            <div class="clearfix">
+
+                                <div class="m-l-2 m-b-2">
+                                    <a href="#" class="btn btn-primary" onclick="PRODUCTPAGE.popUploadFileModal('prod_pic');"><i class="fa fa-plus"></i>添加图片</a>
+                                </div>
+
+                                <div id="prodPicFileList">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="product/uploadFileModal :: uploadFileModal"></div>
+    </section>
+</body>
+<div layout:fragment="scripts">
+    <script type='text/javascript' th:src="@{/js/product/mediares-page.js}"></script>
+</div>
+
+</html>

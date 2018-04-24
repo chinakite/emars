@@ -30,4 +30,8 @@ public interface ProductService {
     List<ProductPicture> loadProductPictureFiles(String productId);
 
     String deletePicture(String id);
+
+    String stockIn(long id);
+
+    Page<ProductInfo> listStockedInProducts(ProductInfo condition, int start, int length);
 }

@@ -6,6 +6,7 @@ import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.model.enumeration.ProductState;
 import com.ideamoment.emars.model.enumeration.ProductType;
+import com.ideamoment.emars.model.enumeration.StockInType;
 import com.ideamoment.emars.product.dao.ProductCopyrightFileMapper;
 import com.ideamoment.emars.product.dao.ProductMapper;
 import com.ideamoment.emars.product.dao.ProductPictureMapper;
@@ -194,6 +195,48 @@ public class ProductServiceImpl implements ProductService{
     public String deletePicture(String id) {
         boolean result = productPictureMapper.deleteProductPicture(id);
         return resultString(result);
+    }
+
+    @Override
+    @Transactional
+    public String stockIn(long id) {
+        ProductInfo product = productMapper.findProduct(id);
+
+        if(product == null) {
+            return ErrorCode.PRODUCT_NOT_EXISTS;
+        }
+        if(validateStockIn(id)) {
+            product.setStockIn(StockInType.STOCK_IN);
+            product.setModifier(UserContext.getUserId());
+            product.setModifyTime(new Date());
+            boolean result = productMapper.updateProduct(product);
+            return resultString(result);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional
+    public Page<ProductInfo> listStockedInProducts(ProductInfo condition, int offset, int pageSize) {
+        condition.setStockIn(StockInType.STOCK_IN);
+
+        long count = productMapper.listProductsCount(condition);
+        int currentPage = offset/pageSize + 1;
+
+        List<ProductInfo> products = productMapper.listProducts(condition, offset, pageSize);
+
+        Page<ProductInfo> result = new Page<ProductInfo>();
+        result.setCurrentPage(currentPage);
+        result.setData(products);
+        result.setPageSize(pageSize);
+        result.setTotalRecord(count);
+
+        return result;
+    }
+
+    private boolean validateStockIn(long id) {
+        return true;
     }
 
 

@@ -81,6 +81,8 @@ public class ErrorCode {
         ERROR_MSG.put(GRANTER_EXISTS, "该授权方已存在");
         ERROR_MSG.put(GRANTER_NOT_EXISTS, "该授权方不存在");
         ERROR_MSG.put(GRANTER_CANNOT_DELETE, "该授权方有关联的版权合同，无法删除");
+
+        ERROR_MSG.put(PRODUCT_NOT_EXISTS, "该作品不存在或已被删除");
     }
 
 }

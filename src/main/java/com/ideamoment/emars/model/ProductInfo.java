@@ -15,6 +15,7 @@ public class ProductInfo extends HistoriableEntity {
     private String press;
     private String type;
     private String stockIn;
+    private String desc;
 
     private long authorId;
     private String subjectName;
@@ -113,6 +114,14 @@ public class ProductInfo extends HistoriableEntity {
 
     public void setStockIn(String stockIn) {
         this.stockIn = stockIn;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getStockInText() {

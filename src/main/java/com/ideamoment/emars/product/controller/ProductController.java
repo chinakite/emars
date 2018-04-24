@@ -147,6 +147,16 @@ public class ProductController {
         }
     }
 
+    @RequestMapping(value = "/stockIn", method = RequestMethod.POST)
+    public JsonData stockIn(long id) {
+        String result = productService.stockIn(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
     private DataTableSource<ProductInfo> convertProductsToDataTableSource(int draw, Page<ProductInfo> productsPage) {
         DataTableSource<ProductInfo> dts = new DataTableSource<ProductInfo>();
 
