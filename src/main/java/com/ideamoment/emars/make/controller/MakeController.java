@@ -51,10 +51,10 @@ public class MakeController {
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public List<ProductResultVo> products(
+    public List<ProductInfo> products(
     ) {
-        ProductQueryVo condition = new ProductQueryVo();
-        List<ProductResultVo> products = makeService.listProducts(condition);
+        ProductInfo condition = new ProductInfo();
+        List<ProductInfo> products = makeService.listProducts(condition);
         return products;
     }
 

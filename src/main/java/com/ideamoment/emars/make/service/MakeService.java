@@ -22,5 +22,5 @@ public interface MakeService {
 
     List<MakeContractDoc> listContractDocs(long contractId);
 
-    List<ProductResultVo> listProducts(ProductQueryVo condition);
+    List<ProductInfo> listProducts(ProductInfo condition);
 }
