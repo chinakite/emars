@@ -98,6 +98,8 @@ public class ProductServiceImpl implements ProductService{
         if(existsProduct == null) {
             return ErrorCode.PRODUCT_NOT_EXISTS;
         }
+        product.setModifier(UserContext.getUserId());
+        product.setModifyTime(new Date());
         boolean result = productMapper.updateProduct(product);
         return resultString(result);
     }

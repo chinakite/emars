@@ -85,6 +85,10 @@
     right: 56px;
 }
 
+.form-control-postlink {
+    line-height: 31px;
+}
+
 #addProductPanel {
     border: none;
 }

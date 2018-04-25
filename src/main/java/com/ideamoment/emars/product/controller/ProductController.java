@@ -51,8 +51,8 @@ public class ProductController {
 
     @RequestMapping(value = "/product", method = RequestMethod.GET)
     public JsonData findProduct(long id) {
-        ProductInfo productResultVo = productService.findProduct(id);
-        return JsonData.success(productResultVo);
+        ProductInfo product = productService.findProduct(id);
+        return JsonData.success(product);
     }
 
     @RequestMapping(value = "/createProduct", method = RequestMethod.POST)
@@ -100,8 +100,8 @@ public class ProductController {
         }
     }
 
-    @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public JsonData<Boolean> updateProduct(ProductInfo product) {
+    @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
+    public JsonData<Boolean> updateProduct(@RequestBody ProductInfo product) {
         String result = productService.updateProduct(product);
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;

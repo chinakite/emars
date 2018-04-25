@@ -141,6 +141,11 @@ public class AuthorServiceImpl implements AuthorService{
         return resultString(result);
     }
 
+    @Override
+    public List<Author> listAllAuthors() {
+        return authorMapper.listAllAuthor();
+    }
+
     private String resultString(boolean result) {
         if(result) {
             return SuccessCode.SUCCESS;

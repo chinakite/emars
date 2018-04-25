@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Created by yukiwang on 2018/2/22.
  */
@@ -27,6 +29,12 @@ public class AuthorController {
         Page<Author> authors = authorService.listAuthors(key, start, length);
         DataTableSource<Author> dts = convertProductsToDataTableSource(draw, authors);
         return dts;
+    }
+
+    @RequestMapping(value = "/allAuthors", method = RequestMethod.GET)
+    public JsonData<List<Author>> listAllAuthors() {
+        List<Author> authors = authorService.listAllAuthors();
+        return JsonData.success(authors);
     }
 
     @RequestMapping(value = "/author", method = RequestMethod.GET)

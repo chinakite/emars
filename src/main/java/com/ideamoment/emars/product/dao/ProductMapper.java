@@ -24,10 +24,10 @@ public interface ProductMapper {
     boolean insertProduct(ProductInfo product);
 
     @Update("UPDATE t_product_info SET " +
-            "`C_NAME`=#{name},`C_SUBJECT_ID`=#{subjectId},`C_AUTHOR_ID`=#{authorId},`C_TYPE`=#{type}," +
+            "`C_NAME`=#{name},`C_SUBJECT_ID`=#{subjectId},`C_AUTHOR_ID`=#{authorId}," +
             "`C_PUBLISH_STATE`=#{publishState},`C_WORDCOUNT`=#{wordCount}," +
-            "`C_PRESS`=#{press},`C_STOCKIN`=#{stockIn},`C_DESC`=#{desc}," +
-            "`C_ISBN`=#{isbn},`C_MODIFIER`=#{modifier}," +
+            "`C_PRESS`=#{press},`C_DESC`=#{desc}," +
+            "`C_ISBN`=#{isbn},`C_DESC`=#{desc},`C_MODIFIER`=#{modifier}," +
             "`C_MODIFYTIME`=#{modifyTime} WHERE c_id = #{id}")
     boolean updateProduct(ProductInfo product);
 
@@ -46,6 +46,7 @@ public interface ProductMapper {
             @Result(property = "press", column = "C_PRESS"),
             @Result(property = "isbn", column = "C_ISBN"),
             @Result(property = "stockIn", column = "C_STOCKIN"),
+            @Result(property = "desc", column = "C_DESC"),
             @Result(property = "creator", column = "C_CREATOR"),
             @Result(property = "createTime", column = "C_CREATETIME"),
             @Result(property = "modifier", column = "C_MODIFIER"),
@@ -103,7 +104,7 @@ public interface ProductMapper {
     boolean deleteProduct(@Param("id") long id);
 
     @Select({"<script>",
-            "SELECT * FROM t_product",
+            "SELECT * FROM t_product_info",
             "WHERE c_name = #{name}",
             "<if test='ignoreId != null'>",
             " AND c_id != #{ignoreId}",

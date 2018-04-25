@@ -3,6 +3,8 @@ package com.ideamoment.emars.author.service;
 import com.ideamoment.emars.model.Author;
 import com.ideamoment.emars.utils.Page;
 
+import java.util.List;
+
 /**
  * Created by yukiwang on 2018/2/22.
  */
@@ -25,4 +27,6 @@ public interface AuthorService {
     String famousAuthor(long id);
 
     String unfamousAuthor(long id);
+
+    List<Author> listAllAuthors();
 }

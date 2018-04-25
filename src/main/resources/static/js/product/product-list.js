@@ -6,6 +6,7 @@ var productTable;
 $(document).ready(function(){
     PRODUCTLIST.initProductTbl();
     PRODUCTLIST.loadCategories();
+    PRODUCTLIST.loadAuthors();
 });
 
 PRODUCTLIST.initProductTbl = function(){
@@ -93,7 +94,33 @@ PRODUCTLIST.initProductTbl = function(){
     });
 };
 
-PRODUCTLIST.loadCategories = function () {
+PRODUCTLIST.loadAuthors = function() {
+    $.get(
+        "/system/allAuthors",
+        function(data) {
+            if(data.code == '0') {
+                var authors = data.data;
+                var html = '';
+                for(var i = 0; i < authors.length; i ++) {
+                    var author = authors[i];
+                    var authorName = author.name;
+                    if(author.pseudonym) {
+                        authorName = authorName + "(" + author.pseudonym + ")";
+                    }
+                    html += '<option value="' + author.id + '">' + authorName + '</option>';
+                }
+                $('#inputAuthorId').empty().append(html);
+                $('#inputAuthorId').select2({
+                    dropdownParent: $("#productModal")
+                });
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    )
+};
+
+PRODUCTLIST.loadCategories = function() {
     $.get(
         "/system/textSubjects",
         function(data) {
@@ -105,6 +132,9 @@ PRODUCTLIST.loadCategories = function () {
                     html += '<option value="' + subject.id + '">' + subject.name + '</option>';
                 }
                 $('#inputSubject').empty().append(html);
+                $('#inputSubject').select2({
+                    dropdownParent: $("#productModal")
+                });
                 $('#inputSearchSubject').empty()
                     .append('<option value="">全部</option>')
                     .append(html);
@@ -113,11 +143,11 @@ PRODUCTLIST.loadCategories = function () {
             }
         }
     )
-}
+};
 
 PRODUCTLIST.popEditProduct = function (id) {
     PRODUCTLIST.clearProductModal();
-    $('#productModal .modal-title').text("编辑作品");
+    $('#productModal .modal-title').text("编辑作品信息");
     $('#productModal').modal('show');
     $.get(
         "/product/product",
@@ -129,78 +159,19 @@ PRODUCTLIST.popEditProduct = function (id) {
 
                 $('#inputId').val(prod.id);
                 $('#inputName').val(prod.name);
-                if(prod.authorName) {
-                    $('#inputAuthorName').val(prod.authorName);
-                    $('#inputAuthorPseudonym').val(prod.authorPseudonym);
-                }else{
-                    $('#inputAuthorName').val('');
-                    $('#inputAuthorPseudonym').val('');
+                if(prod.authorId) {
+                    $('#inputAuthorId').val(prod.authorId).trigger('change');
                 }
                 $('#inputWordCount').val(prod.wordCount);
-                var subj = $('#inputSubject').find('option[value=' + prod.subjectId + ']').index();
-                $('#inputSubject')[0].selectedIndex = subj;
+                $('#inputSubject').val(prod.subjectId).trigger('change');
                 var pubState = $('#inputPublishState').find('option[value=' + prod.publishState + ']').index();
                 $('#inputPublishState')[0].selectedIndex = pubState;
 
-                if(prod.publishState == 0) {
-                    var pubYear = $('#inputPublishYear').find('option[value=' + prod.publishYear + ']').index;
-                    $('#inputPublishYear')[0].selectedIndex = pubYear;
+                if(prod.publishState == 1) {
                     $('#inputPress').val(prod.press);
                     $('#inputIsbn').val(prod.isbn);
-                }else{
-                    $('#publishYearDiv').hide();
-                    $('#pressDiv').hide();
-                    $('#isbnDiv').hide();
-                    var finishYear = $('#inputFinishYear').find('option[value=' + prod.finishYear + ']').index();
-                    $('#inputFinishYear')[0].selectedIndex = finishYear;
-                    $('#finishYearDiv').show();
-                    if(prod.publishState == 1) {
-                        $('#inputWebsite').val(prod.website);
-                        $('#websiteDiv').show();
-                    }
                 }
-                $('#inputSummary').val(prod.summary);
-                if(prod.samples && prod.samples.length > 0) {
-                    $('#samplesShowDiv a').attr('href', prod.samples[0].fileUrl);
-                    $('#samplesUploadDiv').hide();
-                    $('#samplesShowDiv').show();
-                    $('#inputSamples').val(prod.samples[0].fileUrl);
-                }
-                if(prod.logoUrl) {
-                    $('#coverShowDiv a').attr('href', prod.logoUrl);
-                    $('#coverUploadDiv').hide();
-                    $('#coverShowDiv').show();
-                    $('#inputCover').val(prod.logoUrl);
-                }
-                if(prod.copyrightFiles) {
-                    $('#copyrightsShowDiv').empty();
-                    var copyrightFiles = '';
-                    for(var i=0; i<prod.copyrightFiles.length; i++) {
-                        var html = "<li style='margin-bottom: 2px;'><a href='" + prod.copyrightFiles[i].fileUrl + "' class='label bg-gray'>" + prod.copyrightFiles[i].name + "</a></li>";
-                        $('#copyrightsShowDiv').append(html);
-                        if(i > 0) {
-                            copyrightFiles += ",";
-                        }
-                        copyrightFiles += prod.copyrightFiles[i].fileUrl;
-                    }
-                    $('#copyrightsUploadDiv').hide();
-                    $('#copyrightsShowDiv').show();
-
-                    $('#inputCopyrights').val(copyrightFiles);
-                }
-
-                if(prod.hasAudio == '1') {
-                    $('#hasAudio').attr('checked', true);
-                    $('#inputAudioCopyright').find('option[value=' + prod.audioCopyright + ']').prop('selected', true);
-                    $('#inputAudioDesc').val(prod.audioDesc);
-                    $('#audioCopyrightDiv').show();
-                    $('#audioDescDiv').show();
-                }else{
-                    $('#noAudio').prop('checked', true);
-                    $('#inputAudioDesc').val('');
-                    $('#audioCopyrightDiv').hide();
-                    $('#audioDescDiv').hide();
-                }
+                $('#inputDesc').val(prod.desc);
 
                 $('#productModal').modal('show');
 
@@ -212,103 +183,58 @@ PRODUCTLIST.popEditProduct = function (id) {
 }
 
 
-PRODUCTLIST.submitProduct = function(submit) {
+PRODUCTLIST.submitProduct = function() {
 
     var id = $('#inputId').val();
     var name = $('#inputName').val();
-    var authorName = $('#inputAuthorName').val();
-    var authorPseudonym = $('#inputAuthorPseudonym').val();
+    var authorId = $('#inputAuthorId').val();
     var wordCount = $('#inputWordCount').val();
     var subject = $('#inputSubject').val();
     var publishState = $('#inputPublishState').val();
-    var publishYear = $('#inputPublishYear').val();
     var press = $('#inputPress').val();
-    var finishYear = $('#inputFinishYear').val();
-    var website = $('#inputWebsite').val();
-    var summary = $('#inputSummary').val();
-    var hasAudio = $('input[name=hasAudio]:checked').val();
-    var audioCopyright = $('#inputAudioCopyright').val();
-    var audioDesc = $('#inputAudioDesc').val();
-    var samples = $('#inputSamples').val();
     var isbn = $('#inputIsbn').val();
-    //var copyrights = $('#inputCopyrights').val();
-    var cover = $('#inputCover').val();
-    
-    var type;
-    if(id) {
-        type = "1";
-    }else {
-        type = "0";
-    }
-    
+    var desc = $('#inputDesc').val();
 
-    $.post(
-        "/product/createProduct",
-        {
-            'id': id,
-            'name': name,
-            'authorName': authorName,
-            'authorPseudonym': authorPseudonym,
-            'wordCount': wordCount,
-            'subject': subject,
-            'publishState': publishState,
-            'publishYear': publishYear,
-            'press': press,
-            'finishYear': finishYear,
-            'website': website,
-            'summary': summary,
-            'hasAudio': hasAudio,
-            'audioCopyright': audioCopyright,
-            'audioDesc': audioDesc,
-            'samples': samples,
-            'submit': submit,
-            'isbn': isbn,
-            'logoUrl' : cover,
-            'type': type
-        },
-        function(data) {
+    var postData = {
+        'id': id,
+        'name': name,
+        'authorId': authorId,
+        'wordCount': wordCount,
+        'subjectId': subject,
+        'publishState': publishState,
+        'press': press,
+        'isbn': isbn,
+        'desc': desc
+    };
+
+    $.ajax({
+        url: "/product/updateProduct",
+        type: 'POST',
+        data: JSON.stringify(postData),
+        dataType: "json",
+        contentType: "application/json",
+        success: function(data) {
             if(data.code == '0') {
-                EMARS_COMMONS.showSuccess("作者保存成功！");
-                $('#authorModal').modal('hide');
-                AUTHORLIST.refreshAuthorTbl();
+                EMARS_COMMONS.showSuccess("作品保存成功！");
+                $('#productModal').modal('hide');
+                PRODUCTLIST.refreshProductTbl();
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
-    );
-}
-
+    });
+};
 
 PRODUCTLIST.clearProductModal = function () {
     $('#inputId').val('');
     $('#inputName').val('');
-    $('#inputAuthorName').val('');
-    $('#inputAuthorPseudonym').val('');
+    $('#inputAuthorId option:first').prop("selected", 'selected').trigger('change');
     $('#inputWordCount').val('');
-    $("#inputSubject option:first").prop("selected", 'selected');
-    $("#inputPublishState option:first").prop("selected", 'selected');
-    $("#inputPublishYear option:first").prop("selected", 'selected');
+    $("#inputSubject option:first").prop("selected", 'selected').trigger('change');
+    $("#inputPublishState option:first").prop("selected", 'selected').trigger('change');
     $('#inputPress').val('');
-    $("#inputFinishYear option:first").prop("selected", 'selected');
-    $('#inputWebsite').val('');
-    $('#inputSummary').val('');
-    $('#hasAudio').prop('checked', false);
     $('#inputIsbn').val('');
-    $("#inputAudioCopyright option:first").prop("selected", 'selected');
-    $('#inputAudioDesc').val('');
-
-    $('#inputSamples').val('');
-    $('#uploadedFile').empty();
-    $('#samplesShowDiv').hide();
-
-    $('#inputCover').val('');
-    $('#uploadedCoverFile').empty();
-    $('#coverShowDiv').hide();
-
-    $('#inputCopyrights').val('');
-    $('#uploadedCopyrightFiles').empty();
-    $('#copyrightsShowDiv').hide();
-
+    $('#inputDesc').val('');
 }
 
 PRODUCTLIST.popProductDetailModal = function(id){

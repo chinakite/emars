@@ -88,4 +88,8 @@ public interface AuthorMapper {
     @Select("select * from t_author where c_name = #{name}")
     @ResultMap("authorMap")
     Author findAuthorByName(@Param("name") String name);
+
+    @Select("select * from t_author order by c_id")
+    @ResultMap("authorMap")
+    List<Author> listAllAuthor();
 }
