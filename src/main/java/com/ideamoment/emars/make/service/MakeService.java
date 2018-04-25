@@ -18,7 +18,7 @@ public interface MakeService {
 
     MakeContract findMakeContractByProduct(long productId);
 
-    String saveMakeContract(MakeContract makeContract, String type);
+    String saveMakeContract(MakeContract makeContract);
 
     List<MakeContractDoc> listContractDocs(long contractId);
 

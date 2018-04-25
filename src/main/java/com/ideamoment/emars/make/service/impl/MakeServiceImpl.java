@@ -7,8 +7,6 @@ import com.ideamoment.emars.make.dao.MakeTaskMapper;
 import com.ideamoment.emars.make.service.MakeService;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.model.enumeration.MakeTaskState;
-import com.ideamoment.emars.model.enumeration.ProductState;
-import com.ideamoment.emars.model.enumeration.ProductType;
 import com.ideamoment.emars.product.dao.ProductMapper;
 import com.ideamoment.emars.utils.Page;
 import com.ideamoment.emars.utils.UserContext;
@@ -101,28 +99,32 @@ public class MakeServiceImpl implements MakeService {
 
     @Override
     @Transactional
-    public String saveMakeContract(MakeContract makeContract, String type) {
+    public String saveMakeContract(MakeContract makeContract) {
         boolean ret;
         long userId = UserContext.getUserId();
         Date curDate = new Date();
 
-        if(("0").equals(type)) {
+        if(makeContract.getId() > 0){
+            makeContract.setModifier(userId);
+            makeContract.setModifyTime(curDate);
+            ret = makeContractMapper.updateMakeConntract(makeContract);
+
+        }else {
             String code = createCode(makeContract);
             makeContract.setCode(code);
             makeContract.setCreator(userId);
             makeContract.setCreateTime(curDate);
             ret = makeContractMapper.insertMakeContract(makeContract);
+            Long[] productIds = makeContract.getProductIds();
 
-            long productId = makeContract.getProductId();
-            ProductInfo product = productMapper.findProduct(productId);
-//            product.setState(ProductState.MK_CONTRACT);
-            product.setModifier(userId);
-            product.setModifyTime(curDate);
-            productMapper.updateProduct(product);
-        }else {
-            makeContract.setModifier(userId);
-            makeContract.setModifyTime(curDate);
-            ret = makeContractMapper.updateMakeConntract(makeContract);
+            for(Long productId : productIds) {
+                MakeContractProduct mcProduct = new MakeContractProduct();
+                mcProduct.setProductId(productId);
+                mcProduct.setMakeContractId(makeContract.getId());
+                mcProduct.setCreator(userId);
+                mcProduct.setCreateTime(curDate);
+                makeContractMapper.insertMakeContractProduct(mcProduct);
+            }
         }
 
         return resultString(ret);

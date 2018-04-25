@@ -11,7 +11,7 @@ import java.util.Date;
 public class MakeContractDoc extends BaseEntity {
 
     private long contractId;
-    private long creatorId;
+    private long creator;
     private Date createTime;
     private String version;
     private String fileUrl;
@@ -26,12 +26,12 @@ public class MakeContractDoc extends BaseEntity {
         this.contractId = contractId;
     }
 
-    public long getCreatorId() {
-        return creatorId;
+    public long getCreator() {
+        return creator;
     }
 
-    public void setCreatorId(long creatorId) {
-        this.creatorId = creatorId;
+    public void setCreator(long creator) {
+        this.creator = creator;
     }
 
     public Date getCreateTime() {

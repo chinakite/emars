@@ -4,12 +4,11 @@ import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.make.service.MakeService;
 import com.ideamoment.emars.model.*;
-import com.ideamoment.emars.product.service.ProductService;
 import com.ideamoment.emars.utils.DataTableSource;
 import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
-import com.ideamoment.emars.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,8 +35,7 @@ public class MakeController {
             String authorName,
             String isbn,
             Long subjectId,
-            String publishState,
-            String state
+            String publishState
     ) {
         ProductInfo condition = new ProductInfo();
         condition.setName(productName);
@@ -88,62 +86,9 @@ public class MakeController {
 
     @RequestMapping(value = "/makeContract", method = RequestMethod.POST)
     public JsonData saveMakeContract(
-            Long id,
-            long productId,
-            long makerId,
-            String targetType,
-            String totalPrice,
-            String totalSection,
-            String price,
-            String penalty,
-            String owner,
-            String ownerContact,
-            String ownerContactPhone,
-            String ownerContactAddress,
-            String ownerContactEmail,
-            String worker,
-            String workerContact,
-            String workerContactPhone,
-            String workerContactAddress,
-            String workerContactEmail,
-            String bankAccountName,
-            String bank,
-            String bankAccountNo,
-            String type
+            @RequestBody MakeContract makeContract
     ) {
-        MakeContract mc = null;
-        if(id == null) {
-            mc = new MakeContract();
-        }else{
-            mc = makeService.findMakeContract(id);
-        }
-
-        mc.setProductId(productId);
-        mc.setMakerId(makerId);
-        mc.setTargetType(targetType);
-
-        mc.setTotalPrice(new BigDecimal(totalPrice));
-        mc.setPrice(new BigDecimal(price));
-        mc.setPenalty(new BigDecimal(penalty));
-        mc.setTotalSection(Integer.valueOf(totalSection));
-
-        mc.setOwner(owner);
-        mc.setOwnerContact(ownerContact);
-        mc.setOwnerContactAddress(ownerContactAddress);
-        mc.setOwnerContactEmail(ownerContactEmail);
-        mc.setOwnerContactPhone(ownerContactPhone);
-
-        mc.setWorker(worker);
-        mc.setWorkerContact(workerContact);
-        mc.setWorkerContactAddress(workerContactAddress);
-        mc.setWorkerContactEmail(workerContactEmail);
-        mc.setWorkerContactPhone(workerContactPhone);
-
-        mc.setBank(bank);
-        mc.setBankAccountName(bankAccountName);
-        mc.setBankAccountNo(bankAccountNo);
-
-        String result = makeService.saveMakeContract(mc, type);
+        String result = makeService.saveMakeContract(makeContract);
 
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;

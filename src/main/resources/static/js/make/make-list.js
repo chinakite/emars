@@ -98,10 +98,6 @@ MAKELIST.initProductTbl = function(){
                 if(publishState && $.trim(publishState).length > 0) {
                     d.publishState = publishState;
                 }
-                var state = $('#inputSearchState').val();
-                if(state && $.trim(state).length > 0) {
-                    d.state = state;
-                }
             }
 
         },
@@ -137,9 +133,6 @@ MAKELIST.initProductTbl = function(){
             },
             {
                 "data": "subjectName"
-            },
-            {
-                "data": "stateText"
             },
             {
                 "render": function(data, type, full) {
@@ -257,25 +250,11 @@ MAKELIST.clearTaskModal = function () {
 MAKELIST.clearContractModal = function () {
     $('#inputProductId').val('');
     $('#inputTargetType option:first').prop("selected", 'selected');
-    $('#inputMaker option:first').prop("selected", 'selected');
     $('#inputOwner').val();
-    $('#inputOwnerContact').val();
-    $('#inputOwnerContactPhone').val();
-    $('#inputOwnerContactAddress').val();
-    $('#inputOwnerContactEmail').val();
     $('#inputWorker').val();
-    $('#inputWorkerContact').val();
-    $('#inputWorkerContactPhone').val();
-    $('#inputWorkerContactAddress').val();
-    $('#inputWorkerContactEmail').val();
+    $('#inputMaker').val();
     $('#inputTotalSection').val();
-    $('#inputPrice').val();
     $('#inputTotalPrice').val();
-    $('#inputPenalty').val();
-    $('#inputBankAccountName').val();
-    $('#inputBank').val();
-    $('#inputAccountNo').val();
-
 }
 
 MAKELIST.submitTask = function () {
@@ -316,66 +295,41 @@ MAKELIST.submitTask = function () {
 }
 
 MAKELIST.submitMakeContract = function () {
-    var productId = $('#inputProductId').val();
-    var makerId = $('#inputMaker').val();
+    var products = $('#product-list-select').val();
+    var maker = $('#inputMaker').val();
     var targetType = $('#inputTargetType').val();
-
     var owner = $('#inputOwner').val();
-    var ownerContact = $('#inputOwnerContact').val();
-    var ownerContactPhone = $('#inputOwnerContactPhone').val();
-    var ownerContactAddress = $('#inputOwnerContactAddress').val();
-    var ownerContactEmail = $('#inputOwnerContactEmail').val();
-
     var worker = $('#inputWorker').val();
-    var workerContact = $('#inputWorkerContact').val();
-    var workerContactPhone = $('#inputWorkerContactPhone').val();
-    var workerContactAddress = $('#inputWorkerContactAddress').val();
-    var workerContactEmail = $('#inputWorkerContactEmail').val();
-
     var totalPrice = $('#inputTotalPrice').val();
-    var price = $('#inputPrice').val();
     var totalSection = $('#inputTotalSection').val();
-    var penalty = $('#inputPenalty').val();
 
-    var bankAccountName = $('#inputBankAccountName').val();
-    var bankAccountNo = $('#inputBankAccountNo').val();
-    var bank = $('#inputBank').val();
-    $.post(
-        "/make/makeContract",
-        {
-            'productId': productId,
-            'makerId': makerId,
-            'targetType': targetType,
-            'totalPrice': totalPrice,
-            'price': price,
-            'totalSection': totalSection,
-            'penalty': penalty,
-            'owner': owner,
-            'ownerContact': ownerContact,
-            'ownerContactPhone': ownerContactPhone,
-            'ownerContactAddress': ownerContactAddress,
-            'ownerContactEmail': ownerContactEmail,
-            'worker': worker,
-            'workerContact': workerContact,
-            'workerContactPhone': workerContactPhone,
-            'workerContactAddress': workerContactAddress,
-            'workerContactEmail': workerContactEmail,
-            'bankAccountName': bankAccountName,
-            'bankAccountNo': bankAccountNo,
-            'bank': bank,
-            'type': "0"
-        },
-        function(data) {
-            if(data.code == '0') {
+    var postData = {
+        productIds: products,
+        maker: maker,
+        targetType: targetType,
+        owner: owner,
+        worker: worker,
+        totalPrice: totalPrice,
+        totalSection: totalSection
+    };
+
+    $.ajax({
+        url: "/make/makeContract",
+        type: "POST",
+        data: JSON.stringify(postData),
+        dataType: "json",
+        contentType: "application/json",
+        success: function (data) {
+            if (data.code == '0') {
                 EMARS_COMMONS.showSuccess("保存成功！");
                 MAKELIST.clearContractModal();
                 $('#contractModal').modal('hide');
                 MAKELIST.refreshProductTbl();
-            }else{
+            } else {
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
-    );
+    });
 }
 
 MAKELIST.searchProducts = function () {
