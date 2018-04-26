@@ -1,5 +1,6 @@
 package com.ideamoment.emars.product.service.impl;
 
+import com.ideamoment.emars.author.dao.AuthorMapper;
 import com.ideamoment.emars.author.service.AuthorService;
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -39,6 +41,9 @@ public class ProductServiceImpl implements ProductService{
     private AuthorService authorService;
 
     @Autowired
+    private AuthorMapper authorMapper;
+
+    @Autowired
     private ProductSampleMapper productSampleMapper;
 
     @Autowired
@@ -51,6 +56,10 @@ public class ProductServiceImpl implements ProductService{
         int currentPage = offset/pageSize + 1;
 
         List<ProductInfo> products = productMapper.listProducts(condition, offset, pageSize);
+        for(ProductInfo prod : products) {
+            List<Author> authors = authorMapper.queryAuthorByProduct(prod.getId());
+            prod.setAuthors(authors);
+        }
 
         Page<ProductInfo> result = new Page<ProductInfo>();
         result.setCurrentPage(currentPage);

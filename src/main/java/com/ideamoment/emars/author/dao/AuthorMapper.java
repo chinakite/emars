@@ -92,4 +92,8 @@ public interface AuthorMapper {
     @Select("select * from t_author order by c_id")
     @ResultMap("authorMap")
     List<Author> listAllAuthor();
+
+    @Select("select a.* from t_product_author pa, t_author a where pa.c_product_id = #{productId} and a.c_id = pa.c_author_id")
+    @ResultMap("authorMap")
+    public List<Author> queryAuthorByProduct(@Param("productId") Long productId);
 }

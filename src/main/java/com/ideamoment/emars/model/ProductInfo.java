@@ -3,6 +3,8 @@ package com.ideamoment.emars.model;
 import com.ideamoment.emars.model.enumeration.PublishState;
 import com.ideamoment.emars.model.enumeration.StockInType;
 
+import java.util.List;
+
 public class ProductInfo extends HistoriableEntity {
 
     private String name;
@@ -17,8 +19,8 @@ public class ProductInfo extends HistoriableEntity {
     private String stockIn;
     private String desc;
 
-    private long authorId;
     private String subjectName;
+    private List<Author> authors;
 
     public String getName() {
         return name;
@@ -84,14 +86,6 @@ public class ProductInfo extends HistoriableEntity {
         this.press = press;
     }
 
-    public long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(long authorId) {
-        this.authorId = authorId;
-    }
-
     public String getSubjectName() {
         return subjectName;
     }
@@ -122,6 +116,14 @@ public class ProductInfo extends HistoriableEntity {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public String getStockInText() {

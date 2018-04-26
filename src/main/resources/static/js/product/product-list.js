@@ -52,12 +52,19 @@ PRODUCTLIST.initProductTbl = function(){
             },
             {
                 "render": function (data, type, full) {
-                    if(full.authorPseudonym) {
-                        return full.authorName + "（" + full.authorPseudonym + "）";
-                    }else{
-                        return full.authorName;
+                    var authors = full.authors;
+                    var content = '';
+                    for(var i=0; i<authors.length; i++) {
+                        if(i > 0) {
+                            content += '<br/>';
+                        }
+                        if(authors[i].pseudonym) {
+                            content += authors[i].name + "（" + authors[i].pseudonym + "）";
+                        }else{
+                            content += authors[i].name;
+                        }
                     }
-
+                    return content;
                 }
             },
             {
@@ -94,7 +101,7 @@ PRODUCTLIST.initProductTbl = function(){
     });
 };
 
-PRODUCTLIST.loadAuthors = function() {
+PRODUCTLIST.loadAuthors = function(callback) {
     $.get(
         "/system/allAuthors",
         function(data) {
@@ -113,6 +120,9 @@ PRODUCTLIST.loadAuthors = function() {
                 $('#inputAuthorId').select2({
                     dropdownParent: $("#productModal")
                 });
+                if(callback) {
+                    callback();
+                }
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
@@ -147,7 +157,6 @@ PRODUCTLIST.loadCategories = function() {
 
 PRODUCTLIST.popEditProduct = function (id) {
     PRODUCTLIST.clearProductModal();
-    $('#productModal .modal-title').text("编辑作品信息");
     $('#productModal').modal('show');
     $.get(
         "/product/product",
@@ -291,4 +300,62 @@ PRODUCTLIST.stockInProduct = function(id, name) {
             }
         );
     }, null);
+};
+
+PRODUCTLIST.showAddAuthorPanel = function() {
+    PRODUCTLIST.clearAddAuthorPanel();
+    $('#productModalContent').hide();
+    $('#authorModalContent').show();
+};
+
+PRODUCTLIST.hideAddAuthorPanel = function() {
+    $('#authorModalContent').hide();
+    $('#productModalContent').show();
+};
+
+PRODUCTLIST.clearAddAuthorPanel = function() {
+    $('#inputAuthorName').val('');
+    $('#inputAuthorPseudonym').val('');
+    $('#inputAuthorDesc').val('');
+};
+
+PRODUCTLIST.addAuthor = function() {
+    var aName = $('#inputAuthorName').val();
+    var aDesc = $('#inputAuthorDesc').val();
+    var aPseudonym = $('#inputAuthorPseudonym').val();
+
+    $.post(
+        "/system/createAuthor",
+        {
+            'name': aName,
+            'desc': aDesc,
+            'pseudonym': aPseudonym
+        },
+        function (data) {
+            if(data.code == '0') {
+                EMARS_COMMONS.showSuccess("作者保存成功！");
+                PRODUCTLIST.hideAddAuthorPanel();
+                var selected = $('#inputAuthorId').select2('data');
+                var selectedIds = [];
+                for(var i=0; i<selected.length; i++) {
+                    selectedIds.push(selected[i]['id']);
+                }
+                $('#inputAuthorId').select2('destroy');
+                $('#inputAuthorId').empty();
+                PRODUCTLIST.loadAuthors(function(){
+                    var curId = $('#inputAuthorId option').filter(function () {
+                        if(aPseudonym) {
+                            return $(this).html() == aName+"("+aPseudonym+")";
+                        }else{
+                            return $(this).html() == aName;
+                        }
+                    }).val();
+                    selectedIds.push(curId);
+                    $('#inputAuthorId').val(selectedIds).trigger('change');
+                });
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
 };

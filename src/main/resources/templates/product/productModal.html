@@ -7,93 +7,133 @@
         <div th:fragment="productModal" class="modal fade" id="productModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">×</button>
-                        <h4 class="modal-title">新建作品</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal" id="validation-form">
-                            <input type="hidden" id="inputId" name="inputId"/>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">名称</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputName" name="inputName"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="inputAuthorId" class="col-sm-2 control-label">作者</label>
-                                    <div class="col-sm-10">
-                                        <select id="inputAuthorId" class="form-control" name="inputAuthorId" multiple="multiple">
-                                        </select>
-                                        <small><a href="javascript:void(0);">没有？新建作者</a></small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="inputWordCount" class="col-sm-4 control-label">字数</label>
-                                    <div class="col-sm-8">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="inputWordCount" name="inputWordCount"/>
-                                            <span class="input-group-addon">万字</span>
+                    <div id="productModalContent">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h4 class="modal-title">编辑作品</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" id="product-form">
+                                <input type="hidden" id="inputId" name="inputId"/>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="inputName" class="col-sm-2 control-label">名称</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="inputName" name="inputName"/>
                                         </div>
-
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="inputSubject" class="col-sm-4 control-label">作品题材</label>
-                                    <div class="col-sm-8">
-                                        <select id="inputSubject" class="form-control">
-                                        </select>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="inputAuthorId" class="col-sm-2 control-label">作者</label>
+                                        <div class="col-sm-10">
+                                            <select id="inputAuthorId" class="form-control" name="inputAuthorId" multiple="multiple">
+                                            </select>
+                                            <small><a href="javascript:void(0);" onclick="PRODUCTLIST.showAddAuthorPanel();">没有？新建作者</a></small>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="inputPublishState" class="col-sm-2 control-label">出版状态</label>
-                                    <div class="col-sm-10">
-                                        <select id="inputPublishState" class="form-control">
-                                            <option value="1">已出版</option>
-                                            <option value="0">未出版</option>
-                                        </select>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="inputWordCount" class="col-sm-4 control-label">字数</label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="inputWordCount" name="inputWordCount"/>
+                                                <span class="input-group-addon">万字</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div id="pressCol" class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="inputPress" class="col-sm-4 control-label">出版社</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="inputPress" name="inputPress"/>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="inputSubject" class="col-sm-4 control-label">作品题材</label>
+                                        <div class="col-sm-8">
+                                            <select id="inputSubject" class="form-control">
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div id="isbnCol" class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="inputIsbn" class="col-sm-4 control-label">ISBN</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="inputIsbn" name="inputIsbn"/>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="inputPublishState" class="col-sm-2 control-label">出版状态</label>
+                                        <div class="col-sm-10">
+                                            <select id="inputPublishState" class="form-control">
+                                                <option value="1">已出版</option>
+                                                <option value="0">未出版</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="inputDesc" class="col-sm-2 control-label">备注</label>
-                                    <div class="col-sm-10">
-                                        <textarea id="inputDesc" class="form-control"></textarea>
+                                <div id="pressCol" class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="inputPress" class="col-sm-4 control-label">出版社</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="inputPress" name="inputPress"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </form>
+                                <div id="isbnCol" class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="inputIsbn" class="col-sm-4 control-label">ISBN</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="inputIsbn" name="inputIsbn"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="inputDesc" class="col-sm-2 control-label">备注</label>
+                                        <div class="col-sm-10">
+                                            <textarea id="inputDesc" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="PRODUCTLIST.submitProduct();">保存</button>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="PRODUCTLIST.submitProduct();">保存</button>
+                    <div id="authorModalContent" style="display: none;">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h4 class="modal-title">新建作者</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" id="author-form">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="inputAuthorName" class="col-sm-4 control-label">姓名</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="inputAuthorName" name="inputAuthorName"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="inputAuthorPseudonym" class="col-sm-4 control-label">笔名</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="inputAuthorPseudonym" name="inputAuthorPseudonym"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="inputAuthorDesc" class="col-sm-2 control-label">描述</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" name="inputAuthorDesc" id="inputAuthorDesc"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-btnbar col-sm-12">
+                                    <a href="#" onclick="PRODUCTLIST.hideAddAuthorPanel();">&lt;&lt;&nbsp;返回</a>
+                                    <button type="button" class="btn btn-primary pull-right" onclick="PRODUCTLIST.addAuthor();">确定</button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

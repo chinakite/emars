@@ -34,12 +34,11 @@ public interface ProductMapper {
     @Update("UPDATE t_product SET c_type = #{type} WHERE c_id = #{id}")
     boolean updateProductState(@Param("id") long id, @Param("state") String state);
 
-    @Select("SELECT p.*, a.c_name AS authorName, a.c_pseudonym AS authorPseudonym, s.c_name AS subjectName FROM t_product_info p LEFT JOIN t_author a ON p.c_author_id = a.c_id LEFT JOIN t_subject s ON p.c_subject_id = s.c_id WHERE p.c_id = #{id}")
+    @Select("SELECT p.*, s.c_name AS subjectName FROM t_product_info p LEFT JOIN t_subject s ON p.c_subject_id = s.c_id WHERE p.c_id = #{id}")
     @Results(id = "productMap", value = {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "name", column = "C_NAME"),
             @Result(property = "subjectId", column = "C_SUBJECT_ID"),
-            @Result(property = "authorId", column = "C_AUTHOR_ID"),
             @Result(property = "type", column = "C_TYPE"),
             @Result(property = "publishState", column = "C_PUBLISH_STATE"),
             @Result(property = "wordCount", column = "C_WORDCOUNT"),
@@ -51,14 +50,12 @@ public interface ProductMapper {
             @Result(property = "createTime", column = "C_CREATETIME"),
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME"),
-            @Result(property = "authorName", column = "AUTHORNAME"),
             @Result(property = "subjectName", column = "SUBJECTNAME"),
-            @Result(property = "authorPseudonym", column = "AUTHORPSEUDONYM")
     })
     ProductInfo findProduct(@Param("id") long id);
 
     @Select({"<script>",
-            "SELECT p.*, a.c_name AS authorName, a.c_pseudonym AS authorPseudonym, s.c_name AS subjectName FROM t_product_info p LEFT JOIN t_author a ON p.c_author_id = a.c_id LEFT JOIN t_subject s ON p.c_subject_id = s.c_id",
+            "SELECT p.*, s.c_name AS subjectName FROM t_product_info p LEFT JOIN t_author a ON p.c_author_id = a.c_id LEFT JOIN t_subject s ON p.c_subject_id = s.c_id",
             "WHERE p.c_id > 0",
             "<if test='condition.name != null'>",
             " AND p.C_NAME like concat(concat('%',#{condition.productName}),'%')",
