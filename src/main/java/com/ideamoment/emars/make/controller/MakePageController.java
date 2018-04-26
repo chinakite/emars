@@ -32,8 +32,8 @@ public class MakePageController {
     }
 
     @RequestMapping(value = "/makeContractDetail", method = RequestMethod.GET)
-    public String makeContractDetail(long productId, Model model) {
-        MakeContract contract = makeService.findMakeContractByProduct(productId);
+    public String makeContractDetail(long id, Model model) {
+        MakeContract contract = makeService.findMakeContract(id);
         List<MakeContractDoc> docs = makeService.listContractDocs(contract.getId());
         model.addAttribute("contract", contract);
         model.addAttribute("docs", docs);

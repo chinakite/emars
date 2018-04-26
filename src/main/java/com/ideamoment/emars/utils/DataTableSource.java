@@ -77,4 +77,14 @@ public class DataTableSource<T> {
     public void setData(List<T> data) {
         this.data = data;
     }
+
+    public DataTableSource<T> convertToDataTableSource(int draw, int start, int length, List<T> dataList, long recordsTotal) {
+        DataTableSource<T> dts = new DataTableSource();
+        dts.setDraw(draw);
+        dts.setRecordsTotal(recordsTotal);
+        dts.setRecordsFiltered(recordsTotal);
+        dts.setData(dataList);
+        return dts;
+    }
+
 }

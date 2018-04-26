@@ -26,6 +26,24 @@ public class MakeController {
     @Autowired
     private MakeService makeService;
 
+    @RequestMapping(value = "/makeContracts", method = RequestMethod.GET)
+    public DataTableSource<MakeContract> makeContracts(
+            int draw,
+            int start,
+            int length,
+            String productName,
+            String code,
+            String targetType
+    ) {
+        MakeContractQueryVo condition = new MakeContractQueryVo();
+        condition.setProductName(productName);
+        condition.setCode(code);
+        condition.setTargetType(targetType);
+        Page<MakeContract> makeContractPage = makeService.pageMakeContracts(condition, start, length);
+        DataTableSource<MakeContract> dts = new DataTableSource().convertToDataTableSource(draw, start, length, makeContractPage.getData(), makeContractPage.getTotalPage());
+        return dts;
+    }
+
     @RequestMapping(value = "/dtProducts", method = RequestMethod.GET)
     public DataTableSource<ProductInfo> dtProducts(
             int draw,

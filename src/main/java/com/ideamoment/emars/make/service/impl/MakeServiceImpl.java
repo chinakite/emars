@@ -69,6 +69,19 @@ public class MakeServiceImpl implements MakeService {
     }
 
     @Override
+    public Page<MakeContract> pageMakeContracts(MakeContractQueryVo condition, int offset, int pageSize) {
+        long count = makeContractMapper.listProductsCount(condition);
+        int currentPage = offset/pageSize + 1;
+        List<MakeContract> makeContracts = makeContractMapper.listProducts(condition, offset, pageSize);
+        Page<MakeContract> result = new Page<MakeContract>();
+        result.setCurrentPage(currentPage);
+        result.setData(makeContracts);
+        result.setPageSize(pageSize);
+        result.setTotalRecord(count);
+        return result;
+    }
+
+    @Override
     @Transactional
     public String saveMakeTask(MakeTask makeTask) {
 

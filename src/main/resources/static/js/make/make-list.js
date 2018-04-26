@@ -3,9 +3,11 @@
 var MAKELIST = {};
 var productTable;
 var pathname = window.location.pathname;
+var mcTable;
 
 $(document).ready(function(){
-    MAKELIST.initProductTbl();
+    // MAKELIST.initProductTbl();
+    MAKELIST.initMakeContractTbl();
     MAKELIST.loadCategories();
     MAKELIST.loadExtMakers();
     MAKELIST.loadProductList();
@@ -63,6 +65,69 @@ function productItem(selectProduct) {
 
 MAKELIST.removeProduct = function(obj) {
     $(obj).parent().parent().remove();
+}
+
+MAKELIST.initMakeContractTbl = function () {
+    mcTable = $('#mcTbl').dataTable({
+        "processing": true,
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": false,
+        "info": true,
+        "autoWidth": false,
+        "serverSide": true,
+        "ajax": {
+            "url": '/make/makeContracts',
+            "data": function(d) {
+                var productName = $('#inputSearchProductName').val();
+                if(productName && $.trim(productName).length > 0) {
+                    d.productName = productName;
+                }
+                var code = $('#inputSearchCode').val();
+                if(code && $.trim(code).length > 0) {
+                    d.code = code;
+                }
+                var targetType = $('#inputSearchTargetType').val();
+                if(targetType && $.trim(targetType).length > 0) {
+                    d.targetType = targetType;
+                }
+            }
+
+        },
+        language: {
+            "paginate": {
+                "first":      "首页",
+                "previous":   "上一页",
+                "next":       "下一页",
+                "last":       "尾页"
+            },
+            "info": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项"
+        },
+        "columns": [
+            {
+                "data": "code"
+            },
+            {
+                "data": "owner"
+            },
+            {
+                "data": "worker"
+            },
+            {
+                "data": "maker"
+            },
+            {
+                "data": "totalPrice"
+            },
+            {
+                "render": function(data, type, full) {
+                    var htmlText = '<a href="javascript:;" onclick="MAKELIST.popMakeContractDetailModal(' + full.id + ')">查看</a>';
+                    return htmlText;
+                }
+            }
+        ]
+    });
 }
 
 MAKELIST.initProductTbl = function(){
@@ -214,10 +279,10 @@ MAKELIST.popContractModal = function () {
     $('#contractModal').modal('show');
 }
 
-MAKELIST.popMakeContractDetailModal = function (productId) {
+MAKELIST.popMakeContractDetailModal = function (id) {
     $.get(
         "/make/makeContractDetail",
-        {productId: productId},
+        {id: id},
         function(data) {
             $('#makeContractDetail').modal('show');
             $("#makeContractDetail .modal-body")

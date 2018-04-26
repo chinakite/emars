@@ -3,6 +3,7 @@ package com.ideamoment.emars.make.dao;
 import com.ideamoment.emars.model.MakeContract;
 import com.ideamoment.emars.model.MakeContractDoc;
 import com.ideamoment.emars.model.MakeContractProduct;
+import com.ideamoment.emars.model.MakeContractQueryVo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -46,6 +47,42 @@ public interface MakeContractMapper {
             @Result(property = "modifyTime", column = "C_MODIFYTIME")
     })
     MakeContract findMakeContract(@Param("id") long id);
+
+    @Select({"<script>",
+            "SELECT m.* FROM t_make_contract m",
+            "WHERE m.c_id > 0",
+            "<if test='condition.code != null'>",
+            " AND m.c_code = #{condition.code}",
+            "</if>",
+//            "<if test='condition.productName != null'>",
+//            " AND p.C_NAME like concat(concat('%',#{condition.productName}),'%')",
+//            "</if>",
+            "<if test='condition.targetType != null'>",
+            " AND m.c_target_type = #{condition.targetType}",
+            "</if>",
+            " ORDER BY m.C_MODIFYTIME DESC ",
+            " LIMIT #{offset}, #{size}",
+            "</script>"})
+    @ResultMap("makeContractMap")
+    List<MakeContract> listProducts(@Param("condition") MakeContractQueryVo condition, @Param("offset") int offset, @Param("size") int size);
+
+    @Select({"<script>",
+//            "SELECT m.* FROM t_make_contract m LEFT JOIN t_make_contract_product mcp ON m.c_id = mcp.c_make_contract_id LEFT JOIN t_product_info p ON mcp.c_product_id = p.c_id",
+            "SELECT m.* FROM t_make_contract m",
+            "WHERE m.c_id > 0",
+            "<if test='condition.code != null'>",
+            " AND m.c_code = #{condition.code}",
+            "</if>",
+//            "<if test='condition.productName != null'>",
+//            " AND p.C_NAME like concat(concat('%',#{condition.productName}),'%')",
+//            "</if>",
+            "<if test='condition.targetType != null'>",
+            " AND m.c_target_type = #{condition.targetType}",
+            "</if>",
+            "</script>"})
+    long listProductsCount(@Param("condition") MakeContractQueryVo condition);
+
+
 
     @Select("select C_CODE from T_MAKE_CONTRACT where C_CODE like concat(concat('%',#{code}),'%') order by C_CODE desc limit 0,1")
     String queryMaxContractCode(@Param("code") String code);

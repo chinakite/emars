@@ -12,6 +12,8 @@ public interface MakeService {
 
     Page<ProductInfo> pageProducts(ProductInfo condition, int offset, int pageSize);
 
+    Page<MakeContract> pageMakeContracts(MakeContractQueryVo condition, int offset, int pageSize);
+
     String saveMakeTask(MakeTask makeTask);
 
     MakeContract findMakeContract(long id);
