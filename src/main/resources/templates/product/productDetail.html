@@ -36,7 +36,10 @@
             <hr class="page-wide-block visible-xs visible-sm"/>
 
             <div class="col-md-8 col-lg-9">
-                <h1 class="font-size-20 m-y-4"><span th:text="${product.name}"></span><span class="m-l-1 font-weight-normal font-size-14" th:text="${product.authorName + '（' + product.authorPseudonym + '）'}"></span></h1>
+                <h1 class="font-size-20 m-y-4">
+                    <span th:text="${product.name}"></span>
+                    <span class="m-l-1 font-weight-normal font-size-14" th:text="${product.authorsTextInline}"></span>
+                </h1>
 
                 <ul class="nav nav-tabs" id="profile-tabs">
                     <li class="active">

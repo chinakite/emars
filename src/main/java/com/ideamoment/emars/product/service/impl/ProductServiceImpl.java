@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by yukiwang on 2018/2/23.
@@ -73,7 +70,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional
     public ProductInfo findProduct(long id) {
-        return productMapper.findProduct(id);
+        ProductInfo product = productMapper.findProduct(id);
+        List<Author> authors = authorMapper.queryAuthorByProduct(id);
+        product.setAuthors(authors);
+        return product;
     }
 
     @Override
@@ -110,6 +110,32 @@ public class ProductServiceImpl implements ProductService{
         product.setModifier(UserContext.getUserId());
         product.setModifyTime(new Date());
         boolean result = productMapper.updateProduct(product);
+        List<Author> existedAuthors = authorMapper.queryAuthorByProduct(product.getId());
+        HashSet<Long> existedAuthorIdCache = new HashSet<Long>();
+        for(Author existedAuthor : existedAuthors) {
+            existedAuthorIdCache.add(existedAuthor.getId());
+        }
+        HashSet<Long> newAuthorIdCache = new HashSet<Long>();
+        for(Author newAuthor : product.getAuthors()) {
+            newAuthorIdCache.add(newAuthor.getId());
+        }
+        for(Author existedAuthor : existedAuthors) {
+            if(!newAuthorIdCache.contains(existedAuthor.getId())) {
+                productMapper.deleteProductAuthor(product.getId(), existedAuthor.getId());
+            }
+        }
+        Date curDate = new Date();
+        for(Author newAuthor : product.getAuthors()) {
+            if(!existedAuthorIdCache.contains(newAuthor.getId())) {
+                ProductAuthor prodAuthor = new ProductAuthor();
+                prodAuthor.setProductId(product.getId());
+                prodAuthor.setAuthorId(newAuthor.getId());
+                prodAuthor.setCreator(UserContext.getUserId());
+                prodAuthor.setCreateTime(curDate);
+                productMapper.insertProductAuthor(prodAuthor);
+            }
+        }
+
         return resultString(result);
     }
 
@@ -236,6 +262,10 @@ public class ProductServiceImpl implements ProductService{
         int currentPage = offset/pageSize + 1;
 
         List<ProductInfo> products = productMapper.listProducts(condition, offset, pageSize);
+        for(ProductInfo prod : products) {
+            List<Author> authors = authorMapper.queryAuthorByProduct(prod.getId());
+            prod.setAuthors(authors);
+        }
 
         Page<ProductInfo> result = new Page<ProductInfo>();
         result.setCurrentPage(currentPage);

@@ -146,19 +146,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="form-group">
-                                <label for="inputAuthor" class="col-sm-4 control-label">作者</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputAuthor" name="inputAuthor"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="inputAuthorPseudonym" class="col-sm-4 control-label">作者笔名</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputAuthorPseudonym" name="inputAuthorPseudonym"/>
+                                <label for="inputAuthorId" class="col-sm-2 control-label">作者</label>
+                                <div class="col-sm-10">
+                                    <select id="inputAuthorId" class="form-control" name="inputAuthorId" multiple="multiple">
+                                    </select>
+                                    <small><a href="javascript:void(0);" onclick="PRODUCTLIST.showAddAuthorPanel();">没有？新建作者</a></small>
                                 </div>
                             </div>
                         </div>

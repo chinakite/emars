@@ -168,8 +168,12 @@ PRODUCTLIST.popEditProduct = function (id) {
 
                 $('#inputId').val(prod.id);
                 $('#inputName').val(prod.name);
-                if(prod.authorId) {
-                    $('#inputAuthorId').val(prod.authorId).trigger('change');
+                if(prod.authors) {
+                    var authorIds = [];
+                    for(var i=0; i<prod.authors.length; i++) {
+                        authorIds.push(prod.authors[i].id);
+                    }
+                    $('#inputAuthorId').val(authorIds).trigger('change');
                 }
                 $('#inputWordCount').val(prod.wordCount);
                 $('#inputSubject').val(prod.subjectId).trigger('change');
@@ -196,7 +200,7 @@ PRODUCTLIST.submitProduct = function() {
 
     var id = $('#inputId').val();
     var name = $('#inputName').val();
-    var authorId = $('#inputAuthorId').val();
+    var authorIds = $('#inputAuthorId').select2('data');
     var wordCount = $('#inputWordCount').val();
     var subject = $('#inputSubject').val();
     var publishState = $('#inputPublishState').val();
@@ -204,10 +208,15 @@ PRODUCTLIST.submitProduct = function() {
     var isbn = $('#inputIsbn').val();
     var desc = $('#inputDesc').val();
 
+    var authors = [];
+    for(var i=0; i<authorIds.length; i++) {
+        authors.push({id: authorIds[i].id});
+    }
+
     var postData = {
         'id': id,
         'name': name,
-        'authorId': authorId,
+        'authors': authors,
         'wordCount': wordCount,
         'subjectId': subject,
         'publishState': publishState,

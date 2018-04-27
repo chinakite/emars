@@ -12,19 +12,19 @@ import java.util.List;
 public interface ProductMapper {
 
     @Insert("INSERT INTO t_product " +
-            "(`C_NAME`,`C_SUBJECT_ID`,`C_AUTHOR_ID`,`C_TYPE`,`C_PUBLISH_STATE`,`C_PUBLISH_YEAR`,`C_FINISH_YEAR`," +
+            "(`C_NAME`,`C_SUBJECT_ID`,`C_TYPE`,`C_PUBLISH_STATE`,`C_PUBLISH_YEAR`,`C_FINISH_YEAR`," +
             "`C_STATE`,`C_WORD_COUNT`,`C_SECTION_COUNT`,`C_SECTION_LENGTH`,`C_PRESS`,`C_WEBSITE`,`C_SUMMARY`," +
             "`C_HAS_AUDIO`,`C_AUDIO_COPYRIGHT`,`C_AUDIO_DESC`,`C_ISBN`,`C_LOGO_URL`,`C_RESERVED`,`C_CREATOR`," +
             "`C_CREATETIME`) " +
             "VALUES " +
-            "(#{name}, #{subjectId}, #{authorId}, #{type}, #{publishState}, #{publishYear}, #{finishYear}, " +
+            "(#{name}, #{subjectId}, #{type}, #{publishState}, #{publishYear}, #{finishYear}, " +
             "#{state}, #{wordCount}, #{sectionCount}, #{sectionLength}, #{press}, #{website}, #{summary}, " +
             "#{hasAudio}, #{audioCopyright}, #{audioDesc}, #{isbn}, #{logoUrl}, #{reserved}, #{creator}, " +
             "#{createTime})")
     boolean insertProduct(ProductInfo product);
 
     @Update("UPDATE t_product_info SET " +
-            "`C_NAME`=#{name},`C_SUBJECT_ID`=#{subjectId},`C_AUTHOR_ID`=#{authorId}," +
+            "`C_NAME`=#{name},`C_SUBJECT_ID`=#{subjectId}," +
             "`C_PUBLISH_STATE`=#{publishState},`C_WORDCOUNT`=#{wordCount}," +
             "`C_PRESS`=#{press},`C_DESC`=#{desc}," +
             "`C_ISBN`=#{isbn},`C_DESC`=#{desc},`C_MODIFIER`=#{modifier}," +
@@ -130,9 +130,9 @@ public interface ProductMapper {
     @ResultMap("productMap")
     ProductInfo checkIsbnDuplicated(@Param("isbn") String isbn, @Param("id") Long id);
 
-    @Insert("insert into t_product_info (`c_name`,`c_author_id`,`c_wordcount`,`c_subject_id`,`c_publish_state`,`c_isbn`,`c_press`,`c_type`,`c_stockin`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`)" +
+    @Insert("insert into t_product_info (`c_name`,`c_wordcount`,`c_subject_id`,`c_publish_state`,`c_isbn`,`c_press`,`c_type`,`c_stockin`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`)" +
             "values" +
-            "(#{name}, #{authorId}, #{wordCount}, #{subjectId}, #{publishState}, #{isbn}, #{press}, #{type}, #{stockIn}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})"
+            "(#{name}, #{wordCount}, #{subjectId}, #{publishState}, #{isbn}, #{press}, #{type}, #{stockIn}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})"
     )
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertProductInfo(CopyrightProductInfo productInfo);
@@ -141,10 +141,16 @@ public interface ProductMapper {
     boolean deleteProductInfo(@Param("productId") long productId);
 
     @Update("update t_product_info set " +
-            "c_name=#{name}, c_author_id=#{authorId}, c_wordcount=#{wordCount}, " +
+            "c_name=#{name}, c_wordcount=#{wordCount}, " +
             "c_subject_id=#{subjectId}, c_publish_state=#{publishState}, c_isbn=#{isbn}, " +
             "c_press=#{press}, c_type=#{type}, c_stockin=#{stockIn}, c_desc=#{desc}, c_modifier=#{modifier}, c_modifytime=#{modifyTime} " +
             "where c_id = #{id}"
     )
     boolean updateProductInfo(CopyrightProductInfo product);
+
+    @Insert("insert into t_product_author (c_product_id, c_author_id, c_creator, c_createtime)values(#{productId}, #{authorId}, #{creator}, #{createTime})")
+    boolean insertProductAuthor(ProductAuthor productAuthor);
+
+    @Delete("delete from t_product_author where c_product_id = #{productId} and c_author_id = #{authorId}")
+    boolean deleteProductAuthor(@Param("productId") Long productId, @Param("authorId") Long authorId);
 }

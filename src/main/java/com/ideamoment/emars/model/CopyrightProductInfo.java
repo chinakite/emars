@@ -2,11 +2,11 @@ package com.ideamoment.emars.model;
 
 import com.ideamoment.emars.model.HistoriableEntity;
 
+import java.util.List;
+
 public class CopyrightProductInfo extends HistoriableEntity {
 
     private String name;
-    private String authorName;
-    private String authorPseudonym;
     private String wordCount;
     private String subjectId;
     private String publishState;
@@ -29,7 +29,7 @@ public class CopyrightProductInfo extends HistoriableEntity {
 
     private Long copyrightId;
     private Long productId;
-    private Long authorId;
+    private List<Author> authors;
 
     public String getName() {
         return name;
@@ -37,22 +37,6 @@ public class CopyrightProductInfo extends HistoriableEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
-
-    public String getAuthorPseudonym() {
-        return authorPseudonym;
-    }
-
-    public void setAuthorPseudonym(String authorPseudonym) {
-        this.authorPseudonym = authorPseudonym;
     }
 
     public String getWordCount() {
@@ -206,14 +190,6 @@ public class CopyrightProductInfo extends HistoriableEntity {
         this.productId = productId;
     }
 
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
     public String getPrivilegesText() {
         return privilegesText;
     }
@@ -236,5 +212,13 @@ public class CopyrightProductInfo extends HistoriableEntity {
 
     public void setStockIn(String stockIn) {
         this.stockIn = stockIn;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 }

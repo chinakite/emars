@@ -2,6 +2,7 @@ package com.ideamoment.emars.model;
 
 import com.ideamoment.emars.model.enumeration.PublishState;
 import com.ideamoment.emars.model.enumeration.StockInType;
+import com.ideamoment.emars.utils.StringUtils;
 
 import java.util.List;
 
@@ -146,5 +147,39 @@ public class ProductInfo extends HistoriableEntity {
         }else{
             return "未知";
         }
+    }
+
+    public String getAuthorsTextInline() {
+        String result = "";
+        if(authors != null) {
+            for (int i = 0; i < this.authors.size(); i++) {
+                Author author = authors.get(i);
+                if (i > 0) {
+                    result += "、";
+                }
+                result += author.getName();
+                if (StringUtils.isNotEmpty(author.getPseudonym())) {
+                    result += "(" + author.getPseudonym() + ")";
+                }
+            }
+        }
+        return result;
+    }
+
+    public String getAuthorsTextMultiline() {
+        String result = "";
+        if(authors != null) {
+            for (int i = 0; i < this.authors.size(); i++) {
+                Author author = authors.get(i);
+                if (i > 0) {
+                    result += "<br/>";
+                }
+                result += author.getName();
+                if (StringUtils.isNotEmpty(author.getPseudonym())) {
+                    result += "(" + author.getPseudonym() + ")";
+                }
+            }
+        }
+        return result;
     }
 }

@@ -116,6 +116,8 @@ $(document).ready(function(){
     $('#inputCopyrightEnd').datepicker({
         format: 'yyyy-mm-dd'
     });
+
+    COPYRIGHTLIST.loadAuthors();
 });
 
 COPYRIGHTLIST.initCopyrightTbl = function(){
@@ -182,6 +184,35 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
             }
         ]
     });
+};
+
+COPYRIGHTLIST.loadAuthors = function(callback) {
+    $.get(
+        "/system/allAuthors",
+        function(data) {
+            if(data.code == '0') {
+                var authors = data.data;
+                var html = '';
+                for(var i = 0; i < authors.length; i ++) {
+                    var author = authors[i];
+                    var authorName = author.name;
+                    if(author.pseudonym) {
+                        authorName = authorName + "(" + author.pseudonym + ")";
+                    }
+                    html += '<option value="' + author.id + '">' + authorName + '</option>';
+                }
+                $('#inputAuthorId').empty().append(html);
+                $('#inputAuthorId').select2({
+                    dropdownParent: $("#copyrightModal")
+                });
+                if(callback) {
+                    callback();
+                }
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    )
 };
 
 COPYRIGHTLIST.popCopyrightDetailModal = function (id) {
@@ -316,6 +347,8 @@ COPYRIGHTLIST.submitCopyright = function (_e) {
         'products': products
     };
 
+    console.log(postData);
+
     $.ajax({
         url: "/copyright/saveCopyrightContract",
         type: "POST",
@@ -374,8 +407,7 @@ COPYRIGHTLIST.hideAddProductPanel = function() {
 COPYRIGHTLIST.addProduct = function() {
     var id = $('#inputProductId').val();
     var name = $('#inputName').val();
-    var author = $('#inputAuthor').val();
-    var authorPseudonym = $('#inputAuthorPseudonym').val();
+    var selectedAuthors = $('#inputAuthorId').select2('data');
     var wordCount = $('#inputWordCount').val();
     var subjectData = $('#inputSubject').select2('data');
     var publishState = $('#inputPublishState').val();
@@ -410,11 +442,25 @@ COPYRIGHTLIST.addProduct = function() {
         privilegeText += '广播剧改编权';
     }
 
+    var authorsTextInline = '';
+    var authorsTextMultiline = '';
+    var authors = [];
+    for(var i=0; i<selectedAuthors.length; i++) {
+        if(i>0) {
+            authorsTextInline += '、';
+            authorsTextMultiline += '<br/>';
+        }
+        authorsTextInline += selectedAuthors[i].text;
+        authorsTextMultiline += selectedAuthors[i].text;
+        authors.push({id: selectedAuthors[i].id});
+    }
+
     var productItem = {
         id: id,
         name : name,
-        authorName: author,
-        authorPseudonym: authorPseudonym,
+        authors: authors,
+        authorsTextInline: authorsTextInline,
+        authorsTextMultiline: authorsTextMultiline,
         wordCount: wordCount,
         isbn: publishState == '1' ? isbn : "未出版",
         subjectText: subjectData[0].text,
@@ -461,8 +507,12 @@ COPYRIGHTLIST.editProduct = function(obj) {
     var productItem = $(obj).parent().parent().data('bindedData');
     $('#inputProductId').val(productItem.id);
     $('#inputName').val(productItem.name);
-    $('#inputAuthor').val(productItem.authorName);
-    $('#inputAuthorPseudonym').val(productItem.authorPseudonym);
+    var authors = productItem.authors;
+    var authorIds = [];
+    for(var i=0; i<authors.length; i++) {
+        authorIds.push(authors[i].id);
+    }
+    $('#inputAuthorId').val(authorIds).trigger('change');
     $('#inputWordCount').val(productItem.wordCount);
     $('#inputSubject').select2('val', productItem.subjectId);
     $('#inputPublishState').val(productItem.publishState);
@@ -491,8 +541,7 @@ COPYRIGHTLIST.editProduct = function(obj) {
 COPYRIGHTLIST.resetProduct = function() {
     $('#inputProductId').val('');
     $('#inputName').val('');
-    $('#inputAuthor').val('');
-    $('#inputAuthorPseudonym').val('');
+    $('#inputAuthorId').val([]).trigger('change');
     $('#inputWordCount').val('');
     $('#inputSubject').select2('val', '1');
     $('#inputPublishState').val('1');

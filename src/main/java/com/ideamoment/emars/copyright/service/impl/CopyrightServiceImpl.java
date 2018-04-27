@@ -23,10 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by yukiwang on 2018/2/24.
@@ -69,9 +66,8 @@ public class CopyrightServiceImpl implements CopyrightService {
         CopyrightContract copyright = copyrightMapper.findCopyright(id);
         ArrayList<CopyrightProductInfo> products = copyrightMapper.queryCopyrightProductInfoes(id);
         for(CopyrightProductInfo product : products) {
-            Author author = authorMapper.findAuthor(product.getAuthorId());
-            product.setAuthorName(author.getName());
-            product.setAuthorPseudonym(author.getPseudonym());
+            List<Author> authors = authorMapper.queryAuthorByProduct(product.getProductId());
+            product.setAuthors(authors);
         }
         copyright.setProducts(products);
         return copyright;
@@ -176,32 +172,19 @@ public class CopyrightServiceImpl implements CopyrightService {
             product.setType(copyrightContract.getContractType());
             product.setStockIn(StockInType.NOT_STOCK_IN);
 
-            //处理作者逻辑
-            String authorName = product.getAuthorName();
-            String authorPseudonym = product.getAuthorPseudonym();
-            Author author = null;
-            if(StringUtils.isNotEmpty(authorPseudonym)) {
-                author = authorMapper.findAuthorByPseudonym(authorPseudonym);
-            }
-            if(author != null) {
-                product.setAuthorId(author.getId());
-            }else{
-                author = authorMapper.findAuthorByName(authorName);
-                if(author != null) {
-                    product.setAuthorId(author.getId());
-                }else{
-                    author = new Author();
-                    author.setName(authorName);
-                    author.setPseudonym(authorPseudonym);
-                    author.setCreator(UserContext.getUserId());
-                    author.setCreateTime(curDate);
-                    authorMapper.insertAuthor(author);
-
-                    product.setAuthorId(author.getId());
-                }
-            }
             productMapper.insertProductInfo(product);
             product.setProductId(product.getId());
+
+            //处理作者逻辑
+            List<Author> authors = product.getAuthors();
+            for(int i=0; i<authors.size(); i++) {
+                ProductAuthor productAuthor = new ProductAuthor();
+                productAuthor.setProductId(product.getId());
+                productAuthor.setAuthorId(authors.get(i).getId());
+                productAuthor.setCreator(UserContext.getUserId());
+                productAuthor.setCreateTime(curDate);
+                productMapper.insertProductAuthor(productAuthor);
+            }
         }
         copyrightMapper.insertCopyrightContract(copyrightContract);
         for(CopyrightProductInfo product : products) {
@@ -280,32 +263,20 @@ public class CopyrightServiceImpl implements CopyrightService {
                 product.setCreator(UserContext.getUserId());
                 product.setCreateTime(curDate);
 
-                //处理作者逻辑
-                String authorName = product.getAuthorName();
-                String authorPseudonym = product.getAuthorPseudonym();
-                Author author = null;
-                if(StringUtils.isNotEmpty(authorPseudonym)) {
-                    author = authorMapper.findAuthorByPseudonym(authorPseudonym);
-                }
-                if(author != null) {
-                    product.setAuthorId(author.getId());
-                }else{
-                    author = authorMapper.findAuthorByName(authorName);
-                    if(author != null) {
-                        product.setAuthorId(author.getId());
-                    }else{
-                        author = new Author();
-                        author.setName(authorName);
-                        author.setPseudonym(authorPseudonym);
-                        author.setCreator(UserContext.getUserId());
-                        author.setCreateTime(curDate);
-                        authorMapper.insertAuthor(author);
-
-                        product.setAuthorId(author.getId());
-                    }
-                }
                 productMapper.insertProductInfo(product);
                 product.setProductId(product.getId());
+
+                //处理作者逻辑
+                List<Author> authors = product.getAuthors();
+                for(int i=0; i<authors.size(); i++) {
+                    ProductAuthor productAuthor = new ProductAuthor();
+                    productAuthor.setProductId(product.getId());
+                    productAuthor.setAuthorId(authors.get(i).getId());
+                    productAuthor.setCreator(UserContext.getUserId());
+                    productAuthor.setCreateTime(curDate);
+                    productMapper.insertProductAuthor(productAuthor);
+                }
+
                 product.setCopyrightId(copyrightContract.getId());
                 copyrightContractProductMapper.insertCopyrightProduct(product);
             }else{
@@ -324,29 +295,31 @@ public class CopyrightServiceImpl implements CopyrightService {
                 product.setCreateTime(curDate);
 
                 //处理作者逻辑
-                String authorName = product.getAuthorName();
-                String authorPseudonym = product.getAuthorPseudonym();
-                Author author = null;
-                if(StringUtils.isNotEmpty(authorPseudonym)) {
-                    author = authorMapper.findAuthorByPseudonym(authorPseudonym);
+                List<Author> existedAuthors = authorMapper.queryAuthorByProduct(product.getId());
+                HashSet<Long> existedAuthorIdCache = new HashSet<Long>();
+                for(Author existedAuthor : existedAuthors) {
+                    existedAuthorIdCache.add(existedAuthor.getId());
                 }
-                if(author != null) {
-                    product.setAuthorId(author.getId());
-                }else{
-                    author = authorMapper.findAuthorByName(authorName);
-                    if(author != null) {
-                        product.setAuthorId(author.getId());
-                    }else{
-                        author = new Author();
-                        author.setName(authorName);
-                        author.setPseudonym(authorPseudonym);
-                        author.setCreator(UserContext.getUserId());
-                        author.setCreateTime(curDate);
-                        authorMapper.insertAuthor(author);
-
-                        product.setAuthorId(author.getId());
+                HashSet<Long> newAuthorIdCache = new HashSet<Long>();
+                for(Author newAuthor : product.getAuthors()) {
+                    newAuthorIdCache.add(newAuthor.getId());
+                }
+                for(Author existedAuthor : existedAuthors) {
+                    if(!newAuthorIdCache.contains(existedAuthor.getId())) {
+                        productMapper.deleteProductAuthor(product.getId(), existedAuthor.getId());
                     }
                 }
+                for(Author newAuthor : product.getAuthors()) {
+                    if(!existedAuthorIdCache.contains(newAuthor.getId())) {
+                        ProductAuthor prodAuthor = new ProductAuthor();
+                        prodAuthor.setProductId(product.getId());
+                        prodAuthor.setAuthorId(newAuthor.getId());
+                        prodAuthor.setCreator(UserContext.getUserId());
+                        prodAuthor.setCreateTime(curDate);
+                        productMapper.insertProductAuthor(prodAuthor);
+                    }
+                }
+
                 productMapper.updateProductInfo(product);
                 copyrightContractProductMapper.updateContractProductInfo(product);
             }

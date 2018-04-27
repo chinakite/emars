@@ -141,7 +141,6 @@ public interface CopyrightMapper {
 
     @Select("select p.c_id as id, " +
             "p.c_name as name, " +
-            "p.c_author_id as authorId, " +
             "p.c_wordcount as wordCount, " +
             "p.c_subject_id as subjectId, " +
             "p.c_publish_state as publishState, " +
@@ -161,7 +160,6 @@ public interface CopyrightMapper {
     @Results(id = "copyrightProductInfoMap", value = {
             @Result(property = "id", column = "id", id = true),
             @Result(property = "name", column = "name"),
-            @Result(property = "authorId", column = "authorId"),
             @Result(property = "wordCount", column = "wordCount"),
             @Result(property = "subjectId", column = "subjectId"),
             @Result(property = "publishState", column = "publishState"),

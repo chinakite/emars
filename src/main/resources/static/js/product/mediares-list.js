@@ -51,11 +51,19 @@ MEDIARESLIST.initProductTbl = function(){
             },
             {
                 "render": function (data, type, full) {
-                    if(full.authorPseudonym) {
-                        return full.authorName + "（" + full.authorPseudonym + "）";
-                    }else{
-                        return full.authorName;
+                    var authors = full.authors;
+                    var content = '';
+                    for(var i=0; i<authors.length; i++) {
+                        if(i > 0) {
+                            content += '<br/>';
+                        }
+                        if(authors[i].pseudonym) {
+                            content += authors[i].name + "（" + authors[i].pseudonym + "）";
+                        }else{
+                            content += authors[i].name;
+                        }
                     }
+                    return content;
 
                 }
             },
