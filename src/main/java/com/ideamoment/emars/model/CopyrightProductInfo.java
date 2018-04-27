@@ -1,6 +1,7 @@
 package com.ideamoment.emars.model;
 
 import com.ideamoment.emars.model.HistoriableEntity;
+import com.ideamoment.emars.utils.StringUtils;
 
 import java.util.List;
 
@@ -220,5 +221,22 @@ public class CopyrightProductInfo extends HistoriableEntity {
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    public String getAuthorsTextInline() {
+        String result = "";
+        if(authors != null) {
+            for (int i = 0; i < this.authors.size(); i++) {
+                Author author = authors.get(i);
+                if (i > 0) {
+                    result += "、";
+                }
+                result += author.getName();
+                if (StringUtils.isNotEmpty(author.getPseudonym())) {
+                    result += "(" + author.getPseudonym() + ")";
+                }
+            }
+        }
+        return result;
     }
 }

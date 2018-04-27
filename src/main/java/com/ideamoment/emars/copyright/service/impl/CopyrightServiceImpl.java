@@ -66,7 +66,7 @@ public class CopyrightServiceImpl implements CopyrightService {
         CopyrightContract copyright = copyrightMapper.findCopyright(id);
         ArrayList<CopyrightProductInfo> products = copyrightMapper.queryCopyrightProductInfoes(id);
         for(CopyrightProductInfo product : products) {
-            List<Author> authors = authorMapper.queryAuthorByProduct(product.getProductId());
+            List<Author> authors = authorMapper.queryAuthorByProduct(product.getId());
             product.setAuthors(authors);
         }
         copyright.setProducts(products);
