@@ -19,6 +19,7 @@ public class CopyrightProductInfo extends HistoriableEntity {
     private boolean privilege2;
     private boolean privilege3;
     private boolean privilege4;
+    private String privileges;
     private String privilegesText;
     private String grant;
     private String copyrightType;
@@ -31,6 +32,7 @@ public class CopyrightProductInfo extends HistoriableEntity {
     private Long copyrightId;
     private Long productId;
     private List<Author> authors;
+    private String subjectName;
 
     public String getName() {
         return name;
@@ -169,6 +171,9 @@ public class CopyrightProductInfo extends HistoriableEntity {
     }
 
     public String getPrivileges() {
+        if(StringUtils.isNotEmpty(privileges)) {
+            return this.privileges;
+        }
         return (privilege1 ? "1" : "0")
                 + (privilege2 ? "1" : "0")
                 + (privilege3 ? "1" : "0")
@@ -192,7 +197,58 @@ public class CopyrightProductInfo extends HistoriableEntity {
     }
 
     public String getPrivilegesText() {
-        return privilegesText;
+        if(StringUtils.isNotEmpty(privilegesText)) {
+            return this.privilegesText;
+        }
+        String result = "";
+        if(StringUtils.isNotEmpty(privileges)) {
+            if(privileges.charAt(0) == '1') {
+                result += "音频改编权";
+            }
+            if(privileges.charAt(1) == '1') {
+                if(StringUtils.isNotEmpty(result)) {
+                    result += "、";
+                }
+                result += "广播权";
+            }
+            if(privileges.charAt(2) == '1') {
+                if(StringUtils.isNotEmpty(result)) {
+                    result += "、";
+                }
+                result += "信息网络传播权";
+            }
+            if(privileges.charAt(3) == '1') {
+                if(StringUtils.isNotEmpty(result)) {
+                    result += "、";
+                }
+                result += "广播剧改编权";
+            }
+            return result;
+        }else{
+            if(privilege1) {
+                result += "音频改编权";
+            }
+            if(privilege2) {
+                if(StringUtils.isNotEmpty(result)) {
+                    result += "、";
+                }
+                result += "广播权";
+            }
+            if(privilege3) {
+                if(StringUtils.isNotEmpty(result)) {
+                    result += "、";
+                }
+                result += "信息网络传播权";
+            }
+            if(privilege4) {
+                if(StringUtils.isNotEmpty(result)) {
+                    result += "、";
+                }
+                result += "广播剧改编权";
+            }
+            return result;
+        }
+
     }
 
     public void setPrivilegesText(String privilegesText) {
@@ -221,6 +277,14 @@ public class CopyrightProductInfo extends HistoriableEntity {
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public String getAuthorsTextInline() {

@@ -147,16 +147,19 @@ public interface CopyrightMapper {
             "p.c_isbn as isbn, " +
             "p.c_press as press, " +
             "cp.c_price as price, " +
-            "cp.c_privileges as privilegesText, " +
+            "cp.c_privileges as privileges, " +
             "cp.c_grant as grantType, " +
             "cp.c_copyright_type as copyrightType, " +
             "cp.c_begin as beginDate, " +
             "cp.c_end as endDate, " +
             "cp.c_settlement_type as settlementType, " +
-            "cp.c_desc as descText " +
-            "from t_product_info p, t_copyright_product cp " +
+            "cp.c_desc as descText, " +
+            "s.c_name as subjectName " +
+            "from t_product_info p, t_copyright_product cp, t_subject s " +
             "where cp.c_copyright_id = #{copyrightId} " +
-            "and cp.c_product_id = p.c_id")
+            "and cp.c_product_id = p.c_id " +
+            "and s.c_id = p.c_subject_id"
+    )
     @Results(id = "copyrightProductInfoMap", value = {
             @Result(property = "id", column = "id", id = true),
             @Result(property = "name", column = "name"),
@@ -166,13 +169,14 @@ public interface CopyrightMapper {
             @Result(property = "isbn", column = "isbn"),
             @Result(property = "press", column = "press"),
             @Result(property = "copyrightPrice", column = "price"),
-            @Result(property = "privilegesText", column = "privilegesText"),
+            @Result(property = "privileges", column = "privileges"),
             @Result(property = "grant", column = "grantType"),
             @Result(property = "copyrightType", column = "copyrightType"),
             @Result(property = "copyrightBegin", column = "beginDate"),
             @Result(property = "copyrightEnd", column = "endDate"),
             @Result(property = "settlementType", column = "settlementType"),
-            @Result(property = "desc", column = "descText")
+            @Result(property = "desc", column = "descText"),
+            @Result(property = "subjectName", column = "subjectName")
     })
     ArrayList<CopyrightProductInfo> queryCopyrightProductInfoes(@Param("copyrightId") long id);
 

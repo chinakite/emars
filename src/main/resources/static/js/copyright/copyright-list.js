@@ -463,7 +463,7 @@ COPYRIGHTLIST.addProduct = function() {
         authorsTextMultiline: authorsTextMultiline,
         wordCount: wordCount,
         isbn: publishState == '1' ? isbn : "未出版",
-        subjectText: subjectData[0].text,
+        subjectName: subjectData[0].text,
         subjectId: subjectData[0].id,
         press: press,
         publishState: publishState,
