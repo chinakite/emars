@@ -15,7 +15,6 @@ public class ProductInfo extends HistoriableEntity {
     private Long subjectId;
     private String publishState;
     private String isbn;
-    private String press;
     private String type;
     private String stockIn;
     private String desc;
@@ -77,14 +76,6 @@ public class ProductInfo extends HistoriableEntity {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
-    }
-
-    public String getPress() {
-        return press;
-    }
-
-    public void setPress(String press) {
-        this.press = press;
     }
 
     public String getSubjectName() {

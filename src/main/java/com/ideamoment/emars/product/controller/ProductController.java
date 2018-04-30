@@ -55,51 +55,6 @@ public class ProductController {
         return JsonData.success(product);
     }
 
-    @RequestMapping(value = "/createProduct", method = RequestMethod.POST)
-    public JsonData<String> createProduct(
-            Long id,
-            String name,
-            String authorName,
-            String authorPseudonym,
-            String wordCount,
-            long subject,
-            String publishState,
-            String publishYear,
-            String press,
-            String finishYear,
-            String website,
-            String summary,
-            boolean hasAudio,
-            boolean audioCopyright,
-            String audioDesc,
-            String samples,
-            String isbn,
-            String copyrights,
-            String logoUrl,
-            String submit,
-            String type
-    ) {
-        ProductInfo product;
-        if(id == null) {
-            product = new ProductInfo();
-        }else{
-            product = productService.findProduct(id);
-        }
-
-        product.setName(name);
-
-        Author author = new Author();
-        author.setName(authorName);
-        author.setPseudonym(authorPseudonym);
-
-        String result = productService.saveProduct(product, submit, true, type);
-        if(result.equals(SuccessCode.SUCCESS)) {
-            return JsonData.SUCCESS;
-        }else{
-            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
-        }
-    }
-
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
     public JsonData<Boolean> updateProduct(@RequestBody ProductInfo product) {
         String result = productService.updateProduct(product);

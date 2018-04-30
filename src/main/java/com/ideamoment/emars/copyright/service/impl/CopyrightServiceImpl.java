@@ -392,6 +392,17 @@ public class CopyrightServiceImpl implements CopyrightService {
         return copyrightMapper.queryCopyrightFiles(productId, CopyrightFileType.PUBLISH_CONTRACT);
     }
 
+    @Override
+    @Transactional
+    public CopyrightProductInfo queryProductCopyright(Long productId) {
+        List<CopyrightProductInfo> copyrightProductInfoes = copyrightContractProductMapper.queryCopyrightProductInfoByProduct(productId);
+        if(copyrightProductInfoes != null && copyrightProductInfoes.size() > 0) {
+            return copyrightProductInfoes.get(0);
+        }else{
+            return null;
+        }
+    }
+
     private synchronized String createCode(Copyright cc) {
         Date curDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");

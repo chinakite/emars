@@ -1,10 +1,7 @@
 package com.ideamoment.emars.product.controller;
 
 import com.ideamoment.emars.copyright.service.CopyrightService;
-import com.ideamoment.emars.model.Copyright;
-import com.ideamoment.emars.model.ProductCopyrightFile;
-import com.ideamoment.emars.model.ProductInfo;
-import com.ideamoment.emars.model.ProductResultVo;
+import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +34,9 @@ public class ProductPageController {
     @RequestMapping(value = "/productDetail/{id}")
     public String productDetail(@PathVariable("id") long id, Model model) {
         ProductInfo product = productService.findProduct(id);
+        CopyrightProductInfo copyrightProductInfo = copyrightService.queryProductCopyright(id);
         model.addAttribute("product", product);
+        model.addAttribute("productCopyright", copyrightProductInfo);
         return "product/productDetail";
     }
 

@@ -75,13 +75,14 @@ public interface CopyrightMapper {
     CopyrightContract findCopyright(@Param("id") long id);
 
     @Select({"<script>",
-            "SELECT t_copyright.*, t_user.c_name as operatorName, t_grantee.c_name as grantee FROM t_copyright, t_user, t_grantee",
+            "SELECT t_copyright.*, t_user.c_name as operatorName, t_granter.c_name as granter, t_grantee.c_name as grantee FROM t_copyright, t_user, t_grantee, t_granter",
             "WHERE t_copyright.c_id > 0",
             "<if test='condition.contractCode != null'>",
             " AND t_copyright.c_code = #{condition.contractCode}",
             "</if>",
             " AND t_copyright.c_operator = t_user.c_id",
             " AND t_copyright.c_grantee_id = t_grantee.c_id",
+            " AND t_copyright.c_granter_id = t_granter.c_id",
             " ORDER BY C_MODIFYTIME DESC ",
             " LIMIT #{offset}, #{size}",
             "</script>"})
@@ -145,7 +146,7 @@ public interface CopyrightMapper {
             "p.c_subject_id as subjectId, " +
             "p.c_publish_state as publishState, " +
             "p.c_isbn as isbn, " +
-            "p.c_press as press, " +
+            "cp.c_proportions as proportions, " +
             "cp.c_price as price, " +
             "cp.c_privileges as privileges, " +
             "cp.c_grant as grantType, " +
@@ -167,7 +168,7 @@ public interface CopyrightMapper {
             @Result(property = "subjectId", column = "subjectId"),
             @Result(property = "publishState", column = "publishState"),
             @Result(property = "isbn", column = "isbn"),
-            @Result(property = "press", column = "press"),
+            @Result(property = "proportions", column = "proportions"),
             @Result(property = "copyrightPrice", column = "price"),
             @Result(property = "privileges", column = "privileges"),
             @Result(property = "grant", column = "grantType"),

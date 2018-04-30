@@ -181,7 +181,6 @@ PRODUCTLIST.popEditProduct = function (id) {
                 $('#inputPublishState')[0].selectedIndex = pubState;
 
                 if(prod.publishState == 1) {
-                    $('#inputPress').val(prod.press);
                     $('#inputIsbn').val(prod.isbn);
                 }
                 $('#inputDesc').val(prod.desc);
@@ -204,7 +203,6 @@ PRODUCTLIST.submitProduct = function() {
     var wordCount = $('#inputWordCount').val();
     var subject = $('#inputSubject').val();
     var publishState = $('#inputPublishState').val();
-    var press = $('#inputPress').val();
     var isbn = $('#inputIsbn').val();
     var desc = $('#inputDesc').val();
 
@@ -220,7 +218,6 @@ PRODUCTLIST.submitProduct = function() {
         'wordCount': wordCount,
         'subjectId': subject,
         'publishState': publishState,
-        'press': press,
         'isbn': isbn,
         'desc': desc
     };
@@ -250,7 +247,6 @@ PRODUCTLIST.clearProductModal = function () {
     $('#inputWordCount').val('');
     $("#inputSubject option:first").prop("selected", 'selected').trigger('change');
     $("#inputPublishState option:first").prop("selected", 'selected').trigger('change');
-    $('#inputPress').val('');
     $('#inputIsbn').val('');
     $('#inputDesc').val('');
 }

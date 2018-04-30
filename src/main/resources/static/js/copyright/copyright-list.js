@@ -19,10 +19,8 @@ $(document).ready(function(){
     $('#inputPublishState').change(function(){
         var pubState = $(this).val();
         if(pubState == 0) {
-            $('#pressCol').hide();
             $('#isbnCol').hide();
         }else{
-            $('#pressCol').show();
             $('#isbnCol').show();
         }
     });
@@ -417,7 +415,7 @@ COPYRIGHTLIST.addProduct = function() {
     var wordCount = $('#inputWordCount').val();
     var subjectData = $('#inputSubject').select2('data');
     var publishState = $('#inputPublishState').val();
-    var press = $('#inputPress').val();
+    var proportions = $('#inputProportions').val();
     var isbn = $('#inputIsbn').val();
     var privilege1 = $('#inputPrivilege1').prop('checked');
     var privilege2 = $('#inputPrivilege2').prop('checked');
@@ -471,7 +469,7 @@ COPYRIGHTLIST.addProduct = function() {
         isbn: publishState == '1' ? isbn : "未出版",
         subjectName: subjectData[0].text,
         subjectId: subjectData[0].id,
-        press: press,
+        proportions: proportions,
         publishState: publishState,
         publishStateText: publishState == '1' ? "已出版" : "未出版",
         privilege1: privilege1,
@@ -522,7 +520,7 @@ COPYRIGHTLIST.editProduct = function(obj) {
     $('#inputWordCount').val(productItem.wordCount);
     $('#inputSubject').select2('val', productItem.subjectId);
     $('#inputPublishState').val(productItem.publishState);
-    $('#inputPress').val(productItem.press);
+    $('#inputProportions').val(productItem.proportions);
     $('#inputIsbn').val(productItem.isbn);
     if(productItem.privilege1)
         $('#inputPrivilege1').prop('checked', true);
@@ -551,7 +549,7 @@ COPYRIGHTLIST.resetProduct = function() {
     $('#inputWordCount').val('');
     $('#inputSubject').select2('val', '1');
     $('#inputPublishState').val('1');
-    $('#inputPress').val('');
+    $('#inputProportions').val('');
     $('#inputIsbn').val('');
     $('#inputPrivilege1').prop('checked', false);
     $('#inputPrivilege2').prop('checked', false);

@@ -9,6 +9,7 @@ import com.ideamoment.emars.copyright.service.CopyrightService;
 import com.ideamoment.emars.model.Copyright;
 import com.ideamoment.emars.model.CopyrightContract;
 import com.ideamoment.emars.model.CopyrightFile;
+import com.ideamoment.emars.model.CopyrightProductInfo;
 import com.ideamoment.emars.utils.DataTableSource;
 import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
@@ -77,6 +78,12 @@ public class CopyrightController {
         }
 
         return JsonData.SUCCESS;
+    }
+
+    @RequestMapping(value="/productCopyright", method = RequestMethod.GET)
+    public JsonData<CopyrightProductInfo> productCopyright(Long productId) {
+        CopyrightProductInfo copyrightProductInfo = copyrightService.queryProductCopyright(productId);
+        return JsonData.success(copyrightProductInfo);
     }
 
     @RequestMapping(value = "/removeCopyright", method = RequestMethod.POST)

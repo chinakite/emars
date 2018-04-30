@@ -22,7 +22,6 @@ public class Product extends HistoriableEntity {
     private BigDecimal wordCount;
     private int sectionCount;
     private int sectionLength;
-    private String press;
     private String website;
     private String summary;
     private boolean hasAudio;
@@ -170,14 +169,6 @@ public class Product extends HistoriableEntity {
 
     public void setSectionLength(int sectionLength) {
         this.sectionLength = sectionLength;
-    }
-
-    public String getPress() {
-        return press;
-    }
-
-    public void setPress(String press) {
-        this.press = press;
     }
 
     public String getWebsite() {

@@ -1,6 +1,7 @@
 package com.ideamoment.emars.model;
 
 import com.ideamoment.emars.model.HistoriableEntity;
+import com.ideamoment.emars.model.enumeration.YesOrNo;
 import com.ideamoment.emars.utils.StringUtils;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class CopyrightProductInfo extends HistoriableEntity {
     private String subjectId;
     private String publishState;
     private String isbn;
-    private String press;
+    private String proportions;
     private String type;
     private String stockIn;
     private boolean privilege1;
@@ -74,12 +75,12 @@ public class CopyrightProductInfo extends HistoriableEntity {
         this.isbn = isbn;
     }
 
-    public String getPress() {
-        return press;
+    public String getProportions() {
+        return proportions;
     }
 
-    public void setPress(String press) {
-        this.press = press;
+    public void setProportions(String proportions) {
+        this.proportions = proportions;
     }
 
     public boolean isPrivilege1() {
@@ -168,6 +169,13 @@ public class CopyrightProductInfo extends HistoriableEntity {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getDescText() {
+        if(StringUtils.isNotEmpty(desc))
+            return desc;
+        else
+            return "无";
     }
 
     public String getPrivileges() {
@@ -302,5 +310,29 @@ public class CopyrightProductInfo extends HistoriableEntity {
             }
         }
         return result;
+    }
+
+    public String getGrantText() {
+        if(YesOrNo.YES.equals(this.grant)) {
+            return YesOrNo.YES_TEXT;
+        }else{
+            return YesOrNo.NO_TEXT;
+        }
+    }
+
+    public String getSettlementTypeText() {
+        if(YesOrNo.YES.equals(this.settlementType)) {
+            return YesOrNo.YES_TEXT;
+        }else{
+            return YesOrNo.NO_TEXT;
+        }
+    }
+
+    public String getCopyrightTypeText() {
+        if(YesOrNo.YES.equals(this.copyrightType)) {
+            return "专有授权许可";
+        }else{
+            return "非专有授权许可";
+        }
     }
 }
