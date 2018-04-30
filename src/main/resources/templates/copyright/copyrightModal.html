@@ -61,6 +61,7 @@
                                     <div class="col-sm-10">
                                         <select class="form-control" id="inputGranterId" name="inputGranterId">
                                         </select>
+                                        <small><a href="javascript:void(0);" onclick="COPYRIGHTLIST.showAddGranterPanel();">没有？新建授权方</a></small>
                                     </div>
                                 </div>
                             </div>
@@ -132,6 +133,40 @@
                     </div>
                 </div>
 
+                <div id="addGranterPanel" style="display: none;">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputGranterName" class="col-sm-3 control-label">名称</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputGranterName" name="inputGranterName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputGranterContact" class="col-sm-3 control-label">联系人</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputGranterContact" name="inputGranterContact" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputGranterPhone" class="col-sm-3 control-label">联系电话</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputGranterPhone" name="inputGranterPhone" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputGranterDesc" class="col-sm-3 control-label">备注</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" name="inputGranterDesc" id="inputGranterDesc"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-btnbar col-sm-12">
+                            <a href="#" onclick="COPYRIGHTLIST.hideAddGranterPanel();">&lt;&lt;&nbsp;返回</a>
+                            <button type="button" class="btn btn-primary pull-right" onclick="COPYRIGHTLIST.addGranter();">确定</button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+
                 <div id="addProductPanel" style="display: none;">
                     <form class="form-horizontal">
                         <div class="col-sm-12">
@@ -152,7 +187,7 @@
                                 <div class="col-sm-10">
                                     <select id="inputAuthorId" class="form-control" name="inputAuthorId" multiple="multiple">
                                     </select>
-                                    <small><a href="javascript:void(0);" onclick="PRODUCTLIST.showAddAuthorPanel();">没有？新建作者</a></small>
+                                    <small><a href="javascript:void(0);" onclick="COPYRIGHTLIST.showAddAuthorPanel();">没有？新建作者</a></small>
                                 </div>
                             </div>
                         </div>
@@ -305,6 +340,40 @@
                         <div class="form-btnbar col-sm-12">
                             <a href="#" onclick="COPYRIGHTLIST.hideAddProductPanel();">&lt;&lt;&nbsp;返回</a>
                             <button type="button" class="btn btn-primary pull-right" onclick="COPYRIGHTLIST.addProduct();">确定</button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+
+                <div id="addAuthorPanel" style="display: none;">
+                    <form class="form-horizontal" id="author-form">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputAuthorName" class="col-sm-4 control-label">姓名</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputAuthorName" name="inputAuthorName"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputAuthorPseudonym" class="col-sm-4 control-label">笔名</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputAuthorPseudonym" name="inputAuthorPseudonym"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="inputAuthorDesc" class="col-sm-2 control-label">描述</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="inputAuthorDesc" id="inputAuthorDesc"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-btnbar col-sm-12">
+                            <a href="#" onclick="COPYRIGHTLIST.hideAddAuthorPanel();">&lt;&lt;&nbsp;返回</a>
+                            <button type="button" class="btn btn-primary pull-right" onclick="COPYRIGHTLIST.addAuthor();">确定</button>
                         </div>
                         <div class="clearfix"></div>
                     </form>

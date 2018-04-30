@@ -81,25 +81,6 @@ $(document).ready(function(){
         });
     });
 
-    $.get('/system/allGranters', {}, function(data){
-        var defaultGranterId;
-        if(data) {
-            if(data.code == '0') {
-                var result = data.data;
-                var optionsHtml = '';
-                for(var i=0; i<result.length; i++) {
-                    defaultGranterId = result[i]['id'];
-                    optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
-                }
-                $('#inputGranterId').html(optionsHtml);
-            }
-        }
-        $('#inputGranterId').select2({
-            dropdownParent: $("#copyrightModal"),
-            placeholder : '请选择'
-        });
-    });
-
     $('#inputSignDate').datepicker({
         format: 'yyyy-mm-dd',
         language: 'cn'
@@ -118,6 +99,7 @@ $(document).ready(function(){
     });
 
     COPYRIGHTLIST.loadAuthors();
+    COPYRIGHTLIST.loadGranters();
 });
 
 COPYRIGHTLIST.initCopyrightTbl = function(){
@@ -185,6 +167,30 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
         ]
     });
 };
+
+COPYRIGHTLIST.loadGranters = function(callback) {
+    $.get('/system/allGranters', {}, function(data){
+        var defaultGranterId;
+        if(data) {
+            if(data.code == '0') {
+                var result = data.data;
+                var optionsHtml = '';
+                for(var i=0; i<result.length; i++) {
+                    defaultGranterId = result[i]['id'];
+                    optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+                }
+                $('#inputGranterId').html(optionsHtml);
+            }
+        }
+        $('#inputGranterId').select2({
+            dropdownParent: $("#copyrightModal"),
+            placeholder : '请选择'
+        });
+        if(callback) {
+            callback();
+        }
+    });
+}
 
 COPYRIGHTLIST.loadAuthors = function(callback) {
     $.get(
@@ -585,4 +591,114 @@ COPYRIGHTLIST.getWeekOfMonth = function(d) {
 
     prefixes = ['0', '1', '2', '3', '4', '5'];
     return prefixes[0 | (day) / 7];
+};
+
+COPYRIGHTLIST.showAddAuthorPanel = function() {
+    COPYRIGHTLIST.clearAddAuthorPanel();
+    $('#addProductPanel').hide();
+    $('#addAuthorPanel').show();
+};
+
+COPYRIGHTLIST.hideAddAuthorPanel = function() {
+    $('#addAuthorPanel').hide();
+    $('#addProductPanel').show();
+};
+
+COPYRIGHTLIST.clearAddAuthorPanel = function() {
+    $('#inputAuthorName').val('');
+    $('#inputAuthorPseudonym').val('');
+    $('#inputAuthorDesc').val('');
+};
+
+COPYRIGHTLIST.addAuthor = function() {
+    var aName = $('#inputAuthorName').val();
+    var aDesc = $('#inputAuthorDesc').val();
+    var aPseudonym = $('#inputAuthorPseudonym').val();
+
+    $.post(
+        "/system/createAuthor",
+        {
+            'name': aName,
+            'desc': aDesc,
+            'pseudonym': aPseudonym
+        },
+        function (data) {
+            if(data.code == '0') {
+                EMARS_COMMONS.showSuccess("作者保存成功！");
+                COPYRIGHTLIST.hideAddAuthorPanel();
+                var selected = $('#inputAuthorId').select2('data');
+                var selectedIds = [];
+                for(var i=0; i<selected.length; i++) {
+                    selectedIds.push(selected[i]['id']);
+                }
+                $('#inputAuthorId').select2('destroy');
+                $('#inputAuthorId').empty();
+                COPYRIGHTLIST.loadAuthors(function(){
+                    var curId = $('#inputAuthorId option').filter(function () {
+                        if(aPseudonym) {
+                            return $(this).html() == aName+"("+aPseudonym+")";
+                        }else{
+                            return $(this).html() == aName;
+                        }
+                    }).val();
+                    selectedIds.push(curId);
+                    $('#inputAuthorId').val(selectedIds).trigger('change');
+                });
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+};
+
+COPYRIGHTLIST.showAddGranterPanel = function() {
+    COPYRIGHTLIST.clearAddGranterPanel();
+    $('#copyrightWizard').hide();
+    $('#addGranterPanel').show();
+};
+
+COPYRIGHTLIST.hideAddGranterPanel = function() {
+    $('#addGranterPanel').hide();
+    $('#copyrightWizard').show();
+};
+
+COPYRIGHTLIST.clearAddGranterPanel = function() {
+    $('#inputGranterName').val('');
+    $('#inputGranterContact').val('');
+    $('#inputGranterPhone').val('');
+    $('#inputGranterDesc').val('');
+};
+
+COPYRIGHTLIST.addGranter = function() {
+    var gName = $('#inputGranterName').val();
+    var gContact = $('#inputGranterContact').val();
+    var gPhone = $('#inputGranterPhone').val();
+    var gDesc = $('#inputGranterDesc').val();
+
+    $.post(
+        "/system/createGranter",
+        {
+            'name': gName,
+            'contact': gContact,
+            'phone': gPhone,
+            'desc': gDesc
+        },
+        function (data) {
+            if(data.code == '0') {
+                EMARS_COMMONS.showSuccess("授权方保存成功！");
+                COPYRIGHTLIST.hideAddGranterPanel();
+
+                $('#inputGranterId').select2('destroy');
+                $('#inputGranterId').empty();
+                COPYRIGHTLIST.loadGranters(function(){
+                    var curId = $('#inputGranterId option').filter(function () {
+                        return $(this).html() == gName;
+                    }).val();
+                    $('#inputGranterId').val(curId).trigger('change');
+                });
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
 };
