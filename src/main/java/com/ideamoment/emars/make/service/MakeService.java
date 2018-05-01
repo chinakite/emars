@@ -25,4 +25,6 @@ public interface MakeService {
     List<MakeContractDoc> listContractDocs(long contractId);
 
     List<ProductInfo> listProducts(ProductInfo condition);
+
+    String deleteMakeContract(Long id);
 }

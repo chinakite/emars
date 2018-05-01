@@ -29,13 +29,6 @@
                                     <span class="wizard-step-description">合同内的作品信息</span>
                                 </span>
                             </li>
-                            <li data-target="#wizard-file">
-                                <span class="wizard-step-number">3</span>
-                                <span class="wizard-step-complete"><i class="fa fa-check"></i></span>
-                                <span class="wizard-step-caption">文件信息
-                                    <span class="wizard-step-description">合同内的文件信息</span>
-                                </span>
-                            </li>
                         </ul>
                     </div>
                     <div class="wizard-content">
@@ -54,19 +47,6 @@
                                 <label for="inputOwner" class="col-sm-3 control-label">委托人(甲方)</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="inputOwner" placeholder="委托方" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputMaker" class="col-sm-3 control-label">制作方</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputMaker" placeholder="制作方" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="inputWorker" class="col-sm-3 control-label">演播人</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputWorker" placeholder="演播人" />
                                 </div>
                             </div>
                             <div class="form-group">
@@ -98,86 +78,19 @@
                         <form class="wizard-pane" id="wizard-product">
                             <div class="form-group">
                                 <label for="product-list-select" class="col-sm-3 control-label">选择作品</label>
-                                <select id="product-list-select" class="form-control" multiple="multiple" style="width: 100%">
+                                <select id="product-list-select" class="form-control" style="width: 100%">
 
                                 </select>
                             </div>
                             <div class="list-group" id="product-list-selected">
+
                             </div>
 
                             <div class="col-sm-12">
                                 <div class="panel-wide-block p-x-3 p-t-3 b-t-1 bg-white text-xs-right">
                                     <button type="button" class="btn btn-default" data-wizard-action="prev">上一步</button>
-                                    <button type="button" class="btn btn-default" data-wizard-action="next">下一步</button>
+                                    <button type="button" class="btn btn-primary" data-wizard-action="finish" onclick="MAKELIST.submitMakeContract();">保存</button>
                                 </div>
-                            </div>
-                        </form>
-
-                        <form class="wizard-pane form-horizontal" id="wizard-file">
-                            <div class="form-group">
-                                <label for="" class="col-sm-3 control-label">委托制作协议</label>
-                                <div class="col-sm-8 input-group">
-                                    <input type="file" class="form-control-file" id="" placeholder="委托制作协议" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-3 control-label">补充协议</label>
-                                <div class="col-sm-8 input-group">
-                                    <input type="file" class="form-control-file" id="" placeholder="补充协议" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-3 control-label">悅库时光</label>
-                                <div class="col-sm-8 input-group">
-                                    <input type="file" class="form-control-file" id="" placeholder="悅库时光" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-3 control-label">广播公司</label>
-                                <div class="col-sm-8 input-group">
-                                    <input type="file" class="form-control-file" id="" placeholder="广播公司" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-3 control-label">电台</label>
-                                <div class="col-sm-8 input-group">
-                                    <input type="file" class="form-control-file" id="" placeholder="电台" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-3 control-label">悅库时光</label>
-                                <div class="col-sm-8 input-group">
-                                    <input type="file" class="form-control-file" id="" placeholder="悅库时光" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-3 control-label">广播公司</label>
-                                <div class="col-sm-8 input-group">
-                                    <input type="file" class="form-control-file" id="" placeholder="广播公司" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-3 control-label">电台</label>
-                                <div class="col-sm-8 input-group">
-                                    <input type="file" class="form-control-file" id="" placeholder="电台" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-3 control-label">演播人身份证复印件</label>
-                                <div class="col-sm-8 input-group">
-                                    <input type="file" class="form-control-file" id="" placeholder="演播人身份证复印件" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-3 control-label">运营权利授权书</label>
-                                <div class="col-sm-8 input-group">
-                                    <input type="file" class="form-control-file" id="" placeholder="运营权利授权书" />
-                                </div>
-                            </div>
-
-                            <div class="panel-wide-block p-x-3 p-t-3 b-t-1 bg-white text-xs-right">
-                                <button type="button" class="btn btn-default" data-wizard-action="prev">上一步</button>
-                                <button type="button" class="btn btn-primary" data-wizard-action="finish" onclick="MAKELIST.submitMakeContract();">保存</button>
                             </div>
                         </form>
                     </div>

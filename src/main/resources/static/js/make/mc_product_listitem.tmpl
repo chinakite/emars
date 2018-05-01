@@ -1,0 +1,10 @@
+<div {% if id %}rel="{{id}}"{% endif %} class="list-group-item product-list-item" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="left" data-title="{{name}}" data-html="true" data-content="作者：{{authorName}}{% if authorPseudonym %}（{{authorPseudonym}}）{% endif %}<br/>字数：{{wordCount}}万字<br/>作品题材：{{subjectText}}<br/>出版状态：{{publishStateText}}{% if publishState == '1' %}<br/>ISBN：{{isbn}}<br/>出版社：{{press}}{% endif %}<br/>授权种类：{{privilegeText}}<br/>转授权：{{grantText}}<br/>授权方式：{{copyrightTypeText}}<br/>授权费用：￥{{copyrightPrice}}.00<br/>是否分成：{{settlementTypeText}}<br/>开始日期：{{copyrightBegin}}<br/>结束日期：{{copyrightEnd}}<br/>备注：{{desc}}">
+    <div class="product-list-item-info">
+        <h4 class="list-group-item-heading">{{name}}<small class="m-l-1">{{authorName}}{% if authorPseudonym %}（{{authorPseudonym}}）{% endif %}</small></h4>
+        <p class="list-group-item-text">{{wordCount}}万字<span class="m-l-1 m-r-1">·</span>{{isbn}}<span class="m-l-1 m-r-1">·</span>{{subjectText}}</p>
+    </div>
+    <div class="product-list-item-toolbar">
+        <a href="#" class="product-list-item-toolbar-btn bg-info m-r-1" onclick="COPYRIGHTLIST.editProduct(this);"><i class="fa fa-edit"></i></a>
+        <a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="COPYRIGHTLIST.removeProduct(this);"><i class="fa fa-remove"></i></a>
+    </div>
+</div>

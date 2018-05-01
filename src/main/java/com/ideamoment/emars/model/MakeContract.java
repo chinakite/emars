@@ -11,8 +11,6 @@ public class MakeContract extends HistoriableEntity {
     private String code;
     private String targetType;
     private String owner;
-    private String worker;
-    private String maker;
     private Integer totalSection;
     private BigDecimal totalPrice;
     private ArrayList<MakeContractProduct> products = new ArrayList<MakeContractProduct>();
@@ -41,22 +39,6 @@ public class MakeContract extends HistoriableEntity {
 
     public void setOwner(String owner) {
         this.owner = owner;
-    }
-
-    public String getWorker() {
-        return worker;
-    }
-
-    public void setWorker(String worker) {
-        this.worker = worker;
-    }
-
-    public String getMaker() {
-        return maker;
-    }
-
-    public void setMaker(String maker) {
-        this.maker = maker;
     }
 
     public Integer getTotalSection() {

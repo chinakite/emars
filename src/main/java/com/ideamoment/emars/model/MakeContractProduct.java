@@ -10,6 +10,8 @@ public class MakeContractProduct extends BaseEntity {
 
     private long makeContractId;
     private long productId;
+    private String worker;
+    private String maker;
     private BigDecimal price;
     private Integer section;
     private Long creator;
@@ -61,5 +63,21 @@ public class MakeContractProduct extends BaseEntity {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getWorker() {
+        return worker;
+    }
+
+    public void setWorker(String worker) {
+        this.worker = worker;
+    }
+
+    public String getMaker() {
+        return maker;
+    }
+
+    public void setMaker(String maker) {
+        this.maker = maker;
     }
 }

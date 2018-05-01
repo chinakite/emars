@@ -44,26 +44,10 @@ public class MakeController {
         return dts;
     }
 
-    @RequestMapping(value = "/dtProducts", method = RequestMethod.GET)
-    public DataTableSource<ProductInfo> dtProducts(
-            int draw,
-            int start,
-            int length,
-            String productName,
-            String authorName,
-            String isbn,
-            Long subjectId,
-            String publishState
-    ) {
-        ProductInfo condition = new ProductInfo();
-        condition.setName(productName);
-        condition.setAuthorName(authorName);
-        condition.setIsbn(isbn);
-        condition.setSubjectId(subjectId);
-        condition.setPublishState(publishState);
-        Page<ProductInfo> products = makeService.pageProducts(condition, start, length);
-        DataTableSource<ProductInfo> dts = convertProductsToDataTableSource(draw, products);
-        return dts;
+    @RequestMapping(value = "/makeContract", method = RequestMethod.GET)
+    public JsonData findMakeContract(long id) {
+        MakeContract makeContract = makeService.findMakeContract(id);
+        return JsonData.success(makeContract);
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
@@ -115,15 +99,14 @@ public class MakeController {
         }
     }
 
-    private DataTableSource<ProductInfo> convertProductsToDataTableSource(int draw, Page<ProductInfo> productsPage) {
-        DataTableSource<ProductInfo> dts = new DataTableSource<ProductInfo>();
-
-        dts.setDraw(draw);
-        dts.setRecordsTotal(productsPage.getTotalRecord());
-        dts.setRecordsFiltered(productsPage.getTotalRecord());
-        dts.setData(productsPage.getData());
-
-        return dts;
+    @RequestMapping(value = "/deleteMakeContract", method = RequestMethod.GET)
+    public JsonData deleteMakeContract(Long id) {
+        String result = makeService.deleteMakeContract(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
     }
 
 }

@@ -70,9 +70,9 @@ public class MakeServiceImpl implements MakeService {
 
     @Override
     public Page<MakeContract> pageMakeContracts(MakeContractQueryVo condition, int offset, int pageSize) {
-        long count = makeContractMapper.listProductsCount(condition);
+        long count = makeContractMapper.listMakeContractsCount(condition);
         int currentPage = offset/pageSize + 1;
-        List<MakeContract> makeContracts = makeContractMapper.listProducts(condition, offset, pageSize);
+        List<MakeContract> makeContracts = makeContractMapper.listMakeContracts(condition, offset, pageSize);
         Page<MakeContract> result = new Page<MakeContract>();
         result.setCurrentPage(currentPage);
         result.setData(makeContracts);
@@ -153,6 +153,17 @@ public class MakeServiceImpl implements MakeService {
     public List<ProductInfo> listProducts(ProductInfo condition) {
         List<ProductInfo> products = productMapper.listProducts(condition, 0, 1000000000);
         return products;
+    }
+
+    @Override
+    @Transactional
+    public String deleteMakeContract(Long id) {
+        boolean ret = makeContractMapper.deleteMakeContract(id);
+        if(ret) {
+            makeContractMapper.deleteMakeContractProducts(id);
+            makeContractMapper.deleteMakeContractDocs(id);
+        }
+        return resultString(ret);
     }
 
     private synchronized String createCode(MakeContract mc) {

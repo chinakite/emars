@@ -15,16 +15,16 @@ import java.util.List;
 public interface MakeContractMapper {
 
     @Insert("INSERT INTO t_make_contract " +
-            "(`C_CODE`,`C_TARGET_TYPE`,`C_OWNER`,`C_WORKER`,`C_MAKER`,`C_TOTAL_SECTION`,`C_TOTAL_PRICE`," +
+            "(`C_CODE`,`C_TARGET_TYPE`,`C_OWNER`,`C_TOTAL_SECTION`,`C_TOTAL_PRICE`," +
             "`C_CREATOR`,`C_CREATETIME`) " +
             "VALUES (" +
-            "#{code}, #{targetType}, #{owner}, #{worker}, #{maker}, #{totalSection}, #{totalPrice}, " +
+            "#{code}, #{targetType}, #{owner}, #{totalSection}, #{totalPrice}, " +
             "#{creator}, #{createTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertMakeContract(MakeContract makeContract);
 
     @Update("UPDATE t_make_contract SET " +
-            "`C_CODE`=#{code},`C_TARGET_TYPE`=#{targetType},`C_OWNER`=#{owner},`C_WORKER`=#{worker},`C_MAKER`=#{maker}," +
+            "`C_CODE`=#{code},`C_TARGET_TYPE`=#{targetType},`C_OWNER`=#{owner}," +
             "`C_TOTAL_SECTION`=#{totalSection},`C_TOTAL_PRICE`=#{totalPrice}," +
             "`C_MODIFIER`=#{modifier},`C_MODIFYTIME`=#{modifyTime} " +
             "WHERE c_id = #{id}")
@@ -37,8 +37,6 @@ public interface MakeContractMapper {
             @Result(property = "makerId", column = "C_MAKER_ID"),
             @Result(property = "targetType", column = "C_TARGET_TYPE"),
             @Result(property = "owner", column = "C_OWNER"),
-            @Result(property = "worker", column = "C_WORKER"),
-            @Result(property = "maker", column = "C_MAKER"),
             @Result(property = "totalSection", column = "C_TOTAL_SECTION"),
             @Result(property = "totalPrice", column = "C_TOTAL_PRICE"),
             @Result(property = "creator", column = "C_CREATOR"),
@@ -64,11 +62,11 @@ public interface MakeContractMapper {
             " LIMIT #{offset}, #{size}",
             "</script>"})
     @ResultMap("makeContractMap")
-    List<MakeContract> listProducts(@Param("condition") MakeContractQueryVo condition, @Param("offset") int offset, @Param("size") int size);
+    List<MakeContract> listMakeContracts(@Param("condition") MakeContractQueryVo condition, @Param("offset") int offset, @Param("size") int size);
 
     @Select({"<script>",
 //            "SELECT m.* FROM t_make_contract m LEFT JOIN t_make_contract_product mcp ON m.c_id = mcp.c_make_contract_id LEFT JOIN t_product_info p ON mcp.c_product_id = p.c_id",
-            "SELECT m.* FROM t_make_contract m",
+            "SELECT COUNT(*) FROM t_make_contract m",
             "WHERE m.c_id > 0",
             "<if test='condition.code != null'>",
             " AND m.c_code = #{condition.code}",
@@ -80,9 +78,7 @@ public interface MakeContractMapper {
             " AND m.c_target_type = #{condition.targetType}",
             "</if>",
             "</script>"})
-    long listProductsCount(@Param("condition") MakeContractQueryVo condition);
-
-
+    long listMakeContractsCount(@Param("condition") MakeContractQueryVo condition);
 
     @Select("select C_CODE from T_MAKE_CONTRACT where C_CODE like concat(concat('%',#{code}),'%') order by C_CODE desc limit 0,1")
     String queryMaxContractCode(@Param("code") String code);
@@ -114,4 +110,13 @@ public interface MakeContractMapper {
             "VALUES " +
             "(#{makeContractId}, #{productId}, #{price}, #{section}, #{creator}, #{createTime})")
     boolean insertMakeContractProduct(MakeContractProduct makeContractProduct);
+
+    @Delete("DELETE FROM t_make_contract WHERE c_id = #{id}")
+    boolean deleteMakeContract(@Param("id") long id);
+
+    @Delete("DELETE FROM t_make_contract_product WHERE c_make_contract_id = #{mcId}")
+    boolean deleteMakeContractProducts(@Param("mcId") long mcId);
+
+    @Delete("DELETE FROM t_make_ctrt_doc WHERE c_contract_id = #{mcId}")
+    boolean deleteMakeContractDocs(@Param("mcId") long mcId);
 }
