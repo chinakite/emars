@@ -5,6 +5,7 @@ import com.ideamoment.emars.author.service.AuthorService;
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.model.*;
+import com.ideamoment.emars.model.enumeration.CopyrightFileType;
 import com.ideamoment.emars.model.enumeration.ProductState;
 import com.ideamoment.emars.model.enumeration.ProductType;
 import com.ideamoment.emars.model.enumeration.StockInType;
@@ -242,15 +243,33 @@ public class ProductServiceImpl implements ProductService{
         if(product == null) {
             return ErrorCode.PRODUCT_NOT_EXISTS;
         }
-        if(validateStockIn(id)) {
+        String validCopyrightResult = validateCopyrightValid(id);
+        boolean validCopyright = false;
+        if(SuccessCode.SUCCESS.equals(validCopyrightResult)) {
+            validCopyright = true;
+        }else{
+            return ErrorCode.PRODUCT_COPYRIGHT_FILES_NOT_COMPLETE;
+        }
+        String validMalkeResult = validateMakeValid(id);
+        boolean validMake = true;
+        if(SuccessCode.SUCCESS.equals(validMalkeResult)) {
+            validMake = true;
+        }else{
+            return ErrorCode.PRODUCT_MAKE_FILES_NOT_COMPLETE;
+        }
+        if(validCopyright && validMake) {
             product.setStockIn(StockInType.STOCK_IN);
             product.setModifier(UserContext.getUserId());
             product.setModifyTime(new Date());
             boolean result = productMapper.updateProduct(product);
             return resultString(result);
         }else{
-            return null;
+            return ErrorCode.UNKNOWN_ERROR;
         }
+    }
+
+    private String validateMakeValid(long id) {
+        return SuccessCode.SUCCESS;
     }
 
     @Override
@@ -276,8 +295,36 @@ public class ProductServiceImpl implements ProductService{
         return result;
     }
 
-    private boolean validateStockIn(long id) {
-        return true;
+    private String validateCopyrightValid(long id) {
+        List<CopyrightFile> copyrightFiles = productCopyrightFileMapper.listCopyrightFiles(id);
+        boolean contract = false;
+        boolean copyrightPage = false;
+        boolean grantPaper = false;
+        boolean authorIdCard = false;
+        boolean publishContract = false;
+        for(CopyrightFile file : copyrightFiles) {
+            if(CopyrightFileType.CONTRACT.equals(file.getType())){
+                contract = true;
+            }
+            if(CopyrightFileType.COPYRIGHT_PAGE.equals(file.getType())){
+                copyrightPage = true;
+            }
+            if(CopyrightFileType.GRANT_PAPER.equals(file.getType())){
+                grantPaper = true;
+            }
+            if(CopyrightFileType.AUTHOR_ID_CARD.equals(file.getType())){
+                authorIdCard = true;
+            }
+            if(CopyrightFileType.PUBLISH_CONTRACT.equals(file.getType())){
+                publishContract = true;
+            }
+        }
+        boolean result = contract && copyrightPage && grantPaper && authorIdCard && publishContract;
+        if(result) {
+            return SuccessCode.SUCCESS;
+        }else{
+            return ErrorCode.PRODUCT_COPYRIGHT_FILES_NOT_COMPLETE;
+        }
     }
 
 

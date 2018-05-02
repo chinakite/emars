@@ -38,7 +38,11 @@ public class ErrorCode {
     //作品ISBN号系统中已存在
     public static final String ISBN_DUPLICATED = "E-0007";
     //添加作品创建作者错误
-    public static final String PRODUCT_AUTHOR_ERROR = "E-0007";
+    public static final String PRODUCT_AUTHOR_ERROR = "E-0008";
+    //作品版权文件不全，无法入库
+    public static final String PRODUCT_COPYRIGHT_FILES_NOT_COMPLETE="E-0009";
+    //作品制作文件不全，无法入库
+    public static final String PRODUCT_MAKE_FILES_NOT_COMPLETE="E-0009";
 
     //NAME不能为空
     public static final String NAME_REQUIED = "F-0001";
@@ -83,6 +87,7 @@ public class ErrorCode {
         ERROR_MSG.put(GRANTER_CANNOT_DELETE, "该授权方有关联的版权合同，无法删除");
 
         ERROR_MSG.put(PRODUCT_NOT_EXISTS, "该作品不存在或已被删除");
+        ERROR_MSG.put(PRODUCT_COPYRIGHT_FILES_NOT_COMPLETE, "该作品版权文件不全，无法入库");
     }
 
 }

@@ -427,6 +427,7 @@ COPYRIGHTLIST.addProduct = function() {
     var settlementType = $('#inputSettlementType').val();
     var copyrightBegin = $('#inputCopyrightBegin').val();
     var copyrightEnd = $('#inputCopyrightEnd').val();
+    var radioTrans = $('#inputRadioTrans').val();
     var desc = $('#inputDesc').val();
 
     var privilegeText;
@@ -486,6 +487,8 @@ COPYRIGHTLIST.addProduct = function() {
         settlementTypeText: settlementType == '1' ? '是' : '否',
         copyrightBegin: copyrightBegin,
         copyrightEnd: copyrightEnd,
+        radioTrans: radioTrans,
+        radioTransText: radioTrans == '1' ? "可以" : "不可以",
         desc: desc
     };
 
@@ -536,6 +539,7 @@ COPYRIGHTLIST.editProduct = function(obj) {
     $('#inputSettlementType').val(productItem.settlementType);
     $('#inputCopyrightBegin').val(productItem.copyrightBegin);
     $('#inputCopyrightEnd').val(productItem.copyrightEnd);
+    $('#inputRadioTrans').val(productItem.radioTrans);
     $('#inputDesc').val(productItem.desc);
 
     $('#copyrightWizard').hide();
@@ -561,6 +565,7 @@ COPYRIGHTLIST.resetProduct = function() {
     $('#inputSettlementType').val('0');
     $('#inputCopyrightBegin').val('');
     $('#inputCopyrightEnd').val('');
+    $('#inputRadioTrans').val('1');
     $('#inputDesc').val('');
 };
 

@@ -154,6 +154,7 @@ public interface CopyrightMapper {
             "cp.c_begin as beginDate, " +
             "cp.c_end as endDate, " +
             "cp.c_settlement_type as settlementType, " +
+            "cp.c_radio_trans as radioTrans, " +
             "cp.c_desc as descText, " +
             "s.c_name as subjectName " +
             "from t_product_info p, t_copyright_product cp, t_subject s " +
@@ -176,6 +177,7 @@ public interface CopyrightMapper {
             @Result(property = "copyrightBegin", column = "beginDate"),
             @Result(property = "copyrightEnd", column = "endDate"),
             @Result(property = "settlementType", column = "settlementType"),
+            @Result(property = "radioTrans", column = "radioTrans"),
             @Result(property = "desc", column = "descText"),
             @Result(property = "subjectName", column = "subjectName")
     })
@@ -199,7 +201,14 @@ public interface CopyrightMapper {
     @Insert("insert into t_copyright_file (c_name, c_type, c_path, c_product_id, c_creator, c_createtime)values(#{name}, #{type}, #{path}, #{productId}, #{creator}, #{createTime})")
     boolean insertCopyrightFile(CopyrightFile copyrightFile);
 
-    @Select("select * from t_copyright_file where c_product_id = #{productId} and c_type = #{type}")
+    @Select({
+            "<script>",
+            "select * from t_copyright_file where c_product_id = #{productId} ",
+            "<if test='type != null'>",
+            "and c_type = #{type}",
+            "</if>",
+            "</script>"
+    })
     @Results(id = "copyrightFileMap", value = {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "name", column = "c_name"),

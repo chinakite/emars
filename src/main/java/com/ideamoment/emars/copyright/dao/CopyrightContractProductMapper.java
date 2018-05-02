@@ -19,15 +19,15 @@ public interface CopyrightContractProductMapper {
     boolean insertCopyrightContractProduct(CopyrightContractProduct copyrightContractProduct);
 
     @Insert("INSERT INTO t_copyright_product" +
-            "(`c_copyright_id`,`c_product_id`,`c_price`,`c_privileges`,`c_grant`,`c_copyright_type`,`c_settlement_type`,`c_proportions`,`c_begin`,`c_end`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`) " +
+            "(`c_copyright_id`,`c_product_id`,`c_price`,`c_privileges`,`c_grant`,`c_copyright_type`,`c_settlement_type`,`c_proportions`,`c_begin`,`c_end`,`c_radio_trans`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`) " +
             "VALUES" +
-            "(#{copyrightId}, #{productId}, #{copyrightPrice}, #{privileges}, #{grant}, #{copyrightType}, #{settlementType}, #{proportions}, #{copyrightBegin}, #{copyrightEnd}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
+            "(#{copyrightId}, #{productId}, #{copyrightPrice}, #{privileges}, #{grant}, #{copyrightType}, #{settlementType}, #{proportions}, #{copyrightBegin}, #{copyrightEnd}, #{radioTrans}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})")
     boolean insertCopyrightProduct(CopyrightProductInfo copyrightProductInfo);
 
     @Update("update t_copyright_product set " +
             "c_price=#{copyrightPrice}, c_privileges=#{privileges}, c_grant=#{grant}, " +
             "c_copyright_type=#{copyrightType}, c_settlement_type=#{settlementType}, c_proportions=#{proportions}, c_begin=#{copyrightBegin}, " +
-            "c_end=#{copyrightEnd}, c_modifier=#{modifier}, c_modifytime=#{modifyTime} " +
+            "c_end=#{copyrightEnd}, c_radio_trans=#{radioTrans}, c_modifier=#{modifier}, c_modifytime=#{modifyTime} " +
             "where c_copyright_id=#{copyrightId} and c_product_id=#{productId}"
     )
     boolean updateContractProductInfo(CopyrightProductInfo product);
@@ -43,6 +43,7 @@ public interface CopyrightContractProductMapper {
             @Result(property = "copyrightEnd", column = "c_end"),
             @Result(property = "settlementType", column = "c_settlement_type"),
             @Result(property = "proportions", column = "c_proportions"),
+            @Result(property = "radioTrans", column = "c_radio_trans"),
             @Result(property = "desc", column = "c_desc")
     })
     ArrayList<CopyrightProductInfo> queryCopyrightProductInfoByProduct(@Param("productId") Long productId);

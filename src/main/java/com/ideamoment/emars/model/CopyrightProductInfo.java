@@ -28,6 +28,7 @@ public class CopyrightProductInfo extends HistoriableEntity {
     private String settlementType;
     private String copyrightBegin;
     private String copyrightEnd;
+    private String radioTrans;
     private String desc;
 
     private Long copyrightId;
@@ -161,6 +162,18 @@ public class CopyrightProductInfo extends HistoriableEntity {
 
     public void setCopyrightEnd(String copyrightEnd) {
         this.copyrightEnd = copyrightEnd;
+    }
+
+    public void setPrivileges(String privileges) {
+        this.privileges = privileges;
+    }
+
+    public String getRadioTrans() {
+        return radioTrans;
+    }
+
+    public void setRadioTrans(String radioTrans) {
+        this.radioTrans = radioTrans;
     }
 
     public String getDesc() {
@@ -333,6 +346,14 @@ public class CopyrightProductInfo extends HistoriableEntity {
             return "专有授权许可";
         }else{
             return "非专有授权许可";
+        }
+    }
+
+    public String getRadioTransText() {
+        if(YesOrNo.YES.equals(this.radioTrans)) {
+            return "可以";
+        }else{
+            return "不可以";
         }
     }
 }

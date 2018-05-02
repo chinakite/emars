@@ -1,5 +1,7 @@
 package com.ideamoment.emars.product.controller;
 
+import com.ideamoment.emars.copyright.service.CopyrightService;
+import com.ideamoment.emars.model.CopyrightProductInfo;
 import com.ideamoment.emars.model.ProductInfo;
 import com.ideamoment.emars.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ public class MediaResourcePageController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CopyrightService copyrightService;
+
     @RequestMapping(value = "/mediaresPage", method = RequestMethod.GET)
     public String mediaresPage() {
         return "product/mediaresPage";
@@ -23,7 +28,9 @@ public class MediaResourcePageController {
     @RequestMapping(value = "/productDetail/{id}")
     public String productDetail(@PathVariable("id") long id, Model model) {
         ProductInfo product = productService.findProduct(id);
+        CopyrightProductInfo copyrightProductInfo = copyrightService.queryProductCopyright(id);
         model.addAttribute("product", product);
+        model.addAttribute("productCopyright", copyrightProductInfo);
         return "product/mediaresDetail";
     }
 }
