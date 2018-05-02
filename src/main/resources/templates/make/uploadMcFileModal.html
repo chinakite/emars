@@ -4,7 +4,7 @@
 
 <body>
 <!-- Modal -->
-<div th:fragment="uploadFileModal" class="modal fade" id="uploadFileModal" tabindex="-1">
+<div th:fragment="uploadMcFileModal" class="modal fade" id="uploadMcFileModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,10 +12,10 @@
                 <h4 class="modal-title">上传制作合同文件</h4>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="uploadFileType" value=""/>
+                <input type="hidden" id="uploadMcFileType" value=""/>
                 <input type="hidden" id="uploadFileMcProductId"/>
-                <input type="hidden" id="fileMetas"/>
-                <form action="/upload" id="dropzonejs" class="dropzone-box">
+                <input type="hidden" id="mcFileMetas"/>
+                <form action="/upload" id="mcdropzonejs" class="dropzone-box">
                     <div class="dz-default dz-message">
                         <div class="dz-upload-icon"></div>
                         将文件拖到这里<br/>

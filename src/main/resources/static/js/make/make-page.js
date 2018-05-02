@@ -8,11 +8,11 @@ var mcDocType = {
     2: 'makeContractBroadcasterFile',
     3: 'talentStationFile',
     4: 'talentIdCardFile',
-    5: 'operationFile',
+    5: 'operationFile'
 }
 
 $(document).ready(function(){
-    $('#dropzonejs').dropzone({
+    $('#mcdropzonejs').dropzone({
         parallelUploads: 1,
         maxFilesize:     50000,
         filesizeBase:    1000,
@@ -31,14 +31,14 @@ $(document).ready(function(){
             dropzoneObj = this;
             this.on("success", function (file, message) {
                 var fileMetaDatas = message.data;
-                var fileMetas = $('#fileMetas').data('postData');
-                if(!fileMetas) {
-                    fileMetas = [];
+                var mcFileMetas = $('#mcFileMetas').data('postData');
+                if(!mcFileMetas) {
+                    mcFileMetas = [];
                 }
                 for(var i=0; i<fileMetaDatas.length; i++) {
-                    fileMetas.push(fileMetaDatas[i]);
+                    mcFileMetas.push(fileMetaDatas[i]);
                 }
-                $('#fileMetas').data('postData', fileMetas);
+                $('#mcFileMetas').data('postData', mcFileMetas);
             });
             this.on("error", function (file, message) {
                 console.log(message);
@@ -58,42 +58,42 @@ MAKECONTRACTPAGE.loadMcProducts = function (mcProductIds) {
     }
 }
 
-MAKECONTRACTPAGE.popUploadFileModal = function(mcProductId, type) {
-    MAKECONTRACTPAGE.clearUploadFileModal();
-    $('#uploadFileType').val(type);
+MAKECONTRACTPAGE.popUploadMcFileModal = function(mcProductId, type) {
+    MAKECONTRACTPAGE.clearUploadMcFileModal();
+    $('#uploadMcFileType').val(type);
     $('#uploadFileMcProductId').val(mcProductId);
-    $('#uploadFileModal').modal('show');
+    $('#uploadMcFileModal').modal('show');
 };
 
-MAKECONTRACTPAGE.clearUploadFileModal = function() {
+MAKECONTRACTPAGE.clearUploadMcFileModal = function() {
     dropzoneObj.emit("resetFiles");
-    $('#uploadFileType').val('');
+    $('#uploadMcFileType').val('');
     $('#uploadFileMcProductId').val('');
-    $('#uploadFileModal').modal('show');
+    $('#uploadMcFileModal').modal('show');
 };
 
 MAKECONTRACTPAGE.submitMcProductFiles = function () {
     var saveCopyrightFileUrl = '/make/saveMcProductFiles';
-    var fileType = $('#uploadFileType').val();
+    var fileType = $('#uploadMcFileType').val();
     var mcProductId = $('#uploadFileMcProductId').val();
-    var fileMetas = $('#fileMetas').data('postData');
+    var mcFileMetas = $('#mcFileMetas').data('postData');
     var postUrl;
-    for(var i=0; i<fileMetas.length; i++) {
-        fileMetas[i].type = fileType;
+    for(var i=0; i<mcFileMetas.length; i++) {
+        mcFileMetas[i].type = fileType;
         postUrl = saveCopyrightFileUrl;
-        fileMetas[i].mcProductId = mcProductId;
+        mcFileMetas[i].mcProductId = mcProductId;
     }
     $.ajax(
         {
             url: postUrl,
-            data: JSON.stringify(fileMetas),
+            data: JSON.stringify(mcFileMetas),
             type: "POST",
             dataType: "json",
             contentType: "application/json",
             success: function(data) {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("文件保存成功！");
-                    $('#uploadFileModal').modal('hide');
+                    $('#uploadMcFileModal').modal('hide');
                     MAKECONTRACTPAGE.refreshFilesList(mcProductId, fileType);
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
@@ -106,11 +106,11 @@ MAKECONTRACTPAGE.submitMcProductFiles = function () {
     );
 }
 
-MAKECONTRACTPAGE.clearUploadFileModal = function () {
+MAKECONTRACTPAGE.clearUploadMcFileModal = function () {
     dropzoneObj.emit("resetFiles");
-    $('#uploadFileType').val('');
+    $('#uploadMcFileType').val('');
     $('#uploadFileMcProductId').val('');
-    $('#uploadFileModal').modal('show');
+    $('#uploadMcFileModal').modal('show');
 }
 
 MAKECONTRACTPAGE.refreshFilesList = function(mcProductId, type) {
@@ -118,11 +118,9 @@ MAKECONTRACTPAGE.refreshFilesList = function(mcProductId, type) {
         '/make/getMcDocs',
         {mcProductId: mcProductId, type: type},
         function(data) {
-            console.log(data.data);
             if(data.code == '0') {
                 var docs = data.data;
                 var filesHtml = nunjucks.render('../../../js/make/mc_docs.tmpl', {docs: docs, editable: true});
-                console.log(filesHtml);
                 $('#' + mcProductId + '_' + mcDocType[type] + 'List').html(filesHtml);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);

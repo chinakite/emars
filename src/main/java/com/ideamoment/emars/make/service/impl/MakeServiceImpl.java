@@ -108,8 +108,8 @@ public class MakeServiceImpl implements MakeService {
 
     @Override
     @Transactional
-    public MakeContract findMakeContractByProduct(long productId) {
-        MakeContract makeContract = makeContractMapper.findMakeContractByProduct(productId);
+    public List<MakeContract> findMakeContractByProductId(long productId) {
+        List<MakeContract> makeContract = makeContractMapper.findMakeContractByProductId(productId);
         return makeContract;
     }
 
@@ -187,6 +187,39 @@ public class MakeServiceImpl implements MakeService {
         }
 
         return resultString(result);
+    }
+
+    @Override
+    @Transactional
+    public List<MakeContractProduct> findMcProductsByProductId(long productId) {
+        List<MakeContractProduct> makeContractProducts = makeContractMapper.findMcProductsByProductId(productId);
+        return makeContractProducts;
+    }
+
+    @Override
+    @Transactional
+    public List<ProductMakeContract> findProductMakeContracts(long productId) {
+        List<MakeContract> makeContracts = makeContractMapper.findMakeContractByProductId(productId);
+        List<ProductMakeContract> productMakeContracts = new ArrayList<>();
+        for(MakeContract makeContract : makeContracts) {
+            ProductMakeContract productMakeContract = new ProductMakeContract();
+            productMakeContract.setTargetType(makeContract.getTargetType());
+            productMakeContract.setCode(makeContract.getCode());
+            productMakeContract.setOwner(makeContract.getOwner());
+            productMakeContract.setMaker(makeContract.getMaker());
+            productMakeContract.setTotalSection(makeContract.getTotalSection());
+            productMakeContract.setTotalPrice(makeContract.getTotalPrice());
+
+            MakeContractProduct makeContractProduct = makeContractMapper.findMcProductsByProductIdAndContractId(productId, makeContract.getId());
+            productMakeContract.setSection(makeContractProduct.getSection());
+            productMakeContract.setPrice(makeContractProduct.getPrice());
+            productMakeContract.setWorker(makeContractProduct.getWorker());
+            productMakeContract.setMcProductId(makeContractProduct.getId());
+
+            productMakeContracts.add(productMakeContract);
+        }
+
+        return productMakeContracts;
     }
 
     private synchronized String createCode(MakeContract mc) {

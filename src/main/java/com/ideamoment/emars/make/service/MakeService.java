@@ -18,7 +18,7 @@ public interface MakeService {
 
     MakeContract findMakeContract(long id);
 
-    MakeContract findMakeContractByProduct(long productId);
+    List<MakeContract> findMakeContractByProductId(long productId);
 
     String saveMakeContract(MakeContract makeContract);
 
@@ -31,4 +31,8 @@ public interface MakeService {
     MakeContractProduct findMcProduct(long id);
 
     String saveMcProductFiles(List<MakeContractDoc> makeContractDocs);
+
+    List<MakeContractProduct> findMcProductsByProductId(long productId);
+
+    List<ProductMakeContract> findProductMakeContracts(long productId);
 }

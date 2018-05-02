@@ -84,9 +84,9 @@ public interface MakeContractMapper {
     @Select("select C_CODE from T_MAKE_CONTRACT where C_CODE like concat(concat('%',#{code}),'%') order by C_CODE desc limit 0,1")
     String queryMaxContractCode(@Param("code") String code);
 
-    @Select("SELECT * FROM t_make_contract WHERE c_product_id = #{productId}")
+    @Select("SELECT * FROM t_make_contract m JOIN t_make_contract_product p ON m.c_id = p.c_make_contract_id WHERE p.c_product_id = #{productId}")
     @ResultMap("makeContractMap")
-    MakeContract findMakeContractByProduct(@Param("productId") long productId);
+    List<MakeContract> findMakeContractByProductId(@Param("productId") long productId);
 
     @Insert("INSERT INTO T_MAKE_CTRT_DOC " +
             "(`C_MAKE_CONTRACT_PRODUCT_Id`,`C_NAME`,`C_PATH`,`C_DESC`,`C_TYPE`,`C_CREATOR`,`C_CREATETIME`) " +
@@ -145,4 +145,13 @@ public interface MakeContractMapper {
     @Select("SELECT * FROM t_make_contract_product WHERE c_make_contract_id = #{makeContractId}")
     @ResultMap("mcProductMap")
     ArrayList<MakeContractProduct> findMcProductsByMcId(@Param("makeContractId") long makeContractId);
+
+    @Select("SELECT * FROM t_make_contract_product WHERE c_product_id = #{productId}")
+    @ResultMap("mcProductMap")
+    List<MakeContractProduct> findMcProductsByProductId(@Param("productId") long productId);
+
+    @Select("SELECT * FROM t_make_contract_product WHERE c_product_id = #{productId} AND c_make_contract_id = ${contractId}")
+    @ResultMap("mcProductMap")
+    MakeContractProduct findMcProductsByProductIdAndContractId(@Param("productId") long productId, @Param("contractId") long contractId);
+
 }

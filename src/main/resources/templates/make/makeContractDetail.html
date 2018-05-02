@@ -9,8 +9,8 @@
         <div class="page-header p-y-4 text-xs-center">
             <h1 class="font-weight-bold">合同编号:
                 <span th:text="${contract.code}"></span>
-                <span class="label label-danger" th:if="${contract.targetType == '0'}">对私</span>
-                <span class="label label-danger" th:if="${contract.targetType == '1'}">对公</span>
+                <span class="label label-danger" th:if="${contract.targetType == '0'}">劳务合同</span>
+                <span class="label label-danger" th:if="${contract.targetType == '1'}">制作合同</span>
             </h1>
 
         </div>
@@ -56,7 +56,7 @@
                             <div class="panel-heading">
                                 <span class="panel-title">合同</span>
                                 <div class="panel-heading-controls">
-                                    <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadFileModal(${mcProduct.id}, 1);|"><i class="fa fa-plus"></i> 添加</button>
+                                    <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 1);|"><i class="fa fa-plus"></i> 添加</button>
                                 </div>
                             </div>
 
@@ -71,7 +71,7 @@
                             <div class="panel-heading">
                                 <span class="panel-title">委托制作权利声明(机构)</span>
                                 <div class="panel-heading-controls">
-                                    <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadFileModal(${mcProduct.id}, 2);|"><i class="fa fa-plus"></i> 添加</button>
+                                    <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 2);|"><i class="fa fa-plus"></i> 添加</button>
                                 </div>
                             </div>
 
@@ -87,7 +87,7 @@
                             <div class="panel-heading">
                                 <span class="panel-title">演播人权利声明</span>
                                 <div class="panel-heading-controls">
-                                    <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadFileModal(${mcProduct.id}, 3);|"><i class="fa fa-plus"></i> 添加</button>
+                                    <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 3);|"><i class="fa fa-plus"></i> 添加</button>
                                 </div>
                             </div>
 
@@ -102,7 +102,7 @@
                             <div class="panel-heading">
                                 <span class="panel-title">演播人身份证复印件</span>
                                 <div class="panel-heading-controls">
-                                    <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadFileModal(${mcProduct.id}, 4);|"><i class="fa fa-plus"></i> 添加</button>
+                                    <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 4);|"><i class="fa fa-plus"></i> 添加</button>
                                 </div>
                             </div>
 
@@ -117,7 +117,7 @@
                             <div class="panel-heading">
                                 <span class="panel-title">运营权利授权书</span>
                                 <div class="panel-heading-controls">
-                                    <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadFileModal(${mcProduct.id}, 5);|"><i class="fa fa-plus"></i> 添加</button>
+                                    <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 5);|"><i class="fa fa-plus"></i> 添加</button>
                                 </div>
                             </div>
 
@@ -132,11 +132,18 @@
             </div>
         </div>
     </div>
-        <div th:replace="make/uploadFileModal :: uploadFileModal"></div>
+        <div th:replace="make/uploadMcFileModal :: uploadMcFileModal"></div>
     </div>
 </section>
 </body>
 <div layout:fragment="scripts">
     <script type='text/javascript' th:src="@{/js/make/make-page.js}"></script>
 </div>
+
+<script th:inline="javascript">
+    console.log('hello world');
+//    var message = [[${contract.mcProductIds}]];
+//    console.log(message);
+</script>
+
 </html>
