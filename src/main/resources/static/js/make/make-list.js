@@ -102,7 +102,7 @@ MAKELIST.initMakeContractTbl = function () {
                 "data": "totalPrice"
             },
             {
-                "data": ""  
+                "data": "createTime"
             },
             {
                 "render": function(data, type, full) {
@@ -210,7 +210,7 @@ MAKELIST.clearTaskModal = function () {
 MAKELIST.clearContractModal = function () {
     $('#inputProductId').val('');
     $('#inputTargetType option:first').prop("selected", 'selected');
-    $('#inputOwner').val();
+    $('#inputOwner').val('北京悦库时光文化传媒有限公司');
     $('#inputTotalSection').val();
     $('#inputTotalPrice').val();
 }
@@ -262,11 +262,14 @@ MAKELIST.submitMakeContract = function () {
     var mcProducts = [];
     for(var i=0; i<productObjs.length; i++) {
         var productItem = $(productObjs[i]).data('bindedData');
+        var section = $("#" + productItem.id + "_inputSection").val();
+        var price = $("#" + productItem.id + "_inputPrice").val();
+        var worker = $("#" + productItem.id + "_inputWorker").val();
         var mcProduct = {
             productId: productItem.id,
-            section: '10',
-            price: '20',
-            worker: 'ss'
+            section: section,
+            price: price,
+            worker: worker
         };
         mcProducts[i] = mcProduct;
     }

@@ -51,11 +51,8 @@ $(document).ready(function(){
 
 });
 
-MAKECONTRACTPAGE.loadMcProducts = function (mcProductIds) {
-    var ids = mcProductIds.split(',');
-    for(var k in ids) {
-        MAKECONTRACTPAGE.refreshProductDocs(ids[k]);
-    }
+MAKECONTRACTPAGE.loadMcProduct = function (mcProductId) {
+    MAKECONTRACTPAGE.refreshProductDocs(mcProductId);
 }
 
 MAKECONTRACTPAGE.popUploadMcFileModal = function(mcProductId, type) {
@@ -120,7 +117,7 @@ MAKECONTRACTPAGE.refreshFilesList = function(mcProductId, type) {
         function(data) {
             if(data.code == '0') {
                 var docs = data.data;
-                var filesHtml = nunjucks.render('../../../js/make/mc_docs.tmpl', {docs: docs, editable: true});
+                var filesHtml = nunjucks.render('../../../js/make/mc_docs.tmpl', {mcProductId: mcProductId, docs: docs, editable: true});
                 $('#' + mcProductId + '_' + mcDocType[type] + 'List').html(filesHtml);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
@@ -129,8 +126,22 @@ MAKECONTRACTPAGE.refreshFilesList = function(mcProductId, type) {
     );
 };
 
-MAKECONTRACTPAGE.deleteDoc = function (id, name, type) {
-    
+MAKECONTRACTPAGE.deleteDoc = function (id, name, fileType, mcProductId) {
+    EMARS_COMMONS.showPrompt("您真的要删除文件[" + name + "]吗？", function() {
+        $.post(
+            "/make/deleteDoc",
+            {'id': id},
+            function(data) {
+                if(data.code == '0') {
+                    EMARS_COMMONS.showSuccess("删除成功！");
+                    MAKECONTRACTPAGE.refreshFilesList(mcProductId, fileType);
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
+    }, null);
+
 };
 
 MAKECONTRACTPAGE.refreshProductDocs = function (mcProductId) {

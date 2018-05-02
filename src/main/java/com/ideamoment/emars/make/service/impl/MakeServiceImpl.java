@@ -161,8 +161,11 @@ public class MakeServiceImpl implements MakeService {
     public String deleteMakeContract(Long id) {
         boolean ret = makeContractMapper.deleteMakeContract(id);
         if(ret) {
+            List<MakeContractProduct> makeContractProducts = makeContractMapper.findMcProductsByMcId(id);
+            for(MakeContractProduct makeContractProduct : makeContractProducts) {
+                makeContractMapper.deleteMakeContractDocs(makeContractProduct.getId());
+            }
             makeContractMapper.deleteMakeContractProducts(id);
-            makeContractMapper.deleteMakeContractDocs(id);
         }
         return resultString(ret);
     }
@@ -220,6 +223,13 @@ public class MakeServiceImpl implements MakeService {
         }
 
         return productMakeContracts;
+    }
+
+    @Override
+    @Transactional
+    public String deleteMcDoc(long id) {
+        boolean ret = makeContractMapper.deleteMakeContractDoc(id);
+        return resultString(ret);
     }
 
     private synchronized String createCode(MakeContract mc) {

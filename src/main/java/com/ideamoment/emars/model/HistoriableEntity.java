@@ -1,5 +1,6 @@
 package com.ideamoment.emars.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ser.Serializers;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ public abstract class HistoriableEntity extends BaseEntity {
 
     protected Long creator;       //创建人
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     protected Date createTime;      //创建时间
 
     protected Long modifier;      //修改人

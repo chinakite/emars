@@ -35,4 +35,6 @@ public interface MakeService {
     List<MakeContractProduct> findMcProductsByProductId(long productId);
 
     List<ProductMakeContract> findProductMakeContracts(long productId);
+
+    String deleteMcDoc(long id);
 }

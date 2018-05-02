@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
 <head th:include="layout/layout :: htmlhead(${contract.code})"></head>
 
-<body th:onload="|MAKECONTRACTPAGE.loadMcProducts('${contract.mcProductIds}');|">
+<body>
 <section layout:fragment="content">
     <div class="px-content">
         <div class="page-header p-y-4 text-xs-center">
@@ -138,12 +138,13 @@
 </body>
 <div layout:fragment="scripts">
     <script type='text/javascript' th:src="@{/js/make/make-page.js}"></script>
+    <script th:inline="javascript" type="text/javascript">
+        var mcProductIds = [[${contract.mcProductIds}]];
+        var ids = mcProductIds.split(',');
+        for(var k in ids) {
+            MAKECONTRACTPAGE.loadMcProduct(ids[k]);
+        }
+    </script>
 </div>
-
-<script th:inline="javascript">
-    console.log('hello world');
-//    var message = [[${contract.mcProductIds}]];
-//    console.log(message);
-</script>
 
 </html>

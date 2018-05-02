@@ -133,5 +133,15 @@ public class MakeController {
         return JsonData.success(docs);
     }
 
+    @RequestMapping(value = "/deleteDoc", method = RequestMethod.POST)
+    public JsonData<String> deleteDoc(long id) {
+        String result = makeService.deleteMcDoc(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
 
 }

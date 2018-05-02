@@ -128,8 +128,8 @@ public interface MakeContractMapper {
     @Delete("DELETE FROM t_make_contract_product WHERE c_make_contract_id = #{mcId}")
     boolean deleteMakeContractProducts(@Param("mcId") long mcId);
 
-    @Delete("DELETE FROM t_make_ctrt_doc WHERE c_contract_id = #{mcId}")
-    boolean deleteMakeContractDocs(@Param("mcId") long mcId);
+    @Delete("DELETE FROM t_make_ctrt_doc WHERE C_MAKE_CONTRACT_PRODUCT_ID = #{mcProductId}")
+    boolean deleteMakeContractDocs(@Param("mcProductId") long mcProductId);
 
     @Select("SELECT * FORM t_make_contract_product WHERE c_id = #{id}")
     @Results(id = "mcProductMap", value ={
@@ -154,4 +154,5 @@ public interface MakeContractMapper {
     @ResultMap("mcProductMap")
     MakeContractProduct findMcProductsByProductIdAndContractId(@Param("productId") long productId, @Param("contractId") long contractId);
 
-}
+    @Delete("DELETE FROM t_make_ctrt_doc WHERE C_ID = #{id}")
+    boolean deleteMakeContractDoc(@Param("id") long id);}
