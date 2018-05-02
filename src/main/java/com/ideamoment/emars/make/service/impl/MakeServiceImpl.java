@@ -123,7 +123,17 @@ public class MakeServiceImpl implements MakeService {
         if(makeContract.getId() > 0){
             makeContract.setModifier(userId);
             makeContract.setModifyTime(curDate);
+            MakeContract oldMackContract = findMakeContract(makeContract.getId());
             ret = makeContractMapper.updateMakeConntract(makeContract);
+            ArrayList<MakeContractProduct> products = makeContract.getMcProducts();
+            for(MakeContractProduct mcProduct : products) {
+                mcProduct.setMakeContractId(makeContract.getId());
+                mcProduct.setCreator(userId);
+                mcProduct.setCreateTime(curDate);
+                makeContractMapper.updateMakeContractProduct(mcProduct);
+            }
+
+            //TODO 数组对比
 
         }else {
             String code = createCode(makeContract);

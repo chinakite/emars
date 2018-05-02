@@ -25,11 +25,17 @@ public interface MakeContractMapper {
     boolean insertMakeContract(MakeContract makeContract);
 
     @Update("UPDATE t_make_contract SET " +
-            "`C_CODE`=#{code},`C_TARGET_TYPE`=#{targetType},`C_OWNER`=#{owner},`C_MAKER`=#{maker}" +
+            "`C_TARGET_TYPE`=#{targetType},`C_OWNER`=#{owner},`C_MAKER`=#{maker}," +
             "`C_TOTAL_SECTION`=#{totalSection},`C_TOTAL_PRICE`=#{totalPrice}," +
             "`C_MODIFIER`=#{modifier},`C_MODIFYTIME`=#{modifyTime} " +
             "WHERE c_id = #{id}")
     boolean updateMakeConntract(MakeContract makeContract);
+
+    @Update("UPDATE t_make_contract_product SET " +
+            "`C_SECTION`=#{section},`C_PRICE`=#{price},`C_WORKER`=#{worker}" +
+            "`C_MODIFIER`=#{modifier},`C_MODIFYTIME`=#{modifyTime} " +
+            "WHERE c_id = #{id}")
+    boolean updateMakeContractProduct(MakeContractProduct makeContractProduct);
 
     @Select("SELECT * FROM t_make_contract WHERE c_id = #{id}")
     @Results(id = "makeContractMap", value ={

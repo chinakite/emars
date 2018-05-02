@@ -145,7 +145,6 @@ MAKELIST.popTaskModal = function (productId) {
 
 MAKELIST.popContractModal = function () {
     MAKELIST.clearContractModal();
-    // $('#inputProductId').val(productId);
     $('#contractModal').modal('show');
 }
 
@@ -157,12 +156,22 @@ MAKELIST.popEditMakeContractModal = function (id) {
         function(data) {
             if (data.code == '0') {
                 var makeContract = data.data;
+                $('#inputId').val(makeContract.id);
                 $('#inputTargetType option:first').prop("selected", 'selected');
                 $('#inputOwner').val(makeContract.owner);
                 $('#inputWorker').val(makeContract.worker);
                 $('#inputMaker').val(makeContract.maker);
                 $('#inputTotalSection').val(makeContract.totalSection);
                 $('#inputTotalPrice').val(makeContract.totalPrice);
+                var makeContractProducts = makeContract.mcProducts;
+                for(var k in makeContractProducts) {
+                    var productId = makeContractProducts[k].productId;
+                    productItem(productId);
+                    $("#" + productId + "_inputSection").val(makeContractProducts[k].section);
+                    $("#" + productId+ "_inputPrice").val(makeContractProducts[k].price);
+                    $("#" + productId + "_inputWorker").val(makeContractProducts[k].worker);
+                }
+
                 $('#contractModal').modal('show');
             } else {
                 EMARS_COMMONS.showError(data.code, data.msg);
@@ -208,11 +217,12 @@ MAKELIST.clearTaskModal = function () {
 }
 
 MAKELIST.clearContractModal = function () {
-    $('#inputProductId').val('');
     $('#inputTargetType option:first').prop("selected", 'selected');
     $('#inputOwner').val('北京悦库时光文化传媒有限公司');
-    $('#inputTotalSection').val();
-    $('#inputTotalPrice').val();
+    $('#inputTotalSection').val('');
+    $('#inputMaker').val('');
+    $('#inputTotalPrice').val('');
+    $('#product-list-selected').empty();
 }
 
 MAKELIST.submitTask = function () {
@@ -253,6 +263,7 @@ MAKELIST.submitTask = function () {
 }
 
 MAKELIST.submitMakeContract = function () {
+    var id = $('#inputId').val();
     var maker = $('#inputMaker').val();
     var targetType = $('#inputTargetType').val();
     var owner = $('#inputOwner').val();
@@ -275,6 +286,7 @@ MAKELIST.submitMakeContract = function () {
     }
 
     var postData = {
+        id: id,
         totalPrice: totalPrice,
         totalSection: totalSection,
         targetType: targetType,
@@ -282,6 +294,8 @@ MAKELIST.submitMakeContract = function () {
         maker: maker,
         mcProducts: mcProducts
     };
+
+    console.log(postData);
 
     $.ajax({
         url: "/make/makeContract",
