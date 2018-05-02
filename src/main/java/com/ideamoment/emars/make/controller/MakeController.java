@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -108,5 +109,29 @@ public class MakeController {
             return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
         }
     }
+
+    @RequestMapping(value = "/mcProduct", method = RequestMethod.GET)
+    public JsonData findMcProduct(long id) {
+        MakeContractProduct makeContractProduct = makeService.findMcProduct(id);
+        return JsonData.success(makeContractProduct);
+    }
+
+    @RequestMapping(value = "/saveMcProductFiles", method = RequestMethod.POST)
+    public JsonData<String> saveMcProductFiles(@RequestBody ArrayList<MakeContractDoc> makeContractDocs) {
+        String result = makeService.saveMcProductFiles(makeContractDocs);
+
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
+    @RequestMapping(value="/getMcDocs", method = RequestMethod.GET)
+    public JsonData<List<MakeContractDoc>> getMcDocs(long mcProductId, String type) {
+        List<MakeContractDoc> docs = makeService.listContractDocs(mcProductId, type);
+        return JsonData.success(docs);
+    }
+
 
 }

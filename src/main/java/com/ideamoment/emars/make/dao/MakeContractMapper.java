@@ -6,6 +6,7 @@ import com.ideamoment.emars.model.MakeContractProduct;
 import com.ideamoment.emars.model.MakeContractQueryVo;
 import org.apache.ibatis.annotations.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,16 +16,16 @@ import java.util.List;
 public interface MakeContractMapper {
 
     @Insert("INSERT INTO t_make_contract " +
-            "(`C_CODE`,`C_TARGET_TYPE`,`C_OWNER`,`C_TOTAL_SECTION`,`C_TOTAL_PRICE`," +
+            "(`C_CODE`,`C_TARGET_TYPE`,`C_OWNER`,`C_MAKER`,`C_TOTAL_SECTION`,`C_TOTAL_PRICE`," +
             "`C_CREATOR`,`C_CREATETIME`) " +
             "VALUES (" +
-            "#{code}, #{targetType}, #{owner}, #{totalSection}, #{totalPrice}, " +
+            "#{code}, #{targetType}, #{owner}, #{maker}, #{totalSection}, #{totalPrice}, " +
             "#{creator}, #{createTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertMakeContract(MakeContract makeContract);
 
     @Update("UPDATE t_make_contract SET " +
-            "`C_CODE`=#{code},`C_TARGET_TYPE`=#{targetType},`C_OWNER`=#{owner}," +
+            "`C_CODE`=#{code},`C_TARGET_TYPE`=#{targetType},`C_OWNER`=#{owner},`C_MAKER`=#{maker}" +
             "`C_TOTAL_SECTION`=#{totalSection},`C_TOTAL_PRICE`=#{totalPrice}," +
             "`C_MODIFIER`=#{modifier},`C_MODIFYTIME`=#{modifyTime} " +
             "WHERE c_id = #{id}")
@@ -34,7 +35,7 @@ public interface MakeContractMapper {
     @Results(id = "makeContractMap", value ={
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "code", column = "C_CODE"),
-            @Result(property = "makerId", column = "C_MAKER_ID"),
+            @Result(property = "maker", column = "C_MAKER"),
             @Result(property = "targetType", column = "C_TARGET_TYPE"),
             @Result(property = "owner", column = "C_OWNER"),
             @Result(property = "totalSection", column = "C_TOTAL_SECTION"),
@@ -88,27 +89,37 @@ public interface MakeContractMapper {
     MakeContract findMakeContractByProduct(@Param("productId") long productId);
 
     @Insert("INSERT INTO T_MAKE_CTRT_DOC " +
-            "(`C_CONTRACT_ID`,`C_TYPE`,`C_CREATOR_ID`,`C_CREATETIME`,`C_VERSION`,`C_FILE_URL`) " +
+            "(`C_MAKE_CONTRACT_PRODUCT_Id`,`C_NAME`,`C_PATH`,`C_DESC`,`C_TYPE`,`C_CREATOR`,`C_CREATETIME`) " +
             "VALUES " +
-            "(#{contractId}, #{type}, #{creatorId}, #{createTime}, #{version}, #{fileUrl})")
+            "(#{mcProductId}, #{name}, #{path}, #{desc}, #{type}, #{creator}, #{createTime})")
     boolean insertMakeContractDoc(MakeContractDoc makeContractDoc);
 
-    @Select("SELECT * FROM T_MAKE_CTRT_DOC WHERE C_CONTRACT_ID = #{contractId} ORDER BY C_CREATETIME DESC")
+    @Select({
+            "<script>",
+            "SELECT * FROM T_MAKE_CTRT_DOC WHERE C_MAKE_CONTRACT_PRODUCT_Id = #{mcProductId}",
+            "<if test='type != null'>",
+            " AND C_TYPE = #{type}",
+            "</if>",
+            " ORDER BY C_CREATETIME DESC",
+            "</script>"})
     @Results(id = "makeContractDocMap", value ={
             @Result(property = "id", column = "c_id", id = true),
-            @Result(property = "contractId", column = "C_CONTRACT_ID"),
+            @Result(property = "mcProductId", column = "C_MAKE_CONTRACT_PRODUCT_Id"),
+            @Result(property = "name", column = "C_NAME"),
+            @Result(property = "path", column = "C_PATH"),
+            @Result(property = "desc", column = "C_DESC"),
             @Result(property = "type", column = "C_TYPE"),
-            @Result(property = "creatorId", column = "C_CREATOR_ID"),
+            @Result(property = "creator", column = "C_CREATOR"),
             @Result(property = "createTime", column = "C_CREATETIME"),
-            @Result(property = "version", column = "C_VERSION"),
-            @Result(property = "fileUrl", column = "C_FILE_URL")
+            @Result(property = "modifier", column = "C_MODIFIER"),
+            @Result(property = "modifyTime", column = "C_MODIFYTIME")
     })
-    List<MakeContractDoc> listContractDocs(@Param("contractId") long contractId);
+    ArrayList<MakeContractDoc> listContractDocs(@Param("mcProductId") long mcProductId, @Param("type") String type);
 
     @Insert("INSERT INTO T_MAKE_CONTRACT_PRODUCT " +
-            "(`C_MAKE_CONTRACT_ID`,`C_PRODUCT_ID`,`C_PRICE`,`C_SECTION`,`C_CREATOR`,`C_CREATETIME`) " +
+            "(`C_MAKE_CONTRACT_ID`,`C_PRODUCT_ID`,`C_WORKER`,`C_PRICE`,`C_SECTION`,`C_CREATOR`,`C_CREATETIME`) " +
             "VALUES " +
-            "(#{makeContractId}, #{productId}, #{price}, #{section}, #{creator}, #{createTime})")
+            "(#{makeContractId}, #{productId}, #{worker}, #{price}, #{section}, #{creator}, #{createTime})")
     boolean insertMakeContractProduct(MakeContractProduct makeContractProduct);
 
     @Delete("DELETE FROM t_make_contract WHERE c_id = #{id}")
@@ -119,4 +130,19 @@ public interface MakeContractMapper {
 
     @Delete("DELETE FROM t_make_ctrt_doc WHERE c_contract_id = #{mcId}")
     boolean deleteMakeContractDocs(@Param("mcId") long mcId);
+
+    @Select("SELECT * FORM t_make_contract_product WHERE c_id = #{id}")
+    @Results(id = "mcProductMap", value ={
+            @Result(property = "id", column = "c_id", id = true),
+            @Result(property = "makeContractId", column = "C_MAKE_CONTRACT_ID"),
+            @Result(property = "productId", column = "C_PRODUCT_ID"),
+            @Result(property = "worker", column = "C_WORKER"),
+            @Result(property = "price", column = "C_PRICE"),
+            @Result(property = "section", column = "C_SECTION")
+    })
+    MakeContractProduct findMcProduct(@Param("id") long id);
+
+    @Select("SELECT * FROM t_make_contract_product WHERE c_make_contract_id = #{makeContractId}")
+    @ResultMap("mcProductMap")
+    ArrayList<MakeContractProduct> findMcProductsByMcId(@Param("makeContractId") long makeContractId);
 }

@@ -22,9 +22,13 @@ public interface MakeService {
 
     String saveMakeContract(MakeContract makeContract);
 
-    List<MakeContractDoc> listContractDocs(long contractId);
+    List<MakeContractDoc> listContractDocs(long mcProductId, String type);
 
     List<ProductInfo> listProducts(ProductInfo condition);
 
     String deleteMakeContract(Long id);
+
+    MakeContractProduct findMcProduct(long id);
+
+    String saveMcProductFiles(List<MakeContractDoc> makeContractDocs);
 }

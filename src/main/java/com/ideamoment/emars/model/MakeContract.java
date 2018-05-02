@@ -11,10 +11,11 @@ public class MakeContract extends HistoriableEntity {
     private String code;
     private String targetType;
     private String owner;
+    private String maker;
     private Integer totalSection;
     private BigDecimal totalPrice;
-    private ArrayList<MakeContractProduct> products = new ArrayList<MakeContractProduct>();
-    private Long[] productIds;
+    private ArrayList<MakeContractProduct> mcProducts = new ArrayList<MakeContractProduct>();
+    private String mcProductIds;
 
 
     public String getCode() {
@@ -57,19 +58,27 @@ public class MakeContract extends HistoriableEntity {
         this.totalPrice = totalPrice;
     }
 
-    public ArrayList<MakeContractProduct> getProducts() {
-        return products;
+    public String getMaker() {
+        return maker;
     }
 
-    public void setProducts(ArrayList<MakeContractProduct> products) {
-        this.products = products;
+    public void setMaker(String maker) {
+        this.maker = maker;
     }
 
-    public Long[] getProductIds() {
-        return productIds;
+    public ArrayList<MakeContractProduct> getMcProducts() {
+        return mcProducts;
     }
 
-    public void setProductIds(Long[] productIds) {
-        this.productIds = productIds;
+    public void setMcProducts(ArrayList<MakeContractProduct> mcProducts) {
+        this.mcProducts = mcProducts;
+    }
+
+    public String getMcProductIds() {
+        return mcProductIds;
+    }
+
+    public void setMcProductIds(String mcProductIds) {
+        this.mcProductIds = mcProductIds;
     }
 }

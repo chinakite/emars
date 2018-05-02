@@ -48,17 +48,6 @@ public class MakeServiceImpl implements MakeService {
             productIds.add(prod.getId());
         }
 
-        //TODO 头晕 等下写
-//        Map<String, Long> taskCounts = makeTaskMapper.countTaskByProduct(productIds);
-//        for(Product prod : products) {
-//            if(taskCounts.get(prod.getId()) != null) {
-//                prod.setTaskCount(taskCounts.get(prod.getId()).intValue());
-//            }else{
-//                prod.setTaskCount(0);
-//            }
-//        }
-
-
         Page<ProductInfo> result = new Page<ProductInfo>();
         result.setCurrentPage(currentPage);
         result.setData(products);
@@ -100,6 +89,20 @@ public class MakeServiceImpl implements MakeService {
     @Transactional
     public MakeContract findMakeContract(long id) {
         MakeContract makeContract = makeContractMapper.findMakeContract(id);
+        ArrayList<MakeContractProduct> makeContractProducts = makeContractMapper.findMcProductsByMcId(id);
+        StringBuilder mcProductIds = new StringBuilder();
+        int i = 0;
+        for(MakeContractProduct makeContractProduct : makeContractProducts) {
+            ArrayList<MakeContractDoc> makeContractDocs = makeContractMapper.listContractDocs(makeContractProduct.getId(), null);
+            makeContractProduct.setMakeContractDocs(makeContractDocs);
+            i += 1;
+            if(i != 1) {
+                mcProductIds.append(",");
+            }
+            mcProductIds.append(String.valueOf(makeContractProduct.getId()));
+        }
+        makeContract.setMcProducts(makeContractProducts);
+        makeContract.setMcProductIds(mcProductIds.toString());
         return makeContract;
     }
 
@@ -128,11 +131,9 @@ public class MakeServiceImpl implements MakeService {
             makeContract.setCreator(userId);
             makeContract.setCreateTime(curDate);
             ret = makeContractMapper.insertMakeContract(makeContract);
-            Long[] productIds = makeContract.getProductIds();
+            ArrayList<MakeContractProduct> products = makeContract.getMcProducts();
 
-            for(Long productId : productIds) {
-                MakeContractProduct mcProduct = new MakeContractProduct();
-                mcProduct.setProductId(productId);
+            for(MakeContractProduct mcProduct : products) {
                 mcProduct.setMakeContractId(makeContract.getId());
                 mcProduct.setCreator(userId);
                 mcProduct.setCreateTime(curDate);
@@ -145,8 +146,8 @@ public class MakeServiceImpl implements MakeService {
 
     @Override
     @Transactional
-    public List<MakeContractDoc> listContractDocs(long contractId) {
-        return makeContractMapper.listContractDocs(contractId);
+    public List<MakeContractDoc> listContractDocs(long mcProductId, String type) {
+        return makeContractMapper.listContractDocs(mcProductId, type);
     }
 
     @Override
@@ -164,6 +165,28 @@ public class MakeServiceImpl implements MakeService {
             makeContractMapper.deleteMakeContractDocs(id);
         }
         return resultString(ret);
+    }
+
+    @Override
+    @Transactional
+    public MakeContractProduct findMcProduct(long id) {
+        return makeContractMapper.findMcProduct(id);
+    }
+
+    @Override
+    @Transactional
+    public String saveMcProductFiles(List<MakeContractDoc> makeContractDocs) {
+        Long userId = UserContext.getUserId();
+        Date curDate = new Date();
+
+        boolean result = true;
+        for(MakeContractDoc makeContractDoc : makeContractDocs) {
+            makeContractDoc.setCreator(userId);
+            makeContractDoc.setCreateTime(curDate);
+            result = result && makeContractMapper.insertMakeContractDoc(makeContractDoc);
+        }
+
+        return resultString(result);
     }
 
     private synchronized String createCode(MakeContract mc) {

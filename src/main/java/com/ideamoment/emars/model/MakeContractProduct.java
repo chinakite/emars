@@ -1,6 +1,7 @@
 package com.ideamoment.emars.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -11,11 +12,11 @@ public class MakeContractProduct extends BaseEntity {
     private long makeContractId;
     private long productId;
     private String worker;
-    private String maker;
     private BigDecimal price;
     private Integer section;
     private Long creator;
     private Date createTime;
+    private ArrayList<MakeContractDoc> makeContractDocs = new ArrayList<>();
 
     public long getMakeContractId() {
         return makeContractId;
@@ -73,11 +74,11 @@ public class MakeContractProduct extends BaseEntity {
         this.worker = worker;
     }
 
-    public String getMaker() {
-        return maker;
+    public ArrayList<MakeContractDoc> getMakeContractDocs() {
+        return makeContractDocs;
     }
 
-    public void setMaker(String maker) {
-        this.maker = maker;
+    public void setMakeContractDocs(ArrayList<MakeContractDoc> makeContractDocs) {
+        this.makeContractDocs = makeContractDocs;
     }
 }

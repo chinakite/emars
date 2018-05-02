@@ -30,18 +30,6 @@ function productItem(id) {
 
             $('#product-list-selected').append(productItemObj);
 
-            // var html = '';
-            // html += '<div class="list-group-item">' +
-            //     '<div class="product-list-item-info">' +
-            //     '<h4 class="list-group-item-heading">' + product['name'] + '</h4>' +
-            //     '<p class="list-group-item-text">' + product['authorName'] + '（' + product['authorPseudonym'] +'） | 10.6万 | ' + product['isbn'] + ' | 悬疑推理</p>' +
-            //     '</div>' +
-            //     '<div class="product-list-item-toolbar">' +
-            //     '<a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="MAKELIST.removeProduct(this);"><i class="fa fa-remove"></i></a>' +
-            //     '</div>' +
-            //     '</div>';
-            // $("#product-list-selected").append(html);
-
         }
     )
 }
@@ -118,7 +106,7 @@ MAKELIST.initMakeContractTbl = function () {
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="javascript:;" onclick="MAKELIST.popMakeContractDetailModal(' + full.id + ')">查看</a>';
+                    var htmlText = '<a href="/make/makeContractDetail/' + full.id + '" target="_blank">查看</a>';
                     htmlText += ' <span class="small">|</span> ';
                     htmlText += '<a href="javascript:;" onclick="MAKELIST.popEditMakeContractModal(' + full.id + ')">编辑</a>';
                     htmlText += ' <span class="small">|</span> ';
@@ -159,19 +147,6 @@ MAKELIST.popContractModal = function () {
     MAKELIST.clearContractModal();
     // $('#inputProductId').val(productId);
     $('#contractModal').modal('show');
-}
-
-MAKELIST.popMakeContractDetailModal = function (id) {
-    $.get(
-        "/make/makeContractDetail",
-        {id: id},
-        function(data) {
-            $('#makeContractDetail').modal('show');
-            $("#makeContractDetail .modal-body")
-                .empty()
-                .append(data);
-        }
-    )
 }
 
 MAKELIST.popEditMakeContractModal = function (id) {
@@ -278,22 +253,31 @@ MAKELIST.submitTask = function () {
 }
 
 MAKELIST.submitMakeContract = function () {
-    var products = $('#product-list-select').val();
     var maker = $('#inputMaker').val();
     var targetType = $('#inputTargetType').val();
     var owner = $('#inputOwner').val();
-    var worker = $('#inputWorker').val();
     var totalPrice = $('#inputTotalPrice').val();
     var totalSection = $('#inputTotalSection').val();
+    var productObjs = $('.product-list-item');
+    var mcProducts = [];
+    for(var i=0; i<productObjs.length; i++) {
+        var productItem = $(productObjs[i]).data('bindedData');
+        var mcProduct = {
+            productId: productItem.id,
+            section: '10',
+            price: '20',
+            worker: 'ss'
+        };
+        mcProducts[i] = mcProduct;
+    }
 
     var postData = {
-        productIds: products,
-        maker: maker,
+        totalPrice: totalPrice,
+        totalSection: totalSection,
         targetType: targetType,
         owner: owner,
-        worker: worker,
-        totalPrice: totalPrice,
-        totalSection: totalSection
+        maker: maker,
+        mcProducts: mcProducts
     };
 
     $.ajax({
@@ -321,4 +305,19 @@ MAKELIST.searchMakeContracts = function () {
 
 MAKELIST.refreshMakeContractTbl = function () {
     mcTable.api().ajax.reload(null, false);
+}
+
+MAKELIST.loadMcProduct = function (id) {
+    $.get(
+        '/make/mcProduct',
+        {id: id},
+        function(data) {
+            if (data.code == '0') {
+                var mcProduct = data.data;
+                console.log(mcProduct);
+            } else {
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    )
 }

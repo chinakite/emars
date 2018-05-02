@@ -1,6 +1,5 @@
 package com.ideamoment.emars.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ideamoment.emars.model.enumeration.ContractDocType;
 
 import java.util.Date;
@@ -8,55 +7,14 @@ import java.util.Date;
 /**
  * Created by yukiwang on 2018/3/11.
  */
-public class MakeContractDoc extends BaseEntity {
+public class MakeContractDoc extends HistoriableEntity {
 
-    private long contractId;
-    private long creator;
-    private Date createTime;
-    private String version;
-    private String fileUrl;
-    private String type = ContractDocType.CONTRACT_DOC;
+    private long mcProductId;
+    private String name;
+    private String path;
+    private String desc;
+    private String type;
 
-
-    public long getContractId() {
-        return contractId;
-    }
-
-    public void setContractId(long contractId) {
-        this.contractId = contractId;
-    }
-
-    public long getCreator() {
-        return creator;
-    }
-
-    public void setCreator(long creator) {
-        this.creator = creator;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getFileUrl() {
-        return fileUrl;
-    }
-
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
-    }
 
     public String getType() {
         return type;
@@ -66,11 +24,35 @@ public class MakeContractDoc extends BaseEntity {
         this.type = type;
     }
 
-    public String getTypeText() {
-        if(this.type.equals(ContractDocType.CONTRACT_DOC)) {
-            return ContractDocType.CONTRACT_DOC_TEXT;
-        }else{
-            return ContractDocType.CONTRACT_ADDON_TEXT;
-        }
+    public long getMcProductId() {
+        return mcProductId;
+    }
+
+    public void setMcProductId(long mcProductId) {
+        this.mcProductId = mcProductId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }
