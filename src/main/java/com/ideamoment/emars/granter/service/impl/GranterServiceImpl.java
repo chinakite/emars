@@ -89,11 +89,11 @@ public class GranterServiceImpl implements GranterService {
         Granter granter = granterMapper.findGranter(id);
 
         if(granter == null) {
-            return ErrorCode.AUTHOR_NOT_EXISTS;
+            return ErrorCode.GRANTER_NOT_EXISTS;
         }
         Granter existsGranter = granterMapper.findGranterByName(name, id);
         if(existsGranter != null) {
-            return ErrorCode.AUTHOR_EXISTS;
+            return ErrorCode.GRANTER_EXISTS;
         }
 
         granter.setName(name);

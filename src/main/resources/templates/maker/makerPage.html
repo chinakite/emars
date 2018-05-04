@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head th:include="layout/layout :: htmlhead('制作方管理')"></head>
+
+<body>
+<section layout:fragment="content">
+    <div class="page-header">
+        <h1>制作方管理 / <span class="text-muted font-weight-light">制作合同乙方的签订主体。</span></h1>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading">
+            <div class="panel-title">制作方列表</div>
+        </div>
+        <div class="panel-body">
+            <div class="box">
+                <button type="button" class="btn" data-toggle="modal" onclick="MAKERLIST.popNewMakerModal();">
+                    <i class="fa fa-plus"></i>&nbsp;新建
+                </button>
+            </div>
+            <div class="table-primary">
+                <table class="table table-striped table-bordered" id="makerTbl">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>联系人</th>
+                        <th>联系电话</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="maker/makerModal :: makerModal"></div>
+
+
+</section>
+
+</body>
+<div layout:fragment="scripts">
+    <script type='text/javascript' th:src="@{/js/maker/maker-list.js}"></script>
+</div>
+
+</html>

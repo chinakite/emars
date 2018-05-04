@@ -67,6 +67,20 @@ public class ErrorCode {
     //版权不存在
     public static final String COPYRIGHT_NOT_EXISTS = "I-0004";
 
+    //演播人已存在
+    public static final String ANNOUNCER_EXISTS = "J-0003";
+    //演播人不存在
+    public static final String ANNOUNCER_NOT_EXISTS = "J-0004";
+    //演播人不能被删除
+    public static final String ANNOUNCER_CANNOT_DELETE = "J-0005";
+
+    //制作方已存在
+    public static final String MAKER_EXISTS = "K-0003";
+    //制作方不存在
+    public static final String MAKER_NOT_EXISTS = "K-0004";
+    //制作方不能被删除
+    public static final String MAKER_CANNOT_DELETE = "K-0005";
+
 
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 
@@ -85,6 +99,14 @@ public class ErrorCode {
         ERROR_MSG.put(GRANTER_EXISTS, "该授权方已存在");
         ERROR_MSG.put(GRANTER_NOT_EXISTS, "该授权方不存在");
         ERROR_MSG.put(GRANTER_CANNOT_DELETE, "该授权方有关联的版权合同，无法删除");
+
+        ERROR_MSG.put(MAKER_EXISTS, "该制作方已存在");
+        ERROR_MSG.put(MAKER_NOT_EXISTS, "该制作方不存在");
+        ERROR_MSG.put(MAKER_CANNOT_DELETE, "该制作方有关联的制作合同，无法删除");
+
+        ERROR_MSG.put(ANNOUNCER_EXISTS, "该演播人已存在");
+        ERROR_MSG.put(ANNOUNCER_NOT_EXISTS, "该演播人不存在");
+        ERROR_MSG.put(ANNOUNCER_CANNOT_DELETE, "该演播人有关联的作品，无法删除");
 
         ERROR_MSG.put(PRODUCT_NOT_EXISTS, "该作品不存在或已被删除");
         ERROR_MSG.put(PRODUCT_COPYRIGHT_FILES_NOT_COMPLETE, "该作品版权文件不全，无法入库");

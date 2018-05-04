@@ -161,4 +161,8 @@ public interface MakeContractMapper {
     MakeContractProduct findMcProductsByProductIdAndContractId(@Param("productId") long productId, @Param("contractId") long contractId);
 
     @Delete("DELETE FROM t_make_ctrt_doc WHERE C_ID = #{id}")
-    boolean deleteMakeContractDoc(@Param("id") long id);}
+    boolean deleteMakeContractDoc(@Param("id") long id);
+
+    @Select("select count(c_id) from t_make_contract where c_maker_id = #{makerId}")
+    long countMakeContractByMaker(@Param("makerId")long id);
+}

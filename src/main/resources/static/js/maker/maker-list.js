@@ -1,14 +1,14 @@
 ;
 
-var GRANTERLIST = {};
-var granterTable;
+var MAKERLIST = {};
+var makerTable;
 
 $(document).ready(function(){
-    GRANTERLIST.initGranterTbl();
+    MAKERLIST.initMakerTbl();
 });
 
-GRANTERLIST.initGranterTbl = function(){
-    granterTable = $('#granterTbl').dataTable({
+MAKERLIST.initMakerTbl = function(){
+    makerTable = $('#makerTbl').dataTable({
         "processing": true,
         "paging": true,
         "lengthChange": false,
@@ -18,7 +18,7 @@ GRANTERLIST.initGranterTbl = function(){
         "autoWidth": false,
         "serverSide": true,
         "ajax": {
-            "url": '/system/granters'
+            "url": '/system/makers'
         },
         language: {
             "paginate": {
@@ -45,9 +45,9 @@ GRANTERLIST.initGranterTbl = function(){
             {
                 "width": "20%",
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="javascript:void(0);" onclick="GRANTERLIST.popEditGranter(' + full.id + ');">编辑</a>  ';
+                    var htmlText = '<a href="javascript:void(0);" onclick="MAKERLIST.popEditMaker(' + full.id + ');">编辑</a>  ';
                     htmlText += '<span class="small">|</span> ' +
-                        '<a href="javascript:void(0);" onclick="GRANTERLIST.deleteGranter(' + full.id + ', \'' + full.name + '\');">删除</a>';
+                        '<a href="javascript:void(0);" onclick="MAKERLIST.deleteMaker(' + full.id + ', \'' + full.name + '\');">删除</a>';
                     return htmlText;
                 }
             }
@@ -55,18 +55,18 @@ GRANTERLIST.initGranterTbl = function(){
     });
 };
 
-GRANTERLIST.popNewGranterModal = function(){
-    GRANTERLIST.clearGranterModal();
-    $('#granterModal .modal-title').text("新建授权方");
-    $('#granterModal').modal('show');
+MAKERLIST.popNewMakerModal = function(){
+    MAKERLIST.clearMakerModal();
+    $('#makerModal .modal-title').text("新建制作方");
+    $('#makerModal').modal('show');
 };
 
-GRANTERLIST.popEditGranter = function(id) {
-    GRANTERLIST.clearGranterModal();
-    $('#granterModal .modal-title').text("编辑授权方");
-    $('#granterModal').modal('show');
+MAKERLIST.popEditMaker = function(id) {
+    MAKERLIST.clearMakerModal();
+    $('#makerModal .modal-title').text("编辑制作方");
+    $('#makerModal').modal('show');
     $.get(
-        "/system/granter",
+        "/system/maker",
         {id: id},
         function (data) {
             if(data.code == '0') {
@@ -82,7 +82,7 @@ GRANTERLIST.popEditGranter = function(id) {
     );
 }
 
-GRANTERLIST.clearGranterModal = function () {
+MAKERLIST.clearMakerModal = function () {
     $('#id').val('');
     $('#name').val('');
     $('#contact').val('');
@@ -90,7 +90,7 @@ GRANTERLIST.clearGranterModal = function () {
     $('#desc').val('');
 }
 
-GRANTERLIST.submitGranter = function() {
+MAKERLIST.submitMaker = function() {
     var name = $('#name').val();
     var contact = $('#contact').val();
     var phone = $('#phone').val();
@@ -98,7 +98,7 @@ GRANTERLIST.submitGranter = function() {
     var id = $('#id').val();
     if(id) {
         $.post(
-            "/system/modifyGranter",
+            "/system/modifyMaker",
             {
                 'name': name,
                 'contact': contact,
@@ -108,9 +108,9 @@ GRANTERLIST.submitGranter = function() {
             },
             function (data) {
                 if(data.code == '0') {
-                    EMARS_COMMONS.showSuccess("授权方保存成功！");
-                    $('#granterModal').modal('hide');
-                    GRANTERLIST.refreshGranterTbl();
+                    EMARS_COMMONS.showSuccess("制作方保存成功！");
+                    $('#makerModal').modal('hide');
+                    MAKERLIST.refreshMakerTbl();
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
                 }
@@ -118,7 +118,7 @@ GRANTERLIST.submitGranter = function() {
         );
     }else {
         $.post(
-            "/system/createGranter",
+            "/system/createMaker",
             {
                 'name': name,
                 'contact': contact,
@@ -127,9 +127,9 @@ GRANTERLIST.submitGranter = function() {
             },
             function (data) {
                 if(data.code == '0') {
-                    EMARS_COMMONS.showSuccess("授权方保存成功！");
-                    $('#granterModal').modal('hide');
-                    GRANTERLIST.refreshGranterTbl();
+                    EMARS_COMMONS.showSuccess("制作方保存成功！");
+                    $('#makerModal').modal('hide');
+                    MAKERLIST.refreshMakerTbl();
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
                 }
@@ -138,15 +138,15 @@ GRANTERLIST.submitGranter = function() {
     }
 };
 
-GRANTERLIST.deleteGranter = function(id, name) {
-    EMARS_COMMONS.showPrompt("您真的要删除授权方[" + name + "]吗？", function() {
+MAKERLIST.deleteMaker = function(id, name) {
+    EMARS_COMMONS.showPrompt("您真的要删除制作方[" + name + "]吗？", function() {
         $.post(
-            "/system/deleteGranter",
+            "/system/deleteMaker",
             {'id': id},
             function(data) {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("删除成功！");
-                    GRANTERLIST.refreshGranterTbl();
+                    MAKERLIST.refreshMakerTbl();
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
                 }
@@ -155,6 +155,6 @@ GRANTERLIST.deleteGranter = function(id, name) {
     }, null);
 }
 
-GRANTERLIST.refreshGranterTbl = function () {
-    granterTable.api().ajax.reload(null, false);
+MAKERLIST.refreshMakerTbl = function () {
+    makerTable.api().ajax.reload(null, false);
 }
