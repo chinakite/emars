@@ -50,6 +50,7 @@ public interface ProductMapper {
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME"),
             @Result(property = "subjectName", column = "SUBJECTNAME"),
+            @Result(property = "productionState", column = "C_PRODUCTION_STATE"),
     })
     ProductInfo findProduct(@Param("id") long id);
 
@@ -152,4 +153,7 @@ public interface ProductMapper {
 
     @Delete("delete from t_product_author where c_product_id = #{productId} and c_author_id = #{authorId}")
     boolean deleteProductAuthor(@Param("productId") Long productId, @Param("authorId") Long authorId);
+
+    @Update("update t_product_info set c_production_state = #{productionState} where c_id = #{productId}")
+    boolean changeProductionState(@Param("productId") long productId, @Param("productionState") String productionState);
 }

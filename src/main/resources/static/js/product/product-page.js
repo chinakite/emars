@@ -270,3 +270,28 @@ PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
         );
     }, null);
 };
+
+PRODUCTPAGE.popChangeProductionStateModel = function (id) {
+    $('#inputEditId').val(id);
+    $('#changeProductionStateModel').modal('show');
+}
+
+PRODUCTPAGE.saveProductionState = function () {
+    var id = $('#inputEditId').val();
+    var state = $("input[name='inputProductionState']:checked").val();
+    console.log(state);
+    $.post(
+        '/product/changeProductionState',
+        {id: id, productionState: state},
+        function(data) {
+            if(data.code == '0') {
+                var product = data.data;
+                $("#productionStateText").text(product.productionStateText);
+                $('#changeProductionStateModel').modal('hide');
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    )
+
+}

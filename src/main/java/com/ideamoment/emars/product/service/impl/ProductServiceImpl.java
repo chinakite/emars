@@ -295,6 +295,13 @@ public class ProductServiceImpl implements ProductService{
         return result;
     }
 
+    @Override
+    @Transactional
+    public String changeProductionState(long id, String productionState) {
+        boolean ret = productMapper.changeProductionState(id, productionState);
+        return resultString(ret);
+    }
+
     private String validateCopyrightValid(long id) {
         List<CopyrightFile> copyrightFiles = productCopyrightFileMapper.listCopyrightFiles(id);
         boolean contract = false;

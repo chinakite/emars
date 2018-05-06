@@ -112,6 +112,17 @@ public class ProductController {
         }
     }
 
+    @RequestMapping(value = "/changeProductionState", method = RequestMethod.POST)
+    public JsonData changeProductionState(long id, String productionState) {
+        String result = productService.changeProductionState(id, productionState);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            ProductInfo product = productService.findProduct(id);
+            return JsonData.success(product);
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
     private DataTableSource<ProductInfo> convertProductsToDataTableSource(int draw, Page<ProductInfo> productsPage) {
         DataTableSource<ProductInfo> dts = new DataTableSource<ProductInfo>();
 

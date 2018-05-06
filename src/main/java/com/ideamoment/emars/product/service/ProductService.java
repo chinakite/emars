@@ -34,4 +34,6 @@ public interface ProductService {
     String stockIn(long id);
 
     Page<ProductInfo> listStockedInProducts(ProductInfo condition, int start, int length);
+
+    String changeProductionState(long id, String productionState);
 }

@@ -1,5 +1,6 @@
 package com.ideamoment.emars.model;
 
+import com.ideamoment.emars.model.enumeration.ProductionState;
 import com.ideamoment.emars.model.enumeration.PublishState;
 import com.ideamoment.emars.model.enumeration.StockInType;
 import com.ideamoment.emars.utils.StringUtils;
@@ -18,6 +19,8 @@ public class ProductInfo extends HistoriableEntity {
     private String type;
     private String stockIn;
     private String desc;
+    private String productionState;
+    private Integer section;
 
     private String subjectName;
     private List<Author> authors;
@@ -126,6 +129,22 @@ public class ProductInfo extends HistoriableEntity {
         }
     }
 
+    public String getProductionStateText() {
+        if(ProductionState.THE_OLD_PROGRAM.equals(this.productionState)) {
+            return ProductionState.THE_OLD_PROGRAM_TEXT;
+        }else if(ProductionState.THE_OWN.equals(this.productionState)) {
+            return ProductionState.THE_OWN_TEXT;
+        }else if(ProductionState.TO_BE_MADE.equals(this.productionState)) {
+            return ProductionState.TO_BE_MADE_TEXT;
+        }else if(ProductionState.RESERVATION.equals(this.productionState)) {
+            return ProductionState.RESERVATION_TEXT;
+        }else if(ProductionState.HAS_BEEN_PRODUCED.equals(this.productionState)) {
+            return ProductionState.HAS_BEEN_PRODUCED_TEXT;
+        }else {
+            return "未知";
+        }
+    }
+
     public String getPublishStateText() {
         if(PublishState.PUBLISHED.equals(this.publishState)) {
             return PublishState.PUBLISHED_TEXT;
@@ -172,5 +191,21 @@ public class ProductInfo extends HistoriableEntity {
             }
         }
         return result;
+    }
+
+    public String getProductionState() {
+        return productionState;
+    }
+
+    public void setProductionState(String productionState) {
+        this.productionState = productionState;
+    }
+
+    public Integer getSection() {
+        return section;
+    }
+
+    public void setSection(Integer section) {
+        this.section = section;
     }
 }
