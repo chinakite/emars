@@ -46,7 +46,7 @@
                                 <div class="form-group">
                                     <label for="inputContractType" class="col-sm-4 control-label">合同类型</label>
                                     <div class="col-sm-8">
-                                        <select class="form-control" id="inputContractType" name="inputContractType" data-minimum-results-for-search="Infinity">
+                                        <select class="form-control" id="inputContractType" name="inputContractType" data-minimum-results-for-search="Infinity" onchange="COPYRIGHTLIST.loadProductType();">
                                             <option value="wz">文字</option>
                                             <option value="yp">音频</option>
                                             <option value="wzgb">文字广播</option>
@@ -192,12 +192,21 @@
                             </div>
                         </div>
                         <div class="col-sm-6" style="height:31px;">
-                            <div class="form-group">
+                            <div class="form-group inputWordCount">
                                 <label for="inputWordCount" class="col-sm-4 control-label">字数</label>
                                 <div class="col-sm-8">
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="inputWordCount" name="inputWordCount"/>
                                         <span class="input-group-addon">万字</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group inputSection hide">
+                                <label for="inputSection" class="col-sm-4 control-label">集数</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="inputSection" name="inputSection"/>
+                                        <span class="input-group-addon">集</span>
                                     </div>
                                 </div>
                             </div>

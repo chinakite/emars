@@ -279,7 +279,6 @@ PRODUCTPAGE.popChangeProductionStateModel = function (id) {
 PRODUCTPAGE.saveProductionState = function () {
     var id = $('#inputEditId').val();
     var state = $("input[name='inputProductionState']:checked").val();
-    console.log(state);
     $.post(
         '/product/changeProductionState',
         {id: id, productionState: state},

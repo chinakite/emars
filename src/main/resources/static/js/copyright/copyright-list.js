@@ -429,6 +429,7 @@ COPYRIGHTLIST.addProduct = function() {
     var copyrightEnd = $('#inputCopyrightEnd').val();
     var radioTrans = $('#inputRadioTrans').val();
     var desc = $('#inputDesc').val();
+    var section = $('#inputSection').val();
 
     var privilegeText;
     if(privilege1) {
@@ -489,7 +490,8 @@ COPYRIGHTLIST.addProduct = function() {
         copyrightEnd: copyrightEnd,
         radioTrans: radioTrans,
         radioTransText: radioTrans == '1' ? "可以" : "不可以",
-        desc: desc
+        desc: desc,
+        section: section
     };
 
     var productItemHtml = nunjucks.render('../js/copyright/copyright_product_listitem.tmpl', productItem);
@@ -541,6 +543,7 @@ COPYRIGHTLIST.editProduct = function(obj) {
     $('#inputCopyrightEnd').val(productItem.copyrightEnd);
     $('#inputRadioTrans').val(productItem.radioTrans);
     $('#inputDesc').val(productItem.desc);
+    $('#inputSection').val(productItem.section);
 
     $('#copyrightWizard').hide();
     $('#addProductPanel').show();
@@ -567,6 +570,7 @@ COPYRIGHTLIST.resetProduct = function() {
     $('#inputCopyrightEnd').val('');
     $('#inputRadioTrans').val('1');
     $('#inputDesc').val('');
+    $('#inputSection').val('');
 };
 
 COPYRIGHTLIST.deleteCopyright = function(id, code) {
@@ -705,3 +709,16 @@ COPYRIGHTLIST.addGranter = function() {
         }
     );
 };
+
+COPYRIGHTLIST.loadProductType = function() {
+    var inputContractType = $("#inputContractType").val();
+    if(inputContractType != 'wz') {
+        $("#inputWordCount").val('');
+        $(".inputWordCount").addClass('hide');
+        $(".inputSection").removeClass('hide');
+    }else {
+        $("#inputSection").val('');
+        $(".inputSection").addClass('hide');
+        $(".inputWordCount").removeClass('hide');
+    }
+}

@@ -130,9 +130,9 @@ public interface ProductMapper {
     @ResultMap("productMap")
     ProductInfo checkIsbnDuplicated(@Param("isbn") String isbn, @Param("id") Long id);
 
-    @Insert("insert into t_product_info (`c_name`,`c_wordcount`,`c_subject_id`,`c_publish_state`,`c_isbn`,`c_type`,`c_stockin`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`)" +
+    @Insert("insert into t_product_info (`c_name`,`c_wordcount`,`c_subject_id`,`c_publish_state`,`c_isbn`,`c_type`,`c_stockin`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`,`c_section`)" +
             "values" +
-            "(#{name}, #{wordCount}, #{subjectId}, #{publishState}, #{isbn}, #{type}, #{stockIn}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime})"
+            "(#{name}, #{wordCount}, #{subjectId}, #{publishState}, #{isbn}, #{type}, #{stockIn}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime}, #{section})"
     )
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertProductInfo(CopyrightProductInfo productInfo);
@@ -143,7 +143,8 @@ public interface ProductMapper {
     @Update("update t_product_info set " +
             "c_name=#{name}, c_wordcount=#{wordCount}, " +
             "c_subject_id=#{subjectId}, c_publish_state=#{publishState}, c_isbn=#{isbn}, " +
-            "c_type=#{type}, c_stockin=#{stockIn}, c_desc=#{desc}, c_modifier=#{modifier}, c_modifytime=#{modifyTime} " +
+            "c_type=#{type}, c_stockin=#{stockIn}, c_desc=#{desc}, c_modifier=#{modifier}, c_modifytime=#{modifyTime}," +
+            "c_section=#{section} " +
             "where c_id = #{id}"
     )
     boolean updateProductInfo(CopyrightProductInfo product);
