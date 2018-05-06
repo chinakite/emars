@@ -81,6 +81,11 @@ public class ErrorCode {
     //制作方不能被删除
     public static final String MAKER_CANNOT_DELETE = "K-0005";
 
+    //制作合同价格错误
+    public static final String MAKECONTRACT_PIRCE_ERROR = "M-0001";
+    //制作合同集数错误
+    public static final String MAKECONTRACT_SECTION_ERROR = "M-0002";
+
 
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 

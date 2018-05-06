@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -136,12 +137,29 @@ public class MakeServiceImpl implements MakeService {
             //TODO 数组对比
 
         }else {
+            int totalSection = makeContract.getTotalSection();
+            int sectionSum = 0;
+            BigDecimal totalPrice = makeContract.getTotalPrice();
+            BigDecimal priceSum = new BigDecimal(0);
+
+            ArrayList<MakeContractProduct> products = makeContract.getMcProducts();
+            for(MakeContractProduct mcProduct : products) {
+                sectionSum += mcProduct.getSection();
+                priceSum = priceSum.add(mcProduct.getPrice());
+            }
+            if(sectionSum != totalSection) {
+                return ErrorCode.MAKECONTRACT_SECTION_ERROR;
+            }
+            if(priceSum.compareTo(totalPrice) != 0) {
+                return ErrorCode.MAKECONTRACT_PIRCE_ERROR;
+            }
+
             String code = createCode(makeContract);
             makeContract.setCode(code);
             makeContract.setCreator(userId);
             makeContract.setCreateTime(curDate);
             ret = makeContractMapper.insertMakeContract(makeContract);
-            ArrayList<MakeContractProduct> products = makeContract.getMcProducts();
+//            ArrayList<MakeContractProduct> products = makeContract.getMcProducts();
 
             for(MakeContractProduct mcProduct : products) {
                 mcProduct.setMakeContractId(makeContract.getId());
