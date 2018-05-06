@@ -15,7 +15,9 @@ $(document).ready(function(){
     $("#product-list-select").on("select2:select",function(e){
         var id = e.params.data.id;
         productItem(id);
-    })
+    });
+
+    MAKELIST.loadMakers();
 });
 
 function productItem(id) {
@@ -29,7 +31,7 @@ function productItem(id) {
             var productItemObj = $(productItemHtml).popover().data('bindedData', productItem);
 
             $('#product-list-selected').append(productItemObj);
-
+            MAKELIST.loadAnnouncers(null, productItem.id);
         }
     )
 }
@@ -159,8 +161,8 @@ MAKELIST.popEditMakeContractModal = function (id) {
                 $('#inputId').val(makeContract.id);
                 $('#inputTargetType option:first').prop("selected", 'selected');
                 $('#inputOwner').val(makeContract.owner);
-                $('#inputWorker').val(makeContract.worker);
-                $('#inputMaker').val(makeContract.maker);
+                // $('#inputWorker').val(makeContract.worker);
+                $('#inputMakerId').val(makeContract.makerId).trigger('change');
                 $('#inputTotalSection').val(makeContract.totalSection);
                 $('#inputTotalPrice').val(makeContract.totalPrice);
                 var makeContractProducts = makeContract.mcProducts;
@@ -169,7 +171,7 @@ MAKELIST.popEditMakeContractModal = function (id) {
                     productItem(productId);
                     $("#" + productId + "_inputSection").val(makeContractProducts[k].section);
                     $("#" + productId+ "_inputPrice").val(makeContractProducts[k].price);
-                    $("#" + productId + "_inputWorker").val(makeContractProducts[k].worker);
+                    $("#inputAnnouncerId_" + productId).val(makeContractProducts[k].announcerId).trigger('change');
                 }
 
                 $('#contractModal').modal('show');
@@ -264,7 +266,8 @@ MAKELIST.submitTask = function () {
 
 MAKELIST.submitMakeContract = function () {
     var id = $('#inputId').val();
-    var maker = $('#inputMaker').val();
+    // var maker = $('#inputMaker').val();
+    var makerId = $('#inputMakerId').val();
     var targetType = $('#inputTargetType').val();
     var owner = $('#inputOwner').val();
     var totalPrice = $('#inputTotalPrice').val();
@@ -275,12 +278,12 @@ MAKELIST.submitMakeContract = function () {
         var productItem = $(productObjs[i]).data('bindedData');
         var section = $("#" + productItem.id + "_inputSection").val();
         var price = $("#" + productItem.id + "_inputPrice").val();
-        var worker = $("#" + productItem.id + "_inputWorker").val();
+        var announcerId = $("#inputAnnouncerId_" + productItem.id).val();
         var mcProduct = {
             productId: productItem.id,
             section: section,
             price: price,
-            worker: worker
+            announcerId: announcerId
         };
         mcProducts[i] = mcProduct;
     }
@@ -291,7 +294,7 @@ MAKELIST.submitMakeContract = function () {
         totalSection: totalSection,
         targetType: targetType,
         owner: owner,
-        maker: maker,
+        makerId: makerId,
         mcProducts: mcProducts
     };
 
@@ -337,4 +340,171 @@ MAKELIST.loadMcProduct = function (id) {
             }
         }
     )
-}
+};
+
+MAKELIST.showAddMakerPanel = function() {
+    MAKELIST.clearAddMakerPanel();
+    $('#makeContractWizard').hide();
+    $('#addMakerPanel').show();
+};
+
+MAKELIST.hideAddMakerPanel = function() {
+    $('#addMakerPanel').hide();
+    $('#makeContractWizard').show();
+};
+
+MAKELIST.clearAddMakerPanel = function() {
+    $('#inputMakerName').val('');
+    $('#inputMakerContact').val('');
+    $('#inputMakerPhone').val('');
+    $('#inputMakerDesc').val('');
+};
+
+MAKELIST.addMaker = function() {
+    var gName = $('#inputMakerName').val();
+    var gContact = $('#inputMakerContact').val();
+    var gPhone = $('#inputMakerPhone').val();
+    var gDesc = $('#inputMakerDesc').val();
+
+    $.post(
+        "/system/createMaker",
+        {
+            'name': gName,
+            'contact': gContact,
+            'phone': gPhone,
+            'desc': gDesc
+        },
+        function (data) {
+            if(data.code == '0') {
+                EMARS_COMMONS.showSuccess("制作方保存成功！");
+                MAKELIST.hideAddMakerPanel();
+
+                $('#inputMakerId').select2('destroy');
+                $('#inputMakerId').empty();
+                MAKELIST.loadMakers(function(){
+                    var curId = $('#inputMakerId option').filter(function () {
+                        return $(this).html() == gName;
+                    }).val();
+                    $('#inputMakerId').val(curId).trigger('change');
+                });
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+};
+
+MAKELIST.loadMakers = function(callback) {
+    $.get('/system/allMakers', {}, function(data){
+        var defaultMakerId;
+        if(data) {
+            if(data.code == '0') {
+                var result = data.data;
+                var optionsHtml = '';
+                for(var i=0; i<result.length; i++) {
+                    defaultMakerId = result[i]['id'];
+                    optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+                }
+                $('#inputMakerId').html(optionsHtml);
+            }
+        }
+        $('#inputMakerId').select2({
+            dropdownParent: $("#contractModal"),
+            placeholder : '请选择'
+        });
+        if(callback) {
+            callback();
+        }
+    });
+};
+
+MAKELIST.showAddAnnouncerPanel = function(prodId) {
+    MAKELIST.clearAddAnnouncerPanel();
+    $('#inputAnnouncerProductId').val(prodId);
+    $('#makeContractWizard').hide();
+    $('#addAnnouncerPanel').show();
+};
+
+MAKELIST.hideAddAnnouncerPanel = function() {
+    $('#addAnnouncerPanel').hide();
+    $('#makeContractWizard').show();
+};
+
+MAKELIST.clearAddAnnouncerPanel = function() {
+    $('#inputAnnouncerProductId').val('');
+    $('#inputAnnouncerName').val('');
+    $('#inputAnnouncerPseudonym').val('');
+    $('#inputAnnouncerDesc').val('');
+};
+
+MAKELIST.addAnnouncer = function() {
+    var prodId = $('#inputAnnouncerProductId').val();
+    var aName = $('#inputAnnouncerName').val();
+    var aDesc = $('#inputAnnouncerDesc').val();
+    var aPseudonym = $('#inputAnnouncerPseudonym').val();
+
+    $.post(
+        "/system/createAnnouncer",
+        {
+            'name': aName,
+            'desc': aDesc,
+            'pseudonym': aPseudonym
+        },
+        function (data) {
+            if(data.code == '0') {
+                EMARS_COMMONS.showSuccess("演播人保存成功！");
+                MAKELIST.hideAddAnnouncerPanel();
+                var selectObj = $('#inputAnnouncerId_' + prodId);
+                var selected = selectObj.select2('data');
+                var selectedIds = [];
+                for(var i=0; i<selected.length; i++) {
+                    selectedIds.push(selected[i]['id']);
+                }
+                selectObj.select2('destroy');
+                selectObj.empty();
+                MAKELIST.loadAnnouncers(function(pid){
+                    var curId = $('#inputAnnouncerId_'+ pid + ' option').filter(function () {
+                        if(aPseudonym) {
+                            return $(this).html() == aName+"("+aPseudonym+")";
+                        }else{
+                            return $(this).html() == aName;
+                        }
+                    }).val();
+                    selectedIds.push(curId);
+                    selectObj.val(selectedIds).trigger('change');
+                }, prodId);
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+};
+
+MAKELIST.loadAnnouncers = function(callback, prodId) {
+    $.get(
+        "/system/allAnnouncers",
+        function(data) {
+            if(data.code == '0') {
+                var announcers = data.data;
+                var html = '';
+                for(var i = 0; i < announcers.length; i ++) {
+                    var announcer = announcers[i];
+                    var announcerName = announcer.name;
+                    if(announcer.pseudonym) {
+                        announcerName = announcerName + "(" + announcer.pseudonym + ")";
+                    }
+                    html += '<option value="' + announcer.id + '">' + announcerName + '</option>';
+                }
+                $('#inputAnnouncerId_' + prodId).empty().append(html);
+                $('#inputAnnouncerId_' + prodId).select2({
+                    dropdownParent: $("#contractModal")
+                });
+                if(callback) {
+                    callback(prodId);
+                }
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    )
+};

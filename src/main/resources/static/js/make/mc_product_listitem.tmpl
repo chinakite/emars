@@ -27,9 +27,10 @@
         </div>
         <div class="col-sm-12">
             <div class="form-group">
-                <label for="inputWorker" class="col-sm-2 control-label">演播人</label>
+                <label class="col-sm-2 control-label">演播人</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="{{id}}_inputWorker"/>
+                    <select id="inputAnnouncerId_{{id}}" name="inputAnnouncerId" class="form-control"></select>
+                    <small><a href="javascript:void(0);" onclick="MAKELIST.showAddAnnouncerPanel({{id}});">没有？新建演播人</a></small>
                 </div>
             </div>
         </div>

@@ -12,6 +12,7 @@ public class MakeContractProduct extends BaseEntity {
     private long makeContractId;
     private long productId;
     private String worker;
+    private Long announcerId;
     private BigDecimal price;
     private Integer section;
     private Long creator;
@@ -80,5 +81,13 @@ public class MakeContractProduct extends BaseEntity {
 
     public void setMakeContractDocs(ArrayList<MakeContractDoc> makeContractDocs) {
         this.makeContractDocs = makeContractDocs;
+    }
+
+    public Long getAnnouncerId() {
+        return announcerId;
+    }
+
+    public void setAnnouncerId(Long announcerId) {
+        this.announcerId = announcerId;
     }
 }

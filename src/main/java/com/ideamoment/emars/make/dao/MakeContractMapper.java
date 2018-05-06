@@ -16,23 +16,23 @@ import java.util.List;
 public interface MakeContractMapper {
 
     @Insert("INSERT INTO t_make_contract " +
-            "(`C_CODE`,`C_TARGET_TYPE`,`C_OWNER`,`C_MAKER`,`C_TOTAL_SECTION`,`C_TOTAL_PRICE`," +
+            "(`C_CODE`,`C_TARGET_TYPE`,`C_OWNER`,`C_MAKER_ID`,`C_TOTAL_SECTION`,`C_TOTAL_PRICE`," +
             "`C_CREATOR`,`C_CREATETIME`) " +
             "VALUES (" +
-            "#{code}, #{targetType}, #{owner}, #{maker}, #{totalSection}, #{totalPrice}, " +
+            "#{code}, #{targetType}, #{owner}, #{makerId}, #{totalSection}, #{totalPrice}, " +
             "#{creator}, #{createTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertMakeContract(MakeContract makeContract);
 
     @Update("UPDATE t_make_contract SET " +
-            "`C_TARGET_TYPE`=#{targetType},`C_OWNER`=#{owner},`C_MAKER`=#{maker}," +
+            "`C_TARGET_TYPE`=#{targetType},`C_OWNER`=#{owner},`C_MAKER_ID`=#{makerId}," +
             "`C_TOTAL_SECTION`=#{totalSection},`C_TOTAL_PRICE`=#{totalPrice}," +
             "`C_MODIFIER`=#{modifier},`C_MODIFYTIME`=#{modifyTime} " +
             "WHERE c_id = #{id}")
     boolean updateMakeConntract(MakeContract makeContract);
 
     @Update("UPDATE t_make_contract_product SET " +
-            "`C_SECTION`=#{section},`C_PRICE`=#{price},`C_WORKER`=#{worker}" +
+            "`C_SECTION`=#{section},`C_PRICE`=#{price},`C_ANNOUNCER_ID`=#{announcerId}" +
             "`C_MODIFIER`=#{modifier},`C_MODIFYTIME`=#{modifyTime} " +
             "WHERE c_id = #{id}")
     boolean updateMakeContractProduct(MakeContractProduct makeContractProduct);
@@ -41,7 +41,7 @@ public interface MakeContractMapper {
     @Results(id = "makeContractMap", value ={
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "code", column = "C_CODE"),
-            @Result(property = "maker", column = "C_MAKER"),
+            @Result(property = "makerId", column = "C_MAKER_ID"),
             @Result(property = "targetType", column = "C_TARGET_TYPE"),
             @Result(property = "owner", column = "C_OWNER"),
             @Result(property = "totalSection", column = "C_TOTAL_SECTION"),
@@ -123,9 +123,9 @@ public interface MakeContractMapper {
     ArrayList<MakeContractDoc> listContractDocs(@Param("mcProductId") long mcProductId, @Param("type") String type);
 
     @Insert("INSERT INTO T_MAKE_CONTRACT_PRODUCT " +
-            "(`C_MAKE_CONTRACT_ID`,`C_PRODUCT_ID`,`C_WORKER`,`C_PRICE`,`C_SECTION`,`C_CREATOR`,`C_CREATETIME`) " +
+            "(`C_MAKE_CONTRACT_ID`,`C_PRODUCT_ID`,`C_ANNOUNCER_ID`,`C_PRICE`,`C_SECTION`,`C_CREATOR`,`C_CREATETIME`) " +
             "VALUES " +
-            "(#{makeContractId}, #{productId}, #{worker}, #{price}, #{section}, #{creator}, #{createTime})")
+            "(#{makeContractId}, #{productId}, #{announcerId}, #{price}, #{section}, #{creator}, #{createTime})")
     boolean insertMakeContractProduct(MakeContractProduct makeContractProduct);
 
     @Delete("DELETE FROM t_make_contract WHERE c_id = #{id}")
@@ -142,7 +142,7 @@ public interface MakeContractMapper {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "makeContractId", column = "C_MAKE_CONTRACT_ID"),
             @Result(property = "productId", column = "C_PRODUCT_ID"),
-            @Result(property = "worker", column = "C_WORKER"),
+            @Result(property = "announcerId", column = "C_ANNOUNCER"),
             @Result(property = "price", column = "C_PRICE"),
             @Result(property = "section", column = "C_SECTION")
     })
