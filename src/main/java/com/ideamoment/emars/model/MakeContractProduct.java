@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by yukiwang on 2018/4/25.
  */
-public class MakeContractProduct extends BaseEntity {
+public class MakeContractProduct extends HistoriableEntity {
 
     private long makeContractId;
     private long productId;
@@ -15,8 +15,6 @@ public class MakeContractProduct extends BaseEntity {
     private Long announcerId;
     private BigDecimal price;
     private Integer section;
-    private Long creator;
-    private Date createTime;
     private ArrayList<MakeContractDoc> makeContractDocs = new ArrayList<>();
     private ArrayList<Announcer> announcers = new ArrayList<Announcer>();
 
@@ -50,22 +48,6 @@ public class MakeContractProduct extends BaseEntity {
 
     public void setSection(Integer section) {
         this.section = section;
-    }
-
-    public Long getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Long creator) {
-        this.creator = creator;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 
     public String getWorker() {

@@ -24,7 +24,7 @@ $(document).ready(function(){
     MAKELIST.loadMakers();
 });
 
-function productItem(id, mcProd) {
+function productItem(id, mcProd, callback) {
     $.get(
         "/product/product",
         {id: id},
@@ -32,16 +32,18 @@ function productItem(id, mcProd) {
             var productItem = data.data;
 
             var productItemHtml = nunjucks.render('../js/make/mc_product_listitem.tmpl', productItem);
-            var productItemObj = $(productItemHtml);
-            productItemObj.find('.product-list-item-info').popover().data('bindedData', productItem);
+            var productItemObj = $(productItemHtml).data('bindedData', productItem);
+            productItemObj.find('.product-list-item-info').popover();
 
             $('#product-list-selected').append(productItemObj);
-            MAKELIST.loadAnnouncers(null, productItem.id);
+            MAKELIST.loadAnnouncers(callback, productItem.id);
 
             if(mcProd) {
                 $('#' + id + "_inputSection").val(mcProd.section);
                 $('#' + id + "_inputPrice").val(mcProd.price);
             }
+
+
         }
     )
 }
@@ -190,10 +192,16 @@ MAKELIST.popEditMakeContractModal = function (id) {
                 for(var k in makeContractProducts) {
                     var productId = makeContractProducts[k].productId;
                     prodIds.push(productId);
-                    productItem(productId, makeContractProducts[k]);
-                    $("#" + productId + "_inputSection").val(makeContractProducts[k].section);
-                    $("#" + productId+ "_inputPrice").val(makeContractProducts[k].price);
-                    $("#inputAnnouncerId_" + productId).val(makeContractProducts[k].announcerId).trigger('change');
+                    productItem(productId, makeContractProducts[k], function(){
+                        var announcers = makeContractProducts[k].announcers;
+                        var announcerIds = [];
+                        for(var c=0; c<announcers.length; c++) {
+                            announcerIds.push(announcers[c].id);
+                        }
+                        console.log(announcerIds);
+                        console.log($("#inputAnnouncerId_" + productId));
+                        $("#inputAnnouncerId_" + productId).val(announcerIds).trigger('change');
+                    });
                 }
                 $('#product-list-select').val(prodIds).trigger('change');
                 $('#contractModal').modal('show');

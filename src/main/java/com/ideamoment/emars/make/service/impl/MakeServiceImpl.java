@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -101,6 +102,15 @@ public class MakeServiceImpl implements MakeService {
                 mcProductIds.append(",");
             }
             mcProductIds.append(String.valueOf(makeContractProduct.getId()));
+
+            ArrayList<ProductAnnouncer> prodAnnouncers = makeContractMapper.listContractProductAnnouncers(id, makeContractProduct.getProductId());
+            ArrayList<Announcer> announcers = new ArrayList<Announcer>();
+            for(ProductAnnouncer prodAnnouncer: prodAnnouncers) {
+                Announcer announcer = new Announcer();
+                announcer.setId(prodAnnouncer.getAnnouncerId());
+                announcers.add(announcer);
+            }
+            makeContractProduct.setAnnouncers(announcers);
         }
         makeContract.setMcProducts(makeContractProducts);
         makeContract.setMcProductIds(mcProductIds.toString());
@@ -127,15 +137,34 @@ public class MakeServiceImpl implements MakeService {
             MakeContract oldMackContract = findMakeContract(makeContract.getId());
             ret = makeContractMapper.updateMakeConntract(makeContract);
             ArrayList<MakeContractProduct> products = makeContract.getMcProducts();
-            for(MakeContractProduct mcProduct : products) {
-                mcProduct.setMakeContractId(makeContract.getId());
-                mcProduct.setCreator(userId);
-                mcProduct.setCreateTime(curDate);
-                makeContractMapper.updateMakeContractProduct(mcProduct);
+
+            ArrayList<MakeContractProduct> existedMakeContractProds = makeContractMapper.listContractProducts(makeContract.getId());
+            HashSet<Long> existedMcProdIds = new HashSet<Long>();
+            for(MakeContractProduct mcProd : existedMakeContractProds ) {
+                existedMcProdIds.add(mcProd.getProductId());
             }
 
-            //TODO 数组对比
+            HashSet<Long> newMcProdIds = new HashSet<Long>();
+            for(MakeContractProduct mcProduct : products) {
+                newMcProdIds.add(mcProduct.getProductId());
+                if(existedMcProdIds.contains(mcProduct.getProductId())) {
+                    mcProduct.setModifier(userId);
+                    mcProduct.setModifyTime(curDate);
+                    makeContractMapper.updateMakeContractProduct(mcProduct);
+                    makeContractMapper.deleteContractProductAnnouncers(makeContract.getId(), mcProduct.getProductId());
+                    saveProductAnnouncers(makeContract, userId, curDate, mcProduct);
+                }else {
+                    makeContractMapper.insertMakeContractProduct(mcProduct);
+                    saveProductAnnouncers(makeContract, userId, curDate, mcProduct);
+                }
+            }
 
+            for(MakeContractProduct mcProd : existedMakeContractProds ) {
+                if(!newMcProdIds.contains(mcProd.getProductId())) {
+                    makeContractMapper.deleteMakeContractProducts(mcProd.getId());
+                    makeContractMapper.deleteContractProductAnnouncers(makeContract.getId(), mcProd.getProductId());
+                }
+            }
         }else {
             int totalSection = makeContract.getTotalSection();
             int sectionSum = 0;
@@ -168,7 +197,7 @@ public class MakeServiceImpl implements MakeService {
                 for(Announcer announcer : announcers) {
                     ProductAnnouncer productAnnouncer = new ProductAnnouncer();
                     productAnnouncer.setAnnouncerId(announcer.getId());
-                    productAnnouncer.setProductId(mcProduct.getId());
+                    productAnnouncer.setProductId(mcProduct.getProductId());
                     productAnnouncer.setMakeContractId(makeContract.getId());
                     productAnnouncer.setCreator(userId);
                     productAnnouncer.setCreateTime(curDate);
@@ -178,6 +207,18 @@ public class MakeServiceImpl implements MakeService {
         }
 
         return resultString(ret);
+    }
+
+    private void saveProductAnnouncers(MakeContract makeContract, long userId, Date curDate, MakeContractProduct mcProduct) {
+        for(Announcer announcer : mcProduct.getAnnouncers()) {
+            ProductAnnouncer pa = new ProductAnnouncer();
+            pa.setAnnouncerId(announcer.getId());
+            pa.setMakeContractId(makeContract.getId());
+            pa.setProductId(mcProduct.getProductId());
+            pa.setCreator(userId);
+            pa.setCreateTime(curDate);
+            makeContractMapper.insertProductAnnouncer(pa);
+        }
     }
 
     @Override

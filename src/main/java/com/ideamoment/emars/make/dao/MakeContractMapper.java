@@ -29,7 +29,7 @@ public interface MakeContractMapper {
     boolean updateMakeConntract(MakeContract makeContract);
 
     @Update("UPDATE t_make_contract_product SET " +
-            "`C_SECTION`=#{section},`C_PRICE`=#{price},`C_ANNOUNCER_ID`=#{announcerId}" +
+            "`C_SECTION`=#{section},`C_PRICE`=#{price},`C_ANNOUNCER_ID`=#{announcerId}," +
             "`C_MODIFIER`=#{modifier},`C_MODIFYTIME`=#{modifyTime} " +
             "WHERE c_id = #{id}")
     boolean updateMakeContractProduct(MakeContractProduct makeContractProduct);
@@ -119,6 +119,17 @@ public interface MakeContractMapper {
     })
     ArrayList<MakeContractDoc> listContractDocs(@Param("mcProductId") long mcProductId, @Param("type") String type);
 
+    @Select("select * from t_product_announcer where c_mc_id = #{makeContractId} and c_product_id=#{productId}")
+    @Results(id="productAnnouncerMap", value={
+            @Result(property = "id", column = "c_id", id = true),
+            @Result(property = "productId", column = "C_PRODUCT_ID"),
+            @Result(property = "makeContractId", column = "C_MC_ID"),
+            @Result(property = "announcerId", column = "C_ANNOUNCER_ID"),
+            @Result(property = "creator", column = "C_CREATOR"),
+            @Result(property = "createTime", column = "C_CREATETIME")
+    })
+    ArrayList<ProductAnnouncer> listContractProductAnnouncers(@Param("makeContractId") long makeContractId, @Param("productId") long productId);
+
     @Insert("INSERT INTO T_MAKE_CONTRACT_PRODUCT " +
             "(`C_MAKE_CONTRACT_ID`,`C_PRODUCT_ID`,`C_PRICE`,`C_SECTION`,`C_CREATOR`,`C_CREATETIME`) " +
             "VALUES " +
@@ -165,4 +176,11 @@ public interface MakeContractMapper {
 
     @Insert("insert into t_product_announcer (c_product_id, c_announcer_id, c_mc_id, c_creator, c_createtime)values(#{productId}, #{announcerId}, #{makeContractId}, #{creator}, #{createTime})")
     boolean insertProductAnnouncer(ProductAnnouncer productAnnouncer);
+
+    @Insert("delete from t_product_announcer where c_mc_id = #{makeContractId} and c_product_id = #{productId}")
+    boolean deleteContractProductAnnouncers(@Param("makeContractId") Long makeContractId, @Param("productId") Long productId);
+
+    @Select("select * from t_make_contract_product where C_MAKE_CONTRACT_ID = #{id}")
+    @ResultMap("mcProductMap")
+    ArrayList<MakeContractProduct> listContractProducts(@Param("id") long id);
 }
