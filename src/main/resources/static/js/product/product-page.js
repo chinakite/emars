@@ -271,8 +271,9 @@ PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
     }, null);
 };
 
-PRODUCTPAGE.popChangeProductionStateModel = function (id) {
+PRODUCTPAGE.popChangeProductionStateModel = function (id, state) {
     $('#inputEditId').val(id);
+    $("input[name='inputProductionState'][value='" + state + "']").prop("checked", "checked");
     $('#changeProductionStateModel').modal('show');
 }
 
@@ -285,7 +286,8 @@ PRODUCTPAGE.saveProductionState = function () {
         function(data) {
             if(data.code == '0') {
                 var product = data.data;
-                $("#productionStateText").text(product.productionStateText);
+                $("#productionStateText span").text(product.productionStateText);
+                $("#productionStateText button").attr("onclick","PRODUCTPAGE.popChangeProductionStateModel(" + product.id + ", " + product.productionState + ");");
                 $('#changeProductionStateModel').modal('hide');
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);

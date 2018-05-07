@@ -30,9 +30,9 @@
                         <p>
                             <label>入库状态：</label><span th:text="${product.stockInText}"></span>
                         </p>
-                        <p>
-                            <label>制作状态：</label><span th:text="${product.productionStateText}" id="productionStateText"></span>
-                            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" th:onclick="|PRODUCTPAGE.popChangeProductionStateModel(${product.id});|">修改</button>
+                        <p id="productionStateText">
+                            <label>制作状态：</label><span th:text="${product.productionStateText}"></span>
+                            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" th:onclick="|PRODUCTPAGE.popChangeProductionStateModel(${product.id}, ${product.productionState});|">修改</button>
                         </p>
                     </div>
                 </div>

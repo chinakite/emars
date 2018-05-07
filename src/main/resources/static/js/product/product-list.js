@@ -78,12 +78,15 @@ PRODUCTLIST.initProductTbl = function(){
                     if(full.type == 'wz') {
                         return full.wordCount + "万字";
                     }else{
-                        return full.wordCount + "集";
+                        return full.section + "集";
                     }
                 }
             },
             {
                 "data": "stockInText"
+            },
+            {
+                "data": "productionStateText"
             },
             {
                 "render": function(data, type, full) {
