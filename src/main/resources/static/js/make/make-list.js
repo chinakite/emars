@@ -16,6 +16,10 @@ $(document).ready(function(){
         var id = e.params.data.id;
         productItem(id);
     });
+    $("#product-list-select").on("select2:unselect",function(e){
+        var id = e.params.data.id;
+        MAKELIST.removeProduct(id);
+    });
 
     MAKELIST.loadMakers();
 });
@@ -28,7 +32,8 @@ function productItem(id) {
             var productItem = data.data;
 
             var productItemHtml = nunjucks.render('../js/make/mc_product_listitem.tmpl', productItem);
-            var productItemObj = $(productItemHtml).popover().data('bindedData', productItem);
+            var productItemObj = $(productItemHtml);
+            productItemObj.find('.product-list-item-info').popover().data('bindedData', productItem);
 
             $('#product-list-selected').append(productItemObj);
             MAKELIST.loadAnnouncers(null, productItem.id);
@@ -52,8 +57,18 @@ MAKELIST.loadProductList = function() {
     )
 }
 
-MAKELIST.removeProduct = function(obj) {
-    $(obj).parent().parent().remove();
+MAKELIST.removeProduct = function(id, syncSelect2) {
+    $('.product-list-item[rel='+id+']').remove();
+    if(syncSelect2) {
+        var select2Datas = $('#product-list-select').select2('data');
+        var selectIds = [];
+        for(var i=0; i<select2Datas.length; i++) {
+            if(select2Datas[i].id != id) {
+                selectIds.push(select2Datas[i].id);
+            }
+        }
+        $('#product-list-select').val(selectIds).trigger('change');
+    }
 }
 
 MAKELIST.initMakeContractTbl = function () {
@@ -159,6 +174,7 @@ MAKELIST.popEditMakeContractModal = function (id) {
             if (data.code == '0') {
                 var makeContract = data.data;
                 $('#inputId').val(makeContract.id);
+                $('#inputCode').val(makeContract.code);
                 $('#inputTargetType option:first').prop("selected", 'selected');
                 $('#inputOwner').val(makeContract.owner);
                 // $('#inputWorker').val(makeContract.worker);
@@ -219,6 +235,7 @@ MAKELIST.clearTaskModal = function () {
 }
 
 MAKELIST.clearContractModal = function () {
+    $('#inputCode').val('');
     $('#inputTargetType option:first').prop("selected", 'selected');
     $('#inputOwner').val('北京悦库时光文化传媒有限公司');
     $('#inputTotalSection').val('');
@@ -267,6 +284,7 @@ MAKELIST.submitTask = function () {
 MAKELIST.submitMakeContract = function () {
     var id = $('#inputId').val();
     // var maker = $('#inputMaker').val();
+    var code = $('#inputCode').val();
     var makerId = $('#inputMakerId').val();
     var targetType = $('#inputTargetType').val();
     var owner = $('#inputOwner').val();
@@ -278,18 +296,22 @@ MAKELIST.submitMakeContract = function () {
         var productItem = $(productObjs[i]).data('bindedData');
         var section = $("#" + productItem.id + "_inputSection").val();
         var price = $("#" + productItem.id + "_inputPrice").val();
-        var announcerId = $("#inputAnnouncerId_" + productItem.id).val();
         var mcProduct = {
             productId: productItem.id,
             section: section,
             price: price,
-            announcerId: announcerId
+            announcers: []
         };
+        var announcerIds = $("#inputAnnouncerId_" + productItem.id).select2('data');
+        for(var j=0; j<announcerIds.length; j++) {
+            mcProduct.announcers.push({id: announcerIds[j].id});
+        }
         mcProducts[i] = mcProduct;
     }
 
     var postData = {
         id: id,
+        code: code,
         totalPrice: totalPrice,
         totalSection: totalSection,
         targetType: targetType,
@@ -507,4 +529,33 @@ MAKELIST.loadAnnouncers = function(callback, prodId) {
             }
         }
     )
+};
+
+MAKELIST.autoSplit = function() {
+    var totalSections = parseInt($('#inputTotalSection').val());
+    var totalPrice = parseInt($('#inputTotalPrice').val());
+
+    var selected = $('#product-list-select').select2('data');
+    var length = selected.length;
+    if(length == 0) {
+        alert("您还没有选择作品。");
+        return;
+    }
+    if(length == 1) {
+        var selectedId = selected[0].id;
+        $('#'+selectedId+'_inputSection').val(totalSections);
+        $('#'+selectedId+'_inputPrice').val(totalPrice);
+    }else{
+        var avgSections = parseInt(totalSections/length);
+        var avgPrice = parseInt(totalPrice/length);
+
+        for(var i=0; i<length-1; i++) {
+            var selectedId = selected[i].id;
+            $('#'+selectedId+'_inputSection').val(avgSections);
+            $('#'+selectedId+'_inputPrice').val(avgPrice);
+        }
+        var lastSelectedId = selected[length-1].id;
+        $('#'+lastSelectedId+'_inputSection').val((totalSections - (avgSections*(length-1))));
+        $('#'+lastSelectedId+'_inputPrice').val((totalPrice - (avgPrice*(length-1))));
+    }
 };

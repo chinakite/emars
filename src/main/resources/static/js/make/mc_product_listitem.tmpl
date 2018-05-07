@@ -1,17 +1,17 @@
-<div {% if id %}rel="{{id}}"{% endif %} class="list-group-item product-list-item" data-trigger="hover" data-container="body" data-toggle="popover" data-placement="left" data-title="{{name}}" data-html="true" data-content="作者：{{authorsTextInline}}<br/>{% if wordCount %}字数：{{wordCount}}万字{% endif %}{% if section %}集数：{{section}}集{% endif %}<br/>作品题材：{{subjectName}}<br/>出版状态：{{publishStateText}}{% if publishState == '1' %}<br/>ISBN：{{isbn}}{% endif %}<br/>授权种类：{{privilegeText}}<br/>转授权：{{grantText}}<br/>授权方式：{{copyrightTypeText}}<br/>授权费用：￥{{copyrightPrice}}.00<br/>电台交流：{{radioTransText}}<br/>是否分成：{{settlementTypeText}}<br/>分成比例：{{proportions}}<br/>开始日期：{{copyrightBegin}}<br/>结束日期：{{copyrightEnd}}<br/>备注：{{desc}}">
-    <div class="product-list-item-info">
+<div {% if id %}rel="{{id}}"{% endif %} class="list-group-item product-list-item">
+    <div class="product-list-item-info"  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="left" data-title="{{name}}" data-html="true" data-content="作者：{{authorsTextInline}}<br/>{% if wordCount %}字数：{{wordCount}}万字{% endif %}{% if section %}集数：{{section}}集{% endif %}<br/>作品题材：{{subjectName}}<br/>出版状态：{{publishStateText}}{% if publishState == '1' %}<br/>ISBN：{{isbn}}{% endif %}<br/>授权种类：{{privilegeText}}<br/>转授权：{{grantText}}<br/>授权方式：{{copyrightTypeText}}<br/>授权费用：￥{{copyrightPrice}}.00<br/>电台交流：{{radioTransText}}<br/>是否分成：{{settlementTypeText}}<br/>分成比例：{{proportions}}<br/>开始日期：{{copyrightBegin}}<br/>结束日期：{{copyrightEnd}}<br/>备注：{{desc}}">
         <h4 class="list-group-item-heading">{{name}}<small class="m-l-1">{{authorName}}{% if authorPseudonym %}（{{authorPseudonym}}）{% endif %}</small></h4>
         <p class="list-group-item-text">{% if wordCount %}{{wordCount}}万字{% endif %}{% if section %}{{section}}集{% endif %}<span class="m-l-1 m-r-1">·</span>{{isbn}}<span class="m-l-1 m-r-1">·</span>{{subjectText}}</p>
     </div>
     <div class="product-list-item-toolbar">
-        <a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="MAKELIST.removeProduct(this);"><i class="fa fa-remove"></i></a>
+        <a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="MAKELIST.removeProduct({{id}}, true);"><i class="fa fa-remove"></i></a>
     </div>
 
     <hr class="panel-wide-block" />
     <form class="wizard-pane active form-horizontal" id="wizard-basic">
         <div class="col-sm-6">
             <div class="form-group">
-                <label for="inputSection" class="col-sm-4 control-label">集数</label>
+                <label class="col-sm-4 control-label">集数</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="{{id}}_inputSection"/>
                 </div>
@@ -19,7 +19,7 @@
         </div>
         <div class="col-sm-6">
             <div class="form-group">
-                <label for="inputPrice" class="col-sm-4 control-label">单价</label>
+                <label class="col-sm-4 control-label">单价</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="{{id}}_inputPrice"/>
                 </div>
@@ -29,7 +29,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">演播人</label>
                 <div class="col-sm-10">
-                    <select id="inputAnnouncerId_{{id}}" name="inputAnnouncerId" class="form-control"></select>
+                    <select id="inputAnnouncerId_{{id}}" name="inputAnnouncerId" class="form-control" multiple="multiple"></select>
                     <small><a href="javascript:void(0);" onclick="MAKELIST.showAddAnnouncerPanel({{id}});">没有？新建演播人</a></small>
                 </div>
             </div>

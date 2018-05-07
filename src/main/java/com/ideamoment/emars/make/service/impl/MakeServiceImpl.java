@@ -154,18 +154,26 @@ public class MakeServiceImpl implements MakeService {
                 return ErrorCode.MAKECONTRACT_PIRCE_ERROR;
             }
 
-            String code = createCode(makeContract);
-            makeContract.setCode(code);
             makeContract.setCreator(userId);
             makeContract.setCreateTime(curDate);
             ret = makeContractMapper.insertMakeContract(makeContract);
-//            ArrayList<MakeContractProduct> products = makeContract.getMcProducts();
 
             for(MakeContractProduct mcProduct : products) {
                 mcProduct.setMakeContractId(makeContract.getId());
                 mcProduct.setCreator(userId);
                 mcProduct.setCreateTime(curDate);
                 makeContractMapper.insertMakeContractProduct(mcProduct);
+
+                ArrayList<Announcer> announcers = mcProduct.getAnnouncers();
+                for(Announcer announcer : announcers) {
+                    ProductAnnouncer productAnnouncer = new ProductAnnouncer();
+                    productAnnouncer.setAnnouncerId(announcer.getId());
+                    productAnnouncer.setProductId(mcProduct.getId());
+                    productAnnouncer.setMakeContractId(makeContract.getId());
+                    productAnnouncer.setCreator(userId);
+                    productAnnouncer.setCreateTime(curDate);
+                    makeContractMapper.insertProductAnnouncer(productAnnouncer);
+                }
             }
         }
 

@@ -18,6 +18,7 @@ public class MakeContractProduct extends BaseEntity {
     private Long creator;
     private Date createTime;
     private ArrayList<MakeContractDoc> makeContractDocs = new ArrayList<>();
+    private ArrayList<Announcer> announcers = new ArrayList<Announcer>();
 
     public long getMakeContractId() {
         return makeContractId;
@@ -89,5 +90,13 @@ public class MakeContractProduct extends BaseEntity {
 
     public void setAnnouncerId(Long announcerId) {
         this.announcerId = announcerId;
+    }
+
+    public ArrayList<Announcer> getAnnouncers() {
+        return announcers;
+    }
+
+    public void setAnnouncers(ArrayList<Announcer> announcers) {
+        this.announcers = announcers;
     }
 }

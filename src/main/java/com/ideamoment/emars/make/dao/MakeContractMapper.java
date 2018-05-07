@@ -1,9 +1,6 @@
 package com.ideamoment.emars.make.dao;
 
-import com.ideamoment.emars.model.MakeContract;
-import com.ideamoment.emars.model.MakeContractDoc;
-import com.ideamoment.emars.model.MakeContractProduct;
-import com.ideamoment.emars.model.MakeContractQueryVo;
+import com.ideamoment.emars.model.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
@@ -123,9 +120,10 @@ public interface MakeContractMapper {
     ArrayList<MakeContractDoc> listContractDocs(@Param("mcProductId") long mcProductId, @Param("type") String type);
 
     @Insert("INSERT INTO T_MAKE_CONTRACT_PRODUCT " +
-            "(`C_MAKE_CONTRACT_ID`,`C_PRODUCT_ID`,`C_ANNOUNCER_ID`,`C_PRICE`,`C_SECTION`,`C_CREATOR`,`C_CREATETIME`) " +
+            "(`C_MAKE_CONTRACT_ID`,`C_PRODUCT_ID`,`C_PRICE`,`C_SECTION`,`C_CREATOR`,`C_CREATETIME`) " +
             "VALUES " +
-            "(#{makeContractId}, #{productId}, #{announcerId}, #{price}, #{section}, #{creator}, #{createTime})")
+            "(#{makeContractId}, #{productId}, #{price}, #{section}, #{creator}, #{createTime})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertMakeContractProduct(MakeContractProduct makeContractProduct);
 
     @Delete("DELETE FROM t_make_contract WHERE c_id = #{id}")
@@ -142,7 +140,6 @@ public interface MakeContractMapper {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "makeContractId", column = "C_MAKE_CONTRACT_ID"),
             @Result(property = "productId", column = "C_PRODUCT_ID"),
-            @Result(property = "announcerId", column = "C_ANNOUNCER"),
             @Result(property = "price", column = "C_PRICE"),
             @Result(property = "section", column = "C_SECTION")
     })
@@ -165,4 +162,7 @@ public interface MakeContractMapper {
 
     @Select("select count(c_id) from t_make_contract where c_maker_id = #{makerId}")
     long countMakeContractByMaker(@Param("makerId")long id);
+
+    @Insert("insert into t_product_announcer (c_product_id, c_announcer_id, c_mc_id, c_creator, c_createtime)values(#{productId}, #{announcerId}, #{makeContractId}, #{creator}, #{createTime})")
+    boolean insertProductAnnouncer(ProductAnnouncer productAnnouncer);
 }
