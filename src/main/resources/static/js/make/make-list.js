@@ -24,7 +24,7 @@ $(document).ready(function(){
     MAKELIST.loadMakers();
 });
 
-function productItem(id) {
+function productItem(id, mcProd) {
     $.get(
         "/product/product",
         {id: id},
@@ -37,6 +37,11 @@ function productItem(id) {
 
             $('#product-list-selected').append(productItemObj);
             MAKELIST.loadAnnouncers(null, productItem.id);
+
+            if(mcProd) {
+                $('#' + id + "_inputSection").val(mcProd.section);
+                $('#' + id + "_inputPrice").val(mcProd.price);
+            }
         }
     )
 }
@@ -175,21 +180,22 @@ MAKELIST.popEditMakeContractModal = function (id) {
                 var makeContract = data.data;
                 $('#inputId').val(makeContract.id);
                 $('#inputCode').val(makeContract.code);
-                $('#inputTargetType option:first').prop("selected", 'selected');
+                $('#inputTargetType option[value=' + makeContract.targetType + ']').prop('selected', true);
                 $('#inputOwner').val(makeContract.owner);
-                // $('#inputWorker').val(makeContract.worker);
                 $('#inputMakerId').val(makeContract.makerId).trigger('change');
                 $('#inputTotalSection').val(makeContract.totalSection);
                 $('#inputTotalPrice').val(makeContract.totalPrice);
                 var makeContractProducts = makeContract.mcProducts;
+                var prodIds = [];
                 for(var k in makeContractProducts) {
                     var productId = makeContractProducts[k].productId;
-                    productItem(productId);
+                    prodIds.push(productId);
+                    productItem(productId, makeContractProducts[k]);
                     $("#" + productId + "_inputSection").val(makeContractProducts[k].section);
                     $("#" + productId+ "_inputPrice").val(makeContractProducts[k].price);
                     $("#inputAnnouncerId_" + productId).val(makeContractProducts[k].announcerId).trigger('change');
                 }
-
+                $('#product-list-select').val(prodIds).trigger('change');
                 $('#contractModal').modal('show');
             } else {
                 EMARS_COMMONS.showError(data.code, data.msg);
@@ -242,6 +248,8 @@ MAKELIST.clearContractModal = function () {
     $('#inputMaker').val('');
     $('#inputTotalPrice').val('');
     $('#product-list-selected').empty();
+
+    $('#makeContractWizard').pxWizard('reset');
 }
 
 MAKELIST.submitTask = function () {
