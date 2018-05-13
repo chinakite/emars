@@ -166,8 +166,9 @@ public class CopyrightServiceImpl implements CopyrightService {
                 continue;
             }
         }
-
+        int prodSort = 1;
         for(CopyrightProductInfo product : products) {
+            product.setSort(prodSort);
             product.setCreator(UserContext.getUserId());
             product.setCreateTime(curDate);
             product.setType(copyrightContract.getContractType());
@@ -186,6 +187,7 @@ public class CopyrightServiceImpl implements CopyrightService {
                 productAuthor.setCreateTime(curDate);
                 productMapper.insertProductAuthor(productAuthor);
             }
+            prodSort++;
         }
 
         copyrightMapper.insertCopyrightContract(copyrightContract);
@@ -249,7 +251,10 @@ public class CopyrightServiceImpl implements CopyrightService {
             }
         }
 
+        int prodSort=1;
         for(CopyrightProductInfo product : products) {
+            product.setSort(prodSort);
+            prodSort++;
             if(product.getId() == 0) {
                 String productName = product.getName();
                 String productIsbn = product.getIsbn();

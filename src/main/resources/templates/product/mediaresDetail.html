@@ -19,6 +19,9 @@
                     </div>
                     <div class="panel-body p-a-1">
                         <p>
+                            <label>编号：</label><span th:text="${product.copyrightCode + '-' + product.sort}"></span>
+                        </p>
+                        <p>
                             <label>ISBN：</label><span th:text="${product.isbn}"></span>
                         </p>
                         <p>

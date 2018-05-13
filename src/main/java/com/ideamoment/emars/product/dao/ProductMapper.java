@@ -26,15 +26,18 @@ public interface ProductMapper {
     @Update("UPDATE t_product_info SET " +
             "`C_NAME`=#{name},`C_SUBJECT_ID`=#{subjectId}," +
             "`C_PUBLISH_STATE`=#{publishState},`C_WORDCOUNT`=#{wordCount}," +
-            "`C_DESC`=#{desc}," +
+            "`C_DESC`=#{desc},`C_SORT`=#{sort}" +
             "`C_ISBN`=#{isbn},`C_DESC`=#{desc},`C_MODIFIER`=#{modifier}," +
             "`C_MODIFYTIME`=#{modifyTime} WHERE c_id = #{id}")
     boolean updateProduct(ProductInfo product);
 
-    @Update("UPDATE t_product SET c_type = #{type} WHERE c_id = #{id}")
+    @Update("UPDATE t_product SET C_PRODUCTION_STATE = #{state} WHERE c_id = #{id}")
     boolean updateProductState(@Param("id") long id, @Param("state") String state);
 
-    @Select("SELECT p.*, s.c_name AS subjectName FROM t_product_info p LEFT JOIN t_subject s ON p.c_subject_id = s.c_id WHERE p.c_id = #{id}")
+    @Select("SELECT p.*, s.c_name AS subjectName, c.c_code as copyrightCode FROM t_product_info p LEFT JOIN t_subject s ON p.c_subject_id = s.c_id LEFT JOIN t_copyright_product cp " +
+            "    ON p.c_id = cp.`c_product_id`" +
+            "  LEFT JOIN t_copyright c " +
+            "    ON c.c_id = cp.`c_copyright_id` WHERE p.c_id = #{id}")
     @Results(id = "productMap", value = {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "name", column = "C_NAME"),
@@ -51,11 +54,17 @@ public interface ProductMapper {
             @Result(property = "modifyTime", column = "C_MODIFYTIME"),
             @Result(property = "subjectName", column = "SUBJECTNAME"),
             @Result(property = "productionState", column = "C_PRODUCTION_STATE"),
+            @Result(property = "sort", column = "C_SORT"),
+            @Result(property = "copyrightCode", column = "copyrightCode")
     })
     ProductInfo findProduct(@Param("id") long id);
 
     @Select({"<script>",
-            "SELECT p.*, s.c_name AS subjectName FROM t_product_info p LEFT JOIN t_author a ON p.c_author_id = a.c_id LEFT JOIN t_subject s ON p.c_subject_id = s.c_id",
+            "SELECT p.*, s.c_name AS subjectName, c.c_code as copyrightCode FROM t_product_info p ",
+            "LEFT JOIN t_author a ON p.c_author_id = a.c_id ",
+            "LEFT JOIN t_subject s ON p.c_subject_id = s.c_id ",
+            "LEFT JOIN t_copyright_product cp ON p.c_id = cp.`c_product_id` ",
+            "LEFT JOIN t_copyright c ON c.c_id = cp.`c_copyright_id` ",
             "WHERE p.c_id > 0",
             "<if test='condition.name != null'>",
             " AND p.C_NAME like concat(concat('%',#{condition.productName}),'%')",
@@ -130,9 +139,9 @@ public interface ProductMapper {
     @ResultMap("productMap")
     ProductInfo checkIsbnDuplicated(@Param("isbn") String isbn, @Param("id") Long id);
 
-    @Insert("insert into t_product_info (`c_name`,`c_wordcount`,`c_subject_id`,`c_publish_state`,`c_isbn`,`c_type`,`c_stockin`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`,`c_section`)" +
+    @Insert("insert into t_product_info (`c_name`,`c_wordcount`,`c_subject_id`,`c_publish_state`,`c_isbn`,`c_type`,`c_stockin`,`c_desc`,`c_creator`,`c_createtime`,`c_modifier`,`c_modifytime`,`c_section`, `c_sort`)" +
             "values" +
-            "(#{name}, #{wordCount}, #{subjectId}, #{publishState}, #{isbn}, #{type}, #{stockIn}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime}, #{section})"
+            "(#{name}, #{wordCount}, #{subjectId}, #{publishState}, #{isbn}, #{type}, #{stockIn}, #{desc}, #{creator}, #{createTime}, #{modifier}, #{modifyTime}, #{section}, #{sort})"
     )
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertProductInfo(CopyrightProductInfo productInfo);
@@ -144,7 +153,7 @@ public interface ProductMapper {
             "c_name=#{name}, c_wordcount=#{wordCount}, " +
             "c_subject_id=#{subjectId}, c_publish_state=#{publishState}, c_isbn=#{isbn}, " +
             "c_type=#{type}, c_stockin=#{stockIn}, c_desc=#{desc}, c_modifier=#{modifier}, c_modifytime=#{modifyTime}," +
-            "c_section=#{section} " +
+            "c_section=#{section}, c_sort=#{sort} " +
             "where c_id = #{id}"
     )
     boolean updateProductInfo(CopyrightProductInfo product);

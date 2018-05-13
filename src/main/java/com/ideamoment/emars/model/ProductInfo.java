@@ -21,8 +21,10 @@ public class ProductInfo extends HistoriableEntity {
     private String desc;
     private String productionState;
     private Integer section;
+    private Integer sort;
 
     private String subjectName;
+    private String copyrightCode;
     private List<Author> authors;
 
     public String getName() {
@@ -207,5 +209,21 @@ public class ProductInfo extends HistoriableEntity {
 
     public void setSection(Integer section) {
         this.section = section;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public String getCopyrightCode() {
+        return copyrightCode;
+    }
+
+    public void setCopyrightCode(String copyrightCode) {
+        this.copyrightCode = copyrightCode;
     }
 }
