@@ -106,6 +106,7 @@ PRODUCTPAGE.refreshProductFiles = function() {
     PRODUCTPAGE.refreshProductAuthorIdCardFiles(productId);
     PRODUCTPAGE.refreshProductGrantPaperFiles(productId);
     PRODUCTPAGE.refreshProductPublishContractFiles(productId);
+    PRODUCTPAGE.refreshProductToSaleContractFiles(productId);
     PRODUCTPAGE.refreshProductPicFiles(productId);
 };
 
@@ -182,6 +183,22 @@ PRODUCTPAGE.refreshProductPublishContractFiles = function(productId) {
                 var files = data.data;
                 var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: false});
                 $('#copyrightPublishContractFileList').html(filesHtml);
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+};
+
+PRODUCTPAGE.refreshProductToSaleContractFiles = function(productId) {
+    $.get(
+        '/copyright/toSaleContractFiles',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var files = data.data;
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: true});
+                $('#contractToSaleFileList').html(filesHtml);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
             }

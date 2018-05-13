@@ -138,6 +138,12 @@ public class CopyrightController {
         return JsonData.success(files);
     }
 
+    @RequestMapping(value="/toSaleContractFiles", method = RequestMethod.GET)
+    public JsonData<List<CopyrightFile>> loadToSaleContractFiles(String productId) {
+        List<CopyrightFile> files = copyrightService.loadToSaleContractFiles(productId);
+        return JsonData.success(files);
+    }
+
     @RequestMapping(value="/deleteCopyrightFile", method = RequestMethod.POST)
     public JsonData<String> deleteCopyrightFile(String id) {
         String result = copyrightService.deleteCopyrightFile(id);

@@ -25,4 +25,9 @@ public class CopyrightFileType {
      * 出版合同
      */
     public static final String PUBLISH_CONTRACT = "5";
+
+    /**
+     * 面向营销的合同，会隐去成本等信息。
+     */
+    public static final String CONTRACT_TO_SALE = "6";
 }
