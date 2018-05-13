@@ -143,5 +143,13 @@ public class MakeController {
         }
     }
 
-
+    @RequestMapping(value = "generateContractCode", method = RequestMethod.GET)
+    public JsonData generateContractCode(String signDate, String type) {
+        String code = makeService.generateContractCode(signDate, type);
+        if(code == null) {
+            return JsonData.error(ErrorCode.UNKNOWN_ERROR, "生成合同号时发生错误");
+        }else{
+            return JsonData.success(code);
+        }
+    }
 }

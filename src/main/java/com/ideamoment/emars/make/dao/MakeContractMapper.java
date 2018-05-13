@@ -4,6 +4,7 @@ import com.ideamoment.emars.model.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,17 +14,17 @@ import java.util.List;
 public interface MakeContractMapper {
 
     @Insert("INSERT INTO t_make_contract " +
-            "(`C_CODE`,`C_TARGET_TYPE`,`C_OWNER`,`C_MAKER_ID`,`C_TOTAL_SECTION`,`C_TOTAL_PRICE`," +
+            "(`C_CODE`,`C_TARGET_TYPE`,`C_OWNER`,`C_MAKER_ID`,`C_TOTAL_SECTION`,`C_TOTAL_PRICE`,`C_SIGNDATE`," +
             "`C_CREATOR`,`C_CREATETIME`) " +
             "VALUES (" +
-            "#{code}, #{targetType}, #{owner}, #{makerId}, #{totalSection}, #{totalPrice}, " +
+            "#{code}, #{targetType}, #{owner}, #{makerId}, #{totalSection}, #{totalPrice}, #{signDate}," +
             "#{creator}, #{createTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertMakeContract(MakeContract makeContract);
 
     @Update("UPDATE t_make_contract SET " +
             "`C_TARGET_TYPE`=#{targetType},`C_OWNER`=#{owner},`C_MAKER_ID`=#{makerId}," +
-            "`C_TOTAL_SECTION`=#{totalSection},`C_TOTAL_PRICE`=#{totalPrice}," +
+            "`C_TOTAL_SECTION`=#{totalSection},`C_TOTAL_PRICE`=#{totalPrice},`C_SIGNDATE`=#{signDate}," +
             "`C_MODIFIER`=#{modifier},`C_MODIFYTIME`=#{modifyTime} " +
             "WHERE c_id = #{id}")
     boolean updateMakeConntract(MakeContract makeContract);
@@ -43,6 +44,7 @@ public interface MakeContractMapper {
             @Result(property = "owner", column = "C_OWNER"),
             @Result(property = "totalSection", column = "C_TOTAL_SECTION"),
             @Result(property = "totalPrice", column = "C_TOTAL_PRICE"),
+            @Result(property = "signDate", column = "C_SIGNDATE"),
             @Result(property = "creator", column = "C_CREATOR"),
             @Result(property = "createTime", column = "C_CREATETIME"),
             @Result(property = "modifier", column = "C_MODIFIER"),
@@ -183,4 +185,7 @@ public interface MakeContractMapper {
     @Select("select * from t_make_contract_product where C_MAKE_CONTRACT_ID = #{id}")
     @ResultMap("mcProductMap")
     ArrayList<MakeContractProduct> listContractProducts(@Param("id") long id);
+
+    @Select("select count(c_id) from t_make_contract where c_signdate >= #{begin} and c_signdate < #{end} and C_TARGET_TYPE = #{type}")
+    long countContractsByTimeAndType(@Param("begin") Date begin, @Param("end") Date end, @Param("type") String type);
 }

@@ -15,6 +15,7 @@ public class MakeContract extends HistoriableEntity {
     private Long makerId;
     private Integer totalSection;
     private BigDecimal totalPrice;
+    private String signDate;
     private ArrayList<MakeContractProduct> mcProducts = new ArrayList<MakeContractProduct>();
     private String mcProductIds;
 
@@ -89,5 +90,13 @@ public class MakeContract extends HistoriableEntity {
 
     public void setMakerId(Long makerId) {
         this.makerId = makerId;
+    }
+
+    public String getSignDate() {
+        return signDate;
+    }
+
+    public void setSignDate(String signDate) {
+        this.signDate = signDate;
     }
 }

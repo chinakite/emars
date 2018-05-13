@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -227,4 +228,7 @@ public interface CopyrightMapper {
     @Select("select * from t_copyright_file where c_id = #{id}")
     @ResultMap("copyrightFileMap")
     CopyrightFile findCopyrightFile(@Param("id") Long fileId);
+
+    @Select("select count(c_id) from t_copyright where c_signdate >= #{begin} and c_signdate < #{end} and c_type = #{type}")
+    long countContractsByTimeAndType(@Param("begin") Date beign, @Param("end")Date end, @Param("type") String type);
 }

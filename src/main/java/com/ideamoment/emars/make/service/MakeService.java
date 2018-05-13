@@ -37,4 +37,6 @@ public interface MakeService {
     List<ProductMakeContract> findProductMakeContracts(long productId);
 
     String deleteMcDoc(long id);
+
+    String generateContractCode(String signDate, String type);
 }

@@ -16,11 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by yukiwang on 2018/3/5.
@@ -307,6 +305,37 @@ public class MakeServiceImpl implements MakeService {
     public String deleteMcDoc(long id) {
         boolean ret = makeContractMapper.deleteMakeContractDoc(id);
         return resultString(ret);
+    }
+
+    @Override
+    @Transactional
+    public String generateContractCode(String signDate, String type) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = sdf.parse(signDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+
+            Calendar begin = Calendar.getInstance();
+            begin.set(c.get(Calendar.YEAR), 0 ,1);
+
+            Calendar end = Calendar.getInstance();
+            end.set(c.get(Calendar.YEAR) + 1, 0 ,1);
+
+            long count = makeContractMapper.countContractsByTimeAndType(begin.getTime(), end.getTime(), type);
+            count++;
+            String countStr = String.format("%03d", count);
+            if(type.equals("1")) {
+                type = "zz";
+            }else{
+                type = "lw";
+            }
+            String code = c.get(Calendar.YEAR) + "-" + type + "-" + countStr;
+            return code;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private synchronized String createCode(MakeContract mc) {

@@ -86,6 +86,18 @@ $(document).ready(function(){
         var month = e.date.getMonth() + 1;
         var week = parseInt(COPYRIGHTLIST.getWeekOfMonth(e.date));
         $('#inputSignMonth').text(month + "月第" + week + "周");
+        var type = $('#inputContractType').val();
+        $.get(
+            '/copyright/generateContractCode',
+            {signDate: $('#inputSignDate').val(), type: type},
+            function(data) {
+                if(data.code == '0') {
+                    $('#inputContractCode').val(data.data);
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
     });
 
     $('#inputCopyrightBegin').datepicker({

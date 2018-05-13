@@ -44,4 +44,6 @@ public interface CopyrightService {
     List<CopyrightFile> loadPublishContractFiles(String productId);
 
     CopyrightProductInfo queryProductCopyright(Long productId);
+
+    String generateContractCode(String signDate, String type);
 }

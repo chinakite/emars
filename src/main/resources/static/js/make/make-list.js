@@ -21,6 +21,25 @@ $(document).ready(function(){
         MAKELIST.removeProduct(id);
     });
 
+
+    $('#inputSignDate').datepicker({
+        format: 'yyyy-mm-dd',
+        language: 'cn'
+    }).on('changeDate', function(e){
+        var type = $('#inputTargetType').val();
+        $.get(
+            '/make/generateContractCode',
+            {signDate: $('#inputSignDate').val(), type: type},
+            function(data) {
+                if(data.code == '0') {
+                    $('#inputCode').val(data.data);
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
+    });
+
     MAKELIST.loadMakers();
 });
 
@@ -306,6 +325,7 @@ MAKELIST.submitMakeContract = function () {
     var owner = $('#inputOwner').val();
     var totalPrice = $('#inputTotalPrice').val();
     var totalSection = $('#inputTotalSection').val();
+    var signDate = $('#inputSignDate').val();
     var productObjs = $('.product-list-item');
     var mcProducts = [];
     for(var i=0; i<productObjs.length; i++) {
@@ -333,6 +353,7 @@ MAKELIST.submitMakeContract = function () {
         targetType: targetType,
         owner: owner,
         makerId: makerId,
+        signDate: signDate,
         mcProducts: mcProducts
     };
 

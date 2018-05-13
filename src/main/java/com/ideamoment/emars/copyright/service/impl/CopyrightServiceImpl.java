@@ -14,14 +14,15 @@ import com.ideamoment.emars.model.enumeration.ProductState;
 import com.ideamoment.emars.model.enumeration.StockInType;
 import com.ideamoment.emars.product.dao.ProductMapper;
 import com.ideamoment.emars.utils.Page;
-import com.ideamoment.emars.utils.StringUtils;
 import com.ideamoment.emars.utils.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -186,6 +187,7 @@ public class CopyrightServiceImpl implements CopyrightService {
                 productMapper.insertProductAuthor(productAuthor);
             }
         }
+
         copyrightMapper.insertCopyrightContract(copyrightContract);
         for(CopyrightProductInfo product : products) {
             product.setCopyrightId(copyrightContract.getId());
@@ -399,6 +401,32 @@ public class CopyrightServiceImpl implements CopyrightService {
         if(copyrightProductInfoes != null && copyrightProductInfoes.size() > 0) {
             return copyrightProductInfoes.get(0);
         }else{
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional
+    public String generateContractCode(String signDate, String type) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = sdf.parse(signDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+
+            Calendar begin = Calendar.getInstance();
+            begin.set(c.get(Calendar.YEAR), 0 ,1);
+
+            Calendar end = Calendar.getInstance();
+            end.set(c.get(Calendar.YEAR) + 1, 0 ,1);
+
+            long count = copyrightMapper.countContractsByTimeAndType(begin.getTime(), end.getTime(), type);
+            count++;
+            String countStr = String.format("%03d", count);
+            String code = c.get(Calendar.YEAR) + "-" + type + "-" + countStr;
+            return code;
+        } catch (ParseException e) {
+            e.printStackTrace();
             return null;
         }
     }

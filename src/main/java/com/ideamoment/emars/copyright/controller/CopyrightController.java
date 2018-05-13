@@ -178,6 +178,16 @@ public class CopyrightController {
 
     }
 
+    @RequestMapping(value = "generateContractCode", method = RequestMethod.GET)
+    public JsonData generateContractCode(String signDate, String type) {
+        String code = copyrightService.generateContractCode(signDate, type);
+        if(code == null) {
+            return JsonData.error(ErrorCode.UNKNOWN_ERROR, "生成合同号时发生错误");
+        }else{
+            return JsonData.success(code);
+        }
+    }
+
     private DataTableSource<CopyrightContract> convertProductsToDataTableSource(int draw, Page<CopyrightContract> productsPage) {
         DataTableSource<CopyrightContract> dts = new DataTableSource<CopyrightContract>();
 
