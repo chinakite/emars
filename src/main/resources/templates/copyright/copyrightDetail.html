@@ -1,141 +1,147 @@
-<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head th:include="layout/layout :: htmlhead(${contract.contractCode})"></head>
 
-<html xmlns:th="http://www.thymeleaf.org">
-
-    <body>
-        <div class="px-content">
-            <div class="page-header p-y-4 text-xs-center">
-                <h1 class="font-weight-bold">合同编号: <span th:text="${contract.code}"></span></h1>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="panel">
-                        <div class="panel-title">甲方: <span th:text="${contract.owner}"></span></div>
-                        <div class="panel-body">
-                            <table class="table">
-                                <tr>
-                                    <td class="text-right"><b>联系人</b></td>
-                                    <td><span th:text="${contract.ownerContact}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>联系电话</b></td>
-                                    <td><span th:text="${contract.ownerContactPhone}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>联系地址</b></td>
-                                    <td><span th:text="${contract.ownerContactAddress}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>电子邮箱</b></td>
-                                    <td><span th:text="${contract.ownerContactEmail}"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="panel">
-                        <div class="panel-title">授权信息</div>
-                        <div class="panel-body">
-                            <table class="table">
-                                <tr>
-                                    <td class="text-right"><b>授权种类</b></td>
-                                    <td><span th:text="${contract.privilegesText}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>授权方式</b></td>
-                                    <td><span th:text="${contract.privilegeTypeText}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>授权范围</b></td>
-                                    <td><span th:text="${contract.privilegeRangeText}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>授权期限</b></td>
-                                    <td><span th:text="${contract.privilegeDeadline}"></span>年</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="panel">
-                        <div class="panel-title">乙方:<span th:text="${contract.buyer}"></span></div>
-                        <div class="panel-body">
-                            <table class="table">
-                                <tr>
-                                    <td class="text-right"><b>联系人</b></td>
-                                    <td><span th:text="${contract.buyerContact}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>联系电话</b></td>
-                                    <td><span th:text="${contract.buyerContactPhone}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>联系地址</b></td>
-                                    <td><span th:text="${contract.buyerContactAddress}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>电子邮箱</b></td>
-                                    <td><span th:text="${contract.buyerContactEmail}"></span></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="panel">
-                        <div class="panel-title">付款信息</div>
-                        <div class="panel-body">
-                            <table class="table">
-                                <tr>
-                                    <td class="text-right"><b>账户名称</b></td>
-                                    <td><span th:text="${contract.bankAccountName}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>开户行</b></td>
-                                    <td><span th:text="${contract.bank}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right"><b>银行账号</b></td>
-                                    <td><span th:text="${contract.bankAccountNo}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td>&nbsp;</td><td>&nbsp;</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="panel">
-                        <div class="panel-title">
-                            作品列表
-                        </div>
-                        <div class="panel-body">
-                            <table class="table">
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="panel">
-                        <div class="panel-title">
-                            审批信息
-                        </div>
-                        <div class="panel-body">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="panel">
-                        <div class="panel-title">
-                            合同文档列表
-                        </div>
-                        <div class="panel-body">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+<body>
+<section layout:fragment="content">
+    <div class="px-content">
+        <div class="page-header p-y-4 text-xs-center">
+            <h1 class="font-weight-bold">合同编号:
+                <span th:text="${contract.contractCode}"></span>
+                <span class="label label-danger" th:if="${contract.contractType == 'wz'}">文字</span>
+                <span class="label label-danger" th:if="${contract.contractType == 'yp'}">音频</span>
+                <span class="label label-danger" th:if="${contract.contractType == 'wzgb'}">文字广播</span>
+                <span class="label label-danger" th:if="${contract.contractType == 'sp'}">视频</span>
+            </h1>
 
         </div>
-    </body>
+        <div class="row">
+            <div class="panel">
+                <div class="panel-title">
+                    基本信息
+                </div>
+                <div class="panel-body">
+                    <p>
+                    <div class="col-md-3">
+                        <label>授权方：</label><span th:text="${contract.granter}"></span>
+                    </div>
+                    </p>
+                    <p>
+                    <div class="col-md-3">
+                        <label>签约主体：</label><span th:text="${contract.grantee}"></span>
+                    </div>
+                    </p>
+                    <p>
+                    <div class="col-md-3">
+                        <label>签约日期：</label><span th:text="${contract.signDate}"></span>
+                    </div>
+                    </p>
+                </div>
+
+                <div class="panel-title">
+                    作品信息
+                </div>
+                <div class="panel-body" th:each="product : ${contract.products}">
+                    <div class="col-md-3">
+                        <div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt=""/>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="col-md-6 m-t-2">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">合同</span>
+                                    <div class="panel-heading-controls">
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadMcFileModal(${product.id}, 1);|"><i class="fa fa-plus"></i> 添加</button>
+                                    </div>
+                                </div>
+
+                                <div th:id="|${product.id}_copyrightContractFileList|">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 m-t-2">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">委托制作权利声明(机构)</span>
+                                    <div class="panel-heading-controls">
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 2);|"><i class="fa fa-plus"></i> 添加</button>
+                                    </div>
+                                </div>
+
+                                <div th:id="|${product.id}_makeContractBroadcasterFileList|">
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 m-t-2">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">演播人权利声明</span>
+                                    <div class="panel-heading-controls">
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 3);|"><i class="fa fa-plus"></i> 添加</button>
+                                    </div>
+                                </div>
+
+                                <div th:id="|${product.id}_talentStationFileList|">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 m-t-2">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">演播人身份证复印件</span>
+                                    <div class="panel-heading-controls">
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 4);|"><i class="fa fa-plus"></i> 添加</button>
+                                    </div>
+                                </div>
+
+                                <div th:id="|${product.id}_talentIdCardFileList|">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 m-t-2">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">运营权利授权书</span>
+                                    <div class="panel-heading-controls">
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 5);|"><i class="fa fa-plus"></i> 添加</button>
+                                    </div>
+                                </div>
+
+                                <div th:id="|${product.id}_operationFileList|">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="panel-wide-block" />
+                </div>
+            </div>
+        </div>
+        <div th:replace="make/uploadMcFileModal :: uploadMcFileModal"></div>
+    </div>
+</section>
+</body>
+<div layout:fragment="scripts">
+    <script type='text/javascript' th:src="@{/js/copyright/copyright-page.js}"></script>
+    <script th:inline="javascript" type="text/javascript">
+//        var mcProductIds = [[${contract.mcProductIds}]];
+//        var ids = mcProductIds.split(',');
+//        for(var k in ids) {
+//            MAKECONTRACTPAGE.loadMcProduct(ids[k]);
+//        }
+    </script>
+</div>
+
 </html>

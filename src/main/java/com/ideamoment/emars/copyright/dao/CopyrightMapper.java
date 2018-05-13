@@ -56,7 +56,10 @@ public interface CopyrightMapper {
     )
     boolean updateCopyrightContract(CopyrightContract copyright);
 
-    @Select("SELECT * FROM t_copyright WHERE c_id = #{id}")
+    @Select("SELECT c.*, g1.c_name as granter, g2.c_name as grantee FROM t_copyright c " +
+            "left join t_granter g1 on c.c_granter_id = g1.c_id " +
+            "left join t_grantee g2 on c.c_grantee_id = g2.c_id " +
+            "WHERE c.c_id = #{id}")
     @Results(id = "copyrightMap", value = {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "contractCode", column = "C_CODE"),
@@ -71,6 +74,7 @@ public interface CopyrightMapper {
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME"),
             @Result(property = "operatorName", column = "operatorName"),
+            @Result(property = "granter", column = "granter"),
             @Result(property = "grantee", column = "grantee")
     })
     CopyrightContract findCopyright(@Param("id") long id);

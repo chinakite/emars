@@ -166,7 +166,7 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popCopyrightDetailModal(' + full.id + ')">查看</a>'
+                    var htmlText = '<a href="/copyright/copyrightDetail?id=' + full.id + '" target="_blank">查看</a>'
                                  + '&nbsp;&nbsp;|&nbsp;&nbsp;'
                                  + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popEditCopyrightModal(\'' + full.id + '\')">编辑</a>'
                                  + '&nbsp;&nbsp;|&nbsp;&nbsp;'
