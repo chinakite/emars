@@ -136,7 +136,13 @@ MAKELIST.initMakeContractTbl = function () {
         },
         "columns": [
             {
-                "data": "code"
+                "render": function (data, type, full) {
+                    var htmlText = full.code;
+                    if(full.state == "1") {
+                        htmlText += '<span class="label label-danger label-tag">作废</span>';
+                    }
+                    return htmlText;
+                }
             },
             {
                 "data": "owner"
@@ -150,10 +156,15 @@ MAKELIST.initMakeContractTbl = function () {
             {
                 "render": function(data, type, full) {
                     var htmlText = '<a href="/make/makeContractDetail/' + full.id + '" target="_blank">查看</a>';
-                    htmlText += ' <span class="small">|</span> ';
-                    htmlText += '<a href="javascript:;" onclick="MAKELIST.popEditMakeContractModal(' + full.id + ')">编辑</a>';
-                    htmlText += ' <span class="small">|</span> ';
-                    htmlText += '<a href="javascript:;" onclick="MAKELIST.deleteMakeContract(' + full.id + ',\'' + full.code +'\')">删除</a>';
+                    if(full.state == "1") {
+                        htmlText += '&nbsp;&nbsp;|&nbsp;&nbsp;'
+                            + '<a href="javascript:void(0);" onclick="MAKELIST.invalid(\'' + full.id + '\',\'' + full.code +'\', 0)">取消作废</a>';
+                    }else {
+                        htmlText += '&nbsp;&nbsp;|&nbsp;&nbsp;'
+                            + '<a href="javascript:void(0);" onclick="MAKELIST.popEditMakeContractModal(\'' + full.id + '\')">编辑</a>'
+                            + '&nbsp;&nbsp;|&nbsp;&nbsp;'
+                            + '<a href="javascript:void(0);" onclick="MAKELIST.invalid(\'' + full.id + '\',\'' + full.code +'\', 1)">作废</a>';
+                    }
                     return htmlText;
                 }
             }
@@ -595,4 +606,27 @@ MAKELIST.autoSplit = function() {
         $('#'+lastSelectedId+'_inputSection').val((totalSections - (avgSections*(length-1))));
         $('#'+lastSelectedId+'_inputPrice').val((totalPrice - (avgPrice*(length-1))));
     }
+};
+
+MAKELIST.invalid = function(id, code, state) {
+    var promptWords = "";
+    if(state == '1') {
+        promptWords = "您真的要作废合同号为[" + code + "]的制作合同吗？";
+    }else if(state == '0') {
+        promptWords = "您真的要取消作废合同号为[" + code + "]的制作合同吗？";
+    }
+    EMARS_COMMONS.showPrompt(promptWords, function() {
+        $.post(
+            "/make/invalidMakeContract",
+            {'id': id, 'state': state},
+            function(data) {
+                if(data.code == '0') {
+                    EMARS_COMMONS.showSuccess("操作成功！");
+                    MAKELIST.refreshMakeContractTbl();
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
+    }, null);
 };

@@ -48,7 +48,8 @@ public interface MakeContractMapper {
             @Result(property = "creator", column = "C_CREATOR"),
             @Result(property = "createTime", column = "C_CREATETIME"),
             @Result(property = "modifier", column = "C_MODIFIER"),
-            @Result(property = "modifyTime", column = "C_MODIFYTIME")
+            @Result(property = "modifyTime", column = "C_MODIFYTIME"),
+            @Result(property = "state", column = "c_state")
     })
     MakeContract findMakeContract(@Param("id") long id);
 
@@ -188,4 +189,7 @@ public interface MakeContractMapper {
 
     @Select("select count(c_id) from t_make_contract where c_signdate >= #{begin} and c_signdate < #{end} and C_TARGET_TYPE = #{type}")
     long countContractsByTimeAndType(@Param("begin") Date begin, @Param("end") Date end, @Param("type") String type);
+
+    @Update("update t_make_contract set c_state = #{state} where c_id = #{id}")
+    boolean invalidMakeContract(@Param("id") long id, @Param("state") String state);
 }

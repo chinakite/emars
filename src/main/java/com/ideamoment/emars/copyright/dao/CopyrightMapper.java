@@ -75,7 +75,8 @@ public interface CopyrightMapper {
             @Result(property = "modifyTime", column = "C_MODIFYTIME"),
             @Result(property = "operatorName", column = "operatorName"),
             @Result(property = "granter", column = "granter"),
-            @Result(property = "grantee", column = "grantee")
+            @Result(property = "grantee", column = "grantee"),
+            @Result(property = "state", column = "c_state")
     })
     CopyrightContract findCopyright(@Param("id") long id);
 
@@ -235,4 +236,7 @@ public interface CopyrightMapper {
 
     @Select("select count(c_id) from t_copyright where c_signdate >= #{begin} and c_signdate < #{end} and c_type = #{type}")
     long countContractsByTimeAndType(@Param("begin") Date beign, @Param("end")Date end, @Param("type") String type);
+
+    @Update("update t_copyright set c_state = #{state} where c_id = #{id}")
+    boolean invalidCopyright(@Param("id") long id, @Param("state") String state);
 }

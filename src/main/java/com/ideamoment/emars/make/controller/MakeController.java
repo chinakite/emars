@@ -152,4 +152,14 @@ public class MakeController {
             return JsonData.success(code);
         }
     }
+
+    @RequestMapping(value = "invalidMakeContract", method = RequestMethod.POST)
+    public JsonData<String> invalidMakeContract(long id, String state) {
+        String result = makeService.invalidMakeContract(id, state);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
 }

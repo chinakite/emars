@@ -17,6 +17,8 @@ public class CopyrightContract extends HistoriableEntity {
 
     private String operatorName;
 
+    private String state;
+
     private ArrayList<CopyrightProductInfo> products = new ArrayList<CopyrightProductInfo>();
 
     public String getContractCode() {
@@ -118,5 +120,13 @@ public class CopyrightContract extends HistoriableEntity {
 
     public void setOperatorName(String operatorName) {
         this.operatorName = operatorName;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

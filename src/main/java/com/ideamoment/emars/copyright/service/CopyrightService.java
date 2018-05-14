@@ -48,4 +48,6 @@ public interface CopyrightService {
     String generateContractCode(String signDate, String type);
 
     List<CopyrightFile> loadToSaleContractFiles(String productId);
+
+    String invalidCopyright(long id, String state);
 }

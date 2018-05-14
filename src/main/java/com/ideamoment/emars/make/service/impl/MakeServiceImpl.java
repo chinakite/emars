@@ -338,6 +338,13 @@ public class MakeServiceImpl implements MakeService {
         }
     }
 
+    @Override
+    @Transactional
+    public String invalidMakeContract(long id, String state) {
+        boolean result = makeContractMapper.invalidMakeContract(id, state);
+        return resultString(result);
+    }
+
     private synchronized String createCode(MakeContract mc) {
         Date curDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");

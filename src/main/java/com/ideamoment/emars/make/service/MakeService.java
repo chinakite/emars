@@ -39,4 +39,7 @@ public interface MakeService {
     String deleteMcDoc(long id);
 
     String generateContractCode(String signDate, String type);
+
+    String invalidMakeContract(long id, String state);
+
 }

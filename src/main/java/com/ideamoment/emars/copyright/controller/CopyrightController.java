@@ -194,6 +194,16 @@ public class CopyrightController {
         }
     }
 
+    @RequestMapping(value = "invalidCopyright", method = RequestMethod.POST)
+    public JsonData<String> invalidCopyright(long id, String state) {
+        String result = copyrightService.invalidCopyright(id, state);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
     private DataTableSource<CopyrightContract> convertProductsToDataTableSource(int draw, Page<CopyrightContract> productsPage) {
         DataTableSource<CopyrightContract> dts = new DataTableSource<CopyrightContract>();
 

@@ -147,7 +147,13 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
         },
         "columns": [
             {
-                "data": "contractCode"
+                "render": function (data, type, full) {
+                    var htmlText = full.contractCode;
+                    if(full.state == "1") {
+                        htmlText += '<span class="label label-danger label-tag">作废</span>';
+                    }
+                    return htmlText;
+                }
             },
             {
                 "data": "contractTypeText"
@@ -166,11 +172,16 @@ COPYRIGHTLIST.initCopyrightTbl = function(){
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="/copyright/copyrightDetail?id=' + full.id + '" target="_blank">查看</a>'
-                                 + '&nbsp;&nbsp;|&nbsp;&nbsp;'
-                                 + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popEditCopyrightModal(\'' + full.id + '\')">编辑</a>'
-                                 + '&nbsp;&nbsp;|&nbsp;&nbsp;'
-                                 + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.deleteCopyright(\'' + full.id + '\',\'' + full.code +'\')">删除</a>';
+                    var htmlText = '<a href="/copyright/copyrightDetail?id=' + full.id + '" target="_blank">查看</a>';
+                    if(full.state == "1") {
+                        htmlText += '&nbsp;&nbsp;|&nbsp;&nbsp;'
+                            + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.invalid(\'' + full.id + '\',\'' + full.contractCode +'\', 0)">取消作废</a>';
+                    }else {
+                        htmlText += '&nbsp;&nbsp;|&nbsp;&nbsp;'
+                            + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.popEditCopyrightModal(\'' + full.id + '\')">编辑</a>'
+                            + '&nbsp;&nbsp;|&nbsp;&nbsp;'
+                            + '<a href="javascript:void(0);" onclick="COPYRIGHTLIST.invalid(\'' + full.id + '\',\'' + full.contractCode +'\', 1)">作废</a>';
+                    }
                     return htmlText;
                 }
             }
@@ -734,3 +745,26 @@ COPYRIGHTLIST.loadProductType = function() {
         $(".inputWordCount").removeClass('hide');
     }
 }
+
+COPYRIGHTLIST.invalid = function(id, code, state) {
+    var promptWords = "";
+    if(state == '1') {
+        promptWords = "您真的要作废合同号为[" + code + "]的版权合同吗？";
+    }else if(state == '0') {
+        promptWords = "您真的要取消作废合同号为[" + code + "]的版权合同吗？";
+    }
+    EMARS_COMMONS.showPrompt(promptWords, function() {
+        $.post(
+            "/copyright/invalidCopyright",
+            {'id': id, 'state': state},
+            function(data) {
+                if(data.code == '0') {
+                    EMARS_COMMONS.showSuccess("操作成功！");
+                    COPYRIGHTLIST.refreshCopyrightTbl();
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
+    }, null);
+};
