@@ -27,6 +27,8 @@ public class ProductInfo extends HistoriableEntity {
     private String copyrightCode;
     private List<Author> authors;
 
+    private List<ReservationAnnouncer> reservationAnnouncers;
+
     public String getName() {
         return name;
     }
@@ -225,5 +227,13 @@ public class ProductInfo extends HistoriableEntity {
 
     public void setCopyrightCode(String copyrightCode) {
         this.copyrightCode = copyrightCode;
+    }
+
+    public List<ReservationAnnouncer> getReservationAnnouncers() {
+        return reservationAnnouncers;
+    }
+
+    public void setReservationAnnouncers(List<ReservationAnnouncer> reservationAnnouncers) {
+        this.reservationAnnouncers = reservationAnnouncers;
     }
 }

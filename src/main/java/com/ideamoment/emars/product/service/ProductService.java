@@ -35,5 +35,5 @@ public interface ProductService {
 
     Page<ProductInfo> listStockedInProducts(ProductInfo condition, int start, int length);
 
-    String changeProductionState(long id, String productionState);
+    String changeProductionState(long id, String productionState, Long[] announcerIds);
 }

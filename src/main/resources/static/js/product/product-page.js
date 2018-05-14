@@ -42,6 +42,17 @@ $(document).ready(function(){
     });
 
     PRODUCTPAGE.refreshProductFiles();
+
+    PRODUCTPAGE.loadAnnouncers();
+
+    $("input[name='inputProductionState']").click(function () {
+        var selectedVal = $(this).val();
+        if(selectedVal == 4) {
+            $(".announcer").show();
+        }else {
+            $(".announcer").hide();
+        }
+    });
 });
 
 PRODUCTPAGE.popUploadFileModal = function(type) {
@@ -296,28 +307,83 @@ PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
     }, null);
 };
 
-PRODUCTPAGE.popChangeProductionStateModel = function (id, state) {
-    $('#inputEditId').val(id);
-    $("input[name='inputProductionState'][value='" + state + "']").prop("checked", "checked");
-    $('#changeProductionStateModel').modal('show');
-}
+PRODUCTPAGE.popChangeProductionStateModel = function (id) {
+    $.get(
+        "/product/product",
+        {id: id},
+        function(data) {
+            if (data.code == '0') {
+                var prod = data.data;
+                $('#inputEditId').val(prod.id);
+                $("input[name='inputProductionState'][value='" + prod.productionState + "']").prop("checked", "checked");
+                if(prod.productionState == 4) {
+                    if(prod.reservationAnnouncers) {
+                        var reservationAnnouncerIds = [];
+                        for(var i=0; i<prod.reservationAnnouncers.length; i++) {
+                            reservationAnnouncerIds.push(prod.reservationAnnouncers[i].announcerId);
+                        }
+                        $('#inputAnnouncerId').val(reservationAnnouncerIds).trigger('change');
+                    }
+                    $(".announcer").show();
+                }else {
+                    $(".announcer").hide();
+                }
+                $('#changeProductionStateModel').modal('show');
+
+            }else {
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    )
+};
 
 PRODUCTPAGE.saveProductionState = function () {
     var id = $('#inputEditId').val();
     var state = $("input[name='inputProductionState']:checked").val();
-    $.post(
-        '/product/changeProductionState',
-        {id: id, productionState: state},
-        function(data) {
-            if(data.code == '0') {
+    var announcerIds = $("#inputAnnouncerId").val();
+    $.ajax({
+        url: '/product/changeProductionState',
+        data: {
+            id: id, productionState: state, announcerIds : announcerIds
+        },
+        traditional: true,
+        type: 'post',
+        success: function (data) {
+            if (data.code == '0') {
                 var product = data.data;
                 $("#productionStateText span").text(product.productionStateText);
-                $("#productionStateText button").attr("onclick","PRODUCTPAGE.popChangeProductionStateModel(" + product.id + ", " + product.productionState + ");");
+                $("#productionStateText button").attr("onclick", "PRODUCTPAGE.popChangeProductionStateModel(" + product.id + ");");
                 $('#changeProductionStateModel').modal('hide');
+            } else {
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    })
+
+};
+
+PRODUCTPAGE.loadAnnouncers = function() {
+    $.get(
+        "/system/allAnnouncers",
+        function(data) {
+            if(data.code == '0') {
+                var announcers = data.data;
+                var html = '';
+                for(var i = 0; i < announcers.length; i ++) {
+                    var announcer = announcers[i];
+                    var announcerName = announcer.name;
+                    if(announcer.pseudonym) {
+                        announcerName = announcerName + "(" + announcer.pseudonym + ")";
+                    }
+                    html += '<option value="' + announcer.id + '">' + announcerName + '</option>';
+                }
+                $('#inputAnnouncerId').empty().append(html);
+                $('#inputAnnouncerId').select2({
+                    dropdownParent: $("#changeProductionStateModel")
+                });
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     )
-
-}
+};

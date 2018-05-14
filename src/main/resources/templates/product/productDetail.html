@@ -35,7 +35,7 @@
                         </p>
                         <p id="productionStateText">
                             <label>制作状态：</label><span th:text="${product.productionStateText}"></span>
-                            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" th:onclick="|PRODUCTPAGE.popChangeProductionStateModel(${product.id}, ${product.productionState});|">修改</button>
+                            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" th:onclick="|PRODUCTPAGE.popChangeProductionStateModel(${product.id});|">修改</button>
                         </p>
                     </div>
                 </div>

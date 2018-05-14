@@ -166,4 +166,18 @@ public interface ProductMapper {
 
     @Update("update t_product_info set c_production_state = #{productionState} where c_id = #{productId}")
     boolean changeProductionState(@Param("productId") long productId, @Param("productionState") String productionState);
+
+    @Delete("delete from t_reservation_announcer where c_product_id = #{productId}")
+    boolean deleteReservationAnnouncers(@Param("productId") long productId);
+
+    @Insert("insert into t_reservation_announcer (c_product_id, c_announcer_id) values (#{productId}, #{announcerId})")
+    boolean addReservationAnnouncer(@Param("productId") long productId, @Param("announcerId") long announcerId);
+
+    @Results(id = "reservationAnnouncerMap", value = {
+            @Result(property = "id", column = "c_id", id = true),
+            @Result(property = "productId", column = "c_product_id"),
+            @Result(property = "announcerId", column = "c_announcer_id")
+    })
+    @Select("select * from t_reservation_announcer where c_product_id = #{productId}")
+    List<ReservationAnnouncer> queryAnnouncerByProductId(@Param("productId") long productId);
 }

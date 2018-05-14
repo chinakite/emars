@@ -5,10 +5,7 @@ import com.ideamoment.emars.author.service.AuthorService;
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.model.*;
-import com.ideamoment.emars.model.enumeration.CopyrightFileType;
-import com.ideamoment.emars.model.enumeration.ProductState;
-import com.ideamoment.emars.model.enumeration.ProductType;
-import com.ideamoment.emars.model.enumeration.StockInType;
+import com.ideamoment.emars.model.enumeration.*;
 import com.ideamoment.emars.product.dao.ProductCopyrightFileMapper;
 import com.ideamoment.emars.product.dao.ProductMapper;
 import com.ideamoment.emars.product.dao.ProductPictureMapper;
@@ -74,6 +71,8 @@ public class ProductServiceImpl implements ProductService{
         ProductInfo product = productMapper.findProduct(id);
         List<Author> authors = authorMapper.queryAuthorByProduct(id);
         product.setAuthors(authors);
+        List<ReservationAnnouncer> reservationAnnouncers = productMapper.queryAnnouncerByProductId(id);
+        product.setReservationAnnouncers(reservationAnnouncers);
         return product;
     }
 
@@ -297,8 +296,17 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
-    public String changeProductionState(long id, String productionState) {
+    public String changeProductionState(long id, String productionState, Long[] announcerIds) {
         boolean ret = productMapper.changeProductionState(id, productionState);
+        if(ret) {
+            productMapper.deleteReservationAnnouncers(id);
+            if(ProductionState.RESERVATION.equals(productionState)) {
+                for(Long announcerId : announcerIds) {
+                    productMapper.addReservationAnnouncer(id, announcerId);
+                }
+            }
+        }
+
         return resultString(ret);
     }
 

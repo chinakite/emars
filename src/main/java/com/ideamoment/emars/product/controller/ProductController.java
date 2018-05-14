@@ -113,8 +113,8 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/changeProductionState", method = RequestMethod.POST)
-    public JsonData changeProductionState(long id, String productionState) {
-        String result = productService.changeProductionState(id, productionState);
+    public JsonData changeProductionState(long id, String productionState, Long[] announcerIds) {
+        String result = productService.changeProductionState(id, productionState, announcerIds);
         if(result.equals(SuccessCode.SUCCESS)) {
             ProductInfo product = productService.findProduct(id);
             return JsonData.success(product);
