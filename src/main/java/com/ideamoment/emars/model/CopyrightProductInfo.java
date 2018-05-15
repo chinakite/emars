@@ -30,7 +30,7 @@ public class CopyrightProductInfo extends HistoriableEntity {
     private String copyrightEnd;
     private String radioTrans;
     private String desc;
-    private String section;
+    private Integer section;
     private int sort;
 
     private Long copyrightId;
@@ -359,11 +359,11 @@ public class CopyrightProductInfo extends HistoriableEntity {
         }
     }
 
-    public String getSection() {
+    public Integer getSection() {
         return section;
     }
 
-    public void setSection(String section) {
+    public void setSection(Integer section) {
         this.section = section;
     }
 
