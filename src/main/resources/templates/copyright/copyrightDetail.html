@@ -68,7 +68,7 @@
                                 <div class="panel-heading">
                                     <span class="panel-title">委托制作权利声明(机构)</span>
                                     <div class="panel-heading-controls">
-                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 2);|"><i class="fa fa-plus"></i> 添加</button>
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadMcFileModal(${product.id}, 2);|"><i class="fa fa-plus"></i> 添加</button>
                                     </div>
                                 </div>
 
@@ -84,7 +84,7 @@
                                 <div class="panel-heading">
                                     <span class="panel-title">演播人权利声明</span>
                                     <div class="panel-heading-controls">
-                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 3);|"><i class="fa fa-plus"></i> 添加</button>
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadMcFileModal(${product.id}, 3);|"><i class="fa fa-plus"></i> 添加</button>
                                     </div>
                                 </div>
 
@@ -99,7 +99,7 @@
                                 <div class="panel-heading">
                                     <span class="panel-title">演播人身份证复印件</span>
                                     <div class="panel-heading-controls">
-                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 4);|"><i class="fa fa-plus"></i> 添加</button>
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadMcFileModal(${product.id}, 4);|"><i class="fa fa-plus"></i> 添加</button>
                                     </div>
                                 </div>
 
@@ -114,7 +114,7 @@
                                 <div class="panel-heading">
                                     <span class="panel-title">运营权利授权书</span>
                                     <div class="panel-heading-controls">
-                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 5);|"><i class="fa fa-plus"></i> 添加</button>
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadMcFileModal(${product.id}, 5);|"><i class="fa fa-plus"></i> 添加</button>
                                     </div>
                                 </div>
 
@@ -129,18 +129,17 @@
                 </div>
             </div>
         </div>
-        <div th:replace="make/uploadMcFileModal :: uploadMcFileModal"></div>
+        <div th:replace="copyright/uploadCopyrightFileModal :: uploadFileModal"></div>
     </div>
 </section>
 </body>
 <div layout:fragment="scripts">
     <script type='text/javascript' th:src="@{/js/copyright/copyright-page.js}"></script>
     <script th:inline="javascript" type="text/javascript">
-//        var mcProductIds = [[${contract.mcProductIds}]];
-//        var ids = mcProductIds.split(',');
-//        for(var k in ids) {
-//            MAKECONTRACTPAGE.loadMcProduct(ids[k]);
-//        }
+        var productIds = [[${contract.productIds}]];
+        for(var k in productIds) {
+            COPYRIGHTPAGE.loadProduct(k);
+        }
     </script>
 </div>
 

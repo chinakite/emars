@@ -129,4 +129,16 @@ public class CopyrightContract extends HistoriableEntity {
     public void setState(String state) {
         this.state = state;
     }
+
+    public ArrayList<Long> getProductIds() {
+        if(this.products != null) {
+            ArrayList<Long> ids = new ArrayList<Long>(this.products.size());
+            for(CopyrightProductInfo prod : products) {
+                ids.add(prod.getId());
+            }
+            return ids;
+        }else{
+            return new ArrayList(0);
+        }
+    }
 }
