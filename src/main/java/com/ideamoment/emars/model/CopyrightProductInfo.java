@@ -37,6 +37,7 @@ public class CopyrightProductInfo extends HistoriableEntity {
     private Long productId;
     private List<Author> authors;
     private String subjectName;
+    private String copyrightCode;
 
     public String getName() {
         return name;
@@ -373,5 +374,13 @@ public class CopyrightProductInfo extends HistoriableEntity {
 
     public void setSort(int sort) {
         this.sort = sort;
+    }
+
+    public String getCopyrightCode() {
+        return copyrightCode;
+    }
+
+    public void setCopyrightCode(String copyrightCode) {
+        this.copyrightCode = copyrightCode;
     }
 }

@@ -162,11 +162,13 @@ public interface CopyrightMapper {
             "cp.c_settlement_type as settlementType, " +
             "cp.c_radio_trans as radioTrans, " +
             "cp.c_desc as descText, " +
-            "s.c_name as subjectName " +
-            "from t_product_info p, t_copyright_product cp, t_subject s " +
+            "s.c_name as subjectName, " +
+            "c.c_code as copyrightCode " +
+            "from t_product_info p, t_copyright_product cp, t_subject s, t_copyright c " +
             "where cp.c_copyright_id = #{copyrightId} " +
             "and cp.c_product_id = p.c_id " +
-            "and s.c_id = p.c_subject_id"
+            "and s.c_id = p.c_subject_id " +
+            "and c.c_id = cp.c_copyright_id "
     )
     @Results(id = "copyrightProductInfoMap", value = {
             @Result(property = "id", column = "id", id = true),
@@ -185,7 +187,8 @@ public interface CopyrightMapper {
             @Result(property = "settlementType", column = "settlementType"),
             @Result(property = "radioTrans", column = "radioTrans"),
             @Result(property = "desc", column = "descText"),
-            @Result(property = "subjectName", column = "subjectName")
+            @Result(property = "subjectName", column = "subjectName"),
+            @Result(property = "copyrightCode", column = "copyrightCode")
     })
     ArrayList<CopyrightProductInfo> queryCopyrightProductInfoes(@Param("copyrightId") long id);
 

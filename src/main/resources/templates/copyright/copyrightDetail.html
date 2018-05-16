@@ -23,9 +23,9 @@
                 </div>
                 <div class="panel-body">
                     <p>
-                    <div class="col-md-3">
-                        <label>授权方：</label><span th:text="${contract.granter}"></span>
-                    </div>
+                                                <div class="col-md-3">
+                                                    <label>授权方：</label><span th:text="${contract.granter}"></span>
+                                                </div>
                     </p>
                     <p>
                     <div class="col-md-3">
@@ -46,14 +46,35 @@
                     <div class="col-md-3">
                         <div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt=""/>
                         </div>
+                        <div class="text-xs-center m-t-1">
+                            <strong><span class="font-size-14" th:text="${product.name}"></span></strong>
+                        </div>
+                        <div class="text-xs-center">
+                            <span class="font-size-12" th:text="${product.authorsTextInline}"></span>
+                        </div>
                     </div>
                     <div class="col-md-9">
+                        <div class="col-md-12">
+                            <div class="col-md-3">
+                                <label>编号：</label><span th:text="${product.copyrightCode + '-' + product.sort}"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <label>ISBN：</label><span th:text="${product.isbn}"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <label>题材：</label><span th:text="${product.subjectName}"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <label>字数：</label><span th:text="${product.wordCount}"></span>
+                            </div>
+                        </div>
+
                         <div class="col-md-6 m-t-2">
                             <div class="panel">
                                 <div class="panel-heading">
                                     <span class="panel-title">合同</span>
                                     <div class="panel-heading-controls">
-                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadMcFileModal(${product.id}, 1);|"><i class="fa fa-plus"></i> 添加</button>
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadFileModal(${product.id}, 'cpr_contract');|"><i class="fa fa-plus"></i> 添加</button>
                                     </div>
                                 </div>
 
@@ -66,13 +87,13 @@
                         <div class="col-md-6 m-t-2">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <span class="panel-title">委托制作权利声明(机构)</span>
+                                    <span class="panel-title">作者身份证</span>
                                     <div class="panel-heading-controls">
-                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadMcFileModal(${product.id}, 2);|"><i class="fa fa-plus"></i> 添加</button>
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadFileModal(${product.id}, 'cpr_author_id_card');|"><i class="fa fa-plus"></i> 添加</button>
                                     </div>
                                 </div>
 
-                                <div th:id="|${product.id}_makeContractBroadcasterFileList|">
+                                <div th:id="|${product.id}_copyrightAuthorIdCardFileList|">
 
                                 </div>
                             </div>
@@ -82,13 +103,13 @@
                         <div class="col-md-6 m-t-2">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <span class="panel-title">演播人权利声明</span>
+                                    <span class="panel-title">出版合同</span>
                                     <div class="panel-heading-controls">
-                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadMcFileModal(${product.id}, 3);|"><i class="fa fa-plus"></i> 添加</button>
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadFileModal(${product.id}, 'cpr_publish_contract');|"><i class="fa fa-plus"></i> 添加</button>
                                     </div>
                                 </div>
 
-                                <div th:id="|${product.id}_talentStationFileList|">
+                                <div th:id="|${product.id}_copyrightPublishContractFileList|">
 
                                 </div>
                             </div>
@@ -97,13 +118,13 @@
                         <div class="col-md-6 m-t-2">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <span class="panel-title">演播人身份证复印件</span>
+                                    <span class="panel-title">授权书</span>
                                     <div class="panel-heading-controls">
-                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadMcFileModal(${product.id}, 4);|"><i class="fa fa-plus"></i> 添加</button>
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadFileModal(${product.id}, 'cpr_grant_paper');|"><i class="fa fa-plus"></i> 添加</button>
                                     </div>
                                 </div>
 
-                                <div th:id="|${product.id}_talentIdCardFileList|">
+                                <div th:id="|${product.id}_copyrightGrantPaperFileList|">
 
                                 </div>
                             </div>
@@ -112,18 +133,35 @@
                         <div class="col-md-6 m-t-2">
                             <div class="panel">
                                 <div class="panel-heading">
-                                    <span class="panel-title">运营权利授权书</span>
+                                    <span class="panel-title">版权页</span>
                                     <div class="panel-heading-controls">
-                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadMcFileModal(${product.id}, 5);|"><i class="fa fa-plus"></i> 添加</button>
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadFileModal(${product.id}, 'cpr_copyright_page');|"><i class="fa fa-plus"></i> 添加</button>
                                     </div>
                                 </div>
 
-                                <div th:id="|${product.id}_operationFileList|">
+                                <div th:id="|${product.id}_copyrightPageFileList|">
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 m-t-2">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <span class="panel-title">合同-给营销</span>
+                                    <div class="panel-heading-controls">
+                                        <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|COPYRIGHTPAGE.popUploadFileModal(${product.id}, 'cpr_contract_to_sale');|"><i class="fa fa-plus"></i> 添加</button>
+                                    </div>
+                                </div>
+
+                                <div th:id="|${product.id}_contractToSaleFileList|">
 
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="clearfix"></div>
 
                     <hr class="panel-wide-block" />
                 </div>
@@ -136,10 +174,12 @@
 <div layout:fragment="scripts">
     <script type='text/javascript' th:src="@{/js/copyright/copyright-page.js}"></script>
     <script th:inline="javascript" type="text/javascript">
+        /*<![CDATA[*/
         var productIds = [[${contract.productIds}]];
-        for(var k in productIds) {
-            COPYRIGHTPAGE.loadProduct(k);
+        for(var i=0; i<productIds.length; i++) {
+            COPYRIGHTPAGE.loadProduct(productIds[i]);
         }
+        /*]]>*/
     </script>
 </div>
 
