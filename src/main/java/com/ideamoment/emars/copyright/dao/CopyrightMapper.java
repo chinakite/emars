@@ -241,5 +241,5 @@ public interface CopyrightMapper {
     long countContractsByTimeAndType(@Param("begin") Date beign, @Param("end")Date end, @Param("type") String type);
 
     @Update("update t_copyright set c_state = #{state} where c_id = #{id}")
-    boolean invalidCopyright(@Param("id") long id, @Param("state") String state);
+    boolean changeCopyrightState(@Param("id") long id, @Param("state") String state);
 }

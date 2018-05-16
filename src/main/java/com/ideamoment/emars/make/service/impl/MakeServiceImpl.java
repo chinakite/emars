@@ -340,7 +340,7 @@ public class MakeServiceImpl implements MakeService {
 
     @Override
     @Transactional
-    public String invalidMakeContract(long id, String state) {
+    public String changeMakeContractState(long id, String state) {
         boolean result = makeContractMapper.invalidMakeContract(id, state);
         return resultString(result);
     }

@@ -49,5 +49,5 @@ public interface CopyrightService {
 
     List<CopyrightFile> loadToSaleContractFiles(String productId);
 
-    String invalidCopyright(long id, String state);
+    String changeCopyrightState(long id, String state);
 }

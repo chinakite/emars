@@ -140,6 +140,8 @@ MAKELIST.initMakeContractTbl = function () {
                     var htmlText = full.code;
                     if(full.state == "1") {
                         htmlText += '<span class="label label-danger label-tag">作废</span>';
+                    }else if(full.state == "2") {
+                        htmlText += '<span class="label label-success label-tag">完结</span>';
                     }
                     return htmlText;
                 }
@@ -158,12 +160,16 @@ MAKELIST.initMakeContractTbl = function () {
                     var htmlText = '<a href="/make/makeContractDetail/' + full.id + '" target="_blank">查看</a>';
                     if(full.state == "1") {
                         htmlText += '&nbsp;&nbsp;|&nbsp;&nbsp;'
-                            + '<a href="javascript:void(0);" onclick="MAKELIST.invalid(\'' + full.id + '\',\'' + full.code +'\', 0)">取消作废</a>';
+                            + '<a href="javascript:void(0);" onclick="MAKELIST.changeState(\'' + full.id + '\',\'' + full.code +'\', 0)">取消作废</a>';
+                    }else if(full.state == "2") {
+
                     }else {
                         htmlText += '&nbsp;&nbsp;|&nbsp;&nbsp;'
                             + '<a href="javascript:void(0);" onclick="MAKELIST.popEditMakeContractModal(\'' + full.id + '\')">编辑</a>'
                             + '&nbsp;&nbsp;|&nbsp;&nbsp;'
-                            + '<a href="javascript:void(0);" onclick="MAKELIST.invalid(\'' + full.id + '\',\'' + full.code +'\', 1)">作废</a>';
+                            + '<a href="javascript:void(0);" onclick="MAKELIST.changeState(\'' + full.id + '\',\'' + full.code +'\', 1)">作废</a>'
+                            + '&nbsp;&nbsp;|&nbsp;&nbsp;'
+                            + '<a href="javascript:void(0);" onclick="MAKELIST.changeState(\'' + full.id + '\',\'' + full.code +'\', 2)">完结</a>';
                     }
                     return htmlText;
                 }
@@ -608,16 +614,18 @@ MAKELIST.autoSplit = function() {
     }
 };
 
-MAKELIST.invalid = function(id, code, state) {
+MAKELIST.changeState = function(id, code, state) {
     var promptWords = "";
     if(state == '1') {
         promptWords = "您真的要作废合同号为[" + code + "]的制作合同吗？";
     }else if(state == '0') {
         promptWords = "您真的要取消作废合同号为[" + code + "]的制作合同吗？";
+    }else if(state == '2') {
+        promptWords = "您真的要完结合同号为[" + code + "]的制作合同吗？";
     }
     EMARS_COMMONS.showPrompt(promptWords, function() {
         $.post(
-            "/make/invalidMakeContract",
+            "/make/changeMakeContractState",
             {'id': id, 'state': state},
             function(data) {
                 if(data.code == '0') {

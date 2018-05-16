@@ -194,9 +194,9 @@ public class CopyrightController {
         }
     }
 
-    @RequestMapping(value = "invalidCopyright", method = RequestMethod.POST)
-    public JsonData<String> invalidCopyright(long id, String state) {
-        String result = copyrightService.invalidCopyright(id, state);
+    @RequestMapping(value = "changeCopyrightState", method = RequestMethod.POST)
+    public JsonData<String> changeCopyrightState(long id, String state) {
+        String result = copyrightService.changeCopyrightState(id, state);
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;
         }else{

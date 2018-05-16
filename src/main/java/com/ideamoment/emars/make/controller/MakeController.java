@@ -153,9 +153,9 @@ public class MakeController {
         }
     }
 
-    @RequestMapping(value = "invalidMakeContract", method = RequestMethod.POST)
-    public JsonData<String> invalidMakeContract(long id, String state) {
-        String result = makeService.invalidMakeContract(id, state);
+    @RequestMapping(value = "changeMakeContractState", method = RequestMethod.POST)
+    public JsonData<String> changeMakeContractState(long id, String state) {
+        String result = makeService.changeMakeContractState(id, state);
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;
         }else{

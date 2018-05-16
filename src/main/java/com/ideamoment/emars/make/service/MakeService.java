@@ -40,6 +40,6 @@ public interface MakeService {
 
     String generateContractCode(String signDate, String type);
 
-    String invalidMakeContract(long id, String state);
+    String changeMakeContractState(long id, String state);
 
 }

@@ -443,8 +443,8 @@ public class CopyrightServiceImpl implements CopyrightService {
 
     @Override
     @Transactional
-    public String invalidCopyright(long id, String state) {
-        boolean result = copyrightMapper.invalidCopyright(id, state);
+    public String changeCopyrightState(long id, String state) {
+        boolean result = copyrightMapper.changeCopyrightState(id, state);
         return resultString(result);
     }
 

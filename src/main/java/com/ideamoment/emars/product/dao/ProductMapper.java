@@ -78,6 +78,7 @@ public interface ProductMapper {
             "<if test='condition.stockIn != null'>",
             " AND p.C_STOCKIN = #{condition.stockIn}",
             "</if>",
+            " AND c.c_state != '1'",
             " ORDER BY p.C_MODIFYTIME DESC ",
             " LIMIT #{offset}, #{size}",
             "</script>"})
@@ -86,6 +87,8 @@ public interface ProductMapper {
 
     @Select({"<script>",
             "SELECT COUNT(*) FROM t_product_info p ",
+            "LEFT JOIN t_copyright_product cp ON p.c_id = cp.`c_product_id` ",
+            "LEFT JOIN t_copyright c ON c.c_id = cp.`c_copyright_id` ",
             "WHERE p.c_id > 0",
             "<if test='name != null'>",
             " AND p.C_NAME like concat(concat('%',#{name}),'%')",
@@ -99,6 +102,7 @@ public interface ProductMapper {
             "<if test='stockIn != null'>",
             " AND p.C_STOCKIN = #{stockIn}",
             "</if>",
+            " AND c.c_state != '1'",
             "</script>"})
     long listProductsCount(ProductInfo condition);
 
