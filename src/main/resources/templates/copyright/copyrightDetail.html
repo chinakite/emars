@@ -23,9 +23,9 @@
                 </div>
                 <div class="panel-body">
                     <p>
-                                                <div class="col-md-3">
-                                                    <label>授权方：</label><span th:text="${contract.granter}"></span>
-                                                </div>
+                        <div class="col-md-3">
+                            <label>授权方：</label><span th:text="${contract.granter}"></span>
+                        </div>
                     </p>
                     <p>
                     <div class="col-md-3">
@@ -35,6 +35,11 @@
                     <p>
                     <div class="col-md-3">
                         <label>签约日期：</label><span th:text="${contract.signDate}"></span>
+                    </div>
+                    </p>
+                    <p>
+                    <div class="col-md-3">
+                        <label>经手人：</label><span th:text="${contract.operatorName}"></span>
                     </div>
                     </p>
                 </div>
@@ -55,18 +60,59 @@
                     </div>
                     <div class="col-md-9">
                         <div class="col-md-12">
-                            <div class="col-md-3">
+                            <p>
+                            <div class="col-md-6">
                                 <label>编号：</label><span th:text="${product.copyrightCode + '-' + product.sort}"></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label>ISBN：</label><span th:text="${product.isbn}"></span>
                             </div>
-                            <div class="col-md-3">
+                            </p>
+                            <p>
+                            <div class="col-md-6">
                                 <label>题材：</label><span th:text="${product.subjectName}"></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label>字数：</label><span th:text="${product.wordCount}"></span>
                             </div>
+                            </p>
+                            <p>
+                            <div class="col-md-6">
+                                <label>授权种类：</label><span th:text="${product.privilegesText}"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label>电台交流：</label><span th:text="${product.radioTransText}"></span>
+                            </div>
+                            </p>
+                            <p>
+                            <div class="col-md-6">
+                                <label>授权方式：</label><span th:text="${product.copyrightTypeText}"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label>可转授权：</label><span th:text="${product.grantText}"></span>
+                            </div>
+                            </p>
+                            <p>
+                            <div class="col-md-6">
+                                <label>是否分成：</label><span th:text="${product.settlementTypeText}"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label>分成比例：</label><span th:text="${product.proportions + ' %'}"></span>
+                            </div>
+                            </p>
+                            <p>
+                            <div class="col-md-6">
+                                <label>开始日期：</label><span th:text="${product.copyrightBegin}"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label>结束日期：</label><span th:text="${product.copyrightEnd}"></span>
+                            </div>
+                            </p>
+                            <p>
+                            <div class="col-md-12">
+                                <label>备注信息：</label><span th:text="${product.descText}"></span>
+                            </div>
+                            </p>
                         </div>
 
                         <div class="col-md-6 m-t-2">
