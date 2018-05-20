@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +125,25 @@ public class ProductController {
         }else{
             return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
         }
+    }
+
+    @RequestMapping(value = "downloadAllFiles", method = RequestMethod.GET)
+    public StreamingResponseBody downloadAllFiles(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String productIdStr = request.getParameter("id");
+        if(StringUtils.isEmpty(productIdStr)) {
+            return null;
+        }
+
+        Long productId = Long.parseLong(productIdStr);
+
+        
+
+        return null;
+    }
+
+    @RequestMapping(value = "downloadToSaleFiles", method = RequestMethod.GET)
+    public StreamingResponseBody downloadToSaleFiles(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return null;
     }
 
     private DataTableSource<ProductInfo> convertProductsToDataTableSource(int draw, Page<ProductInfo> productsPage) {
