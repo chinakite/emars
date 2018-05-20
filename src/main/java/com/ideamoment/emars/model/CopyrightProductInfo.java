@@ -88,7 +88,11 @@ public class CopyrightProductInfo extends HistoriableEntity {
     }
 
     public boolean isPrivilege1() {
-        return privilege1;
+        if(this.privileges != null) {
+            return this.privileges.charAt(0) == '1';
+        }else {
+            return privilege1;
+        }
     }
 
     public void setPrivilege1(boolean privilege1) {
@@ -96,7 +100,11 @@ public class CopyrightProductInfo extends HistoriableEntity {
     }
 
     public boolean isPrivilege2() {
-        return privilege2;
+        if(this.privileges != null) {
+            return this.privileges.charAt(1) == '1';
+        }else {
+            return privilege2;
+        }
     }
 
     public void setPrivilege2(boolean privilege2) {
@@ -104,7 +112,11 @@ public class CopyrightProductInfo extends HistoriableEntity {
     }
 
     public boolean isPrivilege3() {
-        return privilege3;
+        if(this.privileges != null) {
+            return this.privileges.charAt(2) == '1';
+        }else {
+            return privilege3;
+        }
     }
 
     public void setPrivilege3(boolean privilege3) {
@@ -112,7 +124,11 @@ public class CopyrightProductInfo extends HistoriableEntity {
     }
 
     public boolean isPrivilege4() {
-        return privilege4;
+        if(this.privileges != null) {
+            return this.privileges.charAt(3) == '1';
+        }else {
+            return privilege4;
+        }
     }
 
     public void setPrivilege4(boolean privilege4) {

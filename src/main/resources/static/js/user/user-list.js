@@ -32,6 +32,7 @@ USERLIST.initUserTbl = function(){
                         }
                     },
                     language: {
+                        "emptyTable": "没有查询到相关数据",
                         "paginate": {
                             "first":      "首页",
                             "previous":   "上一页",

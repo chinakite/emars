@@ -155,13 +155,8 @@ public class CopyrightServiceImpl implements CopyrightService {
 
         ArrayList<CopyrightProductInfo> products = copyrightContract.getProducts();
         for(CopyrightProductInfo product : products) {
-            String productName = product.getName();
             String productIsbn = product.getIsbn();
-            ProductInfo existedProduct = productMapper.checkProductDuplicated(productName, null);
-            if(existedProduct != null) {
-                continue;
-            }
-            existedProduct = productMapper.checkIsbnDuplicated(productIsbn, null);
+            ProductInfo existedProduct = productMapper.checkIsbnDuplicated(productIsbn, null);
             if(existedProduct != null) {
                 continue;
             }

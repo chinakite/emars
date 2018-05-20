@@ -124,7 +124,7 @@ public interface ProductMapper {
     ProductInfo queryProduct(@Param("name") String name, @Param("ignoreId") Long ignoreId);
 
     @Select({"<script>",
-            "SELECT * FROM t_product",
+            "SELECT * FROM t_product_info",
             "WHERE c_name = #{name}",
             "<if test='id != null'>",
             " AND c_id != #{id}",
@@ -134,7 +134,7 @@ public interface ProductMapper {
     ProductInfo checkProductDuplicated(@Param("name") String name, @Param("id") Long id);
 
     @Select({"<script>",
-            "SELECT * FROM t_product",
+            "SELECT * FROM t_product_info",
             "WHERE c_isbn = #{isbn}",
             "<if test='id != null'>",
             " AND c_id != #{id}",

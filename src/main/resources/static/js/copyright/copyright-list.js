@@ -556,14 +556,23 @@ COPYRIGHTLIST.editProduct = function(obj) {
     $('#inputPublishState').val(productItem.publishState);
     $('#inputProportions').val(productItem.proportions);
     $('#inputIsbn').val(productItem.isbn);
-    if(productItem.privilege1)
+    console.log("productItem " + JSON.stringify(productItem));
+    if(productItem.privilege1) {
+        console.log("productItem.privilege1 " + productItem.privilege1);
         $('#inputPrivilege1').prop('checked', true);
-    if(productItem.privilege2)
+    }
+    if(productItem.privilege2) {
+        console.log("productItem.privilege2 " + productItem.privilege2);
         $('#inputPrivilege2').prop('checked', true);
-    if(productItem.privilege3)
+    }
+    if(productItem.privilege3){
+        console.log("productItem.privilege3 " + productItem.privilege3);
         $('#inputPrivilege3').prop('checked', true);
-    if(productItem.privilege4)
+    }
+    if(productItem.privilege4) {
+        console.log("productItem.privilege4 " + productItem.privilege4);
         $('#inputPrivilege4').prop('checked', true);
+    }
     $('#inputGrant').val(productItem.grant);
     $('#inputCopyrightType').val(productItem.copyrightType);
     $('#inputCopyrightPrice').val(productItem.copyrightPrice);

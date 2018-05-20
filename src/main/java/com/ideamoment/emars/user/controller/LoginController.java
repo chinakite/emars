@@ -60,4 +60,24 @@ public class LoginController {
         }
     }
 
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+        Cookie cookies[] = request.getCookies();
+        if (cookies != null)
+        {
+            for (int i = 0; i < cookies.length; i++)
+            {
+                if (cookies[i].getName().equals(UserCookie.EMARS_USER))
+                {
+                    Cookie cookie = new Cookie(UserCookie.EMARS_USER,"");//这边得用"",不能用null
+                    cookie.setPath("/");//设置成跟写入cookies一样的
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
+        }
+        return "redirect:/login";
+    }
+
 }
