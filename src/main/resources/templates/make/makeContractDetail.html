@@ -49,8 +49,33 @@
                 <div class="col-md-3">
                     <div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt=""/>
                     </div>
+                    <div class="text-xs-center m-t-1">
+                        <strong><span class="font-size-14" th:text="${mcProduct.product.name}"></span></strong>
+                    </div>
+                    <div class="text-xs-center">
+                        <span class="font-size-12" th:text="${mcProduct.product.authorsTextInline}"></span>
+                    </div>
                 </div>
                 <div class="col-md-9">
+                    <div class="col-md-12">
+                        <p>
+                            <div class="col-md-6">
+                                <label>编号：</label><span th:text="${mcProduct.product.copyrightCode + '-' + mcProduct.product.sort}"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label>集数：</label><span th:text="${mcProduct.section}"></span>集
+                            </div>
+                        </p>
+                        <p>
+                            <div class="col-md-6">
+                                <label>价格：</label><span th:text="${mcProduct.price}"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label>演播人：</label><span th:text="${mcProduct.announcersTextInline}"></span>
+                            </div>
+                        </p>
+                    </div>
+
                     <div class="col-md-6 m-t-2">
                         <div class="panel">
                             <div class="panel-heading">

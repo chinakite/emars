@@ -299,6 +299,18 @@ CREATE TABLE `t_make_ctrt_doc` (
   PRIMARY KEY (`C_ID`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `t_product_announcer`;
+
+CREATE TABLE `t_product_announcer` (
+  `c_id` BIGINT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `c_product_id` BIGINT(11) NOT NULL,
+  `c_announcer_id` BIGINT(11) NOT NULL,
+  `c_mc_id` BIGINT(20) NOT NULL,
+  `c_creator` BIGINT(11) NOT NULL,
+  `c_createtime` DATETIME NOT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
 #====================
 
 CREATE TABLE `t_user` (

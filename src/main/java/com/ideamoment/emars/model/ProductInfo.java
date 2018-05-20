@@ -145,21 +145,15 @@ public class ProductInfo extends HistoriableEntity {
         }else if(ProductionState.HAS_BEEN_PRODUCED.equals(this.productionState)) {
             return ProductionState.HAS_BEEN_PRODUCED_TEXT;
         }else {
-            return "未知";
+            return "待制作";
         }
     }
 
     public String getPublishStateText() {
         if(PublishState.PUBLISHED.equals(this.publishState)) {
             return PublishState.PUBLISHED_TEXT;
-        }else if(PublishState.NET_SIGNED.equals(this.publishState)) {
-            return PublishState.NET_SIGNED_TEXT;
-        }else if(PublishState.NET_UN_SIGNED.equals(this.publishState)) {
-            return PublishState.NET_UN_SIGNED_TEXT;
-        }else if(PublishState.UN_PUBLIC.equals(this.publishState)) {
-            return PublishState.UN_PUBLIC_TEXT;
         }else{
-            return "未知";
+            return "未出版";
         }
     }
 

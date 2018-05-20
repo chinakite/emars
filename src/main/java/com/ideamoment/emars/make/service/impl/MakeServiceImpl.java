@@ -1,5 +1,7 @@
 package com.ideamoment.emars.make.service.impl;
 
+import com.ideamoment.emars.announcer.dao.AnnouncerMapper;
+import com.ideamoment.emars.author.dao.AuthorMapper;
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.make.dao.MakeContractMapper;
@@ -34,6 +36,12 @@ public class MakeServiceImpl implements MakeService {
 
     @Autowired
     private MakeContractMapper makeContractMapper;
+
+    @Autowired
+    private AuthorMapper authorMapper;
+
+    @Autowired
+    private AnnouncerMapper announcerMapper;
 
     @Override
     @Transactional
@@ -93,6 +101,11 @@ public class MakeServiceImpl implements MakeService {
         StringBuilder mcProductIds = new StringBuilder();
         int i = 0;
         for(MakeContractProduct makeContractProduct : makeContractProducts) {
+            ProductInfo productInfo = productMapper.findProduct(makeContractProduct.getProductId());
+            List<Author> authors = authorMapper.queryAuthorByProduct(makeContractProduct.getProductId());
+            productInfo.setAuthors(authors);
+            makeContractProduct.setProduct(productInfo);
+
             ArrayList<MakeContractDoc> makeContractDocs = makeContractMapper.listContractDocs(makeContractProduct.getId(), null);
             makeContractProduct.setMakeContractDocs(makeContractDocs);
             i += 1;
@@ -104,8 +117,7 @@ public class MakeServiceImpl implements MakeService {
             ArrayList<ProductAnnouncer> prodAnnouncers = makeContractMapper.listContractProductAnnouncers(id, makeContractProduct.getProductId());
             ArrayList<Announcer> announcers = new ArrayList<Announcer>();
             for(ProductAnnouncer prodAnnouncer: prodAnnouncers) {
-                Announcer announcer = new Announcer();
-                announcer.setId(prodAnnouncer.getAnnouncerId());
+                Announcer announcer = announcerMapper.findAnnouncer(prodAnnouncer.getAnnouncerId());
                 announcers.add(announcer);
             }
             makeContractProduct.setAnnouncers(announcers);

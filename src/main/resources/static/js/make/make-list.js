@@ -223,6 +223,7 @@ MAKELIST.popEditMakeContractModal = function (id) {
                 $('#inputMakerId').val(makeContract.makerId).trigger('change');
                 $('#inputTotalSection').val(makeContract.totalSection);
                 $('#inputTotalPrice').val(makeContract.totalPrice);
+                $('#inputSignDate').val(makeContract.signDate);
                 var makeContractProducts = makeContract.mcProducts;
                 var prodIds = [];
                 for(var k in makeContractProducts) {

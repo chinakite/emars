@@ -1,5 +1,7 @@
 package com.ideamoment.emars.model;
 
+import com.ideamoment.emars.utils.StringUtils;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +19,8 @@ public class MakeContractProduct extends HistoriableEntity {
     private Integer section;
     private ArrayList<MakeContractDoc> makeContractDocs = new ArrayList<>();
     private ArrayList<Announcer> announcers = new ArrayList<Announcer>();
+
+    private ProductInfo product;
 
     public long getMakeContractId() {
         return makeContractId;
@@ -80,5 +84,30 @@ public class MakeContractProduct extends HistoriableEntity {
 
     public void setAnnouncers(ArrayList<Announcer> announcers) {
         this.announcers = announcers;
+    }
+
+    public ProductInfo getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductInfo product) {
+        this.product = product;
+    }
+
+    public String getAnnouncersTextInline() {
+        String result = "";
+        if(announcers != null) {
+            for (int i = 0; i < this.announcers.size(); i++) {
+                Announcer announcer = announcers.get(i);
+                if (i > 0) {
+                    result += "、";
+                }
+                result += announcer.getName();
+                if (StringUtils.isNotEmpty(announcer.getPseudonym())) {
+                    result += "(" + announcer.getPseudonym() + ")";
+                }
+            }
+        }
+        return result;
     }
 }

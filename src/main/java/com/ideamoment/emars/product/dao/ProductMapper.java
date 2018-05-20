@@ -78,7 +78,7 @@ public interface ProductMapper {
             "<if test='condition.stockIn != null'>",
             " AND p.C_STOCKIN = #{condition.stockIn}",
             "</if>",
-            " AND c.c_state != '1'",
+            " AND c.c_state = '1'",
             " ORDER BY p.C_MODIFYTIME DESC ",
             " LIMIT #{offset}, #{size}",
             "</script>"})

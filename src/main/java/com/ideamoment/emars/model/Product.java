@@ -79,10 +79,6 @@ public class Product extends HistoriableEntity {
     public String getPublishStateText() {
         if(PublishState.PUBLISHED.equals(this.publishState)) {
             return PublishState.PUBLISHED_TEXT;
-        }else if(PublishState.NET_SIGNED.equals(this.publishState)){
-            return PublishState.NET_SIGNED_TEXT;
-        }else if(PublishState.NET_UN_SIGNED.equals(this.publishState)){
-            return PublishState.NET_UN_SIGNED_TEXT;
         }else{
             return PublishState.UN_PUBLIC_TEXT;
         }
