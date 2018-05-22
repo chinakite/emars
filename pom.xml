@@ -5,11 +5,11 @@
 
 	<groupId>com.ideamoment</groupId>
 	<artifactId>emars</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.8.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>emars</name>
-	<description>Demo project for Spring Boot</description>
+	<description>EuphonyMedia Audio Resource System</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -100,6 +100,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>emars</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

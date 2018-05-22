@@ -20,3 +20,7 @@ VALUES
 	(13,'校园青春','校园青春',14,'0','1.0','1','2016-05-12 00:44:56',NULL,NULL),
 	(14,'儿童文学','儿童文学',16,'0','1.0','1','2016-05-12 00:45:05','1','2018-02-22 23:26:37'),
 	(15,'都市情感','都市情感',1,'0','1.6','1','2015-12-29 00:36:48','1','2016-11-02 00:09:17');
+
+INSERT INTO `t_email_setting` (`C_ID`, `C_HOSTNAME`, `C_PORT`, `C_TYPE`, `C_FROM_EMAIL`, `C_FROM_NAME`, `C_USER_NAME`, `C_PASSWORD`, `C_SSL`, `C_CREATOR`, `C_CREATETIME`, `C_MODIFIER`, `C_MODIFYTIME`)
+VALUES
+	(1,'smtp.163.com','25','1','piaostudio@163.com','北京广播公司','piaostudio','Kn4944428','0','1','2018-02-23 15:03:33','1','2018-02-24 10:12:00');
