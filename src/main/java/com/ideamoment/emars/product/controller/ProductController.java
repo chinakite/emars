@@ -135,8 +135,8 @@ public class ProductController {
         }
 
         Long productId = Long.parseLong(productIdStr);
+        String filePath = productService.packageAllFiles(productId);
 
-        
 
         return null;
     }

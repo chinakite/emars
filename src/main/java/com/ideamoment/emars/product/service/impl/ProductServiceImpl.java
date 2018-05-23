@@ -310,6 +310,17 @@ public class ProductServiceImpl implements ProductService{
         return resultString(ret);
     }
 
+    @Override
+    @Transactional
+    public String packageAllFiles(Long productId) {
+        makeTempDir(productId);
+        return null;
+    }
+
+    private String makeTempDir(Long productId) {
+        String tempDir = 
+    }
+
     private String validateCopyrightValid(long id) {
         List<CopyrightFile> copyrightFiles = productCopyrightFileMapper.listCopyrightFiles(id);
         boolean contract = false;
