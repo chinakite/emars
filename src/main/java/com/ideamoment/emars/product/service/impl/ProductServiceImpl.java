@@ -1,9 +1,13 @@
 package com.ideamoment.emars.product.service.impl;
 
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.GetObjectRequest;
 import com.ideamoment.emars.author.dao.AuthorMapper;
 import com.ideamoment.emars.author.service.AuthorService;
+import com.ideamoment.emars.constants.AliyunOSSConstants;
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
+import com.ideamoment.emars.make.dao.MakeContractMapper;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.model.enumeration.*;
 import com.ideamoment.emars.product.dao.ProductCopyrightFileMapper;
@@ -14,10 +18,15 @@ import com.ideamoment.emars.product.service.ProductService;
 import com.ideamoment.emars.utils.Page;
 import com.ideamoment.emars.utils.StringUtils;
 import com.ideamoment.emars.utils.UserContext;
+import com.ideamoment.emars.utils.ZipUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -43,6 +52,12 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ProductCopyrightFileMapper productCopyrightFileMapper;
+
+    @Autowired
+    private MakeContractMapper makeContractMapper;
+
+    @Autowired
+    private OSSClient ossClient;
 
     @Override
     @Transactional
@@ -313,12 +328,54 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional
     public String packageAllFiles(Long productId) {
-        makeTempDir(productId);
-        return null;
+        ProductInfo product = productMapper.findProduct(productId);
+
+        String tempDir = makeTempDir(productId);
+        List<CopyrightFile> copyrightFiles = productCopyrightFileMapper.listCopyrightFiles(productId);
+        for(CopyrightFile cpFile : copyrightFiles) {
+            String path = cpFile.getPath();
+            String key = StringUtils.getOssKeyFromUrl(path);
+            ossClient.getObject(new GetObjectRequest(AliyunOSSConstants.BUCKET_NAME, key), new File(tempDir + "/" + cpFile.getName()));
+        }
+        ArrayList<MakeContractDoc> mcFiles = makeContractMapper.listContractDocs(productId, null);
+        for(MakeContractDoc mcFile : mcFiles) {
+            String path = mcFile.getPath();
+            String key = StringUtils.getOssKeyFromUrl(path);
+            ossClient.getObject(new GetObjectRequest(AliyunOSSConstants.BUCKET_NAME, key), new File(tempDir + "/" + mcFile.getName()));
+        }
+        List<ProductPicture> pics = productPictureMapper.queryProductPictures(String.valueOf(productId));
+        for(ProductPicture pic : pics) {
+            String path = pic.getPath();
+            String key = StringUtils.getOssKeyFromUrl(path);
+            ossClient.getObject(new GetObjectRequest(AliyunOSSConstants.BUCKET_NAME, key), new File(tempDir + "/" + pic.getName()));
+        }
+        String zipPath = System.getProperty("java.io.tmpdir") + "/" + product.getName() + ".zip";
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(new File(zipPath));
+            ZipUtils.toZip(tempDir, fos, true);
+            fos.close();
+            return zipPath;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private String makeTempDir(Long productId) {
-        String tempDir = 
+        String tempDir = System.getProperty("java.io.tmpdir");
+        if(!tempDir.endsWith("/")) {
+            tempDir = tempDir + "/";
+        }
+        tempDir = tempDir + System.currentTimeMillis() + "_" + productId;
+        File dir = new File(tempDir);
+        if(!dir.exists()) {
+            dir.mkdir();
+        }
+        return tempDir;
     }
 
     private String validateCopyrightValid(long id) {
