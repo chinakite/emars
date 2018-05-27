@@ -64,6 +64,7 @@ COPYRIGHTPAGE.popUploadFileModal = function(productId, type) {
 
 COPYRIGHTPAGE.clearUploadFileModal = function() {
     dropzoneObj.emit("resetFiles");
+    $('#fileMetas').removeData('postData');
     $('#uploadFileType').val('');
     $('#uploadFileProductId').val('');
     $('#uploadFileModal').modal('show');

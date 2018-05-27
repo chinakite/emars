@@ -65,6 +65,7 @@ PRODUCTPAGE.popUploadFileModal = function(type) {
 
 PRODUCTPAGE.clearUploadFileModal = function() {
     dropzoneObj.emit("resetFiles");
+    $('#fileMetas').removeData('postData');
     $('#uploadFileType').val('');
     $('#uploadFileProductId').val('');
     $('#uploadFileModal').modal('show');

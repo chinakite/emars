@@ -28,5 +28,14 @@ public class StringUtils {
         }
     }
 
+    public static String getFileNameFromPath(String path) {
+        int pos = path.lastIndexOf('/');
+        if(pos != path.length() - 1) {
+            return path.substring(pos+1);
+        }else{
+            return "";
+        }
+    }
+
 
 }

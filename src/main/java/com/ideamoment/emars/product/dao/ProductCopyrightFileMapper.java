@@ -31,7 +31,7 @@ public interface ProductCopyrightFileMapper {
 
 
     @Select("select * from t_copyright_file where c_product_id = #{productId}")
-    @Results(id = "CopyrightFileMap", value = {
+    @Results(id = "copyrightFileMap", value = {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "name", column = "C_NAME"),
             @Result(property = "path", column = "C_PATH"),
@@ -48,4 +48,8 @@ public interface ProductCopyrightFileMapper {
 
     @Insert("insert into t_copyright_file (c_name, c_product_id, c_type, c_path, c_desc, c_creator, c_createtime)values(#{name}, #{productId}, #{type}, #{path}, #{desc}, #{creator}, #{createTime})")
     boolean insertCopyrightFile(CopyrightFile copyrightFile);
+
+    @Select("select * from t_copyright_file where c_product_id = #{productId} and c_type > 1")
+    @ResultMap("copyrightFileMap")
+    List<CopyrightFile> listCopyrightToSaleFiles(Long productId);
 }

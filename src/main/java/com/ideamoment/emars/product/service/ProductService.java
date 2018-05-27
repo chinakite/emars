@@ -38,4 +38,6 @@ public interface ProductService {
     String changeProductionState(long id, String productionState, Long[] announcerIds);
 
     String packageAllFiles(Long productId);
+
+    String packageToSaleFiles(Long productId);
 }

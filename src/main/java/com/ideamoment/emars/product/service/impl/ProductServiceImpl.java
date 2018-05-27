@@ -331,25 +331,169 @@ public class ProductServiceImpl implements ProductService{
         ProductInfo product = productMapper.findProduct(productId);
 
         String tempDir = makeTempDir(productId);
-        List<CopyrightFile> copyrightFiles = productCopyrightFileMapper.listCopyrightFiles(productId);
+
+        downloadFiles(productId, tempDir, false);
+
+        String systemTmpDir = System.getProperty("java.io.tmpdir");
+        systemTmpDir = systemTmpDir.replaceAll("\\\\", "/");
+        if(!systemTmpDir.endsWith("/")) {
+            systemTmpDir = systemTmpDir + "/";
+        }
+        String zipPath = systemTmpDir + product.getName() + "_All.zip";
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(new File(zipPath));
+            ZipUtils.toZip(tempDir, fos, true);
+            fos.close();
+            return zipPath;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void downloadFiles(Long productId, String tempDir, boolean toSale) {
+        String cpFileDirPath = tempDir + "版权文件";
+        File cpFileDir = new File(cpFileDirPath);
+        cpFileDir.mkdir();
+
+        List<CopyrightFile> copyrightFiles;
+        if(toSale) {
+            copyrightFiles = productCopyrightFileMapper.listCopyrightToSaleFiles(productId);
+        }else{
+            copyrightFiles = productCopyrightFileMapper.listCopyrightFiles(productId);
+        }
+        String cpContractDirPath = cpFileDirPath + "/合同";
+        File cpContractDir = new File(cpContractDirPath);
+        String cpCopyrightPageDirPath = cpFileDirPath + "/版权页";
+        File cpCopyrightPageDir = new File(cpCopyrightPageDirPath);
+        String cpGrantPaperDirPath = cpFileDirPath + "/授权书";
+        File cpGrantPaperDir = new File(cpGrantPaperDirPath);
+        String cpAuthorIdCardDirPath = cpFileDirPath + "/作者身份证";
+        File cpAuthorIdCardDir = new File(cpAuthorIdCardDirPath);
+        String cpPublishContractDirPath = cpFileDirPath + "/出版合同";
+        File cpPublishContractDir = new File(cpPublishContractDirPath);
+        String cpContractToSaleDirPath = cpFileDirPath + "/合同_给营销";
+        File cpContractToSaleDir = new File(cpContractToSaleDirPath);
         for(CopyrightFile cpFile : copyrightFiles) {
             String path = cpFile.getPath();
             String key = StringUtils.getOssKeyFromUrl(path);
-            ossClient.getObject(new GetObjectRequest(AliyunOSSConstants.BUCKET_NAME, key), new File(tempDir + "/" + cpFile.getName()));
+            String cpFilePath = null;
+            if(CopyrightFileType.CONTRACT.equals(cpFile.getType())) {
+                if(!cpContractDir.exists()) {
+                    cpContractDir.mkdir();
+                }
+                cpFilePath = cpContractDirPath + "/" + cpFile.getName();
+            }else if(CopyrightFileType.COPYRIGHT_PAGE.equals(cpFile.getType())){
+                if(!cpCopyrightPageDir.exists()) {
+                    cpCopyrightPageDir.mkdir();
+                }
+                cpFilePath = cpCopyrightPageDirPath + "/" + cpFile.getName();
+            }else if(CopyrightFileType.GRANT_PAPER.equals(cpFile.getType())){
+                if(!cpGrantPaperDir.exists()) {
+                    cpGrantPaperDir.mkdir();
+                }
+                cpFilePath = cpGrantPaperDirPath + "/" + cpFile.getName();
+            }else if(CopyrightFileType.AUTHOR_ID_CARD.equals(cpFile.getType())){
+                if(!cpAuthorIdCardDir.exists()) {
+                    cpAuthorIdCardDir.mkdir();
+                }
+                cpFilePath = cpAuthorIdCardDirPath + "/" + cpFile.getName();
+            }else if(CopyrightFileType.PUBLISH_CONTRACT.equals(cpFile.getType())){
+                if(!cpPublishContractDir.exists()) {
+                    cpPublishContractDir.mkdir();
+                }
+                cpFilePath = cpPublishContractDirPath + "/" + cpFile.getName();
+            }else if(CopyrightFileType.CONTRACT_TO_SALE.equals(cpFile.getType())){
+                if(!cpContractToSaleDir.exists()) {
+                    cpContractToSaleDir.mkdir();
+                }
+                cpFilePath = cpContractToSaleDirPath + "/" + cpFile.getName();
+            }
+
+            if(cpFilePath != null) {
+                ossClient.getObject(new GetObjectRequest(AliyunOSSConstants.BUCKET_NAME, key), new File(cpFilePath));
+            }
         }
+
         ArrayList<MakeContractDoc> mcFiles = makeContractMapper.listContractDocs(productId, null);
+        String mcFileDirPath = tempDir + "制作文件";
+        File mcFileDir = new File(mcFileDirPath);
+        mcFileDir.mkdir();
+        String mcContractDirPath = mcFileDirPath + "/合同";
+        File mcContractDir = new File(mcContractDirPath);
+        String mcBroadcasterFileDirPath = mcFileDirPath + "/委托制作权利声明";
+        File mcBroadcasterFileDir = new File(mcBroadcasterFileDirPath);
+        String mcTalentStationFileDirPath = mcFileDirPath + "/演播人权利声明";
+        File mcTalentStationFileDir = new File(mcTalentStationFileDirPath);
+        String mcTalentIdCardDirPath = mcFileDirPath + "/演播人身份证";
+        File mcTalentIdCardDir = new File(mcTalentIdCardDirPath);
+        String mcOperationFileDirPath = mcFileDirPath + "/运营权利授权书";
+        File mcOperationFileDir = new File(mcOperationFileDirPath);
         for(MakeContractDoc mcFile : mcFiles) {
             String path = mcFile.getPath();
             String key = StringUtils.getOssKeyFromUrl(path);
-            ossClient.getObject(new GetObjectRequest(AliyunOSSConstants.BUCKET_NAME, key), new File(tempDir + "/" + mcFile.getName()));
+            String mcFilePath = null;
+            if(MakeContractDocType.CONTRACT.equals(mcFile.getType())) {
+                if(!mcContractDir.exists()) {
+                    mcContractDir.mkdir();
+                }
+                mcFilePath = mcContractDirPath + "/" + mcFile.getName();
+            }else if(MakeContractDocType.BROADCASTER_FILE.equals(mcFile.getType())) {
+                if(!mcBroadcasterFileDir.exists()) {
+                    mcBroadcasterFileDir.mkdir();
+                }
+                mcFilePath = mcBroadcasterFileDirPath + "/" + mcFile.getName();
+            }else if(MakeContractDocType.TALENT_STATION_FILE.equals(mcFile.getType())) {
+                if(!mcTalentStationFileDir.exists()) {
+                    mcTalentStationFileDir.mkdir();
+                }
+                mcFilePath = mcTalentStationFileDirPath + "/" + mcFile.getName();
+            }else if(MakeContractDocType.TALENT_ID_CARD.equals(mcFile.getType())) {
+                if(!mcTalentIdCardDir.exists()) {
+                    mcTalentIdCardDir.mkdir();
+                }
+                mcFilePath = mcTalentIdCardDirPath + "/" + mcFile.getName();
+            }else if(MakeContractDocType.OPERATION_FILE.equals(mcFile.getType())) {
+                if(!mcOperationFileDir.exists()) {
+                    mcOperationFileDir.mkdir();
+                }
+                mcFilePath = mcOperationFileDirPath + "/" + mcFile.getName();
+            }
+            if(mcFilePath != null) {
+                ossClient.getObject(new GetObjectRequest(AliyunOSSConstants.BUCKET_NAME, key), new File(mcFilePath));
+            }
         }
+
+        String picFileDirPath = tempDir + "图片";
+        File picFileDir = new File(picFileDirPath);
+        picFileDir.mkdir();
         List<ProductPicture> pics = productPictureMapper.queryProductPictures(String.valueOf(productId));
         for(ProductPicture pic : pics) {
             String path = pic.getPath();
             String key = StringUtils.getOssKeyFromUrl(path);
-            ossClient.getObject(new GetObjectRequest(AliyunOSSConstants.BUCKET_NAME, key), new File(tempDir + "/" + pic.getName()));
+            ossClient.getObject(new GetObjectRequest(AliyunOSSConstants.BUCKET_NAME, key), new File(picFileDirPath + "/" + pic.getName()));
         }
-        String zipPath = System.getProperty("java.io.tmpdir") + "/" + product.getName() + ".zip";
+    }
+
+    @Override
+    @Transactional
+    public String packageToSaleFiles(Long productId) {
+        ProductInfo product = productMapper.findProduct(productId);
+
+        String tempDir = makeTempDir(productId);
+
+        downloadFiles(productId, tempDir, true);
+
+        String systemTmpDir = System.getProperty("java.io.tmpdir");
+        systemTmpDir = systemTmpDir.replaceAll("\\\\", "/");
+        if(!systemTmpDir.endsWith("/")) {
+            systemTmpDir = systemTmpDir + "/";
+        }
+        String zipPath = systemTmpDir + product.getName() + "_ToSale.zip";
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(new File(zipPath));
@@ -367,6 +511,7 @@ public class ProductServiceImpl implements ProductService{
 
     private String makeTempDir(Long productId) {
         String tempDir = System.getProperty("java.io.tmpdir");
+        tempDir = tempDir.replaceAll("\\\\", "/");
         if(!tempDir.endsWith("/")) {
             tempDir = tempDir + "/";
         }
@@ -375,7 +520,7 @@ public class ProductServiceImpl implements ProductService{
         if(!dir.exists()) {
             dir.mkdir();
         }
-        return tempDir;
+        return tempDir + "/";
     }
 
     private String validateCopyrightValid(long id) {
@@ -420,17 +565,17 @@ public class ProductServiceImpl implements ProductService{
     }
 
     private String checkDuplicated(ProductInfo product, long id) {
-        ProductInfo prods = productMapper.checkProductDuplicated(product.getName(), id);
-        if(prods != null) {
-            return ErrorCode.PRODUCT_DUPLICATED;
-        }
-
-//        if(product.getIsbn() != null && product.getIsbn().trim().length() > 0) {
-//            prods = productMapper.checkIsbnDuplicated(product.getIsbn(), id);
-//            if(prods != null) {
-//                return ErrorCode.ISBN_DUPLICATED;
-//            }
+//        ProductInfo prods = productMapper.checkProductDuplicated(product.getName(), id);
+//        if(prods != null) {
+//            return ErrorCode.PRODUCT_DUPLICATED;
 //        }
+
+        if(product.getIsbn() != null && product.getIsbn().trim().length() > 0) {
+            ProductInfo  prods = productMapper.checkIsbnDuplicated(product.getIsbn(), id);
+            if(prods != null) {
+                return ErrorCode.ISBN_DUPLICATED;
+            }
+        }
         return null;
     }
 

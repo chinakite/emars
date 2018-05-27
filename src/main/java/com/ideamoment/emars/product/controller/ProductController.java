@@ -142,7 +142,7 @@ public class ProductController {
         String filePath = productService.packageAllFiles(productId);
         if(filePath != null) {
             response.setContentType("application/octet-stream");
-            String fileName = StringUtils.getOssKeyFromUrl(filePath);
+            String fileName = StringUtils.getFileNameFromPath(filePath);
             response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");
 
             InputStream in = new FileInputStream(new File(filePath));
@@ -162,6 +162,30 @@ public class ProductController {
 
     @RequestMapping(value = "downloadToSaleFiles", method = RequestMethod.GET)
     public StreamingResponseBody downloadToSaleFiles(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String productIdStr = request.getParameter("id");
+        if(StringUtils.isEmpty(productIdStr)) {
+            return null;
+        }
+
+        Long productId = Long.parseLong(productIdStr);
+        String filePath = productService.packageToSaleFiles(productId);
+        if(filePath != null) {
+            response.setContentType("application/octet-stream");
+            String fileName = StringUtils.getFileNameFromPath(filePath);
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");
+
+            InputStream in = new FileInputStream(new File(filePath));
+
+            return outputStream -> {
+                int nRead;
+                byte[] data = new byte[1024];
+                while ((nRead = in.read(data, 0, data.length)) != -1) {
+                    outputStream.write(data, 0, nRead);
+                }
+                in.close();
+            };
+        }
+
         return null;
     }
 

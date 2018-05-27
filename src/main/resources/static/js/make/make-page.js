@@ -64,6 +64,7 @@ MAKECONTRACTPAGE.popUploadMcFileModal = function(mcProductId, type) {
 
 MAKECONTRACTPAGE.clearUploadMcFileModal = function() {
     dropzoneObj.emit("resetFiles");
+    $('#mcFileMetas').removeData('postData');
     $('#uploadMcFileType').val('');
     $('#uploadFileMcProductId').val('');
     $('#uploadMcFileModal').modal('show');
