@@ -5,7 +5,7 @@
     <div class="file-list-time">{{file.createTimeText}}</div>
     <a class="file-list-icon file-list-icon-1 fa fa-download bg-success" target="_blank" href="/copyright/downloadCopyrightFile?id={{file.id}}"></a>
     {% if editable == true %}
-    <div class="file-list-icon file-list-icon-2 fa fa-remove bg-danger" onclick="PRODUCTPAGE.deleteCopyrightFile('{{file.id}}', '{{file.name}}', '{{file.typeName}}');"></div>
+    <div class="file-list-icon file-list-icon-2 fa fa-remove bg-danger" onclick="COPYRIGHTPAGE.deleteCopyrightFile('{{file.productId}}', '{{file.id}}', '{{file.name}}', '{{file.typeName}}');"></div>
     {% endif %}
 </div>
 {% endfor %}

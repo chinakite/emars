@@ -355,7 +355,7 @@
     <script th:inline="javascript" type="text/javascript">
         var makeContracts = [[${makeContracts}]];
         for(var k in makeContracts) {
-            MAKECONTRACTPAGE.loadMcProduct(makeContracts[k].mcProductId);
+            MAKECONTRACTPAGE.loadMcProduct(makeContracts[k].mcProductId, true);
         }
     </script>
 </div>

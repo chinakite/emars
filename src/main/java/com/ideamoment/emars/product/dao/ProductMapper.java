@@ -23,12 +23,13 @@ public interface ProductMapper {
             "#{createTime})")
     boolean insertProduct(ProductInfo product);
 
-    @Update("UPDATE t_product_info SET " +
-            "`C_NAME`=#{name},`C_SUBJECT_ID`=#{subjectId}," +
-            "`C_PUBLISH_STATE`=#{publishState},`C_WORDCOUNT`=#{wordCount}," +
-            "`C_DESC`=#{desc},`C_SORT`=#{sort}" +
-            "`C_ISBN`=#{isbn},`C_DESC`=#{desc},`C_MODIFIER`=#{modifier}," +
-            "`C_MODIFYTIME`=#{modifyTime} WHERE c_id = #{id}")
+    @Update("update t_product_info set " +
+            "c_name=#{name}, c_wordcount=#{wordCount}, " +
+            "c_subject_id=#{subjectId}, c_publish_state=#{publishState}, c_isbn=#{isbn}, " +
+            "c_type=#{type}, c_stockin=#{stockIn}, c_desc=#{desc}, c_modifier=#{modifier}, c_modifytime=#{modifyTime}," +
+            "c_section=#{section}, c_sort=#{sort} " +
+            "where c_id = #{id}"
+    )
     boolean updateProduct(ProductInfo product);
 
     @Update("UPDATE t_product SET C_PRODUCTION_STATE = #{state} WHERE c_id = #{id}")

@@ -183,6 +183,122 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="make-tab">
+                        <div th:each="makeContract : ${makeContracts}">
+                            <div class="col-md-9 m-t-2">
+                                <p>
+                                <div class="col-md-12">
+                                    <label>合同编码：</label>
+                                    <span th:text="${makeContract.code}"></span>
+                                    <span class="label label-danger" th:if="${makeContract.targetType == '0'}">劳务合同</span>
+                                    <span class="label label-danger" th:if="${makeContract.targetType == '1'}">制作合同</span>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="col-md-12">
+                                    <label>甲方：</label><span th:text="${makeContract.owner}"></span>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="col-md-12">
+                                    <label>制作方：</label><span th:text="${makeContract.maker}"></span>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="col-md-6">
+                                    <label>集数：</label><span th:text="${makeContract.section}"></span>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="col-md-6">
+                                    <label>单价：</label><span th:text="${makeContract.price}"></span>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="col-md-6">
+                                    <label>演播人：</label><span th:text="${makeContract.worker}"></span>
+                                </div>
+                                </p>
+
+                            </div>
+                            <div class="col-md-12" style="border-bottom: 1px solid #e2e2e2;">
+                                <div class="col-md-6 m-t-2">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <span class="panel-title">合同</span>
+                                            <div class="panel-heading-controls">
+                                                <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${makeContract.mcProductId}, 1);|"><i class="fa fa-plus"></i> 添加</button>
+                                            </div>
+                                        </div>
+
+                                        <div th:id="|${makeContract.mcProductId}_makeContractFileList|">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 m-t-2">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <span class="panel-title">委托制作权利声明(机构)</span>
+                                            <div class="panel-heading-controls">
+                                                <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${makeContract.mcProductId}, 2);|"><i class="fa fa-plus"></i> 添加</button>
+                                            </div>
+                                        </div>
+
+                                        <div th:id="|${makeContract.mcProductId}_makeContractBroadcasterFileList|">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6 m-t-2">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <span class="panel-title">演播人权利声明</span>
+                                            <div class="panel-heading-controls">
+                                                <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${makeContract.mcProductId}, 3);|"><i class="fa fa-plus"></i> 添加</button>
+                                            </div>
+                                        </div>
+
+                                        <div th:id="|${makeContract.mcProductId}_talentStationFileList|">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 m-t-2">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <span class="panel-title">演播人身份证复印件</span>
+                                            <div class="panel-heading-controls">
+                                                <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${makeContract.mcProductId}, 4);|"><i class="fa fa-plus"></i> 添加</button>
+                                            </div>
+                                        </div>
+
+                                        <div th:id="|${makeContract.mcProductId}_talentIdCardFileList|">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 m-t-2">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <span class="panel-title">运营权利授权书</span>
+                                            <div class="panel-heading-controls">
+                                                <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${makeContract.mcProductId}, 5);|"><i class="fa fa-plus"></i> 添加</button>
+                                            </div>
+                                        </div>
+
+                                        <div th:id="|${makeContract.mcProductId}_operationFileList|">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="sale-tab">
                     </div>
@@ -203,12 +319,17 @@
                 </div>
             </div>
         </div>
-
-        <div th:replace="product/uploadFileModal :: uploadFileModal"></div>
     </section>
 </body>
 <div layout:fragment="scripts">
     <script type='text/javascript' th:src="@{/js/product/mediares-page.js}"></script>
+    <script type='text/javascript' th:src="@{/js/make/make-page.js}"></script>
+    <script th:inline="javascript" type="text/javascript">
+        var makeContracts = [[${makeContracts}]];
+        for(var k in makeContracts) {
+            MAKECONTRACTPAGE.loadMcProduct(makeContracts[k].mcProductId, false);
+        }
+    </script>
 </div>
 
 </html>

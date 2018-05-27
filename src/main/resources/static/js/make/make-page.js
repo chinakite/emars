@@ -1,7 +1,7 @@
 ;
 
 var MAKECONTRACTPAGE = {};
-var dropzoneObj;
+var mcDropzoneObj;
 
 var mcDocType = {
     1: 'makeContractFile',
@@ -28,7 +28,7 @@ $(document).ready(function(){
             };
         },
         init: function() {
-            dropzoneObj = this;
+            mcDropzoneObj = this;
             this.on("success", function (file, message) {
                 var fileMetaDatas = message.data;
                 var mcFileMetas = $('#mcFileMetas').data('postData');
@@ -51,8 +51,8 @@ $(document).ready(function(){
 
 });
 
-MAKECONTRACTPAGE.loadMcProduct = function (mcProductId) {
-    MAKECONTRACTPAGE.refreshProductDocs(mcProductId);
+MAKECONTRACTPAGE.loadMcProduct = function (mcProductId, editable) {
+    MAKECONTRACTPAGE.refreshProductDocs(mcProductId, editable);
 }
 
 MAKECONTRACTPAGE.popUploadMcFileModal = function(mcProductId, type) {
@@ -63,7 +63,7 @@ MAKECONTRACTPAGE.popUploadMcFileModal = function(mcProductId, type) {
 };
 
 MAKECONTRACTPAGE.clearUploadMcFileModal = function() {
-    dropzoneObj.emit("resetFiles");
+    mcDropzoneObj.emit("resetFiles");
     $('#mcFileMetas').removeData('postData');
     $('#uploadMcFileType').val('');
     $('#uploadFileMcProductId').val('');
@@ -92,7 +92,7 @@ MAKECONTRACTPAGE.submitMcProductFiles = function () {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("文件保存成功！");
                     $('#uploadMcFileModal').modal('hide');
-                    MAKECONTRACTPAGE.refreshFilesList(mcProductId, fileType);
+                    MAKECONTRACTPAGE.refreshFilesList(mcProductId, fileType, true);
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
                 }
@@ -102,23 +102,16 @@ MAKECONTRACTPAGE.submitMcProductFiles = function () {
             }
         }
     );
-}
+};
 
-MAKECONTRACTPAGE.clearUploadMcFileModal = function () {
-    dropzoneObj.emit("resetFiles");
-    $('#uploadMcFileType').val('');
-    $('#uploadFileMcProductId').val('');
-    $('#uploadMcFileModal').modal('show');
-}
-
-MAKECONTRACTPAGE.refreshFilesList = function(mcProductId, type) {
+MAKECONTRACTPAGE.refreshFilesList = function(mcProductId, type, editable) {
     $.get(
         '/make/getMcDocs',
         {mcProductId: mcProductId, type: type},
         function(data) {
             if(data.code == '0') {
                 var docs = data.data;
-                var filesHtml = nunjucks.render('../../../js/make/mc_docs.tmpl', {mcProductId: mcProductId, docs: docs, editable: true});
+                var filesHtml = nunjucks.render('../../../js/make/mc_docs.tmpl', {mcProductId: mcProductId, docs: docs, editable: editable});
                 $('#' + mcProductId + '_' + mcDocType[type] + 'List').html(filesHtml);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
@@ -135,7 +128,7 @@ MAKECONTRACTPAGE.deleteDoc = function (id, name, fileType, mcProductId) {
             function(data) {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("删除成功！");
-                    MAKECONTRACTPAGE.refreshFilesList(mcProductId, fileType);
+                    MAKECONTRACTPAGE.refreshFilesList(mcProductId, fileType, true);
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
                 }
@@ -145,8 +138,8 @@ MAKECONTRACTPAGE.deleteDoc = function (id, name, fileType, mcProductId) {
 
 };
 
-MAKECONTRACTPAGE.refreshProductDocs = function (mcProductId) {
+MAKECONTRACTPAGE.refreshProductDocs = function (mcProductId, editable) {
     for(var key in mcDocType) {
-        MAKECONTRACTPAGE.refreshFilesList(mcProductId, key);
+        MAKECONTRACTPAGE.refreshFilesList(mcProductId, key, editable);
     }
 };
