@@ -63,6 +63,13 @@ public class CopyrightServiceImpl implements CopyrightService {
 
     @Override
     @Transactional
+    public long countCopyrights(CopyrightContract condition) {
+        long count = copyrightMapper.countCopyrights(condition);
+        return count;
+    }
+
+    @Override
+    @Transactional
     public CopyrightContract findCopyright(long id) {
         CopyrightContract copyright = copyrightMapper.findCopyright(id);
         ArrayList<CopyrightProductInfo> products = copyrightMapper.queryCopyrightProductInfoes(id);

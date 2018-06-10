@@ -4,7 +4,130 @@
 <head th:include="layout/layout :: htmlhead('Dashboard')"></head>
 <body>
 <section layout:fragment="content">
-    <h1>Dashboard</h1>
+    <ol class="breadcrumb page-breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li class="active">Dashboard</li>
+    </ol>
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-4 text-xs-center text-md-left text-nowrap">
+                <h1><i class="page-header-icon ion-ios-pulse-strong"></i>Dashboard</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="panel box">
+                <div class="box-row">
+                    <div class="box-cell col-md-4 p-a-3 valign-top">
+                        <h4 class="m-y-1 font-weight-normal"><i class="fa fa-file text-primary"></i>&nbsp;&nbsp;合同统计</h4>
+                        <ul class="list-group m-x-0 m-t-3 m-b-0">
+                            <li class="list-group-item p-x-1 b-x-0 b-t-0">
+                                <span class="label label-primary pull-right" th:text="${countCopyrights}"></span>
+                                版权合同
+                            </li>
+                            <li class="list-group-item p-x-1 b-x-0">
+                                <span class="label label-danger pull-right" th:text="${countMakeContracts}"></span>
+                                制作合同
+                            </li>
+                            <li class="list-group-item p-x-1 b-x-0 b-b-0">
+                                <span class="label label-info pull-right"></span>
+                                营销合同
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="box-cell col-md-8 p-a-1 bg-primary">
+                        <div class="text-center" style="color: #fff;">作品数量</div>
+                        <div id="productBar" style="height: 220px;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <!-- Stats -->
+
+            <a href="/product/productPage" class="box bg-danger">
+                <div class="box-cell p-a-3 valign-middle">
+                    <i class="box-bg-icon middle right ion-arrow-graph-up-right"></i>
+
+                    <span class="font-size-24"><strong th:text="${countProducts}"></strong></span><br />
+                    <span class="font-size-15">作品总数</span>
+                </div>
+            </a>
+
+            <div class="panel">
+                <div class="panel-title">作品分类</div>
+                <hr />
+
+                <div class="panel-body">
+                    <div id="productPie" style="height: 200px"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </section>
 </body>
+<div layout:fragment="scripts">
+    <script th:inline="javascript" type="text/javascript">
+        var productData1 = [[${productData1}]];
+        console.log(productData1);
+        new Morris.Bar({
+            element:       'productBar',
+            data:          productData1,
+            xkey:          'state',
+            ykeys:         ['count'],
+            labels:        ['count'],
+            barRatio:      0.4,
+            xLabelAngle:   35,
+            hideHover:     'auto',
+            barColors:     '#fff',
+            gridLineColor: '#fff',
+            gridTextColor: '#fff',
+            resize:        true
+        });
+
+
+        var productData2 = [[${productData2}]];
+        console.log(productData2);
+
+        $.plot($('#productPie'), productData2, {
+            series: {
+                shadowSize: 0,
+                pie: {
+                    show:        true,
+                    radius:      1,
+                    innerRadius: 0.5,
+
+                    label: {
+                        show:       true,
+                        radius:     3 / 4,
+                        background: { opacity: 0 },
+
+                        formatter: function(label, series) {
+                            return '<div style="font-size:11px;text-align:center;color:white;">' + Math.round(series.percent) + '%</div>';
+                        },
+                    },
+                },
+            },
+
+            grid: {
+                color:       '#999',
+                borderColor: 'rgba(255, 255, 255, 0)',
+                borderWidth: 1,
+                hoverable:   true,
+                clickable:   true,
+            },
+
+            xaxis: { tickColor: 'rgba(255, 255, 255, 0)' },
+            colors: '#888',
+        });
+    </script>
+</div>
 </html>

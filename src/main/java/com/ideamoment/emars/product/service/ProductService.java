@@ -5,6 +5,7 @@ import com.ideamoment.emars.utils.Page;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yukiwang on 2018/2/23.
@@ -12,6 +13,8 @@ import java.util.List;
 public interface ProductService {
 
     Page<ProductInfo> listProducts(ProductInfo condition, int offset, int pageSize);
+
+    long listProductsCount(ProductInfo condition);
 
     ProductInfo findProduct(long id);
 
@@ -40,4 +43,8 @@ public interface ProductService {
     String packageAllFiles(Long productId);
 
     String packageToSaleFiles(Long productId);
+
+    List<Map> selectProductCountWithCopyrightType();
+
+    List<Map> selectProductCountWhitSubject();
 }

@@ -15,6 +15,8 @@ public interface CopyrightService {
 
     Page<CopyrightContract> listCopyrights(CopyrightContract condition, int offset, int pageSize);
 
+    long countCopyrights(CopyrightContract condition);
+
     CopyrightContract findCopyright(long id);
 
     String saveCopyrightContract(Copyright cc, long[] productIdArr, String[] priceArr, int submit, String type);

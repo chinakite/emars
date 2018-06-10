@@ -4,6 +4,7 @@ import com.ideamoment.emars.model.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yukiwang on 2018/2/23.
@@ -207,4 +208,18 @@ public interface ProductMapper {
     })
     @Select("select * from t_reservation_announcer where c_product_id = #{productId}")
     List<ReservationAnnouncer> queryAnnouncerByProductId(@Param("productId") long productId);
+
+    @Select("select distinct(c.c_type) state, count(*) count from t_product_info p left join t_copyright_product cp on p.c_id = cp.c_product_id left join t_copyright c on cp.c_copyright_id = c.c_id group by c.c_type")
+    @Results(id = "productCountMap1", value = {
+            @Result(property = "state", column = "state"),
+            @Result(property = "count", column = "count")
+    })
+    List<Map> selectProductCountWithCopyrightType();
+
+    @Select("select distinct(s.c_name) subject_name, count(*) count from t_product_info p left join t_subject s on p.c_subject_id = s.c_id group by p.c_subject_id")
+    @Results(id = "productCountMap2", value = {
+            @Result(property = "label", column = "subject_name"),
+            @Result(property = "data", column = "count")
+    })
+    List<Map> selectProductCountWhitSubject();
 }

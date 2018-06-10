@@ -66,6 +66,7 @@ public class MakeServiceImpl implements MakeService {
     }
 
     @Override
+    @Transactional
     public Page<MakeContract> pageMakeContracts(MakeContractQueryVo condition, int offset, int pageSize) {
         long count = makeContractMapper.listMakeContractsCount(condition);
         int currentPage = offset/pageSize + 1;
@@ -76,6 +77,13 @@ public class MakeServiceImpl implements MakeService {
         result.setPageSize(pageSize);
         result.setTotalRecord(count);
         return result;
+    }
+
+    @Override
+    @Transactional
+    public long listMakeContractsCount(MakeContractQueryVo condition) {
+        long count = makeContractMapper.listMakeContractsCount(condition);
+        return count;
     }
 
     @Override

@@ -82,6 +82,13 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
+    public long listProductsCount(ProductInfo condition) {
+        long count = productMapper.listProductsCount(condition);
+        return count;
+    }
+
+    @Override
+    @Transactional
     public ProductInfo findProduct(long id) {
         ProductInfo product = productMapper.findProduct(id);
         List<Author> authors = authorMapper.queryAuthorByProduct(id);
@@ -507,6 +514,18 @@ public class ProductServiceImpl implements ProductService{
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    @Transactional
+    public List<Map> selectProductCountWithCopyrightType() {
+        return productMapper.selectProductCountWithCopyrightType();
+    }
+
+    @Override
+    @Transactional
+    public List<Map> selectProductCountWhitSubject() {
+        return productMapper.selectProductCountWhitSubject();
     }
 
     private String makeTempDir(Long productId) {
