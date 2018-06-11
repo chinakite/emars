@@ -528,6 +528,16 @@ public class ProductServiceImpl implements ProductService{
         return productMapper.selectProductCountWhitSubject();
     }
 
+    @Override
+    public ProductPicture loadProductLogo(String productId) {
+        List<ProductPicture> pics = productPictureMapper.queryProductPictures(productId);
+        if(pics == null || pics.size() == 0) {
+            return null;
+        }else{
+            return pics.get(0);
+        }
+    }
+
     private String makeTempDir(Long productId) {
         String tempDir = System.getProperty("java.io.tmpdir");
         tempDir = tempDir.replaceAll("\\\\", "/");

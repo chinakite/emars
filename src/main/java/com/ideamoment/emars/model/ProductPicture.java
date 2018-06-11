@@ -5,6 +5,7 @@ public class ProductPicture extends HistoriableEntity {
     private Long productId;
     private String name;
     private String type;
+    private String isLogo;
     private String desc;
     private String path;
 
@@ -46,5 +47,13 @@ public class ProductPicture extends HistoriableEntity {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getIsLogo() {
+        return isLogo;
+    }
+
+    public void setIsLogo(String isLogo) {
+        this.isLogo = isLogo;
     }
 }

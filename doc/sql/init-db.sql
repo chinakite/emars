@@ -227,6 +227,7 @@ CREATE TABLE `t_product_picture` (
   `c_type` VARCHAR(2) NOT NULL,
   `c_product_id` BIGINT(20) NOT NULL,
   `c_path` VARCHAR(500) NOT NULL,
+  `c_logo` VARCHAR(2) NOT NULL,
   `c_desc` VARCHAR(500) DEFAULT NULL,
   `c_creator` BIGINT(20) NOT NULL,
   `c_createtime` DATETIME NOT NULL,

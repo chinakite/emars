@@ -42,7 +42,7 @@ $(document).ready(function(){
     });
 
     PRODUCTPAGE.refreshProductFiles();
-
+    PRODUCTPAGE.loadLogo();
     PRODUCTPAGE.loadAnnouncers();
 
     $("input[name='inputProductionState']").click(function () {
@@ -54,6 +54,22 @@ $(document).ready(function(){
         }
     });
 });
+
+PRODUCTPAGE.loadLogo = function() {
+    var productId = $('#productId').val();
+    $.get(
+        '/product/productLogo',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var logoPic = data.data;
+                if(logoPic) {
+                    $('#productLogo').attr('src', logoPic.path);
+                }
+            }
+        }
+    )
+}
 
 PRODUCTPAGE.popUploadFileModal = function(type) {
     var productId = $('#productId').val();

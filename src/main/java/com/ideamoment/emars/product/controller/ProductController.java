@@ -100,6 +100,12 @@ public class ProductController {
         return JsonData.success(pics);
     }
 
+    @RequestMapping(value="/productLogo", method = RequestMethod.GET)
+    public JsonData<ProductPicture> loadProductLogo(String productId) {
+        ProductPicture pic = productService.loadProductLogo(productId);
+        return JsonData.success(pic);
+    }
+
     @RequestMapping(value="/deletePicture", method = RequestMethod.POST)
     public JsonData<String> deletePicture(String id) {
         String result = productService.deletePicture(id);

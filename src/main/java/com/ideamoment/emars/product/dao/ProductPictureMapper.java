@@ -10,16 +10,17 @@ import java.util.List;
  */
 @Mapper
 public interface ProductPictureMapper {
-    @Insert("insert into t_product_picture (c_name, c_type, c_path, c_product_id, c_creator, c_createtime)values(#{name}, #{type}, #{path}, #{productId}, #{creator}, #{createTime})")
+    @Insert("insert into t_product_picture (c_name, c_type, c_path, c_product_id, c_logo, c_creator, c_createtime)values(#{name}, #{type}, #{path}, #{productId}, #{isLogo}, #{creator}, #{createTime})")
     boolean insertPicture(ProductPicture pic);
 
-    @Select("select * from t_product_picture where c_product_id = #{productId}")
+    @Select("select * from t_product_picture where c_product_id = #{productId} order by c_createtime asc")
     @Results(id = "pictureMap", value = {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "name", column = "c_name"),
             @Result(property = "type", column = "c_type"),
             @Result(property = "path", column = "c_path"),
             @Result(property = "productId", column = "c_product_id"),
+            @Result(property = "isLogo", column = "c_logo"),
             @Result(property = "desc", column = "c_desc"),
             @Result(property = "creator", column = "c_creator"),
             @Result(property = "createTime", column = "c_createtime")

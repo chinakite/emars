@@ -47,4 +47,6 @@ public interface ProductService {
     List<Map> selectProductCountWithCopyrightType();
 
     List<Map> selectProductCountWhitSubject();
+
+    ProductPicture loadProductLogo(String productId);
 }
