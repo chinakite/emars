@@ -41,8 +41,25 @@ $(document).ready(function(){
         }
     });
 
+    PRODUCTPAGE.loadLogo();
     PRODUCTPAGE.refreshProductFiles();
 });
+
+PRODUCTPAGE.loadLogo = function() {
+    var productId = $('#productId').val();
+    $.get(
+        '/product/productLogo',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var logoPic = data.data;
+                if(logoPic) {
+                    $('#productLogo').attr('src', logoPic.path);
+                }
+            }
+        }
+    )
+};
 
 PRODUCTPAGE.popUploadFileModal = function(type) {
     var productId = $('#productId').val();
@@ -215,6 +232,7 @@ PRODUCTPAGE.refreshProductPicFiles = function(productId) {
                 var files = data.data;
                 var filesHtml = nunjucks.render('../../../js/product/product_pics.tmpl', {files: files});
                 $('#prodPicFileList').html(filesHtml);
+                PRODUCTPAGE.loadLogo();
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
             }

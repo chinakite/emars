@@ -92,3 +92,10 @@
 #addProductPanel {
     border: none;
 }
+
+.prod-detail-logo {
+    width: 180px;
+    margin-left: 50%;
+    position: relative;
+    left: -90px;
+}
