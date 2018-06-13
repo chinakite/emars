@@ -28,7 +28,7 @@ public class GranterController {
     }
 
     @RequestMapping(value = "/allGranters", method = RequestMethod.GET)
-    public JsonData<List<Granter>> allGrantees() {
+    public JsonData<List<Granter>> allGranters() {
         List<Granter> result = granterService.listGranters();
         return JsonData.success(result);
     }

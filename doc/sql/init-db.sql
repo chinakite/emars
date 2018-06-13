@@ -488,3 +488,18 @@ CREATE TABLE `t_subject` (
   `C_MODIFYTIME` datetime DEFAULT NULL,
   PRIMARY KEY (`C_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `t_customer`;
+
+CREATE TABLE `t_customer` (
+  `c_id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `c_name` VARCHAR(128) NOT NULL,
+  `c_contact` VARCHAR(60) DEFAULT NULL,
+  `c_phone` VARCHAR(20) DEFAULT NULL,
+  `c_desc` VARCHAR(512) DEFAULT NULL,
+  `c_creator` BIGINT(20) NOT NULL,
+  `c_createtime` DATETIME NOT NULL,
+  `c_modifier` BIGINT(20) DEFAULT NULL,
+  `c_modifytime` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;

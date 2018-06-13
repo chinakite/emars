@@ -86,6 +86,12 @@ public class ErrorCode {
     //制作合同集数错误
     public static final String MAKECONTRACT_SECTION_ERROR = "M-0002";
 
+    //客户已存在
+    public static final String CUSTOMER_EXISTS = "N-0001";
+    //客户不存在
+    public static final String CUSTOMER_NOT_EXISTS = "N-0002";
+    //客户不能被删除
+    public static final String CUSTOMER_CANNOT_DELETE = "N-0003";
 
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 
