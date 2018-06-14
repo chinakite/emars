@@ -5,7 +5,7 @@ EMARS_COMMONS.showSuccess = function(msg, callbackFn) {
     var successDom =   '<div id="successModal" class="modal fade modal-alert modal-success">' +
         '  <div class="modal-dialog">' +
         '    <div class="modal-content">' +
-        '      <div class="modal-header"><i class="fa fa-times-circle"></i></div>' +
+        '      <div class="modal-header"><i class="fa fa-check-circle"></i></div>' +
         '      <div class="modal-title">恭喜您</div>' +
         '      <div class="modal-body">操作成功</div>' +
         '      <div class="modal-footer">' +
@@ -65,7 +65,7 @@ EMARS_COMMONS.showPrompt = function(msg, callbackOk, callbackCancel) {
     var promptDom =   '<div id="promptModal" class="modal fade modal-alert modal-warning">' +
         '  <div class="modal-dialog">' +
         '    <div class="modal-content">' +
-        '      <div class="modal-header"><i class="fa fa-times-circle"></i></div>' +
+        '      <div class="modal-header"><i class="fa fa-exclamation-circle"></i></div>' +
         '      <div class="modal-title">操作提醒</div>' +
         '      <div class="modal-body">您确定要执行该操作吗？</div>' +
         '      <div class="modal-footer">' +
