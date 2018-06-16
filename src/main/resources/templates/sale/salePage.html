@@ -1,17 +1,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
-<head th:include="layout/layout :: htmlhead('制作管理')"></head>
+<head th:include="layout/layout :: htmlhead('营销管理')"></head>
 
 <body>
 <section layout:fragment="content">
     <div class="page-header">
-        <h1>制作管理 / <span class="text-muted font-weight-light">所有作品制作合同信息在此管理。</span></h1>
+        <h1>营销管理 / <span class="text-muted font-weight-light">所有作品营销合同信息在此管理。</span></h1>
     </div>
 
     <div class="panel">
         <div class="panel-heading">
-            <div class="panel-title">制作合同列表</div>
+            <div class="panel-title">营销合同列表</div>
         </div>
         <div class="panel-body">
             <div class="form-horizontal">
@@ -32,8 +32,8 @@
                     <div class="col-md-8">
                         <select id="inputSearchTargetType" class="form-control">
                             <option value="">请选择</option>
-                            <option value="0">制作合同</option>
-                            <option value="1">劳务合同</option>
+                            <option value="0">电台合同</option>
+                            <option value="1">互联网合同</option>
                         </select>
                     </div>
                 </div>
@@ -53,9 +53,10 @@
                     <thead>
                     <tr>
                         <th>合同编码</th>
-                        <th>委托人</th>
+                        <th>合同类型</th>
+                        <th>被授权方</th>
                         <th>总价</th>
-                        <th>创建时间</th>
+                        <th>签约日期</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -72,7 +73,7 @@
 
 </body>
 <div layout:fragment="scripts">
-    <script type='text/javascript' th:src="@{/js/make/make-list.js}"></script>
+    <script type='text/javascript' th:src="@{/js/sale/sale-list.js}"></script>
 </div>
 
 </html>
