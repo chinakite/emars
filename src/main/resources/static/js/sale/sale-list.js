@@ -7,19 +7,6 @@ $(document).ready(function(){
     SALELIST.initMakeContractTbl();
     SALELIST.loadProductList();
     $('#saleContractWizard').pxWizard();
-    $('#product-list-select').select2({
-        placeholder: '选择作品',
-        dropdownParent: $('#contractModal')
-    });
-    $("#product-list-select").on("select2:select",function(e){
-        var id = e.params.data.id;
-        productItem(id);
-    });
-    $("#product-list-select").on("select2:unselect",function(e){
-        var id = e.params.data.id;
-        MAKELIST.removeProduct(id);
-    });
-
 
     $('#inputSignDate').datepicker({
         format: 'yyyy-mm-dd',
@@ -27,7 +14,7 @@ $(document).ready(function(){
     }).on('changeDate', function(e){
         var type = $('#inputTargetType').val();
         $.get(
-            '/make/generateContractCode',
+            '/sale/generateContractCode',
             {signDate: $('#inputSignDate').val(), type: type},
             function(data) {
                 if(data.code == '0') {
@@ -39,10 +26,10 @@ $(document).ready(function(){
         );
     });
 
-    SALELIST.loadMakers();
+    //SALELIST.loadMakers();
 });
 
-function productItem(id, mcProd, callback) {
+SALELIST.productItem=function(id, mcProd, callback) {
     $.get(
         "/product/product",
         {id: id},
@@ -60,15 +47,13 @@ function productItem(id, mcProd, callback) {
                 $('#' + id + "_inputSection").val(mcProd.section);
                 $('#' + id + "_inputPrice").val(mcProd.price);
             }
-
-
         }
     )
 }
 
 MAKELIST.loadProductList = function() {
     $.get(
-        "/make/products",
+        "/sale/products",
         function(data) {
             var result = data;
             if(result) {
@@ -77,6 +62,18 @@ MAKELIST.loadProductList = function() {
                     optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
                 }
                 $('#product-list-select').html(optionsHtml);
+                $('#product-list-select').select2({
+                    placeholder: '选择作品',
+                    dropdownParent: $('#contractModal')
+                });
+                $("#product-list-select").on("select2:select",function(e){
+                    var id = e.params.data.id;
+                    SALELIST.productItem(id);
+                });
+                $("#product-list-select").on("select2:unselect",function(e){
+                    var id = e.params.data.id;
+                    MAKELIST.removeProduct(id);
+                });
             }
         }
     )

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<!-- Modal -->
+<div th:fragment="contractModal" class="modal fade" id="contractModal" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">新建制作合同</h4>
+            </div>
+            <div class="modal-body">
+                <div id="saleContractWizard" class="wizard panel-wizard">
+                    <div class="wizard-wrapper">
+                        <ul class="wizard-steps">
+                            <li data-target="#wizard-basic" class="active">
+                                <span class="wizard-step-number">1</span>
+                                <span class="wizard-step-complete"><i class="fa fa-check"></i></span>
+                                <span class="wizard-step-caption">基本信息
+                                    <span class="wizard-step-description">合同相关的信息</span>
+                                </span>
+                            </li>
+                            <li data-target="#wizard-product">
+                                <span class="wizard-step-number">2</span>
+                                <span class="wizard-step-complete"><i class="fa fa-check"></i></span>
+                                <span class="wizard-step-caption">作品信息
+                                    <span class="wizard-step-description">合同内的作品信息</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="wizard-content">
+                        <form class="wizard-pane active form-horizontal" id="wizard-basic">
+                            <input type="hidden" id="inputId"/>
+                            <div class="form-group">
+                                <label for="inputTargetType" class="col-sm-3 control-label">合同类型</label>
+                                <div class="col-sm-8">
+                                    <select id="inputTargetType" class="form-control">
+                                        <option value="1">制作合同</option>
+                                        <option value="0">劳务合同</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputCode" class="col-sm-3 control-label">合同号</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputCode" placeholder="合同号，例如：2017-zz-001" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputOwner" class="col-sm-3 control-label">委托人(甲方)</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputOwner" placeholder="委托方" value="北京悦库时光文化传媒有限公司" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputMakerId" class="col-sm-3 control-label">制作方</label>
+                                <div class="col-sm-8">
+                                    <select id="inputMakerId" name="inputMakerId" class="form-control"></select>
+                                    <small><a href="javascript:void(0);" onclick="MAKELIST.showAddMakerPanel();">没有？新建制作方</a></small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputTotalSection" class="col-sm-3 control-label">总集数</label>
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="inputTotalSection" name="inputTotalSection" placeholder="总集数"/>
+                                        <span class="input-group-addon">集</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputTotalPrice" class="col-sm-3 control-label">总价</label>
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="inputTotalPrice" placeholder="总价" />
+                                        <span class="input-group-addon">元</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputSignDate" class="col-sm-3 control-label">签约日期</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputSignDate"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="panel-wide-block p-x-3 p-t-3 b-t-1 bg-white text-xs-right">
+                                    <button type="button" class="btn btn-default" data-wizard-action="next">下一步</button>
+                                </div>
+                            </div>
+
+                        </form>
+                        <form class="wizard-pane" id="wizard-product">
+                            <div class="form-group">
+                                <label for="product-list-select" class="col-sm-3 control-label">选择作品</label>
+                                <select id="product-list-select" class="form-control" style="width: 100%" multiple="multiple">
+
+                                </select>
+                            </div>
+                            <div class="form-group m-b-1">
+                                <button type="button" class="btn" onclick="MAKELIST.autoSplit();">自动分配集数与金额</button>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="list-group" id="product-list-selected">
+
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="panel-wide-block p-x-3 p-t-3 b-t-1 bg-white text-xs-right">
+                                    <button type="button" class="btn btn-default" data-wizard-action="prev">上一步</button>
+                                    <button type="button" class="btn btn-primary" data-wizard-action="finish" onclick="MAKELIST.submitMakeContract();">保存</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="addMakerPanel" style="display: none;">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputMakerName" class="col-sm-3 control-label">名称</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputMakerName" name="inputMakerName" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMakerContact" class="col-sm-3 control-label">联系人</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputMakerContact" name="inputMakerContact" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMakerPhone" class="col-sm-3 control-label">联系电话</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputMakerPhone" name="inputMakerPhone" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMakerDesc" class="col-sm-3 control-label">备注</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" name="inputMakerDesc" id="inputMakerDesc"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-btnbar col-sm-12">
+                            <a href="#" onclick="MAKELIST.hideAddMakerPanel();">&lt;&lt;&nbsp;返回</a>
+                            <button type="button" class="btn btn-primary pull-right" onclick="MAKELIST.addMaker();">确定</button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+                <div id="addAnnouncerPanel" style="display: none;">
+                    <form class="form-horizontal">
+                        <input type="hidden" class="form-control" id="inputAnnouncerProductId"/>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputAnnouncerName" class="col-sm-4 control-label">姓名</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputAnnouncerName" name="inputAnnouncerName"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="inputAnnouncerPseudonym" class="col-sm-4 control-label">笔名</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputAnnouncerPseudonym" name="inputAnnouncerPseudonym"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="inputAnnouncerDesc" class="col-sm-2 control-label">描述</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="inputAnnouncerDesc" id="inputAnnouncerDesc"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-btnbar col-sm-12">
+                            <a href="#" onclick="MAKELIST.hideAddAnnouncerPanel();">&lt;&lt;&nbsp;返回</a>
+                            <button type="button" class="btn btn-primary pull-right" onclick="MAKELIST.addAnnouncer();">确定</button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
