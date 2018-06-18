@@ -222,4 +222,28 @@ public interface ProductMapper {
             @Result(property = "data", column = "count")
     })
     List<Map> selectProductCountWhitSubject();
+
+    @Select({"<script>",
+            "SELECT p.*, s.c_name AS subjectName, c.c_code as copyrightCode FROM t_product_info p ",
+            "LEFT JOIN t_author a ON p.c_author_id = a.c_id ",
+            "LEFT JOIN t_subject s ON p.c_subject_id = s.c_id ",
+            "LEFT JOIN t_copyright_product cp ON p.c_id = cp.`c_product_id` ",
+            "LEFT JOIN t_copyright c ON c.c_id = cp.`c_copyright_id` ",
+            "WHERE p.c_id > 0",
+            "<if test='condition.name != null'>",
+            " AND p.C_NAME like concat(concat('%',#{condition.productName}),'%')",
+            "</if>",
+            "<if test='condition.isbn != null'>",
+            " AND p.C_ISBN = #{condition.isbn}",
+            "</if>",
+            "<if test='condition.subjectId != null'>",
+            " AND p.C_SUBJECT_ID = #{condition.subjectId}",
+            "</if>",
+            " AND p.C_STOCKIN = '1'",
+            " AND c.c_state = '1'",
+            " ORDER BY p.C_MODIFYTIME DESC ",
+            " LIMIT #{offset}, #{size}",
+            "</script>"})
+    @ResultMap("productMap")
+    List<ProductInfo> listSaleableProducts();
 }

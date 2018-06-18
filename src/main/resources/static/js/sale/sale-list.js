@@ -51,7 +51,7 @@ SALELIST.productItem=function(id, mcProd, callback) {
     )
 }
 
-MAKELIST.loadProductList = function() {
+SALELIST.loadProductList = function() {
     $.get(
         "/sale/products",
         function(data) {
@@ -72,14 +72,14 @@ MAKELIST.loadProductList = function() {
                 });
                 $("#product-list-select").on("select2:unselect",function(e){
                     var id = e.params.data.id;
-                    MAKELIST.removeProduct(id);
+                    SALELIST.removeProduct(id);
                 });
             }
         }
     )
 }
 
-MAKELIST.removeProduct = function(id, syncSelect2) {
+SALELIST.removeProduct = function(id, syncSelect2) {
     $('.product-list-item[rel='+id+']').remove();
     if(syncSelect2) {
         var select2Datas = $('#product-list-select').select2('data');
@@ -93,7 +93,7 @@ MAKELIST.removeProduct = function(id, syncSelect2) {
     }
 }
 
-MAKELIST.initMakeContractTbl = function () {
+SALELIST.initMakeContractTbl = function () {
     mcTable = $('#mcTbl').dataTable({
         "processing": true,
         "paging": true,
@@ -174,7 +174,7 @@ MAKELIST.initMakeContractTbl = function () {
     });
 }
 
-MAKELIST.loadExtMakers = function () {
+SALELIST.loadExtMakers = function () {
     $.get(
         "/system/extMakers",
         function(data) {
@@ -193,18 +193,18 @@ MAKELIST.loadExtMakers = function () {
     )
 }
 
-MAKELIST.popTaskModal = function (productId) {
-    MAKELIST.clearTaskModal();
+SALELIST.popTaskModal = function (productId) {
+    SALELIST.clearTaskModal();
     $('#inputProductId').val(productId);
     $('#taskModal').modal('show');
 }
 
-MAKELIST.popContractModal = function () {
-    MAKELIST.clearContractModal();
+SALELIST.popContractModal = function () {
+    SALELIST.clearContractModal();
     $('#contractModal').modal('show');
 }
 
-MAKELIST.popEditMakeContractModal = function (id) {
+SALELIST.popEditMakeContractModal = function (id) {
     MAKELIST.clearContractModal();
     $.get(
         '/make/makeContract',
@@ -245,7 +245,7 @@ MAKELIST.popEditMakeContractModal = function (id) {
     )
 }
 
-MAKELIST.deleteMakeContract = function (id, code) {
+SALELIST.deleteMakeContract = function (id, code) {
     EMARS_COMMONS.showPrompt("您真的要合同号为[" + code + "]的版权合同吗？", function() {
         $.get(
             "/make/deleteMakeContract",
@@ -262,16 +262,16 @@ MAKELIST.deleteMakeContract = function (id, code) {
     }, null);
 }
 
-MAKELIST.popUploadContractDoc = function (contractId) {
+SALELIST.popUploadContractDoc = function (contractId) {
     MAKELIST.clearDocModal();
     $('#docModal').modal('show');
 }
 
-MAKELIST.clearDocModal = function () {
+SALELIST.clearDocModal = function () {
 
 }
 
-MAKELIST.clearTaskModal = function () {
+SALELIST.clearTaskModal = function () {
     $('#inputMaker option:first').prop("selected", 'selected');
     $('#inputContract option:first').prop("selected", 'selected');
     $('#inputTimePerSection').val('');
@@ -281,7 +281,7 @@ MAKELIST.clearTaskModal = function () {
     $('#inputDesc').val('');
 }
 
-MAKELIST.clearContractModal = function () {
+SALELIST.clearContractModal = function () {
     $('#inputCode').val('');
     $('#inputTargetType option:first').prop("selected", 'selected');
     $('#inputOwner').val('北京悦库时光文化传媒有限公司');
@@ -293,7 +293,7 @@ MAKELIST.clearContractModal = function () {
     $('#makeContractWizard').pxWizard('reset');
 }
 
-MAKELIST.submitTask = function () {
+SALELIST.submitTask = function () {
     var productId = $('#inputProductId').val();
     var makerId = $('#inputMaker').val();
     // var contractId = $('#inputContract').val();
@@ -330,7 +330,7 @@ MAKELIST.submitTask = function () {
     );
 }
 
-MAKELIST.submitMakeContract = function () {
+SALELIST.submitMakeContract = function () {
     var id = $('#inputId').val();
     // var maker = $('#inputMaker').val();
     var code = $('#inputCode').val();
@@ -392,15 +392,15 @@ MAKELIST.submitMakeContract = function () {
     });
 }
 
-MAKELIST.searchMakeContracts = function () {
+SALELIST.searchMakeContracts = function () {
     mcTable.api().ajax.reload();
 }
 
-MAKELIST.refreshMakeContractTbl = function () {
+SALELIST.refreshMakeContractTbl = function () {
     mcTable.api().ajax.reload(null, false);
 }
 
-MAKELIST.loadMcProduct = function (id) {
+SALELIST.loadMcProduct = function (id) {
     $.get(
         '/make/mcProduct',
         {id: id},
@@ -415,25 +415,25 @@ MAKELIST.loadMcProduct = function (id) {
     )
 };
 
-MAKELIST.showAddMakerPanel = function() {
+SALELIST.showAddMakerPanel = function() {
     MAKELIST.clearAddMakerPanel();
     $('#makeContractWizard').hide();
     $('#addMakerPanel').show();
 };
 
-MAKELIST.hideAddMakerPanel = function() {
+SALELIST.hideAddMakerPanel = function() {
     $('#addMakerPanel').hide();
     $('#makeContractWizard').show();
 };
 
-MAKELIST.clearAddMakerPanel = function() {
+SALELIST.clearAddMakerPanel = function() {
     $('#inputMakerName').val('');
     $('#inputMakerContact').val('');
     $('#inputMakerPhone').val('');
     $('#inputMakerDesc').val('');
 };
 
-MAKELIST.addMaker = function() {
+SALELIST.addMaker = function() {
     var gName = $('#inputMakerName').val();
     var gContact = $('#inputMakerContact').val();
     var gPhone = $('#inputMakerPhone').val();
@@ -467,7 +467,7 @@ MAKELIST.addMaker = function() {
     );
 };
 
-MAKELIST.loadMakers = function(callback) {
+SALELIST.loadMakers = function(callback) {
     $.get('/system/allMakers', {}, function(data){
         var defaultMakerId;
         if(data) {
@@ -491,26 +491,26 @@ MAKELIST.loadMakers = function(callback) {
     });
 };
 
-MAKELIST.showAddAnnouncerPanel = function(prodId) {
-    MAKELIST.clearAddAnnouncerPanel();
+SALELIST.showAddAnnouncerPanel = function(prodId) {
+    SALELIST.clearAddAnnouncerPanel();
     $('#inputAnnouncerProductId').val(prodId);
     $('#makeContractWizard').hide();
     $('#addAnnouncerPanel').show();
 };
 
-MAKELIST.hideAddAnnouncerPanel = function() {
+SALELIST.hideAddAnnouncerPanel = function() {
     $('#addAnnouncerPanel').hide();
     $('#makeContractWizard').show();
 };
 
-MAKELIST.clearAddAnnouncerPanel = function() {
+SALELIST.clearAddAnnouncerPanel = function() {
     $('#inputAnnouncerProductId').val('');
     $('#inputAnnouncerName').val('');
     $('#inputAnnouncerPseudonym').val('');
     $('#inputAnnouncerDesc').val('');
 };
 
-MAKELIST.addAnnouncer = function() {
+SALELIST.addAnnouncer = function() {
     var prodId = $('#inputAnnouncerProductId').val();
     var aName = $('#inputAnnouncerName').val();
     var aDesc = $('#inputAnnouncerDesc').val();
@@ -553,7 +553,7 @@ MAKELIST.addAnnouncer = function() {
     );
 };
 
-MAKELIST.loadAnnouncers = function(callback, prodId) {
+SALELIST.loadAnnouncers = function(callback, prodId) {
     $.get(
         "/system/allAnnouncers",
         function(data) {
@@ -582,7 +582,7 @@ MAKELIST.loadAnnouncers = function(callback, prodId) {
     )
 };
 
-MAKELIST.autoSplit = function() {
+SALELIST.autoSplit = function() {
     var totalSections = parseInt($('#inputTotalSection').val());
     var totalPrice = parseInt($('#inputTotalPrice').val());
 
@@ -611,7 +611,7 @@ MAKELIST.autoSplit = function() {
     }
 };
 
-MAKELIST.changeState = function(id, code, state) {
+SALELIST.changeState = function(id, code, state) {
     var promptWords = "";
     if(state == '1') {
         promptWords = "您真的要作废合同号为[" + code + "]的制作合同吗？";
