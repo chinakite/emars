@@ -503,3 +503,60 @@ CREATE TABLE `t_customer` (
   `c_modifytime` DATETIME DEFAULT NULL,
   PRIMARY KEY (`c_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `t_sale_contract`;
+
+CREATE TABLE `t_sale_contract` (
+  `c_id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `c_code` varchar(20) NOT NULL DEFAULT '',
+  `c_type` varchar(2) NOT NULL DEFAULT '',
+  `c_granter_id` bigint(20) NOT NULL,
+  `c_customer_id` bigint(11) NOT NULL,
+  `c_platform_id` bigint(11) NOT NULL,
+  `c_privileges` varchar(10) NOT NULL DEFAULT '',
+  `c_signdate` date NOT NULL,
+  `c_operator` bigint(20) NOT NULL,
+  `c_section` int(11) DEFAULT NULL,
+  `c_price` int(11) DEFAULT NULL,
+  `c_begin` date DEFAULT NULL,
+  `c_end` date DEFAULT NULL,
+  `c_project_code` varchar(60) DEFAULT NULL,
+  `c_creator` bigint(20) NOT NULL,
+  `c_createtime` datetime NOT NULL,
+  `c_modifier` bigint(20) DEFAULT NULL,
+  `c_modifytime` datetime DEFAULT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `t_sale_file`;
+
+CREATE TABLE `t_sale_file` (
+  `c_id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `c_sale_contract_id` bigint(20) NOT NULL,
+  `c_name` varchar(128) NOT NULL DEFAULT '',
+  `c_type` varchar(10) NOT NULL DEFAULT '',
+  `c_path` varchar(512) NOT NULL DEFAULT '',
+  `c_creator` bigint(20) NOT NULL,
+  `c_createtime` datetime NOT NULL,
+  `c_modifier` bigint(20) DEFAULT NULL,
+  `c_modifytime` datetime DEFAULT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `t_sale_product`;
+
+CREATE TABLE `t_sale_product` (
+  `c_id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `c_sale_contract_id` bigint(20) NOT NULL,
+  `c_product_id` bigint(20) NOT NULL,
+  `c_section` int(11) NOT NULL,
+  `c_price` int(11) NOT NULL,
+  `c_creator` bigint(20) NOT NULL,
+  `c_createtime` datetime NOT NULL,
+  `c_modifier` bigint(20) DEFAULT NULL,
+  `c_modifytime` datetime DEFAULT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

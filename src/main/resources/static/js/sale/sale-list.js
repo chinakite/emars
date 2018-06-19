@@ -4,7 +4,7 @@ var SALELIST = {};
 var mcTable;
 
 $(document).ready(function(){
-    SALELIST.initMakeContractTbl();
+    SALELIST.initSaleContractTbl();
     SALELIST.loadProductList();
     $('#saleContractWizard').pxWizard();
 
@@ -93,7 +93,7 @@ SALELIST.removeProduct = function(id, syncSelect2) {
     }
 }
 
-SALELIST.initMakeContractTbl = function () {
+SALELIST.initSaleContractTbl = function () {
     mcTable = $('#mcTbl').dataTable({
         "processing": true,
         "paging": true,
@@ -104,7 +104,7 @@ SALELIST.initMakeContractTbl = function () {
         "autoWidth": false,
         "serverSide": true,
         "ajax": {
-            "url": '/make/makeContracts',
+            "url": '/sale/saleContracts',
             "data": function(d) {
                 var productName = $('#inputSearchProductName').val();
                 if(productName && $.trim(productName).length > 0) {

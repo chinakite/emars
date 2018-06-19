@@ -1,6 +1,9 @@
 package com.ideamoment.emars.sale.service;
 
 import com.ideamoment.emars.model.ProductInfo;
+import com.ideamoment.emars.model.Sale;
+import com.ideamoment.emars.model.SaleContractQueryVo;
+import com.ideamoment.emars.utils.Page;
 
 import java.util.List;
 
@@ -9,4 +12,6 @@ import java.util.List;
  */
 public interface SaleService {
     List<ProductInfo> listProducts();
+
+    Page<Sale> pageSaleContracts(SaleContractQueryVo condition, int start, int length);
 }
