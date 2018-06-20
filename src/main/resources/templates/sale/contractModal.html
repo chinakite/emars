@@ -46,20 +46,28 @@
                             <div class="form-group">
                                 <label for="inputCode" class="col-sm-3 control-label">合同号</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputCode" placeholder="合同号，例如：2017-zz-001" />
+                                    <input type="text" class="form-control" id="inputCode" placeholder="合同号，例如：2018-xd-001" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputOwner" class="col-sm-3 control-label">委托人(甲方)</label>
+                                <label for="inputOwner" class="col-sm-3 control-label">授权方(甲方)</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="inputOwner" placeholder="委托方" value="北京悦库时光文化传媒有限公司" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputMakerId" class="col-sm-3 control-label">制作方</label>
+                                <label for="inputCustomerId" class="col-sm-3 control-label">被授权方(客户)</label>
                                 <div class="col-sm-8">
-                                    <select id="inputMakerId" name="inputMakerId" class="form-control"></select>
-                                    <small><a href="javascript:void(0);" onclick="MAKELIST.showAddMakerPanel();">没有？新建制作方</a></small>
+                                    <select id="inputCustomerId" name="inputCustomerId" class="form-control"></select>
+                                    <small><a href="javascript:void(0);" onclick="SALELIST.showAddCustomerPanel();">没有？新建客户</a></small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPlatformId" class="col-sm-3 control-label">平台</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="inputPlatformId" name="inputPlatformId">
+
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -87,6 +95,14 @@
                                     <input type="text" class="form-control" id="inputSignDate"/>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="inputOperator" class="col-sm-3 control-label">经手人</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="inputOperator" name="inputOperator">
+
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-sm-12">
                                 <div class="panel-wide-block p-x-3 p-t-3 b-t-1 bg-white text-xs-right">
                                     <button type="button" class="btn btn-default" data-wizard-action="next">下一步</button>
@@ -100,9 +116,6 @@
                                 <select id="product-list-select" class="form-control" style="width: 100%" multiple="multiple">
 
                                 </select>
-                            </div>
-                            <div class="form-group m-b-1">
-                                <button type="button" class="btn" onclick="MAKELIST.autoSplit();">自动分配集数与金额</button>
                             </div>
                             <div class="clearfix"></div>
                             <div class="list-group" id="product-list-selected">

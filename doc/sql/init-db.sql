@@ -505,6 +505,20 @@ CREATE TABLE `t_customer` (
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 
+DROP TABLE IF EXISTS `t_platform`;
+
+CREATE TABLE `t_platform` (
+  `c_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `c_name` varchar(128) NOT NULL DEFAULT '',
+  `c_customer_id` bigint(20) NOT NULL,
+  `c_creator` bigint(20) NOT NULL,
+  `c_createtime` datetime NOT NULL,
+  `c_modifier` bigint(20) DEFAULT NULL,
+  `c_modifytime` datetime DEFAULT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 DROP TABLE IF EXISTS `t_sale_contract`;
 
 CREATE TABLE `t_sale_contract` (

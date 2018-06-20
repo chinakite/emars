@@ -46,8 +46,10 @@ CUSTOMERLIST.initCustomerTbl = function(){
                 "width": "20%",
                 "render": function(data, type, full) {
                     var htmlText = '<a href="javascript:void(0);" onclick="CUSTOMERLIST.popEditCustomer(' + full.id + ');">编辑</a>  ';
-                    htmlText += '<span class="small">|</span> ' +
-                        '<a href="javascript:void(0);" onclick="CUSTOMERLIST.deleteCustomer(' + full.id + ', \'' + full.name + '\');">删除</a>';
+                        htmlText += '<span class="small">|</span> ' +
+                                    '<a href="javascript:void(0);" onclick="CUSTOMERLIST.popPlatformModal(' + full.id + ');">平台管理</a>';
+                        htmlText += '<span class="small">|</span> ' +
+                                    '<a href="javascript:void(0);" onclick="CUSTOMERLIST.deleteCustomer(' + full.id + ', \'' + full.name + '\');">删除</a>';
                     return htmlText;
                 }
             }
@@ -153,8 +155,30 @@ CUSTOMERLIST.deleteCustomer = function(id, name) {
             }
         );
     }, null);
-}
+};
 
 CUSTOMERLIST.refreshCustomerTbl = function () {
     customerTable.api().ajax.reload(null, false);
-}
+};
+
+CUSTOMERLIST.popPlatformModal = function (customerId) {
+    $('#inputCustomerId').val(customerId);
+    $('#platformModal').modal('show');
+};
+
+CUSTOMERLIST.showAddPlatformPanel = function() {
+    CUSTOMERLIST.clearPlatformForm();
+    $('#platformTblPanel').hide();
+    $('#platformFormPanel').show();
+};
+
+CUSTOMERLIST.hideAddPlatformPanel = function() {
+    $('#platformFormPanel').hide();
+    $('#platformTblPanel').show();
+};
+
+CUSTOMERLIST.clearPlatformForm = function() {
+    $('#inputPlatformId').val('');
+    $('#inputPlatformName').val('');
+    $('#inputPlatformDesc').val('');
+};
