@@ -182,3 +182,17 @@ CUSTOMERLIST.clearPlatformForm = function() {
     $('#inputPlatformName').val('');
     $('#inputPlatformDesc').val('');
 };
+
+CUSTOMERLIST.submitPlatform = function() {
+    var customerId = $('#inputCustomerId').val();
+    var platformId = $('#inputPlatformId').val();
+    var platformName = $('#inputPlatformName').val();
+    var platformDesc = $('#inputPlatformDesc').val();
+
+    if(platformId) {
+
+    }else{
+
+    }
+
+};

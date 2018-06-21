@@ -21,4 +21,5 @@ public interface CustomerService {
 
     String modifyCustomer(long id, String name, String contact, String phone, String desc);
 
+    String createPlatform(String name, String desc);
 }

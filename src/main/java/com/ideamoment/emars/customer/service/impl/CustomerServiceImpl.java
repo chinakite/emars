@@ -5,6 +5,7 @@ import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.customer.dao.CustomerMapper;
 import com.ideamoment.emars.customer.service.CustomerService;
 import com.ideamoment.emars.model.Customer;
+import com.ideamoment.emars.model.Platform;
 import com.ideamoment.emars.sale.dao.SaleMapper;
 import com.ideamoment.emars.utils.Page;
 import com.ideamoment.emars.utils.UserContext;
@@ -107,6 +108,23 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setDesc(desc);
 
         boolean result = customerMapper.updateCustomer(customer);
+        return resultString(result);
+    }
+
+    @Override
+    public String createPlatform(String name, String desc, long customerId) {
+        Platform existsPlatform = customerMapper.findPlatformByName(customerId, name, null);
+
+        if(existsPlatform != null) {
+            return ErrorCode.CUSTOMER_EXISTS;
+        }
+        Platform platform = new Platform();
+        platform.setName(name);
+        platform.setDesc(desc);
+        platform.setCreateTime(new Date());
+        platform.setCreator(UserContext.getUserId());
+
+        boolean result = customerMapper.insertPlatform(platform);
         return resultString(result);
     }
 

@@ -72,6 +72,16 @@ public class CustomerController {
         }
     }
 
+    @RequestMapping(value = "/createPlatform", method = RequestMethod.POST)
+    public JsonData<Boolean> createPlatform(String name, String desc) {
+        String result = customerService.createPlatform(name, desc);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
     private DataTableSource<Customer> convertCustomersToDataTableSource(int draw, Page<Customer> customerPage) {
         DataTableSource<Customer> dts = new DataTableSource<Customer>();
 
