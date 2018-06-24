@@ -73,8 +73,8 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/createPlatform", method = RequestMethod.POST)
-    public JsonData<Boolean> createPlatform(String name, String desc) {
-        String result = customerService.createPlatform(name, desc);
+    public JsonData<Boolean> createPlatform(String name, String desc, Long customerId) {
+        String result = customerService.createPlatform(name, desc, customerId);
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;
         }else{

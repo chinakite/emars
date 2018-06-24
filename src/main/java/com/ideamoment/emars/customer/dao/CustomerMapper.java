@@ -1,6 +1,7 @@
 package com.ideamoment.emars.customer.dao;
 
 import com.ideamoment.emars.model.Customer;
+import com.ideamoment.emars.model.Platform;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -61,4 +62,26 @@ public interface CustomerMapper {
     @ResultMap("customerMap")
     Customer findCustomerByName(@Param("name") String name, @Param("id") Long ignoreId);
 
+    @Insert("insert into t_platform (c_customer_id, c_name, c_desc, c_creator, c_createtime)values(#{customerId}, #{name}, #{desc}, #{creator}, #{createTime})")
+    boolean insertPlatform(Platform platform);
+
+    @Select({
+            "<script>",
+            "select * from t_platform where c_customer_id=#{customerId} and c_name = #{name}",
+            "<if test='ignoreId != null'>",
+            " AND c_id != #{ignoreId}",
+            "</if>",
+            "</script>"
+    })
+    @Results(id = "platformMap", value ={
+            @Result(property = "id", column = "c_id", id = true),
+            @Result(property = "customerId", column = "C_CUSTOMER_ID"),
+            @Result(property = "name", column = "C_NAME"),
+            @Result(property = "desc", column = "C_DESC"),
+            @Result(property = "creator", column = "C_CREATOR"),
+            @Result(property = "createTime", column = "C_CREATETIME"),
+            @Result(property = "modifier", column = "C_MODIFIER"),
+            @Result(property = "modifyTime", column = "C_MODIFYTIME")
+    })
+    Platform findPlatformByName(@Param("customerId")long customerId, @Param("name")String name, @Param("ignoreId") Long ignoreId);
 }
