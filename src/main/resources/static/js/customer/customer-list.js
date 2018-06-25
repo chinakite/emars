@@ -192,7 +192,24 @@ CUSTOMERLIST.submitPlatform = function() {
     if(platformId) {
 
     }else{
-
+        $.post(
+            "/system/createPlatform",
+            {
+                'name': platformName,
+                'customerId': customerId,
+                'desc': platformDesc
+            },
+            function (data) {
+                if(data.code == '0') {
+                    EMARS_COMMONS.showSuccess("平台保存成功！");
+                    $('#platformFormPanel').hide();
+                    $('#platformTblPanel').show();
+                    CUSTOMERLIST.refreshCustomerTbl();
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
     }
 
 };
