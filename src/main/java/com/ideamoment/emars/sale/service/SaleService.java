@@ -14,4 +14,7 @@ public interface SaleService {
     List<ProductInfo> listProducts();
 
     Page<Sale> pageSaleContracts(SaleContractQueryVo condition, int start, int length);
+
+    long countSaleContracts(SaleContractQueryVo condition);
+
 }

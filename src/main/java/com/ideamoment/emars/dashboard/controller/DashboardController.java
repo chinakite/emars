@@ -1,11 +1,15 @@
 package com.ideamoment.emars.dashboard.controller;
 
 import com.ideamoment.emars.copyright.service.CopyrightService;
+import com.ideamoment.emars.dashboard.model.Contract;
+import com.ideamoment.emars.dashboard.service.DashboardService;
 import com.ideamoment.emars.make.service.MakeService;
 import com.ideamoment.emars.model.CopyrightContract;
 import com.ideamoment.emars.model.MakeContractQueryVo;
 import com.ideamoment.emars.model.ProductInfo;
+import com.ideamoment.emars.model.SaleContractQueryVo;
 import com.ideamoment.emars.product.service.ProductService;
+import com.ideamoment.emars.sale.service.SaleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +29,14 @@ public class DashboardController {
     private CopyrightService copyrightService;
     @Autowired
     private MakeService makeService;
+    @Autowired
+    private SaleService saleService;
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private DashboardService dashboardService;
 
     @RequestMapping(value="/", method = RequestMethod.GET)
     public String dashboardPage(Model model) {
@@ -37,20 +46,25 @@ public class DashboardController {
         MakeContractQueryVo condition2 = new MakeContractQueryVo();
         long countMakeContracts = makeService.listMakeContractsCount(condition2);
 
-        //TODO 营销合同
+        SaleContractQueryVo condition3 = new SaleContractQueryVo();
+        long countSaleContracts = saleService.countSaleContracts(condition3);
 
         List<Map> productData1 = productService.selectProductCountWithCopyrightType();
 
-        ProductInfo condition3 = new ProductInfo();
-        long countProducts = productService.listProductsCount(condition3);
+        ProductInfo condition4 = new ProductInfo();
+        long countProducts = productService.listProductsCount(condition4);
 
         List<Map> productData2 = productService.selectProductCountWhitSubject();
 
+        List<Contract> newestContract = dashboardService.newestContract();
+
         model.addAttribute("countCopyrights", countCopyrights);
         model.addAttribute("countMakeContracts", countMakeContracts);
+        model.addAttribute("countSaleContracts", countSaleContracts);
         model.addAttribute("productData1", productData1);
         model.addAttribute("countProducts", countProducts);
         model.addAttribute("productData2", productData2);
+        model.addAttribute("newestContract", newestContract.subList(0, 5));
 
         return "dashboard";
     }

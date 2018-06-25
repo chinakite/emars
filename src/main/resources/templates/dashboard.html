@@ -34,7 +34,7 @@
                                 制作合同
                             </li>
                             <li class="list-group-item p-x-1 b-x-0 b-b-0">
-                                <span class="label label-info pull-right"></span>
+                                <span class="label label-info pull-right" th:text="${countSaleContracts}"></span>
                                 营销合同
                             </li>
                         </ul>
@@ -51,44 +51,19 @@
                     <div class="panel-title">最新合同</div>
                 </div>
 
-                <div class="widget-notifications-item">
-                    <div class="widget-notifications-title text-danger">版权合同</div>
-                    <div class="widget-notifications-description"><strong>2017-wz-001</strong>人民东方（北京）书业有限公司</div>
-                    <div class="widget-notifications-date">2018-05-03 07:06:48</div>
-                    <div class="widget-notifications-icon fa fa-truck bg-danger"></div>
+                <div class="widget-notifications-item" th:each="contract : ${newestContract}">
+                    <div class="widget-notifications-title text-danger" th:if="${contract.type == '1'}">版权合同</div>
+                    <div class="widget-notifications-title text-info" th:if="${contract.type == '2'}">制作合同</div>
+                    <div class="widget-notifications-title text-success" th:if="${contract.type == '3'}">营销合同</div>
+                    <div class="widget-notifications-description"><strong th:text="${contract.code}"></strong><span th:text="${contract.title}"></span></div>
+                    <div class="widget-notifications-date" th:text="${contract.createTime}"></div>
+                    <div class="widget-notifications-icon fa fa-file bg-danger" th:if="${contract.type == '1'}"></div>
+                    <div class="widget-notifications-icon fa fa-file-text bg-info" th:if="${contract.type == '2'}"></div>
+                    <div class="widget-notifications-icon fa fa-file-o bg-success" th:if="${contract.type == '3'}"></div>
 
-                    <button type="button" class="btn btn-danger btn-xs">查看</button>
+                    <a th:href="@{'/copyright/copyrightDetail?id='+${contract.id}}" type="button" class="btn btn-danger btn-xs" th:if="${contract.type == '1'}">查看详情</a>
+                    <a th:href="@{'/make/makeContractDetail/'+${contract.id}}" type="button" class="btn btn-info btn-xs" th:if="${contract.type == '2'}">查看详情</a>
                 </div>
-
-                <div class="widget-notifications-item">
-                    <div class="widget-notifications-title text-info">制作合同</div>
-                    <div class="widget-notifications-description"><strong>M20180503-004</strong>北京悦库时光文化传媒有限公司</div>
-                    <div class="widget-notifications-date">2018-05-03 07:06:48</div>
-                    <div class="widget-notifications-icon fa fa-truck bg-info"></div>
-                </div>
-
-                <div class="widget-notifications-item">
-                    <div class="widget-notifications-title text-default">销售合同</div>
-                    <div class="widget-notifications-description">Job <strong>"Clean DB"</strong> has been completed.</div>
-                    <div class="widget-notifications-date">12h ago</div>
-                    <div class="widget-notifications-icon fa fa-clock-o bg-default"></div>
-                </div>
-
-                <div class="widget-notifications-item">
-                    <div class="widget-notifications-title text-success">SYSTEM</div>
-                    <div class="widget-notifications-description">Server <strong>up</strong>.</div>
-                    <div class="widget-notifications-date">12h ago</div>
-                    <div class="widget-notifications-icon fa fa-hdd-o bg-success"></div>
-                </div>
-
-                <div class="widget-notifications-item">
-                    <div class="widget-notifications-title text-warning">SYSTEM</div>
-                    <div class="widget-notifications-description"><strong>Warning</strong>: Processor load <strong>92%</strong>.</div>
-                    <div class="widget-notifications-date">12h ago</div>
-                    <div class="widget-notifications-icon fa fa-hdd-o bg-warning"></div>
-                </div>
-
-                <a href="#" class="widget-more-link">MORE NOTIFICATIONS</a>
             </div>
         </div>
 

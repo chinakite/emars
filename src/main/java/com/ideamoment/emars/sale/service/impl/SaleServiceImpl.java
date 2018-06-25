@@ -44,4 +44,11 @@ public class SaleServiceImpl implements SaleService {
         result.setTotalRecord(count);
         return result;
     }
+
+    @Override
+    @Transactional
+    public long countSaleContracts(SaleContractQueryVo condition) {
+        long count = saleMapper.countSaleContracts(condition);
+        return count;
+    }
 }

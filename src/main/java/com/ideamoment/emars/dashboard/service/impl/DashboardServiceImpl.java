@@ -1,17 +1,15 @@
 package com.ideamoment.emars.dashboard.service.impl;
 
 import com.ideamoment.emars.copyright.dao.CopyrightMapper;
+import com.ideamoment.emars.dashboard.model.Contract;
 import com.ideamoment.emars.dashboard.service.DashboardService;
 import com.ideamoment.emars.make.dao.MakeContractMapper;
-import com.ideamoment.emars.model.CopyrightContract;
-import com.ideamoment.emars.model.MakeContract;
-import com.ideamoment.emars.model.MakeContractQueryVo;
+import com.ideamoment.emars.model.*;
+import com.ideamoment.emars.sale.dao.SaleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yukiwang on 2018/6/19.
@@ -25,24 +23,57 @@ public class DashboardServiceImpl implements DashboardService {
     @Autowired
     private MakeContractMapper makeContractMapper;
 
+    @Autowired
+    private SaleMapper saleMapper;
+
     @Override
-    public List<Map> newestContract() {
+    public List<Contract> newestContract() {
         CopyrightContract condition1 = new CopyrightContract();
         List<CopyrightContract> copyrightContractList = copyrightMapper.listCopyrights(condition1, 0, 5);
 
         MakeContractQueryVo condition2 = new MakeContractQueryVo();
         List<MakeContract> makeContractList = makeContractMapper.listMakeContracts(condition2, 0, 5);
 
-        //TODO 营销合同
+        SaleContractQueryVo condition3 = new SaleContractQueryVo();
+        List<Sale> saleList = saleMapper.pageSaleContracts(condition3, 0, 5);
 
-        List<Map> ret = new ArrayList<>();
+        List<Contract> contracts = new ArrayList<>();
+        contracts = dashboardContractList(contracts, copyrightContractList);
+        contracts = dashboardContractList(contracts, makeContractList);
+        contracts = dashboardContractList(contracts, saleList);
+        Collections.sort(contracts);
+        return contracts;
+    }
 
-        for(CopyrightContract copyrightContract : copyrightContractList) {
-            for(MakeContract makeContract : makeContractList) {
+    private List<Contract> dashboardContractList(List<Contract> contracts, List<?> objList) {
+        for(Object obj : objList) {
+            Contract contract = new Contract();
+            String objClassName = obj.getClass().getName();
+            if (objClassName.equals(CopyrightContract.class.getName())) {
+                CopyrightContract objContract = (CopyrightContract) obj;
+                contract.setType("1");
+                contract.setId(objContract.getId());
+                contract.setCode(objContract.getContractCode());
+                contract.setCreateTime(objContract.getCreateTime());
+                contract.setTitle(objContract.getGranter());
+            } else if (objClassName.equals(MakeContract.class.getName())) {
+                MakeContract objContract = (MakeContract) obj;
+                contract.setType("2");
+                contract.setId(objContract.getId());
+                contract.setCode(objContract.getCode());
+                contract.setCreateTime(objContract.getCreateTime());
+                contract.setTitle(objContract.getMaker());
+            } else if (objClassName.equals(Sale.class.getName())) {
+                Sale objContract = (Sale) obj;
+                contract.setType("3");
+                contract.setId(objContract.getId());
+                contract.setCode(objContract.getCode());
+                contract.setCreateTime(objContract.getCreateTime());
+                contract.setTitle(objContract.getGranter().getName());
             }
+            contracts.add(contract);
         }
 
-
-        return null;
+        return contracts;
     }
 }
