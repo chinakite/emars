@@ -112,6 +112,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public String createPlatform(String name, String desc, long customerId) {
         Platform existsPlatform = customerMapper.findPlatformByName(customerId, name, null);
 
@@ -119,12 +120,58 @@ public class CustomerServiceImpl implements CustomerService {
             return ErrorCode.CUSTOMER_EXISTS;
         }
         Platform platform = new Platform();
+        platform.setCustomerId(customerId);
         platform.setName(name);
         platform.setDesc(desc);
         platform.setCreateTime(new Date());
         platform.setCreator(UserContext.getUserId());
 
         boolean result = customerMapper.insertPlatform(platform);
+        return resultString(result);
+    }
+
+    @Override
+    @Transactional
+    public List<Platform> listCustomerPlatforms(Long customerId) {
+        return customerMapper.listPlatformByCustomer(customerId);
+    }
+
+    @Override
+    @Transactional
+    public String deletePlatform(long id) {
+        long r = saleMapper.countSalesByPlatform(id);
+        if(r > 0) {
+            return ErrorCode.PLATFORM_CANNOT_DELETE;
+        }
+        boolean result = customerMapper.deletePlatform(id);
+        return resultString(result);
+    }
+
+    @Override
+    @Transactional
+    public Platform findPlatform(long id) {
+        return customerMapper.findPlatform(id);
+    }
+
+    @Override
+    @Transactional
+    public String modifyPlatform(long id, String name, String desc, long customerId) {
+        Platform platform = customerMapper.findPlatform(id);
+
+        if(platform == null) {
+            return ErrorCode.PLATFORM_NOT_EXISTS;
+        }
+        Platform existsPlatform = customerMapper.findPlatformByName(customerId, name, id);
+        if(existsPlatform != null) {
+            return ErrorCode.PLATFORM_EXISTS;
+        }
+
+        platform.setName(name);
+        platform.setModifyTime(new Date());
+        platform.setModifier(UserContext.getUserId());
+        platform.setDesc(desc);
+
+        boolean result = customerMapper.updatePlatform(platform);
         return resultString(result);
     }
 

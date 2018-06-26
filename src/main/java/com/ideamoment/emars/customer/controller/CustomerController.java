@@ -4,6 +4,7 @@ import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.customer.service.CustomerService;
 import com.ideamoment.emars.model.Customer;
+import com.ideamoment.emars.model.Platform;
 import com.ideamoment.emars.utils.DataTableSource;
 import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
@@ -75,6 +76,38 @@ public class CustomerController {
     @RequestMapping(value = "/createPlatform", method = RequestMethod.POST)
     public JsonData<Boolean> createPlatform(String name, String desc, Long customerId) {
         String result = customerService.createPlatform(name, desc, customerId);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
+    @RequestMapping(value = "/platforms", method = RequestMethod.GET)
+    public JsonData<List<Platform>> customerPlatforms(Long customerId) {
+        List<Platform> result = customerService.listCustomerPlatforms(customerId);
+        return JsonData.success(result);
+    }
+
+    @RequestMapping(value = "/deletePlatform", method = RequestMethod.POST)
+    public JsonData<Boolean> deletePlatform(long id) {
+        String result = customerService.deletePlatform(id);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
+    @RequestMapping(value = "/platform", method = RequestMethod.GET)
+    public JsonData<Platform> findPlatform(long id) {
+        Platform platform = customerService.findPlatform(id);
+        return JsonData.success(platform);
+    }
+
+    @RequestMapping(value = "/modifyPlatform", method = RequestMethod.POST)
+    public JsonData<Boolean> modifyPlatform(long id, String name, String desc, long customerId) {
+        String result = customerService.modifyPlatform(id, name, desc, customerId);
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;
         }else{

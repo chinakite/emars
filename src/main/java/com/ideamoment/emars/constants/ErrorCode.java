@@ -92,6 +92,12 @@ public class ErrorCode {
     public static final String CUSTOMER_NOT_EXISTS = "N-0002";
     //客户不能被删除
     public static final String CUSTOMER_CANNOT_DELETE = "N-0003";
+    //平台已存在
+    public static final String PLATFORM_EXISTS = "N-0004";
+    //平台不存在
+    public static final String PLATFORM_NOT_EXISTS = "N-0005";
+    //平台不能被删除
+    public static final String PLATFORM_CANNOT_DELETE = "N-0006";
 
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 

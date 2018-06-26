@@ -83,5 +83,19 @@ public interface CustomerMapper {
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME")
     })
-    Platform findPlatformByName(@Param("customerId")long customerId, @Param("name")String name, @Param("ignoreId") Long ignoreId);
+    Platform findPlatformByName(@Param("customerId")Long customerId, @Param("name")String name, @Param("ignoreId") Long ignoreId);
+
+    @Select("select * from t_platform where c_customer_id=#{customerId}")
+    @ResultMap("platformMap")
+    List<Platform> listPlatformByCustomer(@Param("customerId")Long customerId);
+
+    @Delete("delete from t_platform where c_id = #{id}")
+    boolean deletePlatform(long id);
+
+    @Select("select * from t_platform where c_id=#{id}")
+    @ResultMap("platformMap")
+    Platform findPlatform(long id);
+
+    @Update("update t_platform set c_name = #{name}, c_desc=#{desc} where c_id = #{id}")
+    boolean updatePlatform(Platform platform);
 }

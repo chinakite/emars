@@ -29,7 +29,7 @@ public interface SaleMapper {
     })
     Sale findSaleContract(@Param("id") long id);
 
-    @Select("select count(c_id) from t_sale where c_customer_id = #{customerId}")
+    @Select("select count(c_id) from t_sale_contract where c_customer_id = #{customerId}")
     long countSalesByCustomer(@Param("customerId")long id);
 
     @Select({"<script>",
@@ -57,4 +57,10 @@ public interface SaleMapper {
             " LIMIT #{offset},#{pageSize}",
             "</script>"})
     ArrayList<Sale> pageSaleContracts(@Param("condition")SaleContractQueryVo condition, @Param("offset")int offset, @Param("pageSize")int pageSize);
+
+    @Select({"<script>",
+            "SELECT COUNT(*) FROM t_sale_contract s ",
+            "WHERE s.c_platform_id = #{platformId}",
+            "</script>"})
+    long countSalesByPlatform(@Param("platformId")long id);
 }

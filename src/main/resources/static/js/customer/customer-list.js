@@ -82,7 +82,7 @@ CUSTOMERLIST.popEditCustomer = function(id) {
             }
         }
     );
-}
+};
 
 CUSTOMERLIST.clearCustomerModal = function () {
     $('#id').val('');
@@ -90,7 +90,7 @@ CUSTOMERLIST.clearCustomerModal = function () {
     $('#contact').val('');
     $('#phone').val('');
     $('#desc').val('');
-}
+};
 
 CUSTOMERLIST.submitCustomer = function() {
     var name = $('#name').val();
@@ -163,8 +163,36 @@ CUSTOMERLIST.refreshCustomerTbl = function () {
 
 CUSTOMERLIST.popPlatformModal = function (customerId) {
     $('#inputCustomerId').val(customerId);
+    CUSTOMERLIST.refreshPlatformTbl(customerId);
     $('#platformModal').modal('show');
 };
+
+CUSTOMERLIST.refreshPlatformTbl = function (customerId) {
+    $.get(
+        '/system/platforms?customerId=' + customerId,
+        {},
+        function(data) {
+            if(data.code == '0') {
+                var result = data.data;
+                var html = '';
+                for(var i=0; i<result.length; i++) {
+                    html += '<tr>';
+                    html += '<td>' + result[i].name + '</td>';
+                    html += '<td>' + result[i].desc + '</td>';
+                    html += '<td>';
+                    html += '<a href="javascript:void(0);" onclick="CUSTOMERLIST.editPlatform(' + result[i].id +');">编辑</a>';
+                    html += '&nbsp;<span class="small">|</span>&nbsp;';
+                    html += '<a href="javascript:void(0);" onclick="CUSTOMERLIST.deletePlatform(' + result[i].id +',\'' + result[i].name + '\');">删除</a>';
+                    html += '</td>';
+                    html += '</tr>';
+                }
+                $('#platformTbl tbody').html(html);
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+}
 
 CUSTOMERLIST.showAddPlatformPanel = function() {
     CUSTOMERLIST.clearPlatformForm();
@@ -190,7 +218,25 @@ CUSTOMERLIST.submitPlatform = function() {
     var platformDesc = $('#inputPlatformDesc').val();
 
     if(platformId) {
-
+        $.post(
+            "/system/modifyPlatform",
+            {
+                'id': platformId,
+                'name': platformName,
+                'customerId': customerId,
+                'desc': platformDesc
+            },
+            function (data) {
+                if(data.code == '0') {
+                    EMARS_COMMONS.showSuccess("平台保存成功！");
+                    CUSTOMERLIST.refreshPlatformTbl(customerId);
+                    $('#platformFormPanel').hide();
+                    $('#platformTblPanel').show();
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
     }else{
         $.post(
             "/system/createPlatform",
@@ -202,9 +248,9 @@ CUSTOMERLIST.submitPlatform = function() {
             function (data) {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("平台保存成功！");
+                    CUSTOMERLIST.refreshPlatformTbl(customerId);
                     $('#platformFormPanel').hide();
                     $('#platformTblPanel').show();
-                    CUSTOMERLIST.refreshCustomerTbl();
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
                 }
@@ -213,3 +259,40 @@ CUSTOMERLIST.submitPlatform = function() {
     }
 
 };
+
+CUSTOMERLIST.deletePlatform = function(id, name) {
+    EMARS_COMMONS.showPrompt("您真的要删除平台[" + name + "]吗？", function() {
+        $.post(
+            "/system/deletePlatform",
+            {'id': id},
+            function(data) {
+                if(data.code == '0') {
+                    var customerId = $('#inputCustomerId').val();
+                    EMARS_COMMONS.showSuccess("删除成功！");
+                    CUSTOMERLIST.refreshPlatformTbl(customerId);
+                }else{
+                    EMARS_COMMONS.showError(data.code, data.msg);
+                }
+            }
+        );
+    }, null);
+};
+
+CUSTOMERLIST.editPlatform = function(id) {
+    CUSTOMERLIST.clearPlatformForm();
+    $.get(
+        "/system/platform",
+        {id: id},
+        function (data) {
+            if(data.code == '0') {
+                $('#inputPlatformId').val(data.data['id']);
+                $('#inputPlatformName').val(data.data['name']);
+                $('#inputPlatformDesc').val(data.data['desc']);
+                $('#platformTblPanel').hide();
+                $('#platformFormPanel').show();
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+}
