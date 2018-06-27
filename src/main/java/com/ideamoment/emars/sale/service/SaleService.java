@@ -17,4 +17,5 @@ public interface SaleService {
 
     long countSaleContracts(SaleContractQueryVo condition);
 
+    String generateContractCode(String signDate, String type);
 }

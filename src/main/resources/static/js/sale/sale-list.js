@@ -1,7 +1,7 @@
 ;
 
 var SALELIST = {};
-var mcTable;
+var saleTable;
 
 $(document).ready(function(){
     SALELIST.initSaleContractTbl();
@@ -26,7 +26,23 @@ $(document).ready(function(){
         );
     });
 
-    //SALELIST.loadMakers();
+    SALELIST.loadCustomers();
+
+    $.get('/enabledUsers', {}, function(data){
+        if(data) {
+            if(data.code == '0') {
+                var result = data.data;
+                var optionsHtml = '';
+                for(var i=0; i<result.length; i++) {
+                    optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+                }
+                $('#inputOperator').html(optionsHtml);
+            }
+        }
+        $('#inputOperator').select2({
+            dropdownParent: $("#contractModal")
+        });
+    });
 });
 
 SALELIST.productItem=function(id, mcProd, callback) {
@@ -94,7 +110,7 @@ SALELIST.removeProduct = function(id, syncSelect2) {
 }
 
 SALELIST.initSaleContractTbl = function () {
-    mcTable = $('#mcTbl').dataTable({
+    saleTable = $('#mcTbl').dataTable({
         "processing": true,
         "paging": true,
         "lengthChange": false,
@@ -393,11 +409,11 @@ SALELIST.submitMakeContract = function () {
 }
 
 SALELIST.searchMakeContracts = function () {
-    mcTable.api().ajax.reload();
+    saleTable.api().ajax.reload();
 }
 
 SALELIST.refreshMakeContractTbl = function () {
-    mcTable.api().ajax.reload(null, false);
+    saleTable.api().ajax.reload(null, false);
 }
 
 SALELIST.loadMcProduct = function (id) {
@@ -467,24 +483,47 @@ SALELIST.addMaker = function() {
     );
 };
 
-SALELIST.loadMakers = function(callback) {
-    $.get('/system/allMakers', {}, function(data){
+SALELIST.loadCustomers = function(callback) {
+    $.get('/system/allCustomers', {}, function(data){
         var defaultMakerId;
         if(data) {
             if(data.code == '0') {
                 var result = data.data;
-                var optionsHtml = '';
+                var optionsHtml = '<option value="-1">请选择客户</option>';
                 for(var i=0; i<result.length; i++) {
                     defaultMakerId = result[i]['id'];
                     optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
                 }
-                $('#inputMakerId').html(optionsHtml);
+                $('#inputCustomerId').html(optionsHtml);
             }
         }
-        $('#inputMakerId').select2({
-            dropdownParent: $("#contractModal"),
-            placeholder : '请选择'
+        $('#inputCustomerId').select2({
+            dropdownParent: $("#contractModal")
         });
+
+        $("#inputCustomerId").on("select2:select",function(e){
+            var selectedCustomerId = e.params.data.id;
+            if(selectedCustomerId == -1) {
+                $('#inputPlatformId').empty().prepend('<option value="-1">请选择平台</option>');
+            }else{
+                $.get(
+                    '/system/platforms?customerId=' + selectedCustomerId,
+                    {},
+                    function(platformData) {
+                        if(platformData.code == '0') {
+                            var platforms = platformData.data;
+                            var platformOptionsHtml = '<option value="-1">请选择平台</option>';
+                            for(var i=0; i<platforms.length; i++) {
+                                defaultMakerId = platforms[i]['id'];
+                                platformOptionsHtml += '<option value="' + platforms[i]['id'] + '">' + platforms[i]['name'] + '</option>';
+                            }
+                            $('#inputPlatformId').html(platformOptionsHtml);
+                        }
+                    }
+                );
+            }
+        });
+
         if(callback) {
             callback();
         }

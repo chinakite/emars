@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,5 +54,36 @@ public class SaleServiceImpl implements SaleService {
     public long countSaleContracts(SaleContractQueryVo condition) {
         long count = saleMapper.countSaleContracts(condition);
         return count;
+    }
+
+    @Override
+    @Transactional
+    public String generateContractCode(String signDate, String type) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = sdf.parse(signDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+
+            Calendar begin = Calendar.getInstance();
+            begin.set(c.get(Calendar.YEAR), 0 ,1);
+
+            Calendar end = Calendar.getInstance();
+            end.set(c.get(Calendar.YEAR) + 1, 0 ,1);
+
+            long count = saleMapper.countContractsByTimeAndType(begin.getTime(), end.getTime(), type);
+            count++;
+            String countStr = String.format("%03d", count);
+            if(type.equals("1")) {
+                type = "xd";
+            }else{
+                type = "xw";
+            }
+            String code = c.get(Calendar.YEAR) + "-" + type + "-" + countStr;
+            return code;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

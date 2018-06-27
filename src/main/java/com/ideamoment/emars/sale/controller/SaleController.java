@@ -1,10 +1,12 @@
 package com.ideamoment.emars.sale.controller;
 
+import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.model.ProductInfo;
 import com.ideamoment.emars.model.Sale;
 import com.ideamoment.emars.model.SaleContractQueryVo;
 import com.ideamoment.emars.sale.service.SaleService;
 import com.ideamoment.emars.utils.DataTableSource;
+import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,5 +47,15 @@ public class SaleController {
         Page<Sale> saleContractPage = saleService.pageSaleContracts(condition, start, length);
         DataTableSource<Sale> dts = new DataTableSource().convertToDataTableSource(draw, start, length, saleContractPage.getData(), saleContractPage.getTotalPage());
         return dts;
+    }
+
+    @RequestMapping(value = "generateContractCode", method = RequestMethod.GET)
+    public JsonData generateContractCode(String signDate, String type) {
+        String code = saleService.generateContractCode(signDate, type);
+        if(code == null) {
+            return JsonData.error(ErrorCode.UNKNOWN_ERROR, "生成合同号时发生错误");
+        }else{
+            return JsonData.success(code);
+        }
     }
 }

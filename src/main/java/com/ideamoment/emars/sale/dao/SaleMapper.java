@@ -5,6 +5,7 @@ import com.ideamoment.emars.model.SaleContractQueryVo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,4 +64,7 @@ public interface SaleMapper {
             "WHERE s.c_platform_id = #{platformId}",
             "</script>"})
     long countSalesByPlatform(@Param("platformId")long id);
+
+    @Select("select count(c_id) from t_sale_contract where c_signdate >= #{begin} and c_signdate < #{end} and C_TYPE = #{type}")
+    long countContractsByTimeAndType(@Param("begin") Date begin, @Param("end") Date end, @Param("type") String type);
 }

@@ -231,7 +231,6 @@ public interface ProductMapper {
             "LEFT JOIN t_copyright c ON c.c_id = cp.`c_copyright_id` ",
             "WHERE p.c_id > 0",
             " AND p.C_STOCKIN = '1'",
-            " AND c.c_state = '1'",
             " ORDER BY p.C_MODIFYTIME DESC ",
             "</script>"})
     @ResultMap("productMap")
