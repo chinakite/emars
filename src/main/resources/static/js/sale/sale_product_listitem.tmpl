@@ -1,0 +1,29 @@
+<div {% if id %}rel="{{id}}"{% endif %} class="list-group-item product-list-item">
+    <div class="product-list-item-info"  data-trigger="hover" data-container="body" data-toggle="popover" data-placement="left" data-title="{{name}}" data-html="true" data-content="作者：{{authorsTextInline}}<br/>{% if wordCount %}字数：{{wordCount}}万字{% endif %}{% if section %}集数：{{section}}集{% endif %}<br/>作品题材：{{subjectName}}<br/>出版状态：{{publishStateText}}{% if publishState == '1' %}<br/>ISBN：{{isbn}}{% endif %}">
+        <h4 class="list-group-item-heading">{{name}}<small class="m-l-1">{{authorName}}{% if authorPseudonym %}（{{authorPseudonym}}）{% endif %}</small></h4>
+        <p class="list-group-item-text">{% if wordCount %}{{wordCount}}万字{% endif %}{% if section %}{{section}}集{% endif %}<span class="m-l-1 m-r-1">·</span>{{isbn}}<span class="m-l-1 m-r-1">·</span>{{subjectName}}</p>
+    </div>
+    <div class="product-list-item-toolbar">
+        <a href="#" class="product-list-item-toolbar-btn bg-danger" onclick="MAKELIST.removeProduct({{id}}, true);"><i class="fa fa-remove"></i></a>
+    </div>
+
+    <hr class="panel-wide-block" />
+    <form class="active form-horizontal">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">集数</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="{{id}}_inputSection"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">单价</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="{{id}}_inputPrice"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

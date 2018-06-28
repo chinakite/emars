@@ -52,12 +52,11 @@ SALELIST.productItem=function(id, mcProd, callback) {
         function(data) {
             var productItem = data.data;
 
-            var productItemHtml = nunjucks.render('../js/make/mc_product_listitem.tmpl', productItem);
+            var productItemHtml = nunjucks.render('../js/sale/sale_product_listitem.tmpl', productItem);
             var productItemObj = $(productItemHtml).data('bindedData', productItem);
             productItemObj.find('.product-list-item-info').popover();
 
             $('#product-list-selected').append(productItemObj);
-            MAKELIST.loadAnnouncers(callback, productItem.id);
 
             if(mcProd) {
                 $('#' + id + "_inputSection").val(mcProd.section);
@@ -65,7 +64,7 @@ SALELIST.productItem=function(id, mcProd, callback) {
             }
         }
     )
-}
+};
 
 SALELIST.loadProductList = function() {
     $.get(
