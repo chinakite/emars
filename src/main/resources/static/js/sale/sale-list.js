@@ -43,6 +43,8 @@ $(document).ready(function(){
             dropdownParent: $("#contractModal")
         });
     });
+
+    $('#inputPlatformId').select2({dropdownParent: $("#contractModal")});
 });
 
 SALELIST.productItem=function(id, mcProd, callback) {
@@ -345,11 +347,10 @@ SALELIST.submitTask = function () {
     );
 }
 
-SALELIST.submitMakeContract = function () {
+SALELIST.submitSaleContract = function () {
     var id = $('#inputId').val();
-    // var maker = $('#inputMaker').val();
     var code = $('#inputCode').val();
-    var makerId = $('#inputMakerId').val();
+    var customerId = $('#inputMakerId').val();
     var targetType = $('#inputTargetType').val();
     var owner = $('#inputOwner').val();
     var totalPrice = $('#inputTotalPrice').val();
@@ -511,12 +512,16 @@ SALELIST.loadCustomers = function(callback) {
                     function(platformData) {
                         if(platformData.code == '0') {
                             var platforms = platformData.data;
-                            var platformOptionsHtml = '<option value="-1">请选择平台</option>';
+                            var platformOptionsHtml = '';
                             for(var i=0; i<platforms.length; i++) {
                                 defaultMakerId = platforms[i]['id'];
                                 platformOptionsHtml += '<option value="' + platforms[i]['id'] + '">' + platforms[i]['name'] + '</option>';
                             }
                             $('#inputPlatformId').html(platformOptionsHtml);
+                            $('#inputPlatformId').select2('destroy');
+                            $('#inputPlatformId').select2({
+                                dropdownParent: $('#contractModal')
+                            });
                         }
                     }
                 );
