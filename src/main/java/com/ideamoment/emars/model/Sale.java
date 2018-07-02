@@ -12,7 +12,7 @@ public class Sale extends HistoriableEntity {
     private Long granterId;
     private Long customerId;
     private String privileges;
-    private Long platformId;
+    private ArrayList<Long> platformIds;
     private String signDate;
     private String operator;
     private String projectCode;
@@ -61,12 +61,12 @@ public class Sale extends HistoriableEntity {
         this.privileges = privileges;
     }
 
-    public Long getPlatformId() {
-        return platformId;
+    public ArrayList<Long> getPlatformIds() {
+        return platformIds;
     }
 
-    public void setPlatformId(Long platformId) {
-        this.platformId = platformId;
+    public void setPlatformIds(ArrayList<Long> platformIds) {
+        this.platformIds = platformIds;
     }
 
     public String getSignDate() {

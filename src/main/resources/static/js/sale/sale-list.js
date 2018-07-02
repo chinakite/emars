@@ -377,7 +377,7 @@ SALELIST.submitSaleContract = function () {
         operator: operator,
         projectCode: projectCode,
         privileges: privileges,
-        saleProducts: saleProducts
+        products: saleProducts
     };
 
     console.log(postData);
