@@ -99,6 +99,11 @@ public class ErrorCode {
     //平台不能被删除
     public static final String PLATFORM_CANNOT_DELETE = "N-0006";
 
+    //营销合同价格错误
+    public static final String SALECONTRACT_PIRCE_ERROR = "O-0001";
+    //营销合同集数错误
+    public static final String SALECONTRACT_SECTION_ERROR = "O-0002";
+
     public static final HashMap<String, String> ERROR_MSG = new HashMap<String, String>();
 
     static {

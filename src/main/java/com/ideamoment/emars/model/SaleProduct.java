@@ -1,5 +1,8 @@
 package com.ideamoment.emars.model;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
 /**
  * Created by Chinakite on 2018/6/13.
  */
@@ -8,8 +11,12 @@ public class SaleProduct extends HistoriableEntity {
     private Long productId;
     private String begin;
     private String end;
-    private int sectionCount;
-    private String price;
+    private int section;
+    private BigDecimal price;
+
+
+    private ProductInfo product;
+    private ArrayList<SaleContractFile> saleContractFiles = new ArrayList<SaleContractFile>();
 
     public Long getSaleId() {
         return saleId;
@@ -43,19 +50,35 @@ public class SaleProduct extends HistoriableEntity {
         this.end = end;
     }
 
-    public int getSectionCount() {
-        return sectionCount;
-    }
-
-    public void setSectionCount(int sectionCount) {
-        this.sectionCount = sectionCount;
-    }
-
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public ProductInfo getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductInfo product) {
+        this.product = product;
+    }
+
+    public ArrayList<SaleContractFile> getSaleContractFiles() {
+        return saleContractFiles;
+    }
+
+    public void setSaleContractFiles(ArrayList<SaleContractFile> saleContractFiles) {
+        this.saleContractFiles = saleContractFiles;
+    }
+
+    public int getSection() {
+        return section;
+    }
+
+    public void setSection(int section) {
+        this.section = section;
     }
 }

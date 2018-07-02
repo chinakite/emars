@@ -1,6 +1,7 @@
 package com.ideamoment.emars.sale.controller;
 
 import com.ideamoment.emars.constants.ErrorCode;
+import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.model.ProductInfo;
 import com.ideamoment.emars.model.Sale;
 import com.ideamoment.emars.model.SaleContractQueryVo;
@@ -9,6 +10,7 @@ import com.ideamoment.emars.utils.DataTableSource;
 import com.ideamoment.emars.utils.JsonData;
 import com.ideamoment.emars.utils.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +58,19 @@ public class SaleController {
             return JsonData.error(ErrorCode.UNKNOWN_ERROR, "生成合同号时发生错误");
         }else{
             return JsonData.success(code);
+        }
+    }
+
+    @RequestMapping(value = "/saleContract", method = RequestMethod.POST)
+    public JsonData saveSaleContract(
+            @RequestBody Sale saleContract
+    ) {
+        String result = saleService.saveSaleContract(saleContract);
+
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
         }
     }
 }

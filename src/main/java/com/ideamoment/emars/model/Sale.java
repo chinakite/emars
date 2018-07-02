@@ -1,5 +1,6 @@
 package com.ideamoment.emars.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -7,6 +8,7 @@ import java.util.ArrayList;
  */
 public class Sale extends HistoriableEntity {
     private String code;
+    private String type;
     private Long granterId;
     private Long customerId;
     private String privileges;
@@ -16,13 +18,16 @@ public class Sale extends HistoriableEntity {
     private String projectCode;
     private String begin;
     private String end;
-    private String totalPrice;
+    private BigDecimal totalPrice;
+    private int totalSection;
 
     private String operatorName;
     private ArrayList<SaleProduct> products = new ArrayList<SaleProduct>();
 
     private Grantee granter;
     private Customer customer;
+
+    private String productIds;
 
     public String getCode() {
         return code;
@@ -104,11 +109,11 @@ public class Sale extends HistoriableEntity {
         this.end = end;
     }
 
-    public String getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(String totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -142,5 +147,29 @@ public class Sale extends HistoriableEntity {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public int getTotalSection() {
+        return totalSection;
+    }
+
+    public void setTotalSection(int totalSection) {
+        this.totalSection = totalSection;
+    }
+
+    public String getProductIds() {
+        return productIds;
+    }
+
+    public void setProductIds(String productIds) {
+        this.productIds = productIds;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

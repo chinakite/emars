@@ -45,6 +45,16 @@ $(document).ready(function(){
     });
 
     $('#inputPlatformId').select2({dropdownParent: $("#contractModal")});
+
+    $('#inputBegin').datepicker({
+        format: 'yyyy-mm-dd',
+        language: 'cn'
+    });
+
+    $('#inputEnd').datepicker({
+        format: 'yyyy-mm-dd',
+        language: 'cn'
+    });
 });
 
 SALELIST.productItem=function(id, mcProd, callback) {
@@ -299,80 +309,57 @@ SALELIST.clearTaskModal = function () {
 }
 
 SALELIST.clearContractModal = function () {
+    $('#inputId').val('');
     $('#inputCode').val('');
     $('#inputTargetType option:first').prop("selected", 'selected');
     $('#inputOwner').val('北京悦库时光文化传媒有限公司');
     $('#inputTotalSection').val('');
-    $('#inputMaker').val('');
+    $('#inputCustomerId').val('');
     $('#inputTotalPrice').val('');
     $('#product-list-selected').empty();
 
-    $('#makeContractWizard').pxWizard('reset');
-}
-
-SALELIST.submitTask = function () {
-    var productId = $('#inputProductId').val();
-    var makerId = $('#inputMaker').val();
-    // var contractId = $('#inputContract').val();
-    var contractId = 1;
-
-    var timePerSection = $('#inputTimePerSection').val();
-    var showType = $('#inputShowType').val();
-    var showExpection = $('#inputShowExpection').val();
-    var makeTime = $('#inputMakeTime').val();
-    var desc = $('#inputDesc').val();
-
-    $.post(
-        "/make/makeTask",
-        {
-            'productId': productId,
-            'makerId': makerId,
-            'contractId': contractId,
-            'timePerSection': timePerSection,
-            'showType': showType,
-            'showExpection': showExpection,
-            'makeTime': makeTime,
-            'desc': desc
-        },
-        function(data) {
-            if(data.code == '0') {
-                EMARS_COMMONS.showSuccess("任务制作成功！");
-                MAKELIST.clearTaskModal();
-                $('#taskModal').modal('hide');
-                MAKELIST.refreshMakeContractTbl();
-            }else{
-                EMARS_COMMONS.showError(data.code, data.msg);
-            }
-        }
-    );
-}
+    $('#saleContractWizard').pxWizard('reset');
+};
 
 SALELIST.submitSaleContract = function () {
     var id = $('#inputId').val();
+    var signDate = $('#inputSignDate').val();
     var code = $('#inputCode').val();
-    var customerId = $('#inputMakerId').val();
-    var targetType = $('#inputTargetType').val();
+    var customerId = $('#inputCustomerId').val();
+    var type = $('#inputTargetType').val();
+    var platformId = $('#inputPlatformId').val();
     var owner = $('#inputOwner').val();
+    var operator = $('#inputOperator').val();
+    var projectCode = $('#inputProjectCode').val();
     var totalPrice = $('#inputTotalPrice').val();
     var totalSection = $('#inputTotalSection').val();
-    var signDate = $('#inputSignDate').val();
+    var beginDate = $('#inputBegin').val();
+    var endDate = $('#inputEnd').val();
+    var privileges = '';
+    if($('#inputPrivilege0').prop('checked')) {
+        privileges += '1';
+    }else{
+        privileges += '0';
+    }
+    if($('#inputPrivilege1').prop('checked')) {
+        privileges += '1';
+    }else{
+        privileges += '0';
+    }
+
+
     var productObjs = $('.product-list-item');
-    var mcProducts = [];
+    var saleProducts = [];
     for(var i=0; i<productObjs.length; i++) {
         var productItem = $(productObjs[i]).data('bindedData');
         var section = $("#" + productItem.id + "_inputSection").val();
         var price = $("#" + productItem.id + "_inputPrice").val();
-        var mcProduct = {
+        var saleProduct = {
             productId: productItem.id,
             section: section,
-            price: price,
-            announcers: []
+            price: price
         };
-        var announcerIds = $("#inputAnnouncerId_" + productItem.id).select2('data');
-        for(var j=0; j<announcerIds.length; j++) {
-            mcProduct.announcers.push({id: announcerIds[j].id});
-        }
-        mcProducts[i] = mcProduct;
+        saleProducts[i] = saleProduct;
     }
 
     var postData = {
@@ -380,17 +367,23 @@ SALELIST.submitSaleContract = function () {
         code: code,
         totalPrice: totalPrice,
         totalSection: totalSection,
-        targetType: targetType,
+        type: type,
         owner: owner,
-        makerId: makerId,
+        customerId: customerId,
+        platformId: platformId,
         signDate: signDate,
-        mcProducts: mcProducts
+        beginDate: beginDate,
+        endDate: endDate,
+        operator: operator,
+        projectCode: projectCode,
+        privileges: privileges,
+        saleProducts: saleProducts
     };
 
     console.log(postData);
 
     $.ajax({
-        url: "/make/makeContract",
+        url: "/sale/saleContract",
         type: "POST",
         data: JSON.stringify(postData),
         dataType: "json",
@@ -398,21 +391,21 @@ SALELIST.submitSaleContract = function () {
         success: function (data) {
             if (data.code == '0') {
                 EMARS_COMMONS.showSuccess("保存成功！");
-                MAKELIST.clearContractModal();
+                SALELIST.clearContractModal();
                 $('#contractModal').modal('hide');
-                MAKELIST.refreshMakeContractTbl();
+                SALELIST.refreshSaleContractTbl();
             } else {
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     });
-}
+};
 
 SALELIST.searchMakeContracts = function () {
     saleTable.api().ajax.reload();
 }
 
-SALELIST.refreshMakeContractTbl = function () {
+SALELIST.refreshSaleContractTbl = function () {
     saleTable.api().ajax.reload(null, false);
 }
 

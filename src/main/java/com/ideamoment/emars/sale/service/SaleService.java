@@ -18,4 +18,8 @@ public interface SaleService {
     long countSaleContracts(SaleContractQueryVo condition);
 
     String generateContractCode(String signDate, String type);
+
+    String saveSaleContract(Sale saleContract);
+
+    Sale findSaleContract(long id);
 }
