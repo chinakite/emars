@@ -190,7 +190,10 @@ SALELIST.initSaleContractTbl = function () {
                 }
             },
             {
-                "data": "owner"
+                "data": "typeText"
+            },
+            {
+                "data": "customer.name"
             },
             {
                 "data": "totalPrice"
