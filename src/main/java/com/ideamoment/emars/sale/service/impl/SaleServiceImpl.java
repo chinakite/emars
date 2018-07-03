@@ -2,6 +2,7 @@ package com.ideamoment.emars.sale.service.impl;
 
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
+import com.ideamoment.emars.customer.dao.CustomerMapper;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.product.dao.ProductMapper;
 import com.ideamoment.emars.sale.dao.SaleMapper;
@@ -29,6 +30,9 @@ public class SaleServiceImpl implements SaleService {
     @Autowired
     private ProductMapper productMapper;
 
+    @Autowired
+    private CustomerMapper customerMapper;
+
     @Override
     @Transactional
     public List<ProductInfo> listProducts() {
@@ -41,6 +45,15 @@ public class SaleServiceImpl implements SaleService {
         long count = saleMapper.countSaleContracts(condition);
         int currentPage = offset/pageSize + 1;
         List<Sale> saleContracts = saleMapper.pageSaleContracts(condition, offset, pageSize);
+
+        for(Sale sale : saleContracts) {
+            Long customerId = sale.getCustomerId();
+            Customer customer = customerMapper.findCustomer(customerId);
+            sale.setCustomer(customer);
+            ArrayList<SaleCustomerPlatform> platforms = saleMapper.listContractPlatforms(sale.getId());
+            sale.setPlatforms(platforms);
+        }
+
         Page<Sale> result = new Page<Sale>();
         result.setCurrentPage(currentPage);
         result.setData(saleContracts);
@@ -146,6 +159,13 @@ public class SaleServiceImpl implements SaleService {
             saleContract.setCreator(userId);
             saleContract.setCreateTime(curDate);
             ret = saleMapper.insertSaleContract(saleContract);
+
+            for(SaleCustomerPlatform platform : saleContract.getPlatforms()) {
+                platform.setSaleId(saleContract.getId());
+                platform.setCreator(userId);
+                platform.setCreateTime(curDate);
+                saleMapper.insertSaleCustomerPlatform(platform);
+            }
 
             for(SaleProduct saleProduct : products) {
                 saleProduct.setSaleId(saleContract.getId());

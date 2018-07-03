@@ -1,9 +1,6 @@
 package com.ideamoment.emars.sale.dao;
 
-import com.ideamoment.emars.model.Sale;
-import com.ideamoment.emars.model.SaleContractFile;
-import com.ideamoment.emars.model.SaleContractQueryVo;
-import com.ideamoment.emars.model.SaleProduct;
+import com.ideamoment.emars.model.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
@@ -20,10 +17,13 @@ public interface SaleMapper {
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "code", column = "C_CODE"),
             @Result(property = "type", column = "C_TYPE"),
-            @Result(property = "owner", column = "C_OWNER"),
+            @Result(property = "granterId", column = "C_GRANTER_ID"),
+            @Result(property = "customerId", column = "C_CUSTOMER_ID"),
             @Result(property = "totalSection", column = "C_TOTAL_SECTION"),
             @Result(property = "totalPrice", column = "C_TOTAL_PRICE"),
             @Result(property = "signDate", column = "C_SIGNDATE"),
+            @Result(property = "begin", column = "C_BEGIN"),
+            @Result(property = "end", column = "C_END"),
             @Result(property = "creator", column = "C_CREATOR"),
             @Result(property = "createTime", column = "C_CREATETIME"),
             @Result(property = "modifier", column = "C_MODIFIER"),
@@ -59,11 +59,13 @@ public interface SaleMapper {
             " ORDER By s.c_createtime desc ",
             " LIMIT #{offset},#{pageSize}",
             "</script>"})
+    @ResultMap("saleMap")
     ArrayList<Sale> pageSaleContracts(@Param("condition")SaleContractQueryVo condition, @Param("offset")int offset, @Param("pageSize")int pageSize);
 
     @Select({"<script>",
-            "SELECT COUNT(*) FROM t_sale_contract s ",
-            "WHERE s.c_platform_id = #{platformId}",
+            "SELECT count(s.c_id) FROM t_sale_contract s, t_sale_customer_platform p ",
+            "WHERE p.c_platform_id = #{platformId} " +
+                    "AND p.c_sale_constract_id = s.c_id",
             "</script>"})
     long countSalesByPlatform(@Param("platformId")long id);
 
@@ -109,7 +111,7 @@ public interface SaleMapper {
     ArrayList<SaleContractFile> listContractFiles(@Param("saleProductId") long mcProductId, @Param("type") String type);
 
     @Update("update t_sale_contract set c_code=#{code}, c_type=#{type}, c_granter_id=#{granterId}, " +
-            "c_customer_id=#{customerId}, c_platform_id=#{platformId}, c_privileges=#{privileges}, " +
+            "c_customer_id=#{customerId}, c_privileges=#{privileges}, " +
             "c_signdate=#{signDate}, c_operator=#{operator}, c_total_section=#{totalSection}, c_total_price=#{totalPrice}, " +
             "c_begin=#{begin}, c_end=#{end}, c_project_code=#{projectCode}, c_modifier=#{modifier}, c_modifytime=#{modifyTime} " +
             "where c_id=#{id}")
@@ -125,19 +127,38 @@ public interface SaleMapper {
 
     @Insert("insert into t_sale_product (c_sale_contract_id, c_product_id, c_section, c_price, c_creator, c_createtime)" +
             "values(#{saleId}, #{productId}, #{section}, #{price}, #{creator}, #{createTime})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertSaleContractProduct(SaleProduct saleProduct);
 
     @Delete("delete from t_sale_product where c_id = #{id}")
     boolean deleteSaleContractProducts(long id);
 
-    @Insert("insert into t_sale_contract (c_code, c_type, c_granter_id, c_customer_id, c_platform_id, " +
+    @Insert("insert into t_sale_contract (c_code, c_type, c_granter_id, c_customer_id, " +
             "c_privileges, c_signdate, c_operator, c_total_section, c_total_price, c_begin, c_end, c_project_code, " +
-            "c_creator, c_createtime)values(#{code}, #{type}, #{granterId}, #{customerId}, #{platformId}, #{privileges}, " +
+            "c_creator, c_createtime)values(#{code}, #{type}, #{granterId}, #{customerId}, #{privileges}, " +
             "#{signDate}, #{operator}, #{totalSection}, #{totalPrice}, #{begin}, #{end}, #{projectCode}, #{creator}, " +
             "#{createTime})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertSaleContract(Sale saleContract);
 
     @Insert("insert into t_sale_product (c_sale_contract_id, c_product_id, c_section, c_price, " +
             "c_creator, c_createtime)values(#{saleId}, #{productId}, #{section}, #{price}, #{creator}, #{createTime})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     boolean insertSaleProduct(SaleProduct saleProduct);
+
+    @Insert("insert into t_sale_customer_platform (c_sale_contract_id, c_customer_id, c_platform_id, c_creator, c_createtime)" +
+            "values(#{saleId}, #{customerId}, #{platformId}, #{creator}, #{createTime})")
+    boolean insertSaleCustomerPlatform(SaleCustomerPlatform platform);
+
+    @Select("select sp.c_id as id, sp.c_sale_contract_id as saleId, sp.c_customer_id as customerId, p.c_id as platformId, p.c_name as platformName " +
+            "from t_platform p, t_sale_customer_platform sp where sp.c_sale_contract_id = #{saleId} " +
+            "and sp.c_platform_id = p.c_id")
+    @Results(id = "saleCustomerPlatformMap", value ={
+            @Result(property = "id", column = "id"),
+            @Result(property = "saleId", column = "saleId"),
+            @Result(property = "customerId", column = "customerId"),
+            @Result(property = "platformId", column = "platformId"),
+            @Result(property = "platformName", column = "platformName")
+    })
+    ArrayList<SaleCustomerPlatform> listContractPlatforms(@Param("saleId") long saleId);
 }

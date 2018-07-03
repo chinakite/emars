@@ -26,6 +26,7 @@ $(document).ready(function(){
         );
     });
 
+    SALELIST.loadGranters();
     SALELIST.loadCustomers();
 
     $.get('/enabledUsers', {}, function(data){
@@ -56,6 +57,25 @@ $(document).ready(function(){
         language: 'cn'
     });
 });
+
+SALELIST.loadGranters = function() {
+    $.get('/system/allGrantees', {}, function(data){
+        if(data) {
+            if(data.code == '0') {
+                var result = data.data;
+                var optionsHtml = '';
+                for(var i=0; i<result.length; i++) {
+                    optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
+                }
+                $('#inputGranterId').html(optionsHtml);
+            }
+        }
+        $('#inputGranterId').select2({
+            dropdownParent: $("#contractModal"),
+            placeholder : '请选择'
+        });
+    });
+};
 
 SALELIST.productItem=function(id, mcProd, callback) {
     $.get(
@@ -327,8 +347,8 @@ SALELIST.submitSaleContract = function () {
     var code = $('#inputCode').val();
     var customerId = $('#inputCustomerId').val();
     var type = $('#inputTargetType').val();
-    var platformId = $('#inputPlatformId').val();
-    var owner = $('#inputOwner').val();
+    var platformIds = $('#inputPlatformId').select2('data');
+    var granterId = $('#inputGranterId').val();
     var operator = $('#inputOperator').val();
     var projectCode = $('#inputProjectCode').val();
     var totalPrice = $('#inputTotalPrice').val();
@@ -345,6 +365,11 @@ SALELIST.submitSaleContract = function () {
         privileges += '1';
     }else{
         privileges += '0';
+    }
+
+    var platforms = [];
+    for(var i=0; i<platformIds.length; i++) {
+        platforms.push({platformId: platformIds[i].id, customerId: customerId});
     }
 
 
@@ -368,9 +393,9 @@ SALELIST.submitSaleContract = function () {
         totalPrice: totalPrice,
         totalSection: totalSection,
         type: type,
-        owner: owner,
+        granterId: granterId,
         customerId: customerId,
-        platformId: platformId,
+        platforms: platforms,
         signDate: signDate,
         beginDate: beginDate,
         endDate: endDate,

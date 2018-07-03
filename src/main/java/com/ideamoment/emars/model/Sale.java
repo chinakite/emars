@@ -1,5 +1,7 @@
 package com.ideamoment.emars.model;
 
+import com.ideamoment.emars.model.enumeration.SaleType;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -28,6 +30,7 @@ public class Sale extends HistoriableEntity {
     private Customer customer;
 
     private String productIds;
+    private ArrayList<SaleCustomerPlatform> platforms = new ArrayList<SaleCustomerPlatform>();
 
     public String getCode() {
         return code;
@@ -171,5 +174,21 @@ public class Sale extends HistoriableEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public ArrayList<SaleCustomerPlatform> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(ArrayList<SaleCustomerPlatform> platforms) {
+        this.platforms = platforms;
+    }
+
+    public String getTypeText() {
+        if(SaleType.FM.equals(type)) {
+            return SaleType.FM_TEXT;
+        }else{
+            return SaleType.WWW_TEXT;
+        }
     }
 }
