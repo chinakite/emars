@@ -1,5 +1,6 @@
 package com.ideamoment.emars.model;
 
+import com.ideamoment.emars.model.enumeration.SaleStateType;
 import com.ideamoment.emars.model.enumeration.SaleType;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ public class Sale extends HistoriableEntity {
     private String projectCode;
     private String begin;
     private String end;
+    private String state;
     private BigDecimal totalPrice;
     private int totalSection;
 
@@ -184,11 +186,29 @@ public class Sale extends HistoriableEntity {
         this.platforms = platforms;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public String getTypeText() {
         if(SaleType.FM.equals(type)) {
             return SaleType.FM_TEXT;
         }else{
             return SaleType.WWW_TEXT;
+        }
+    }
+
+    public String getStateText() {
+        if(SaleStateType.FINISH.equals(state)) {
+            return SaleStateType.FINISH_TEXT;
+        }else if(SaleStateType.INVALID.equals(state)) {
+            return SaleStateType.INVALID_TEXT;
+        }else{
+            return "";
         }
     }
 }

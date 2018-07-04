@@ -73,4 +73,20 @@ public class SaleController {
             return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
         }
     }
+
+    @RequestMapping(value = "/saleContract", method = RequestMethod.GET)
+    public JsonData findSaleContract(long id) {
+        Sale saleContract = saleService.findSaleContract(id);
+        return JsonData.success(saleContract);
+    }
+
+    @RequestMapping(value = "changeSaleContractState", method = RequestMethod.POST)
+    public JsonData<String> changeSaleContractState(long id, String state) {
+        String result = saleService.changeSaleContractState(id, state);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
 }

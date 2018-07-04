@@ -2,6 +2,7 @@
 
 var SALELIST = {};
 var saleTable;
+var customerSelect2Obj;
 
 $(document).ready(function(){
     SALELIST.initSaleContractTbl();
@@ -196,6 +197,9 @@ SALELIST.initSaleContractTbl = function () {
                 "data": "customer.name"
             },
             {
+                "data": "totalSection"
+            },
+            {
                 "data": "totalPrice"
             },
             {
@@ -206,85 +210,92 @@ SALELIST.initSaleContractTbl = function () {
                     var htmlText = '<a href="/make/makeContractDetail/' + full.id + '" target="_blank">查看</a>';
                     if(full.state == "1") {
                         htmlText += '&nbsp;&nbsp;|&nbsp;&nbsp;'
-                            + '<a href="javascript:void(0);" onclick="MAKELIST.changeState(\'' + full.id + '\',\'' + full.code +'\', 0)">取消作废</a>';
+                            + '<a href="javascript:void(0);" onclick="SALELIST.changeState(\'' + full.id + '\',\'' + full.code +'\', 0)">取消作废</a>';
                     }else if(full.state == "2") {
 
                     }else {
                         htmlText += '&nbsp;&nbsp;|&nbsp;&nbsp;'
-                            + '<a href="javascript:void(0);" onclick="MAKELIST.popEditMakeContractModal(\'' + full.id + '\')">编辑</a>'
+                            + '<a href="javascript:void(0);" onclick="SALELIST.popEditSaleContractModal(\'' + full.id + '\')">编辑</a>'
                             + '&nbsp;&nbsp;|&nbsp;&nbsp;'
-                            + '<a href="javascript:void(0);" onclick="MAKELIST.changeState(\'' + full.id + '\',\'' + full.code +'\', 1)">作废</a>'
+                            + '<a href="javascript:void(0);" onclick="SALELIST.changeState(\'' + full.id + '\',\'' + full.code +'\', 1)">作废</a>'
                             + '&nbsp;&nbsp;|&nbsp;&nbsp;'
-                            + '<a href="javascript:void(0);" onclick="MAKELIST.changeState(\'' + full.id + '\',\'' + full.code +'\', 2)">完结</a>';
+                            + '<a href="javascript:void(0);" onclick="SALELIST.changeState(\'' + full.id + '\',\'' + full.code +'\', 2)">完结</a>';
                     }
                     return htmlText;
                 }
             }
         ]
     });
-}
-
-SALELIST.loadExtMakers = function () {
-    $.get(
-        "/system/extMakers",
-        function(data) {
-            if(data.code == '0') {
-                var makers = data.data;
-                var html = '';
-                for(var i = 0; i < makers.length; i ++) {
-                    var maker = makers[i];
-                    html += '<option value="' + maker.id + '">' + maker.name + '</option>';
-                }
-                $('#inputMaker').empty().append(html);
-            }else{
-                EMARS_COMMONS.showError(data.code, data.msg);
-            }
-        }
-    )
-}
-
-SALELIST.popTaskModal = function (productId) {
-    SALELIST.clearTaskModal();
-    $('#inputProductId').val(productId);
-    $('#taskModal').modal('show');
-}
+};
 
 SALELIST.popContractModal = function () {
     SALELIST.clearContractModal();
     $('#contractModal').modal('show');
 }
 
-SALELIST.popEditMakeContractModal = function (id) {
-    MAKELIST.clearContractModal();
+SALELIST.popEditSaleContractModal = function (id) {
+    SALELIST.clearContractModal();
     $.get(
-        '/make/makeContract',
+        '/sale/saleContract',
         {id: id},
         function(data) {
             if (data.code == '0') {
-                var makeContract = data.data;
-                $('#inputId').val(makeContract.id);
-                $('#inputCode').val(makeContract.code);
-                $('#inputTargetType option[value=' + makeContract.targetType + ']').prop('selected', true);
-                $('#inputOwner').val(makeContract.owner);
-                $('#inputMakerId').val(makeContract.makerId).trigger('change');
-                $('#inputTotalSection').val(makeContract.totalSection);
-                $('#inputTotalPrice').val(makeContract.totalPrice);
-                $('#inputSignDate').val(makeContract.signDate);
-                var makeContractProducts = makeContract.mcProducts;
-                var prodIds = [];
-                for(var k in makeContractProducts) {
-                    var productId = makeContractProducts[k].productId;
-                    prodIds.push(productId);
-                    productItem(productId, makeContractProducts[k], function(){
-                        var announcers = makeContractProducts[k].announcers;
-                        var announcerIds = [];
-                        for(var c=0; c<announcers.length; c++) {
-                            announcerIds.push(announcers[c].id);
+                var saleContract = data.data;
+                $('#inputId').val(saleContract.id);
+                $('#inputCode').val(saleContract.code);
+                $('#inputTargetType option[value=' + saleContract.type + ']').prop('selected', true);
+                $('#inputGranterId').val(saleContract.granterId).trigger('change');
+                $('#inputCustomerId').val(saleContract.customerId).trigger('change');
+                $('#inputTotalSection').val(saleContract.totalSection);
+                $('#inputTotalPrice').val(saleContract.totalPrice);
+                $('#inputSignDate').val(saleContract.signDate);
+                $('#inputBegin').val(saleContract.begin);
+                $('#inputEnd').val(saleContract.end);
+                $('#inputOperator').val(saleContract.operator).trigger('change');
+                $('#inputProjectCode').val(saleContract.projectCode);
+
+                var privileges = saleContract.privileges;
+                if(privileges.charAt(0) == '1') {
+                    $('#inputPrivilege0').prop('checked', true);
+                }else{
+                    $('#inputPrivilege0').prop('checked', false);
+                }
+                if(privileges.charAt(1) == '1') {
+                    $('#inputPrivilege1').prop('checked', true);
+                }else{
+                    $('#inputPrivilege1').prop('checked', false);
+                }
+
+                $.get(
+                    '/system/platforms?customerId=' + saleContract.customerId,
+                    {},
+                    function(platformData) {
+                        if(platformData.code == '0') {
+                            var platforms = platformData.data;
+                            var platformOptionsHtml = '';
+                            for(var i=0; i<platforms.length; i++) {
+                                platformOptionsHtml += '<option value="' + platforms[i]['id'] + '">' + platforms[i]['name'] + '</option>';
+                            }
+                            $('#inputPlatformId').html(platformOptionsHtml);
+                            var platformIds = [];
+                            for(var j=0; j<saleContract.platforms.length; j++) {
+                                platformIds.push(saleContract.platforms[j].platformId);
+                            }
+                            $('#inputPlatformId').val(platformIds);
+                            $('#inputPlatformId').select2('destroy');
+                            $('#inputPlatformId').select2({
+                                dropdownParent: $('#contractModal')
+                            });
                         }
-                        console.log(announcerIds);
-                        console.log($("#inputAnnouncerId_" + productId));
-                        $("#inputAnnouncerId_" + productId).val(announcerIds).trigger('change');
-                    });
+                    }
+                );
+
+                var saleProducts = saleContract.products;
+                var prodIds = [];
+                for(var k in saleProducts) {
+                    var productId = saleProducts[k].productId;
+                    prodIds.push(productId);
+                    SALELIST.productItem(productId, saleProducts[k]);
                 }
                 $('#product-list-select').val(prodIds).trigger('change');
                 $('#contractModal').modal('show');
@@ -292,8 +303,8 @@ SALELIST.popEditMakeContractModal = function (id) {
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
-    )
-}
+    );
+};
 
 SALELIST.deleteMakeContract = function (id, code) {
     EMARS_COMMONS.showPrompt("您真的要合同号为[" + code + "]的版权合同吗？", function() {
@@ -335,10 +346,11 @@ SALELIST.clearContractModal = function () {
     $('#inputId').val('');
     $('#inputCode').val('');
     $('#inputTargetType option:first').prop("selected", 'selected');
-    $('#inputOwner').val('北京悦库时光文化传媒有限公司');
     $('#inputTotalSection').val('');
     $('#inputCustomerId').val('');
     $('#inputTotalPrice').val('');
+    $('#inputPrivilege0').prop('checked', false);
+    $('#inputPrivilege1').prop('checked', false);
     $('#product-list-selected').empty();
 
     $('#saleContractWizard').pxWizard('reset');
@@ -400,8 +412,8 @@ SALELIST.submitSaleContract = function () {
         customerId: customerId,
         platforms: platforms,
         signDate: signDate,
-        beginDate: beginDate,
-        endDate: endDate,
+        begin: beginDate,
+        end: endDate,
         operator: operator,
         projectCode: projectCode,
         privileges: privileges,
@@ -512,13 +524,16 @@ SALELIST.loadCustomers = function(callback) {
                 var result = data.data;
                 var optionsHtml = '<option value="-1">请选择客户</option>';
                 for(var i=0; i<result.length; i++) {
-                    defaultMakerId = result[i]['id'];
                     optionsHtml += '<option value="' + result[i]['id'] + '">' + result[i]['name'] + '</option>';
                 }
                 $('#inputCustomerId').html(optionsHtml);
             }
         }
-        $('#inputCustomerId').select2({
+        if(customerSelect2Obj) {
+            $('#inputCustomerId').select2('destroy');
+        }
+
+        customerSelect2Obj = $('#inputCustomerId').select2({
             dropdownParent: $("#contractModal")
         });
 
@@ -555,66 +570,52 @@ SALELIST.loadCustomers = function(callback) {
     });
 };
 
-SALELIST.showAddAnnouncerPanel = function(prodId) {
-    SALELIST.clearAddAnnouncerPanel();
-    $('#inputAnnouncerProductId').val(prodId);
-    $('#makeContractWizard').hide();
-    $('#addAnnouncerPanel').show();
+SALELIST.showAddCustomerPanel = function(prodId) {
+    SALELIST.clearAddCustomerPanel();
+    $('#saleContractWizard').hide();
+    $('#addCustomerPanel').show();
 };
 
-SALELIST.hideAddAnnouncerPanel = function() {
-    $('#addAnnouncerPanel').hide();
-    $('#makeContractWizard').show();
+SALELIST.hideAddCustomerPanel = function() {
+    $('#addCustomerPanel').hide();
+    $('#saleContractWizard').show();
 };
 
-SALELIST.clearAddAnnouncerPanel = function() {
-    $('#inputAnnouncerProductId').val('');
-    $('#inputAnnouncerName').val('');
-    $('#inputAnnouncerPseudonym').val('');
+SALELIST.clearAddCustomerPanel = function() {
+    $('#inputAddCustomerName').val('');
+    $('#inputAddCustomerContact').val('');
+    $('#inputAddCustomerPhone').val('');
     $('#inputAnnouncerDesc').val('');
 };
 
-SALELIST.addAnnouncer = function() {
-    var prodId = $('#inputAnnouncerProductId').val();
-    var aName = $('#inputAnnouncerName').val();
-    var aDesc = $('#inputAnnouncerDesc').val();
-    var aPseudonym = $('#inputAnnouncerPseudonym').val();
+SALELIST.addCustomer = function() {
+    var customerName = $('#inputAddCustomerName').val();
+    var customerContact = $('#inputAddCustomerContact').val();
+    var customerPhone = $('#inputAddCustomerPhone').val();
+    var customerDesc = $('#inputAddCustomerDesc').val();
 
     $.post(
-        "/system/createAnnouncer",
+        "/system/createCustomer",
         {
-            'name': aName,
-            'desc': aDesc,
-            'pseudonym': aPseudonym
+            'name': customerName,
+            'contact': customerContact,
+            'phone': customerPhone,
+            'desc': customerDesc
         },
         function (data) {
             if(data.code == '0') {
-                EMARS_COMMONS.showSuccess("演播人保存成功！");
-                MAKELIST.hideAddAnnouncerPanel();
-                var selectObj = $('#inputAnnouncerId_' + prodId);
-                var selected = selectObj.select2('data');
-                var selectedIds = [];
-                for(var i=0; i<selected.length; i++) {
-                    selectedIds.push(selected[i]['id']);
-                }
-                selectObj.select2('destroy');
-                selectObj.empty();
-                MAKELIST.loadAnnouncers(function(pid){
-                    var curId = $('#inputAnnouncerId_'+ pid + ' option').filter(function () {
-                        if(aPseudonym) {
-                            return $(this).html() == aName+"("+aPseudonym+")";
-                        }else{
-                            return $(this).html() == aName;
-                        }
-                    }).val();
-                    selectedIds.push(curId);
-                    selectObj.val(selectedIds).trigger('change');
-                }, prodId);
+                EMARS_COMMONS.showSuccess("客户保存成功！");
+                SALELIST.hideAddCustomerPanel();
+                SALELIST.loadCustomers(function(){
+                    $('#inputCustomerId').find('option[text=' + customerName + ']').attr('selected', true);
+                    $('#inputCustomerId').trigger('change');
+                });
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
     );
+
 };
 
 SALELIST.loadAnnouncers = function(callback, prodId) {
@@ -678,20 +679,20 @@ SALELIST.autoSplit = function() {
 SALELIST.changeState = function(id, code, state) {
     var promptWords = "";
     if(state == '1') {
-        promptWords = "您真的要作废合同号为[" + code + "]的制作合同吗？";
+        promptWords = "您真的要作废合同号为[" + code + "]的营销合同吗？";
     }else if(state == '0') {
-        promptWords = "您真的要取消作废合同号为[" + code + "]的制作合同吗？";
+        promptWords = "您真的要取消作废合同号为[" + code + "]的营销合同吗？";
     }else if(state == '2') {
-        promptWords = "您真的要完结合同号为[" + code + "]的制作合同吗？";
+        promptWords = "您真的要完结合同号为[" + code + "]的营销合同吗？";
     }
     EMARS_COMMONS.showPrompt(promptWords, function() {
         $.post(
-            "/make/changeMakeContractState",
+            "/sale/changeSaleContractState",
             {'id': id, 'state': state},
             function(data) {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("操作成功！");
-                    MAKELIST.refreshMakeContractTbl();
+                    SALELIST.refreshSaleContractTbl();
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
                 }

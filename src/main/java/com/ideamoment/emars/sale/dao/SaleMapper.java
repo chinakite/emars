@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Mapper
 public interface SaleMapper {
-    @Select("select * from t_sale where c_id = #{id}")
+    @Select("select * from t_sale_contract where c_id = #{id}")
     @Results(id = "saleMap", value ={
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "code", column = "C_CODE"),
@@ -24,6 +24,10 @@ public interface SaleMapper {
             @Result(property = "signDate", column = "C_SIGNDATE"),
             @Result(property = "begin", column = "C_BEGIN"),
             @Result(property = "end", column = "C_END"),
+            @Result(property = "privileges", column = "C_PRIVILEGES"),
+            @Result(property = "state", column = "C_STATE"),
+            @Result(property = "projectCode", column = "C_PROJECT_CODE"),
+            @Result(property = "operator", column = "C_OPERATOR"),
             @Result(property = "creator", column = "C_CREATOR"),
             @Result(property = "createTime", column = "C_CREATETIME"),
             @Result(property = "modifier", column = "C_MODIFIER"),
@@ -113,7 +117,7 @@ public interface SaleMapper {
     @Update("update t_sale_contract set c_code=#{code}, c_type=#{type}, c_granter_id=#{granterId}, " +
             "c_customer_id=#{customerId}, c_privileges=#{privileges}, " +
             "c_signdate=#{signDate}, c_operator=#{operator}, c_total_section=#{totalSection}, c_total_price=#{totalPrice}, " +
-            "c_begin=#{begin}, c_end=#{end}, c_project_code=#{projectCode}, c_modifier=#{modifier}, c_modifytime=#{modifyTime} " +
+            "c_begin=#{begin}, c_end=#{end}, c_project_code=#{projectCode}, c_state=#{state}, c_modifier=#{modifier}, c_modifytime=#{modifyTime} " +
             "where c_id=#{id}")
     boolean updateSaleConntract(Sale saleContract);
 
@@ -161,4 +165,10 @@ public interface SaleMapper {
             @Result(property = "platformName", column = "platformName")
     })
     ArrayList<SaleCustomerPlatform> listContractPlatforms(@Param("saleId") long saleId);
+
+    @Update("update t_sale_contract set c_state=#{state} where c_id=#{id}")
+    boolean updateSaleState(@Param("id") long id, @Param("state") String state);
+
+    @Delete("delete from t_sale_customer_platform where c_sale_contract_id = #{saleId}")
+    boolean deleteSaleCustomerPlatforms(long saleId);
 }

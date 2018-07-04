@@ -22,4 +22,6 @@ public interface SaleService {
     String saveSaleContract(Sale saleContract);
 
     Sale findSaleContract(long id);
+
+    String changeSaleContractState(long id, String state);
 }

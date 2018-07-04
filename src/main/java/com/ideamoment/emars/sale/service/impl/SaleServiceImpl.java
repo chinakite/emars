@@ -107,13 +107,37 @@ public class SaleServiceImpl implements SaleService {
         long userId = UserContext.getUserId();
         Date curDate = new Date();
 
+        int totalSection = saleContract.getTotalSection();
+        int sectionSum = 0;
+        BigDecimal totalPrice = saleContract.getTotalPrice();
+        BigDecimal priceSum = new BigDecimal(0);
+
+        ArrayList<SaleProduct> products = saleContract.getProducts();
+        for(SaleProduct saleProduct : products) {
+            sectionSum += saleProduct.getSection();
+            priceSum = priceSum.add(saleProduct.getPrice());
+        }
+        if(sectionSum != totalSection) {
+            return ErrorCode.SALECONTRACT_SECTION_ERROR;
+        }
+        if(priceSum.compareTo(totalPrice) != 0) {
+            return ErrorCode.SALECONTRACT_PIRCE_ERROR;
+        }
+
         if(saleContract.getId() > 0){
             saleContract.setModifier(userId);
             saleContract.setModifyTime(curDate);
             Sale oldSaleContract = findSaleContract(saleContract.getId());
             //TODO if not existed
             ret = saleMapper.updateSaleConntract(saleContract);
-            ArrayList<SaleProduct> products = saleContract.getProducts();
+
+            saleMapper.deleteSaleCustomerPlatforms(saleContract.getId());
+            for(SaleCustomerPlatform platform : saleContract.getPlatforms()) {
+                platform.setSaleId(saleContract.getId());
+                platform.setCreator(userId);
+                platform.setCreateTime(curDate);
+                saleMapper.insertSaleCustomerPlatform(platform);
+            }
 
             ArrayList<SaleProduct> existedSaleContractProds = saleMapper.listContractProducts(saleContract.getId());
             HashSet<Long> existedSaleProdIds = new HashSet<Long>();
@@ -139,23 +163,6 @@ public class SaleServiceImpl implements SaleService {
                 }
             }
         }else {
-            int totalSection = saleContract.getTotalSection();
-            int sectionSum = 0;
-            BigDecimal totalPrice = saleContract.getTotalPrice();
-            BigDecimal priceSum = new BigDecimal(0);
-
-            ArrayList<SaleProduct> products = saleContract.getProducts();
-            for(SaleProduct saleProduct : products) {
-                sectionSum += saleProduct.getSection();
-                priceSum = priceSum.add(saleProduct.getPrice());
-            }
-            if(sectionSum != totalSection) {
-                return ErrorCode.SALECONTRACT_SECTION_ERROR;
-            }
-            if(priceSum.compareTo(totalPrice) != 0) {
-                return ErrorCode.SALECONTRACT_PIRCE_ERROR;
-            }
-
             saleContract.setCreator(userId);
             saleContract.setCreateTime(curDate);
             ret = saleMapper.insertSaleContract(saleContract);
@@ -183,6 +190,8 @@ public class SaleServiceImpl implements SaleService {
     public Sale findSaleContract(long id) {
         Sale saleContract = saleMapper.findSaleContract(id);
         ArrayList<SaleProduct> saleProducts = saleMapper.findSaleProductsBySaleId(id);
+        ArrayList<SaleCustomerPlatform> platforms = saleMapper.listContractPlatforms(id);
+        saleContract.setPlatforms(platforms);
         StringBuilder saleProductIds = new StringBuilder();
         int i = 0;
         for(SaleProduct saleProduct : saleProducts) {
@@ -200,6 +209,13 @@ public class SaleServiceImpl implements SaleService {
         saleContract.setProducts(saleProducts);
         saleContract.setProductIds(saleProductIds.toString());
         return saleContract;
+    }
+
+    @Override
+    @Transactional
+    public String changeSaleContractState(long id, String state) {
+        boolean result = saleMapper.updateSaleState(id, state);
+        return resultString(result);
     }
 
     private String resultString(boolean result) {
