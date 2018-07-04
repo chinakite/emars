@@ -209,36 +209,27 @@
                         <div class="clearfix"></div>
                     </form>
                 </div>
-                <div id="addAnnouncerPanel" style="display: none;">
+                <div id="addPlatformPanel" style="display: none;">
                     <form class="form-horizontal">
-                        <input type="hidden" class="form-control" id="inputAnnouncerProductId"/>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="inputAnnouncerName" class="col-sm-4 control-label">姓名</label>
+                                <label for="inputAddPlatformName" class="col-sm-4 control-label">名称</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputAnnouncerName" name="inputAnnouncerName"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="inputAnnouncerPseudonym" class="col-sm-4 control-label">笔名</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="inputAnnouncerPseudonym" name="inputAnnouncerPseudonym"/>
+                                    <input type="text" class="form-control" id="inputAddPlatformName" name="inputAddPlatformName"/>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label for="inputAnnouncerDesc" class="col-sm-2 control-label">描述</label>
+                                <label for="inputAddPlatformDesc" class="col-sm-2 control-label">描述</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" name="inputAnnouncerDesc" id="inputAnnouncerDesc"></textarea>
+                                    <textarea class="form-control" name="inputAddPlatformDesc" id="inputAddPlatformDesc"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="form-btnbar col-sm-12">
-                            <a href="#" onclick="MAKELIST.hideAddAnnouncerPanel();">&lt;&lt;&nbsp;返回</a>
-                            <button type="button" class="btn btn-primary pull-right" onclick="MAKELIST.addAnnouncer();">确定</button>
+                            <a href="#" onclick="SALELIST.hideAddPlatformPanel();">&lt;&lt;&nbsp;返回</a>
+                            <button type="button" class="btn btn-primary pull-right" onclick="SALELIST.addPlatform();">确定</button>
                         </div>
                         <div class="clearfix"></div>
                     </form>
