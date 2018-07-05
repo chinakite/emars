@@ -12,7 +12,10 @@ import java.util.List;
  */
 @Mapper
 public interface SaleMapper {
-    @Select("select * from t_sale_contract where c_id = #{id}")
+    @Select("select s.*, c.c_name as customerName, g.c_name as granterName from t_sale_contract s " +
+            "left join t_customer c on s.c_customer_id = c.c_id " +
+            "left join t_grantee g on s.c_granter_id = g.c_id " +
+            "where s.c_id = #{id}")
     @Results(id = "saleMap", value ={
             @Result(property = "id", column = "c_id", id = true),
             @Result(property = "code", column = "C_CODE"),
@@ -32,7 +35,9 @@ public interface SaleMapper {
             @Result(property = "createTime", column = "C_CREATETIME"),
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME"),
-            @Result(property = "state", column = "c_state")
+            @Result(property = "state", column = "c_state"),
+            @Result(property = "customerName", column = "customerName"),
+            @Result(property = "granterName", column = "granterName")
     })
     Sale findSaleContract(@Param("id") long id);
 

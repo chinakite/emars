@@ -1,0 +1,185 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/layout">
+<head th:include="layout/layout :: htmlhead(${contract.code})"></head>
+
+<body>
+<section layout:fragment="content">
+    <div class="px-content">
+        <div class="page-header p-y-4 text-xs-center">
+            <h1 class="font-weight-bold">合同编号:
+                <span th:text="${contract.code}"></span>
+                <span class="label label-danger" th:if="${contract.type == '0'}">电台合同</span>
+                <span class="label label-danger" th:if="${contract.type == '1'}">互联网合同</span>
+            </h1>
+
+        </div>
+        <div class="row">
+        <div class="panel">
+            <div class="panel-title">
+                基本信息
+            </div>
+            <div class="panel-body">
+                <p>
+                    <div class="col-md-4">
+                        <label>授权方：</label><span th:text="${contract.granterName}"></span>
+                    </div>
+                </p>
+                <p>
+                    <div class="col-md-4">
+                        <label>集数：</label><span th:text="${contract.totalSection}"></span>
+                    </div>
+                </p>
+                <p>
+                    <div class="col-md-4">
+                        <label>总价：</label><span th:text="${contract.totalPrice}"></span>
+                    </div>
+                </p>
+                <p>
+                    <div class="col-md-4">
+                        <label>客户：</label><span th:text="${contract.customerName}"></span>
+                    </div>
+                </p>
+                <p>
+                    <div class="col-md-8">
+                        <label>平台：</label><span th:text="${contract.platformsInline}"></span>
+                    </div>
+                </p>
+                <p>
+                    <div class="col-md-4">
+                        <label>授权：</label><span th:text="${contract.privilegesText}"></span>
+                    </div>
+                </p>
+            </div>
+
+            <div class="panel-title">
+                作品信息
+            </div>
+            <!--<div class="panel-body" th:each="mcProduct : ${contract.mcProducts}">-->
+                <!--<div class="col-md-3">-->
+                    <!--<div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt=""/>-->
+                    <!--</div>-->
+                    <!--<div class="text-xs-center m-t-1">-->
+                        <!--<strong><span class="font-size-14" th:text="${mcProduct.product.name}"></span></strong>-->
+                    <!--</div>-->
+                    <!--<div class="text-xs-center">-->
+                        <!--<span class="font-size-12" th:text="${mcProduct.product.authorsTextInline}"></span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-md-9">-->
+                    <!--<div class="col-md-12">-->
+                        <!--<p>-->
+                            <!--<div class="col-md-6">-->
+                                <!--<label>编号：</label><span th:text="${mcProduct.product.copyrightCode + '-' + mcProduct.product.sort}"></span>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-6">-->
+                                <!--<label>集数：</label><span th:text="${mcProduct.section}"></span>集-->
+                            <!--</div>-->
+                        <!--</p>-->
+                        <!--<p>-->
+                            <!--<div class="col-md-6">-->
+                                <!--<label>价格：</label><span th:text="${mcProduct.price}"></span>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-6">-->
+                                <!--<label>演播人：</label><span th:text="${mcProduct.announcersTextInline}"></span>-->
+                            <!--</div>-->
+                        <!--</p>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-6 m-t-2">-->
+                        <!--<div class="panel">-->
+                            <!--<div class="panel-heading">-->
+                                <!--<span class="panel-title">合同</span>-->
+                                <!--<div class="panel-heading-controls">-->
+                                    <!--<button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 1);|"><i class="fa fa-plus"></i> 添加</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div th:id="|${mcProduct.id}_makeContractFileList|">-->
+
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-6 m-t-2">-->
+                        <!--<div class="panel">-->
+                            <!--<div class="panel-heading">-->
+                                <!--<span class="panel-title">委托制作权利声明(机构)</span>-->
+                                <!--<div class="panel-heading-controls">-->
+                                    <!--<button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 2);|"><i class="fa fa-plus"></i> 添加</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div th:id="|${mcProduct.id}_makeContractBroadcasterFileList|">-->
+
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+
+                    <!--<div class="col-md-6 m-t-2">-->
+                        <!--<div class="panel">-->
+                            <!--<div class="panel-heading">-->
+                                <!--<span class="panel-title">演播人权利声明</span>-->
+                                <!--<div class="panel-heading-controls">-->
+                                    <!--<button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 3);|"><i class="fa fa-plus"></i> 添加</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div th:id="|${mcProduct.id}_talentStationFileList|">-->
+
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-6 m-t-2">-->
+                        <!--<div class="panel">-->
+                            <!--<div class="panel-heading">-->
+                                <!--<span class="panel-title">演播人身份证复印件</span>-->
+                                <!--<div class="panel-heading-controls">-->
+                                    <!--<button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 4);|"><i class="fa fa-plus"></i> 添加</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div th:id="|${mcProduct.id}_talentIdCardFileList|">-->
+
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-6 m-t-2">-->
+                        <!--<div class="panel">-->
+                            <!--<div class="panel-heading">-->
+                                <!--<span class="panel-title">运营权利授权书</span>-->
+                                <!--<div class="panel-heading-controls">-->
+                                    <!--<button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|MAKECONTRACTPAGE.popUploadMcFileModal(${mcProduct.id}, 5);|"><i class="fa fa-plus"></i> 添加</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div th:id="|${mcProduct.id}_operationFileList|">-->
+
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<hr class="panel-wide-block" />-->
+            <!--</div>-->
+        </div>
+    </div>
+        <div th:replace="sale/uploadSaleFileModal :: uploadSaleFileModal"></div>
+    </div>
+</section>
+</body>
+<div layout:fragment="scripts">
+    <script type='text/javascript' th:src="@{/js/sale/sale-page.js}"></script>
+    <!--<script th:inline="javascript" type="text/javascript">-->
+        <!--var mcProductIds = [[${contract.mcProductIds}]];-->
+        <!--var ids = mcProductIds.split(',');-->
+        <!--for(var k in ids) {-->
+            <!--MAKECONTRACTPAGE.loadMcProduct(ids[k], true);-->
+        <!--}-->
+    <!--</script>-->
+</div>
+
+</html>

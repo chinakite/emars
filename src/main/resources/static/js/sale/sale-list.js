@@ -207,7 +207,7 @@ SALELIST.initSaleContractTbl = function () {
             },
             {
                 "render": function(data, type, full) {
-                    var htmlText = '<a href="/make/makeContractDetail/' + full.id + '" target="_blank">查看</a>';
+                    var htmlText = '<a href="/sale/saleContractDetail/' + full.id + '" target="_blank">查看</a>';
                     if(full.state == "1") {
                         htmlText += '&nbsp;&nbsp;|&nbsp;&nbsp;'
                             + '<a href="javascript:void(0);" onclick="SALELIST.changeState(\'' + full.id + '\',\'' + full.code +'\', 0)">取消作废</a>';
@@ -550,7 +550,6 @@ SALELIST.loadCustomers = function(callback) {
                             var platforms = platformData.data;
                             var platformOptionsHtml = '';
                             for(var i=0; i<platforms.length; i++) {
-                                defaultMakerId = platforms[i]['id'];
                                 platformOptionsHtml += '<option value="' + platforms[i]['id'] + '">' + platforms[i]['name'] + '</option>';
                             }
                             $('#inputPlatformId').html(platformOptionsHtml);
@@ -585,7 +584,7 @@ SALELIST.clearAddCustomerPanel = function() {
     $('#inputAddCustomerName').val('');
     $('#inputAddCustomerContact').val('');
     $('#inputAddCustomerPhone').val('');
-    $('#inputAnnouncerDesc').val('');
+    $('#inputAddCustomerDesc').val('');
 };
 
 SALELIST.addCustomer = function() {
@@ -618,62 +617,81 @@ SALELIST.addCustomer = function() {
 
 };
 
-SALELIST.loadAnnouncers = function(callback, prodId) {
-    $.get(
-        "/system/allAnnouncers",
-        function(data) {
+SALELIST.showAddPlatformPanel = function(prodId) {
+    SALELIST.clearAddPlatformPanel();
+    $('#saleContractWizard').hide();
+    $('#addPlatformPanel').show();
+};
+
+SALELIST.hideAddPlatformPanel = function() {
+    $('#addPlatformPanel').hide();
+    $('#saleContractWizard').show();
+};
+
+SALELIST.clearAddPlatformPanel = function() {
+    $('#inputAddPlatformName').val('');
+    $('#inputAddPlatformDesc').val('');
+};
+
+SALELIST.addPlatform = function() {
+    var customerId = $('#inputCustomerId').val();
+    if(customerId == -1) {
+        EMARS_COMMONS.showError("验证错误", "您还没有选择客户");
+    }
+
+    var platformName = $('#inputAddPlatformName').val();
+    var platformDesc = $('#inputAddPlatformDesc').val();
+
+    var selectedPlatforms = $('#inputPlatformId').select2('data');
+    var selectedPlatformIds=[];
+    for(var i=0; i<selectedPlatforms.length; i++) {
+        selectedPlatformIds.push(selectedPlatforms[i].id);
+    }
+
+    $.post(
+        "/system/createPlatform",
+        {
+            'customerId': customerId,
+            'name': platformName,
+            'desc': platformDesc
+        },
+        function (data) {
             if(data.code == '0') {
-                var announcers = data.data;
-                var html = '';
-                for(var i = 0; i < announcers.length; i ++) {
-                    var announcer = announcers[i];
-                    var announcerName = announcer.name;
-                    if(announcer.pseudonym) {
-                        announcerName = announcerName + "(" + announcer.pseudonym + ")";
+                EMARS_COMMONS.showSuccess("平台保存成功！");
+                SALELIST.hideAddPlatformPanel();
+                $.get(
+                    '/system/platforms?customerId=' + customerId,
+                    {},
+                    function(platformData) {
+                        if(platformData.code == '0') {
+                            var platforms = platformData.data;
+                            var platformOptionsHtml = '';
+                            var willSelectPlatformId;
+                            for(var i=0; i<platforms.length; i++) {
+                                platformOptionsHtml += '<option value="' + platforms[i]['id'] + '">' + platforms[i]['name'] + '</option>';
+                                if(platformName == platforms[i].name) {
+                                    willSelectPlatformId = platforms[i]['id'];
+                                }
+                            }
+                            if(willSelectPlatformId) {
+                                selectedPlatformIds.push(willSelectPlatformId);
+                            }
+
+                            $('#inputPlatformId').html(platformOptionsHtml);
+                            $('#inputPlatformId').val(selectedPlatformIds)
+                            $('#inputPlatformId').select2('destroy');
+                            $('#inputPlatformId').select2({
+                                dropdownParent: $('#contractModal')
+                            });
+                        }
                     }
-                    html += '<option value="' + announcer.id + '">' + announcerName + '</option>';
-                }
-                $('#inputAnnouncerId_' + prodId).empty().append(html);
-                $('#inputAnnouncerId_' + prodId).select2({
-                    dropdownParent: $("#contractModal")
-                });
-                if(callback) {
-                    callback(prodId);
-                }
+                );
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
         }
-    )
-};
+    );
 
-SALELIST.autoSplit = function() {
-    var totalSections = parseInt($('#inputTotalSection').val());
-    var totalPrice = parseInt($('#inputTotalPrice').val());
-
-    var selected = $('#product-list-select').select2('data');
-    var length = selected.length;
-    if(length == 0) {
-        alert("您还没有选择作品。");
-        return;
-    }
-    if(length == 1) {
-        var selectedId = selected[0].id;
-        $('#'+selectedId+'_inputSection').val(totalSections);
-        $('#'+selectedId+'_inputPrice').val(totalPrice);
-    }else{
-        var avgSections = parseInt(totalSections/length);
-        var avgPrice = parseInt(totalPrice/length);
-
-        for(var i=0; i<length-1; i++) {
-            var selectedId = selected[i].id;
-            $('#'+selectedId+'_inputSection').val(avgSections);
-            $('#'+selectedId+'_inputPrice').val(avgPrice);
-        }
-        var lastSelectedId = selected[length-1].id;
-        $('#'+lastSelectedId+'_inputSection').val((totalSections - (avgSections*(length-1))));
-        $('#'+lastSelectedId+'_inputPrice').val((totalPrice - (avgPrice*(length-1))));
-    }
 };
 
 SALELIST.changeState = function(id, code, state) {

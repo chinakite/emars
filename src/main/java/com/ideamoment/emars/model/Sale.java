@@ -2,6 +2,7 @@ package com.ideamoment.emars.model;
 
 import com.ideamoment.emars.model.enumeration.SaleStateType;
 import com.ideamoment.emars.model.enumeration.SaleType;
+import com.ideamoment.emars.utils.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class Sale extends HistoriableEntity {
 
     private Grantee granter;
     private Customer customer;
+    private String customerName;
+    private String granterName;
 
     private String productIds;
     private ArrayList<SaleCustomerPlatform> platforms = new ArrayList<SaleCustomerPlatform>();
@@ -209,6 +212,56 @@ public class Sale extends HistoriableEntity {
             return SaleStateType.INVALID_TEXT;
         }else{
             return "";
+        }
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getGranterName() {
+        return granterName;
+    }
+
+    public void setGranterName(String granterName) {
+        this.granterName = granterName;
+    }
+
+    public String getPlatformsInline() {
+        if(platforms != null && platforms.size() > 0) {
+            int c=0;
+            String result = "";
+            for(SaleCustomerPlatform platform : platforms) {
+                if(c>0) {
+                    result += "、";
+                }
+                result += platform.getPlatformName();
+            }
+            return result;
+        }else{
+            return "";
+        }
+    }
+
+    public String getPrivilegesText() {
+        if(StringUtils.isEmpty(privileges)) {
+            return "";
+        }else{
+            String result = "";
+            if(privileges.charAt(0) == '1') {
+                result += "广播权";
+            }
+            if(result.length() > 0) {
+                result += "、";
+            }
+            if(privileges.charAt(1) == '1') {
+                result += "网络信息传播权";
+            }
+            return result;
         }
     }
 }
