@@ -1,0 +1,11 @@
+{% for doc in docs %}
+<div class="file-list-item">
+    <div class="file-list-title text-default">{{doc.name}}</div>
+    <div class="file-list-description">{{doc.desc}}</div>
+    <div class="file-list-time">{{doc.createTime}}</div>
+    <a class="file-list-icon file-list-icon-1 fa fa-download bg-success" target="_blank" href="/sale/downloadSaleProductDoc?id={{doc.id}}"></a>
+    {% if editable == true %}
+    <div class="file-list-icon file-list-icon-2 fa fa-remove bg-danger" onclick="SALECONTRACTPAGE.deleteDoc('{{doc.id}}', '{{doc.name}}', '{{doc.type}}', '{{saleProductId}}');"></div>
+    {% endif %}
+</div>
+{% endfor %}

@@ -176,4 +176,35 @@ public interface SaleMapper {
 
     @Delete("delete from t_sale_customer_platform where c_sale_contract_id = #{saleId}")
     boolean deleteSaleCustomerPlatforms(long saleId);
+
+    @Delete("DELETE FROM t_sale_file WHERE C_ID = #{id}")
+    boolean deleteSaleContractDoc(long id);
+
+    @Select({
+            "<script>",
+            "SELECT * FROM T_SALE_FILE WHERE C_SALE_PRODUCT_Id = #{productId}",
+            "<if test='type != null'>",
+            " AND C_TYPE = #{type}",
+            "</if>",
+            " ORDER BY C_CREATETIME DESC",
+            "</script>"})
+    @Results(id = "saleFileMap", value ={
+            @Result(property = "id", column = "c_id", id = true),
+            @Result(property = "productId", column = "C_SALE_PRODUCT_Id"),
+            @Result(property = "name", column = "C_NAME"),
+            @Result(property = "path", column = "C_PATH"),
+            @Result(property = "desc", column = "C_DESC"),
+            @Result(property = "type", column = "C_TYPE"),
+            @Result(property = "creator", column = "C_CREATOR"),
+            @Result(property = "createTime", column = "C_CREATETIME"),
+            @Result(property = "modifier", column = "C_MODIFIER"),
+            @Result(property = "modifyTime", column = "C_MODIFYTIME")
+    })
+    List<SaleContractFile> listContractDocs(long saleProductId, String type);
+
+    @Insert("INSERT INTO T_SALE_FILE " +
+            "(`C_SALE_PRODUCT_Id`,`C_NAME`,`C_PATH`,`C_DESC`,`C_TYPE`,`C_CREATOR`,`C_CREATETIME`) " +
+            "VALUES " +
+            "(#{productId}, #{name}, #{path}, #{desc}, #{type}, #{creator}, #{createTime})")
+    boolean insertSaleContractDoc(SaleContractFile saleContractDoc);
 }

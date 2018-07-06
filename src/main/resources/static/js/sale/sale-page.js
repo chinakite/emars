@@ -3,13 +3,13 @@
 var SALECONTRACTPAGE = {};
 var saleDropzoneObj;
 
-var mcDocType = {
+var saleDocType = {
     1: 'saleContractFile',
     2: 'saleProductsList'
 }
 
 $(document).ready(function(){
-    $('#mcdropzonejs').dropzone({
+    $('#saledropzonejs').dropzone({
         parallelUploads: 1,
         maxFilesize:     50000,
         filesizeBase:    1000,
@@ -25,17 +25,17 @@ $(document).ready(function(){
             };
         },
         init: function() {
-            mcDropzoneObj = this;
+            saleDropzoneObj = this;
             this.on("success", function (file, message) {
                 var fileMetaDatas = message.data;
-                var mcFileMetas = $('#mcFileMetas').data('postData');
-                if(!mcFileMetas) {
-                    mcFileMetas = [];
+                var saleFileMetas = $('#saleFileMetas').data('postData');
+                if(!saleFileMetas) {
+                    saleFileMetas = [];
                 }
                 for(var i=0; i<fileMetaDatas.length; i++) {
-                    mcFileMetas.push(fileMetaDatas[i]);
+                    saleFileMetas.push(fileMetaDatas[i]);
                 }
-                $('#mcFileMetas').data('postData', mcFileMetas);
+                $('#saleFileMetas').data('postData', saleFileMetas);
             });
             this.on("error", function (file, message) {
                 console.log(message);
@@ -48,48 +48,48 @@ $(document).ready(function(){
 
 });
 
-SALECONTRACTPAGE.loadMcProduct = function (mcProductId, editable) {
-    SALECONTRACTPAGE.refreshProductDocs(mcProductId, editable);
+SALECONTRACTPAGE.loadSaleProduct = function (saleProductId, editable) {
+    SALECONTRACTPAGE.refreshProductDocs(saleProductId, editable);
 }
 
-SALECONTRACTPAGE.popUploadMcFileModal = function(mcProductId, type) {
-    SALECONTRACTPAGE.clearUploadMcFileModal();
-    $('#uploadMcFileType').val(type);
-    $('#uploadFileMcProductId').val(mcProductId);
-    $('#uploadMcFileModal').modal('show');
+SALECONTRACTPAGE.popUploadSaleFileModal = function(saleProductId, type) {
+    SALECONTRACTPAGE.clearUploadSaleFileModal();
+    $('#uploadSaleFileType').val(type);
+    $('#uploadFileSaleProductId').val(saleProductId);
+    $('#uploadSaleFileModal').modal('show');
 };
 
-SALECONTRACTPAGE.clearUploadMcFileModal = function() {
-    mcDropzoneObj.emit("resetFiles");
-    $('#mcFileMetas').removeData('postData');
-    $('#uploadMcFileType').val('');
-    $('#uploadFileMcProductId').val('');
-    $('#uploadMcFileModal').modal('show');
+SALECONTRACTPAGE.clearUploadSaleFileModal = function() {
+    saleDropzoneObj.emit("resetFiles");
+    $('#saleFileMetas').removeData('postData');
+    $('#uploadSaleFileType').val('');
+    $('#uploadFileSaleProductId').val('');
+    $('#uploadSaleFileModal').modal('show');
 };
 
-SALECONTRACTPAGE.submitMcProductFiles = function () {
-    var saveCopyrightFileUrl = '/make/saveMcProductFiles';
-    var fileType = $('#uploadMcFileType').val();
-    var mcProductId = $('#uploadFileMcProductId').val();
-    var mcFileMetas = $('#mcFileMetas').data('postData');
+SALECONTRACTPAGE.submitSaleProductFiles = function () {
+    var saveCopyrightFileUrl = '/sale/saveSaleProductFiles';
+    var fileType = $('#uploadSaleFileType').val();
+    var saleProductId = $('#uploadFileSaleProductId').val();
+    var saleFileMetas = $('#saleFileMetas').data('postData');
     var postUrl;
-    for(var i=0; i<mcFileMetas.length; i++) {
-        mcFileMetas[i].type = fileType;
+    for(var i=0; i<saleFileMetas.length; i++) {
+        saleFileMetas[i].type = fileType;
         postUrl = saveCopyrightFileUrl;
-        mcFileMetas[i].mcProductId = mcProductId;
+        saleFileMetas[i].saleProductId = saleProductId;
     }
     $.ajax(
         {
             url: postUrl,
-            data: JSON.stringify(mcFileMetas),
+            data: JSON.stringify(saleFileMetas),
             type: "POST",
             dataType: "json",
             contentType: "application/json",
             success: function(data) {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("文件保存成功！");
-                    $('#uploadMcFileModal').modal('hide');
-                    SALECONTRACTPAGE.refreshFilesList(mcProductId, fileType, true);
+                    $('#uploadSaleFileModal').modal('hide');
+                    SALECONTRACTPAGE.refreshFilesList(saleProductId, fileType, true);
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
                 }
@@ -101,15 +101,15 @@ SALECONTRACTPAGE.submitMcProductFiles = function () {
     );
 };
 
-SALECONTRACTPAGE.refreshFilesList = function(mcProductId, type, editable) {
+SALECONTRACTPAGE.refreshFilesList = function(saleProductId, type, editable) {
     $.get(
-        '/make/getMcDocs',
-        {mcProductId: mcProductId, type: type},
+        '/make/getSaleDocs',
+        {saleProductId: saleProductId, type: type},
         function(data) {
             if(data.code == '0') {
                 var docs = data.data;
-                var filesHtml = nunjucks.render('../../../js/make/mc_docs.tmpl', {mcProductId: mcProductId, docs: docs, editable: editable});
-                $('#' + mcProductId + '_' + mcDocType[type] + 'List').html(filesHtml);
+                var filesHtml = nunjucks.render('../../../js/sale/sale_docs.tmpl', {saleProductId: saleProductId, docs: docs, editable: editable});
+                $('#' + saleProductId + '_' + saleDocType[type] + 'List').html(filesHtml);
             }else{
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
@@ -117,7 +117,7 @@ SALECONTRACTPAGE.refreshFilesList = function(mcProductId, type, editable) {
     );
 };
 
-SALECONTRACTPAGE.deleteDoc = function (id, name, fileType, mcProductId) {
+SALECONTRACTPAGE.deleteDoc = function (id, name, fileType, saleProductId) {
     EMARS_COMMONS.showPrompt("您真的要删除文件[" + name + "]吗？", function() {
         $.post(
             "/make/deleteDoc",
@@ -125,7 +125,7 @@ SALECONTRACTPAGE.deleteDoc = function (id, name, fileType, mcProductId) {
             function(data) {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("删除成功！");
-                    SALECONTRACTPAGE.refreshFilesList(mcProductId, fileType, true);
+                    SALECONTRACTPAGE.refreshFilesList(saleProductId, fileType, true);
                 }else{
                     EMARS_COMMONS.showError(data.code, data.msg);
                 }
@@ -135,8 +135,8 @@ SALECONTRACTPAGE.deleteDoc = function (id, name, fileType, mcProductId) {
 
 };
 
-SALECONTRACTPAGE.refreshProductDocs = function (mcProductId, editable) {
-    for(var key in mcDocType) {
-        SALECONTRACTPAGE.refreshFilesList(mcProductId, key, editable);
+SALECONTRACTPAGE.refreshProductDocs = function (saleProductId, editable) {
+    for(var key in saleDocType) {
+        SALECONTRACTPAGE.refreshFilesList(saleProductId, key, editable);
     }
 };

@@ -218,6 +218,35 @@ public class SaleServiceImpl implements SaleService {
         return resultString(result);
     }
 
+    @Override
+    @Transactional
+    public String deleteSaleDoc(long id) {
+        boolean ret = saleMapper.deleteSaleContractDoc(id);
+        return resultString(ret);
+    }
+
+    @Override
+    @Transactional
+    public List<SaleContractFile> listContractDocs(long saleProductId, String type) {
+        return saleMapper.listContractDocs(saleProductId, type);
+    }
+
+    @Override
+    @Transactional
+    public String saveSaleProductFiles(ArrayList<SaleContractFile> saleContractDocs) {
+        Long userId = UserContext.getUserId();
+        Date curDate = new Date();
+
+        boolean result = true;
+        for(SaleContractFile saleContractDoc : saleContractDocs) {
+            saleContractDoc.setCreator(userId);
+            saleContractDoc.setCreateTime(curDate);
+            result = result && saleMapper.insertSaleContractDoc(saleContractDoc);
+        }
+
+        return resultString(result);
+    }
+
     private String resultString(boolean result) {
         if(result) {
             return SuccessCode.SUCCESS;

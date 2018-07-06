@@ -9,13 +9,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dicsmiss="modal">×</button>
-                <h4 class="modal-title">上传制作合同文件</h4>
+                <h4 class="modal-title">上传营销合同文件</h4>
             </div>
             <div class="modal-body">
-                <input type="hidden" id="uploadMcFileType" value=""/>
-                <input type="hidden" id="uploadFileMcProductId"/>
-                <input type="hidden" id="mcFileMetas"/>
-                <form action="/upload" id="mcdropzonejs" class="dropzone-box">
+                <input type="hidden" id="uploadSaleFileType" value=""/>
+                <input type="hidden" id="uploadFileSaleProductId"/>
+                <input type="hidden" id="saleFileMetas"/>
+                <form action="/upload" id="saledropzonejs" class="dropzone-box">
                     <div class="dz-default dz-message">
                         <div class="dz-upload-icon"></div>
                         将文件拖到这里<br/>
@@ -28,7 +28,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="MAKECONTRACTPAGE.submitMcProductFiles();">保存</button>
+                <button type="button" class="btn btn-primary" onclick="SALECONTRACTPAGE.submitSaleProductFiles();">保存</button>
             </div>
         </div>
     </div>

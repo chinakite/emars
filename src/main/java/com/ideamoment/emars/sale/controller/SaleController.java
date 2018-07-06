@@ -4,6 +4,7 @@ import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.model.ProductInfo;
 import com.ideamoment.emars.model.Sale;
+import com.ideamoment.emars.model.SaleContractFile;
 import com.ideamoment.emars.model.SaleContractQueryVo;
 import com.ideamoment.emars.sale.service.SaleService;
 import com.ideamoment.emars.utils.DataTableSource;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,6 +85,33 @@ public class SaleController {
     @RequestMapping(value = "changeSaleContractState", method = RequestMethod.POST)
     public JsonData<String> changeSaleContractState(long id, String state) {
         String result = saleService.changeSaleContractState(id, state);
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
+    @RequestMapping(value = "/saveSaleProductFiles", method = RequestMethod.POST)
+    public JsonData<String> saveSaleProductFiles(@RequestBody ArrayList<SaleContractFile> saleContractDocs) {
+        String result = saleService.saveSaleProductFiles(saleContractDocs);
+
+        if(result.equals(SuccessCode.SUCCESS)) {
+            return JsonData.SUCCESS;
+        }else{
+            return JsonData.error(result, ErrorCode.ERROR_MSG.get(result));
+        }
+    }
+
+    @RequestMapping(value="/getSaleDocs", method = RequestMethod.GET)
+    public JsonData<List<SaleContractFile>> getMcDocs(long saleProductId, String type) {
+        List<SaleContractFile> docs = saleService.listContractDocs(saleProductId, type);
+        return JsonData.success(docs);
+    }
+
+    @RequestMapping(value = "/deleteDoc", method = RequestMethod.POST)
+    public JsonData<String> deleteDoc(long id) {
+        String result = saleService.deleteSaleDoc(id);
         if(result.equals(SuccessCode.SUCCESS)) {
             return JsonData.SUCCESS;
         }else{
