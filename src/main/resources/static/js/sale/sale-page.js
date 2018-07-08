@@ -5,7 +5,7 @@ var saleDropzoneObj;
 
 var saleDocType = {
     1: 'saleContractFile',
-    2: 'saleProductsList'
+    2: 'otherFile'
 }
 
 $(document).ready(function(){
@@ -76,7 +76,7 @@ SALECONTRACTPAGE.submitSaleProductFiles = function () {
     for(var i=0; i<saleFileMetas.length; i++) {
         saleFileMetas[i].type = fileType;
         postUrl = saveCopyrightFileUrl;
-        saleFileMetas[i].saleProductId = saleProductId;
+        saleFileMetas[i].productId = saleProductId;
     }
     $.ajax(
         {
@@ -103,7 +103,7 @@ SALECONTRACTPAGE.submitSaleProductFiles = function () {
 
 SALECONTRACTPAGE.refreshFilesList = function(saleProductId, type, editable) {
     $.get(
-        '/make/getSaleDocs',
+        '/sale/getSaleDocs',
         {saleProductId: saleProductId, type: type},
         function(data) {
             if(data.code == '0') {
@@ -120,7 +120,7 @@ SALECONTRACTPAGE.refreshFilesList = function(saleProductId, type, editable) {
 SALECONTRACTPAGE.deleteDoc = function (id, name, fileType, saleProductId) {
     EMARS_COMMONS.showPrompt("您真的要删除文件[" + name + "]吗？", function() {
         $.post(
-            "/make/deleteDoc",
+            "/sale/deleteDoc",
             {'id': id},
             function(data) {
                 if(data.code == '0') {

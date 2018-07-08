@@ -14,7 +14,7 @@ var mcDocType = {
 $(document).ready(function(){
     $('#dropzonejs').dropzone({
         parallelUploads: 1,
-        maxFilesize:     50000,
+        maxFilesize:     20,
         filesizeBase:    1000,
 
         resize: function(file) {

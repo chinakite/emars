@@ -3,6 +3,7 @@ package com.ideamoment.emars.dashboard.service.impl;
 import com.ideamoment.emars.copyright.dao.CopyrightMapper;
 import com.ideamoment.emars.dashboard.model.Contract;
 import com.ideamoment.emars.dashboard.service.DashboardService;
+import com.ideamoment.emars.grantee.dao.GranteeMapper;
 import com.ideamoment.emars.make.dao.MakeContractMapper;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.sale.dao.SaleMapper;
@@ -26,6 +27,9 @@ public class DashboardServiceImpl implements DashboardService {
     @Autowired
     private SaleMapper saleMapper;
 
+    @Autowired
+    private GranteeMapper granteeMapper;
+
     @Override
     public List<Contract> newestContract() {
         CopyrightContract condition1 = new CopyrightContract();
@@ -36,12 +40,22 @@ public class DashboardServiceImpl implements DashboardService {
 
         SaleContractQueryVo condition3 = new SaleContractQueryVo();
         List<Sale> saleList = saleMapper.pageSaleContracts(condition3, 0, 5);
+        for(Sale sale : saleList) {
+            Grantee grantee = granteeMapper.findGrantee(sale.getGranterId());
+            sale.setGranter(grantee);
+        }
 
         List<Contract> contracts = new ArrayList<>();
+
         contracts = dashboardContractList(contracts, copyrightContractList);
         contracts = dashboardContractList(contracts, makeContractList);
         contracts = dashboardContractList(contracts, saleList);
-        Collections.sort(contracts);
+        Collections.sort(contracts, new Comparator<Contract>() {
+            @Override
+            public int compare(Contract o1, Contract o2) {
+                return o2.getCreateTime().compareTo(o1.getCreateTime());
+            }
+        });
         return contracts;
     }
 

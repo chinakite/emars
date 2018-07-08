@@ -64,7 +64,14 @@ public class DashboardController {
         model.addAttribute("productData1", productData1);
         model.addAttribute("countProducts", countProducts);
         model.addAttribute("productData2", productData2);
-        model.addAttribute("newestContract", newestContract.subList(0, 5));
+
+        if(newestContract != null || newestContract.size() > 0) {
+            int maxLength = 5;
+            if(newestContract.size() < 5) {
+                maxLength = newestContract.size();
+            }
+            model.addAttribute("newestContract", newestContract.subList(0, maxLength));
+        }
 
         return "dashboard";
     }

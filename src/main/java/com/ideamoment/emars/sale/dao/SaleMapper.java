@@ -107,7 +107,7 @@ public interface SaleMapper {
             "</script>"})
     @Results(id = "saleContractFileMap", value ={
             @Result(property = "id", column = "c_id", id = true),
-            @Result(property = "saleProductId", column = "C_SALE_PRODUCT_Id"),
+            @Result(property = "productId", column = "C_SALE_PRODUCT_Id"),
             @Result(property = "name", column = "C_NAME"),
             @Result(property = "path", column = "C_PATH"),
             @Result(property = "desc", column = "C_DESC"),
@@ -200,7 +200,7 @@ public interface SaleMapper {
             @Result(property = "modifier", column = "C_MODIFIER"),
             @Result(property = "modifyTime", column = "C_MODIFYTIME")
     })
-    List<SaleContractFile> listContractDocs(long saleProductId, String type);
+    List<SaleContractFile> listContractDocs(@Param("productId") long saleProductId, @Param("type") String type);
 
     @Insert("INSERT INTO T_SALE_FILE " +
             "(`C_SALE_PRODUCT_Id`,`C_NAME`,`C_PATH`,`C_DESC`,`C_TYPE`,`C_CREATOR`,`C_CREATETIME`) " +
