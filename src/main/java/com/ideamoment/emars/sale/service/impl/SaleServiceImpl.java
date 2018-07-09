@@ -247,6 +247,31 @@ public class SaleServiceImpl implements SaleService {
         return resultString(result);
     }
 
+    @Override
+    @Transactional
+    public List<ProductSaleContract> queryProductSale(long productId) {
+        List<Sale> saleContracts = saleMapper.findSaleContractByProductId(productId);
+        List<ProductSaleContract> productSaleContracts = new ArrayList<ProductSaleContract>();
+        for(Sale saleContract : saleContracts) {
+            ProductSaleContract productSaleContract = new ProductSaleContract();
+            productSaleContract.setType(saleContract.getType());
+            productSaleContract.setCode(saleContract.getCode());
+            productSaleContract.setGranterName(saleContract.getGranterName());
+            productSaleContract.setCustomerName(saleContract.getCustomerName());
+            productSaleContract.setTotalSection(saleContract.getTotalSection());
+            productSaleContract.setTotalPrice(saleContract.getTotalPrice());
+
+            SaleProduct saleProduct = saleMapper.findSaleProductsByProductIdAndContractId(productId, saleContract.getId());
+            productSaleContract.setSection(saleProduct.getSection());
+            productSaleContract.setPrice(saleProduct.getPrice());
+            productSaleContract.setProductId(saleProduct.getId());
+
+            productSaleContracts.add(productSaleContract);
+        }
+
+        return productSaleContracts;
+    }
+
     private String resultString(boolean result) {
         if(result) {
             return SuccessCode.SUCCESS;

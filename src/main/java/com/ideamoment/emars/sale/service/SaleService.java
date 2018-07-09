@@ -1,9 +1,6 @@
 package com.ideamoment.emars.sale.service;
 
-import com.ideamoment.emars.model.ProductInfo;
-import com.ideamoment.emars.model.Sale;
-import com.ideamoment.emars.model.SaleContractFile;
-import com.ideamoment.emars.model.SaleContractQueryVo;
+import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.utils.Page;
 
 import java.util.ArrayList;
@@ -32,4 +29,6 @@ public interface SaleService {
     List<SaleContractFile> listContractDocs(long saleProductId, String type);
 
     String saveSaleProductFiles(ArrayList<SaleContractFile> saleContractDocs);
+
+    List<ProductSaleContract> queryProductSale(long productId);
 }

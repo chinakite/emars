@@ -326,6 +326,69 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="sale-tab">
+                        <div th:each="saleContract : ${saleContracts}">
+                            <div class="col-md-9 m-t-2">
+                                <p>
+                                <div class="col-md-12">
+                                    <label>合同编码：</label>
+                                    <span th:text="${saleContract.code}"></span>
+                                    <span class="label label-danger" th:if="${saleContract.type == '0'}">电台合同</span>
+                                    <span class="label label-danger" th:if="${saleContract.type == '1'}">互联网合同</span>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="col-md-12">
+                                    <label>授权方：</label><span th:text="${saleContract.granterName}"></span>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="col-md-12">
+                                    <label>客户：</label><span th:text="${saleContract.customerName}"></span>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="col-md-6">
+                                    <label>集数：</label><span th:text="${saleContract.section}"></span>
+                                </div>
+                                </p>
+                                <p>
+                                <div class="col-md-6">
+                                    <label>单价：</label><span th:text="${saleContract.price}"></span>
+                                </div>
+                                </p>
+                            </div>
+                            <div class="col-md-12" style="border-bottom: 1px solid #e2e2e2;">
+                                <div class="col-md-6 m-t-2">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <span class="panel-title">合同</span>
+                                            <div class="panel-heading-controls">
+                                                <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|SALECONTRACTPAGE.popUploadSaleFileModal(${saleContract.productId}, 1);|"><i class="fa fa-plus"></i> 添加</button>
+                                            </div>
+                                        </div>
+
+                                        <div th:id="|${saleContract.productId}_saleContractFileList|">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 m-t-2">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <span class="panel-title">其他文件</span>
+                                            <div class="panel-heading-controls">
+                                                <button class="btn btn-xs btn-success btn-outline btn-outline-colorless" th:onclick="|SALECONTRACTPAGE.popUploadSaleFileModal(${saleContract.productId}, 2);|"><i class="fa fa-plus"></i> 添加</button>
+                                            </div>
+                                        </div>
+
+                                        <div th:id="|${saleContract.productId}_otherFileList|">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="gallery-tab">
                         <div class="panel-body p-t-4">
@@ -355,10 +418,16 @@
 <div layout:fragment="scripts">
     <script type='text/javascript' th:src="@{/js/product/product-page.js}"></script>
     <script type='text/javascript' th:src="@{/js/make/make-page.js}"></script>
+    <script type='text/javascript' th:src="@{/js/sale/sale-page.js}"></script>
     <script th:inline="javascript" type="text/javascript">
         var makeContracts = [[${makeContracts}]];
         for(var k in makeContracts) {
             MAKECONTRACTPAGE.loadMcProduct(makeContracts[k].mcProductId, true);
+        }
+
+        var saleContracts = [[${saleContracts}]];
+        for(var m in saleContracts) {
+            SALECONTRACTPAGE.loadSaleProduct(saleContracts[m].productId, true);
         }
     </script>
 </div>

@@ -5,7 +5,9 @@ import com.ideamoment.emars.make.service.MakeService;
 import com.ideamoment.emars.model.CopyrightProductInfo;
 import com.ideamoment.emars.model.ProductInfo;
 import com.ideamoment.emars.model.ProductMakeContract;
+import com.ideamoment.emars.model.ProductSaleContract;
 import com.ideamoment.emars.product.service.ProductService;
+import com.ideamoment.emars.sale.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,9 @@ public class MediaResourcePageController {
     @Autowired
     private MakeService makeService;
 
+    @Autowired
+    private SaleService saleService;
+
     @RequestMapping(value = "/mediaresPage", method = RequestMethod.GET)
     public String mediaresPage() {
         return "product/mediaresPage";
@@ -37,9 +42,12 @@ public class MediaResourcePageController {
         ProductInfo product = productService.findProduct(id);
         CopyrightProductInfo copyrightProductInfo = copyrightService.queryProductCopyright(id);
         List<ProductMakeContract> makeContracts = makeService.findProductMakeContracts(id);
+        List<ProductSaleContract> saleContracts = saleService.queryProductSale(id);
+
         model.addAttribute("product", product);
         model.addAttribute("productCopyright", copyrightProductInfo);
         model.addAttribute("makeContracts", makeContracts);
+        model.addAttribute("saleContracts", saleContracts);
         return "product/mediaresDetail";
     }
 }

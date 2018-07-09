@@ -4,6 +4,7 @@ import com.ideamoment.emars.copyright.service.CopyrightService;
 import com.ideamoment.emars.make.service.MakeService;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.product.service.ProductService;
+import com.ideamoment.emars.sale.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,9 @@ public class ProductPageController {
     @Autowired
     private MakeService makeService;
 
+    @Autowired
+    private SaleService saleService;
+
     @RequestMapping(value = "/productPage", method = RequestMethod.GET)
     public String productPage() {
         return "product/productPage";
@@ -40,9 +44,11 @@ public class ProductPageController {
         ProductInfo product = productService.findProduct(id);
         CopyrightProductInfo copyrightProductInfo = copyrightService.queryProductCopyright(id);
         List<ProductMakeContract> makeContracts = makeService.findProductMakeContracts(id);
+        List<ProductSaleContract> saleContracts = saleService.queryProductSale(id);
         model.addAttribute("product", product);
         model.addAttribute("productCopyright", copyrightProductInfo);
         model.addAttribute("makeContracts", makeContracts);
+        model.addAttribute("saleContracts", saleContracts);
         return "product/productDetail";
     }
 

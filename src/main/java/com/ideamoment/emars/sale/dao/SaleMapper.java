@@ -207,4 +207,16 @@ public interface SaleMapper {
             "VALUES " +
             "(#{productId}, #{name}, #{path}, #{desc}, #{type}, #{creator}, #{createTime})")
     boolean insertSaleContractDoc(SaleContractFile saleContractDoc);
+
+    @Select("select s.*, c.c_name as customerName, g.c_name as granterName from t_sale_contract s " +
+            "left join t_sale_product sp on s.c_id = sp.c_sale_contract_id " +
+            "left join t_customer c on s.c_customer_id = c.c_id " +
+            "left join t_grantee g on s.c_granter_id = g.c_id " +
+            "where sp.c_product_id = #{productId}")
+    @ResultMap("saleMap")
+    List<Sale> findSaleContractByProductId(long productId);
+
+    @Select("SELECT * FROM t_sale_product WHERE c_product_id = #{productId} AND c_sale_contract_id = ${contractId}")
+    @ResultMap("saleProductMap")
+    SaleProduct findSaleProductsByProductIdAndContractId(@Param("productId") long productId, @Param("contractId") long contractId);
 }
