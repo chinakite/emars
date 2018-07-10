@@ -50,7 +50,22 @@ $(document).ready(function(){
 
 SALECONTRACTPAGE.loadSaleProduct = function (saleProductId, editable) {
     SALECONTRACTPAGE.refreshProductDocs(saleProductId, editable);
-}
+};
+
+SALECONTRACTPAGE.loadProductLogo = function(productId) {
+    $.get(
+        '/product/productLogo',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var logoPic = data.data;
+                if(logoPic) {
+                    $('#' + productId + '_productLogo').attr('src', logoPic.path);
+                }
+            }
+        }
+    );
+};
 
 SALECONTRACTPAGE.popUploadSaleFileModal = function(saleProductId, type) {
     SALECONTRACTPAGE.clearUploadSaleFileModal();

@@ -34,6 +34,7 @@ public class Sale extends HistoriableEntity {
     private String customerName;
     private String granterName;
 
+    private String saleProductIds;
     private String productIds;
     private ArrayList<SaleCustomerPlatform> platforms = new ArrayList<SaleCustomerPlatform>();
 
@@ -165,12 +166,12 @@ public class Sale extends HistoriableEntity {
         this.totalSection = totalSection;
     }
 
-    public String getProductIds() {
-        return productIds;
+    public String getSaleProductIds() {
+        return saleProductIds;
     }
 
-    public void setProductIds(String productIds) {
-        this.productIds = productIds;
+    public void setSaleProductIds(String saleProductIds) {
+        this.saleProductIds = saleProductIds;
     }
 
     public String getType() {
@@ -263,5 +264,13 @@ public class Sale extends HistoriableEntity {
             }
             return result;
         }
+    }
+
+    public String getProductIds() {
+        return productIds;
+    }
+
+    public void setProductIds(String productIds) {
+        this.productIds = productIds;
     }
 }

@@ -107,6 +107,7 @@ public class MakeServiceImpl implements MakeService {
         MakeContract makeContract = makeContractMapper.findMakeContract(id);
         ArrayList<MakeContractProduct> makeContractProducts = makeContractMapper.findMcProductsByMcId(id);
         StringBuilder mcProductIds = new StringBuilder();
+        StringBuilder productIds = new StringBuilder();
         int i = 0;
         for(MakeContractProduct makeContractProduct : makeContractProducts) {
             ProductInfo productInfo = productMapper.findProduct(makeContractProduct.getProductId());
@@ -119,8 +120,10 @@ public class MakeServiceImpl implements MakeService {
             i += 1;
             if(i != 1) {
                 mcProductIds.append(",");
+                productIds.append(",");
             }
             mcProductIds.append(String.valueOf(makeContractProduct.getId()));
+            productIds.append(String.valueOf(makeContractProduct.getProductId()));
 
             ArrayList<ProductAnnouncer> prodAnnouncers = makeContractMapper.listContractProductAnnouncers(id, makeContractProduct.getProductId());
             ArrayList<Announcer> announcers = new ArrayList<Announcer>();
@@ -132,6 +135,7 @@ public class MakeServiceImpl implements MakeService {
         }
         makeContract.setMcProducts(makeContractProducts);
         makeContract.setMcProductIds(mcProductIds.toString());
+        makeContract.setProductIds(productIds.toString());
         return makeContract;
     }
 

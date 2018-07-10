@@ -18,6 +18,7 @@ public class MakeContract extends HistoriableEntity {
     private String signDate;
     private ArrayList<MakeContractProduct> mcProducts = new ArrayList<MakeContractProduct>();
     private String mcProductIds;
+    private String productIds;
     private String state;
 
 
@@ -107,5 +108,13 @@ public class MakeContract extends HistoriableEntity {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getProductIds() {
+        return productIds;
+    }
+
+    public void setProductIds(String productIds) {
+        this.productIds = productIds;
     }
 }

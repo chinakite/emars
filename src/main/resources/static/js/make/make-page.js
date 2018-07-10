@@ -53,7 +53,22 @@ $(document).ready(function(){
 
 MAKECONTRACTPAGE.loadMcProduct = function (mcProductId, editable) {
     MAKECONTRACTPAGE.refreshProductDocs(mcProductId, editable);
-}
+};
+
+MAKECONTRACTPAGE.loadProductLogo = function(productId) {
+    $.get(
+        '/product/productLogo',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var logoPic = data.data;
+                if(logoPic) {
+                    $('#' + productId + '_productLogo').attr('src', logoPic.path);
+                }
+            }
+        }
+    );
+};
 
 MAKECONTRACTPAGE.popUploadMcFileModal = function(mcProductId, type) {
     MAKECONTRACTPAGE.clearUploadMcFileModal();

@@ -47,7 +47,10 @@
             </div>
             <div class="panel-body" th:each="mcProduct : ${contract.mcProducts}">
                 <div class="col-md-3">
-                    <div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt=""/>
+                    <div class="text-xs-center">
+                        <div class="prod-detail-logo">
+                            <img th:id="|${mcProduct.productId}_productLogo|" src="/img/default_product_logo.jpg" alt="" height="100%" width="100%"/>
+                        </div>
                     </div>
                     <div class="text-xs-center m-t-1">
                         <strong><span class="font-size-14" th:text="${mcProduct.product.name}"></span></strong>
@@ -168,6 +171,12 @@
         var ids = mcProductIds.split(',');
         for(var k in ids) {
             MAKECONTRACTPAGE.loadMcProduct(ids[k], true);
+        }
+
+        var productIds = [[${contract.productIds}]];
+        var prodIds = productIds.split(',');
+        for(var k in prodIds) {
+            MAKECONTRACTPAGE.loadProductLogo(prodIds[k]);
         }
     </script>
 </div>

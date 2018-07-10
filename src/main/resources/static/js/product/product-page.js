@@ -68,7 +68,7 @@ PRODUCTPAGE.loadLogo = function() {
                 }
             }
         }
-    )
+    );
 };
 
 PRODUCTPAGE.popUploadFileModal = function(type) {

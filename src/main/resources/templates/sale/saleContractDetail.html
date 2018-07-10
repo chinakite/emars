@@ -57,7 +57,10 @@
             </div>
             <div class="panel-body" th:each="saleProduct : ${contract.products}">
                 <div class="col-md-3">
-                    <div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt=""/>
+                    <div class="text-xs-center ">
+                        <div class="prod-detail-logo">
+                            <img th:id="|${saleProduct.productId}_productLogo|" src="/img/default_product_logo.jpg" alt="" height="100%" width="100%"/>
+                        </div>
                     </div>
                     <div class="text-xs-center m-t-1">
                         <strong><span class="font-size-14" th:text="${saleProduct.product.name}"></span></strong>
@@ -125,10 +128,16 @@
 <div layout:fragment="scripts">
     <script type='text/javascript' th:src="@{/js/sale/sale-page.js}"></script>
     <script th:inline="javascript" type="text/javascript">
+        var saleProductIds = [[${contract.saleProductIds}]];
+        var saleProdIdArr = saleProductIds.split(',');
+        for(var k in saleProdIdArr) {
+            SALECONTRACTPAGE.loadSaleProduct(saleProdIdArr[k], true);
+        }
+
         var productIds = [[${contract.productIds}]];
-        var ids = productIds.split(',');
-        for(var k in ids) {
-            SALECONTRACTPAGE.loadSaleProduct(ids[k], true);
+        var prodIdArr = productIds.split(',');
+        for(var k in prodIdArr) {
+            SALECONTRACTPAGE.loadProductLogo(prodIdArr[k]);
         }
     </script>
 </div>

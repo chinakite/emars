@@ -49,7 +49,10 @@
                 </div>
                 <div class="panel-body" th:each="product : ${contract.products}">
                     <div class="col-md-3">
-                        <div class="text-xs-center"><img src="/img/default_product_logo.jpg" alt=""/>
+                        <div class="text-xs-center">
+                            <div class="prod-detail-logo">
+                                <img src="/img/default_product_logo.jpg" th:id="|${product.id}_productLogo|" alt="" height="100%" width="100%"/>
+                            </div>
                         </div>
                         <div class="text-xs-center m-t-1">
                             <strong><span class="font-size-14" th:text="${product.name}"></span></strong>

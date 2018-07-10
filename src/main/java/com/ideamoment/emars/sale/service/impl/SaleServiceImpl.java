@@ -193,6 +193,7 @@ public class SaleServiceImpl implements SaleService {
         ArrayList<SaleCustomerPlatform> platforms = saleMapper.listContractPlatforms(id);
         saleContract.setPlatforms(platforms);
         StringBuilder saleProductIds = new StringBuilder();
+        StringBuilder productIds = new StringBuilder();
         int i = 0;
         for(SaleProduct saleProduct : saleProducts) {
             ProductInfo productInfo = productMapper.findProduct(saleProduct.getProductId());
@@ -203,11 +204,14 @@ public class SaleServiceImpl implements SaleService {
             i += 1;
             if(i != 1) {
                 saleProductIds.append(",");
+                productIds.append(",");
             }
             saleProductIds.append(String.valueOf(saleProduct.getId()));
+            productIds.append(String.valueOf(saleProduct.getProductId()));
         }
         saleContract.setProducts(saleProducts);
-        saleContract.setProductIds(saleProductIds.toString());
+        saleContract.setSaleProductIds(saleProductIds.toString());
+        saleContract.setProductIds(productIds.toString());
         return saleContract;
     }
 
