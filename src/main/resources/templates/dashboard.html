@@ -105,6 +105,7 @@
         for(var i=0; i<productData1.length; i++) {
             productData1[i]['typeLabel'] = productTypeLabels[productData1[i]['state']];
         }
+        
         new Morris.Bar({
             element:       'productBar',
             data:          productData1,

@@ -519,7 +519,51 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional
     public List<Map> selectProductCountWithCopyrightType() {
-        return productMapper.selectProductCountWithCopyrightType();
+        List<Map> productInfoList =  productMapper.selectProductCountWithCopyrightType();
+        boolean wz = false;
+        boolean yp = false;
+        boolean sp = false;
+        boolean wzgb = false;
+        for(Map info : productInfoList) {
+            if(info.get("state").equals(CopyrightType.COPYRIGHT_WZ)) {
+                wz = true;
+            }
+            if(info.get("state").equals(CopyrightType.COPYRIGHT_YP)) {
+                yp = true;
+            }
+            if(info.get("state").equals(CopyrightType.COPYRIGHT_SP)) {
+                sp = true;
+            }
+            if(info.get("state").equals(CopyrightType.COPYRIGHT_WZGB)) {
+                wzgb = true;
+            }
+        }
+        if(!wz) {
+            HashMap wzInfo = new HashMap();
+            wzInfo.put("state", CopyrightType.COPYRIGHT_WZ);
+            wzInfo.put("count", 0);
+            productInfoList.add(wzInfo);
+        }
+        if(!yp) {
+            HashMap ypInfo = new HashMap();
+            ypInfo.put("state", CopyrightType.COPYRIGHT_YP);
+            ypInfo.put("count", 0);
+            productInfoList.add(ypInfo);
+        }
+        if(!sp) {
+            HashMap spInfo = new HashMap();
+            spInfo.put("state", CopyrightType.COPYRIGHT_SP);
+            spInfo.put("count", 0);
+            productInfoList.add(spInfo);
+        }
+        if(!wzgb) {
+            HashMap wzgbInfo = new HashMap();
+            wzgbInfo.put("state", CopyrightType.COPYRIGHT_WZGB);
+            wzgbInfo.put("count", 0);
+            productInfoList.add(wzgbInfo);
+        }
+
+        return productInfoList;
     }
 
     @Override
