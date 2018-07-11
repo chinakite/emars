@@ -93,20 +93,30 @@
 </body>
 <div layout:fragment="scripts">
     <script th:inline="javascript" type="text/javascript">
+        //<![CDATA[
+        var productTypeLabels = {
+          'wz' : '文字',
+          'yp' : '音频',
+          'sp' : '视频',
+          'wzgb' : '文字广播'
+        };
+
         var productData1 = [[${productData1}]];
-        console.log(productData1);
+        for(var i=0; i<productData1.length; i++) {
+            productData1[i]['typeLabel'] = productTypeLabels[productData1[i]['state']];
+        }
         new Morris.Bar({
             element:       'productBar',
             data:          productData1,
-            xkey:          'state',
+            xkey:          'typeLabel',
             ykeys:         ['count'],
-            labels:        ['count'],
+            labels:        ['作品数量'],
             barRatio:      0.4,
             xLabelAngle:   35,
             hideHover:     'auto',
-            barColors:     '#fff',
-            gridLineColor: '#fff',
-            gridTextColor: '#fff',
+            barColors:     ['#ffffff'],
+            gridLineColor: '#ffffff',
+            gridTextColor: '#ffffff',
             resize:        true
         });
 
@@ -145,6 +155,7 @@
             xaxis: { tickColor: 'rgba(255, 255, 255, 0)' },
             colors: '#888',
         });
+        //]]>
     </script>
 </div>
 </html>

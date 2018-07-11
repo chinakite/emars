@@ -150,6 +150,7 @@ public interface CopyrightMapper {
     @Select("select p.c_id as id, " +
             "p.c_name as name, " +
             "p.c_wordcount as wordCount, " +
+            "p.c_section as section, " +
             "p.c_subject_id as subjectId, " +
             "p.c_publish_state as publishState, " +
             "p.c_isbn as isbn, " +
@@ -175,6 +176,7 @@ public interface CopyrightMapper {
             @Result(property = "id", column = "id", id = true),
             @Result(property = "name", column = "name"),
             @Result(property = "wordCount", column = "wordCount"),
+            @Result(property = "section", column = "section"),
             @Result(property = "subjectId", column = "subjectId"),
             @Result(property = "publishState", column = "publishState"),
             @Result(property = "isbn", column = "isbn"),

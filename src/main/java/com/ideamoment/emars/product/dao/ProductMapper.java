@@ -47,6 +47,7 @@ public interface ProductMapper {
             @Result(property = "type", column = "C_TYPE"),
             @Result(property = "publishState", column = "C_PUBLISH_STATE"),
             @Result(property = "wordCount", column = "C_WORDCOUNT"),
+            @Result(property = "section", column = "C_SECTION"),
             @Result(property = "isbn", column = "C_ISBN"),
             @Result(property = "stockIn", column = "C_STOCKIN"),
             @Result(property = "desc", column = "C_DESC"),

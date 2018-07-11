@@ -76,7 +76,12 @@
                                 <label>题材：</label><span th:text="${product.subjectName}"></span>
                             </div>
                             <div class="col-md-6">
-                                <label>字数：</label><span th:text="${product.wordCount}"></span>
+                                <div th:if="${contract.contractType} == 'wz'">
+                                    <label>字数：</label><span th:text="${product.wordCount}"></span>万字
+                                </div>
+                                <div th:unless="${contract.contractType} == 'wz'">
+                                    <label>集数：</label><span th:text="${product.section}"></span>集
+                                </div>
                             </div>
                             </p>
                             <p>
