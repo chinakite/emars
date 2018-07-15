@@ -4,8 +4,13 @@
         <img src="{{file.path}}"/>
         <span class="widget-products-overlay"></span>
     </a>
-    <a href="#" class="widget-products-title">
-        {{file.name}}
-    </a>
+    <div class="product-image-bar">
+        <a href="#" class="widget-products-title" style="margin-right: 16px;">
+            {{file.name}}
+        </a>
+        <a href="#" class="product-image-bar-remove" title="删除" onclick="PRODUCTPAGE.deleteCopyrightFile('{{file.id}}', '{{file.name}}', 'prod_pic')">
+            <i class="fa fa-trash"></i>
+        </a>
+    </div>
 </div>
 {% endfor %}

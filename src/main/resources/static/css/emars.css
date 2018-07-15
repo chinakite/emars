@@ -99,3 +99,13 @@
     position: relative;
     left: -90px;
 }
+
+.product-image-bar {
+    position: relative;
+}
+
+.product-image-bar-remove {
+    position: absolute;
+    right: 3px;
+    top: 2px;
+}

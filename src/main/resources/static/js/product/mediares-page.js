@@ -252,7 +252,7 @@ PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
             function(data) {
                 if(data.code == '0') {
                     EMARS_COMMONS.showSuccess("删除成功！");
-                    if(fileType == 'prod_pic'){
+                    if(type == 'prod_pic'){
                         PRODUCTPAGE.refreshProductPicFiles($('#productId').val());
                     }
                 }else{

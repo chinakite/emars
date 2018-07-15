@@ -332,7 +332,7 @@ PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
     }
     EMARS_COMMONS.showPrompt("您真的要删除文件[" + name + "]吗？", function() {
         $.post(
-            "/copyright/deleteCopyrightFile",
+            deleteUrl,
             {'id': id},
             function(data) {
                 if(data.code == '0') {
