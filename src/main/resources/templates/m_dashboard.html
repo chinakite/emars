@@ -1,0 +1,157 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/m_layout">
+<head th:include="layout/m_layout :: htmlhead('Dashboard')"></head>
+<body>
+<section layout:fragment="content">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-4 text-xs-center text-md-left text-nowrap">
+                <h1><i class="page-header-icon ion-ios-pulse-strong"></i>Dashboard</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="panel box">
+                <div class="box-row">
+                    <div class="box-cell col-md-4 p-a-3 valign-top">
+                        <h4 class="m-y-1 font-weight-normal"><i class="fa fa-file text-primary"></i>&nbsp;&nbsp;合同统计</h4>
+                        <ul class="list-group m-x-0 m-t-3 m-b-0">
+                            <li class="list-group-item p-x-1 b-x-0 b-t-0">
+                                <span class="label label-primary pull-right" th:text="${countCopyrights}"></span>
+                                版权合同
+                            </li>
+                            <li class="list-group-item p-x-1 b-x-0">
+                                <span class="label label-danger pull-right" th:text="${countMakeContracts}"></span>
+                                制作合同
+                            </li>
+                            <li class="list-group-item p-x-1 b-x-0 b-b-0">
+                                <span class="label label-info pull-right" th:text="${countSaleContracts}"></span>
+                                营销合同
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="box-cell col-md-8 p-a-1 bg-primary">
+                        <div class="text-center" style="color: #fff;">作品数量</div>
+                        <div id="productBar" style="height: 220px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">最新合同</div>
+                </div>
+
+                <div class="widget-notifications-item" th:each="contract : ${newestContract}">
+                    <div class="widget-notifications-title text-danger" th:if="${contract.type == '1'}">版权合同</div>
+                    <div class="widget-notifications-title text-info" th:if="${contract.type == '2'}">制作合同</div>
+                    <div class="widget-notifications-title text-success" th:if="${contract.type == '3'}">营销合同</div>
+                    <div class="widget-notifications-description"><strong th:text="${contract.code}"></strong><span th:text="${contract.title}"></span></div>
+                    <div class="widget-notifications-date" th:text="${contract.createTime}"></div>
+                    <div class="widget-notifications-icon fa fa-file bg-danger" th:if="${contract.type == '1'}"></div>
+                    <div class="widget-notifications-icon fa fa-file-text bg-info" th:if="${contract.type == '2'}"></div>
+                    <div class="widget-notifications-icon fa fa-file-o bg-success" th:if="${contract.type == '3'}"></div>
+
+                    <a th:href="@{'/copyright/copyrightDetail?id='+${contract.id}}" target="_blank" type="button" class="btn btn-danger btn-xs" th:if="${contract.type == '1'}">查看详情</a>
+                    <a th:href="@{'/make/makeContractDetail/'+${contract.id}}" target="_blank" type="button" class="btn btn-info btn-xs" th:if="${contract.type == '2'}">查看详情</a>
+                    <a th:href="@{'/sale/saleContractDetail/'+${contract.id}}" target="_blank" type="button" class="btn btn-success btn-xs" th:if="${contract.type == '3'}">查看详情</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+
+            <!-- Stats -->
+
+            <a href="/product/productPage" class="box bg-danger">
+                <div class="box-cell p-a-3 valign-middle">
+                    <i class="box-bg-icon middle right ion-arrow-graph-up-right"></i>
+
+                    <span class="font-size-24"><strong th:text="${countProducts}"></strong></span><br />
+                    <span class="font-size-15">作品总数</span>
+                </div>
+            </a>
+
+            <div class="panel">
+                <div class="panel-body center">
+                    <div id="productPie" style="height: 200px"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+</body>
+<div layout:fragment="scripts">
+    <script th:inline="javascript" type="text/javascript">
+        //<![CDATA[
+        var productTypeLabels = {
+            'wz' : '文字',
+            'yp' : '音频',
+            'sp' : '视频',
+            'wzgb' : '文字广播'
+        };
+
+        var productData1 = [[${productData1}]];
+        for(var i=0; i<productData1.length; i++) {
+            productData1[i]['typeLabel'] = productTypeLabels[productData1[i]['state']];
+        }
+
+        new Morris.Bar({
+            element:       'productBar',
+            data:          productData1,
+            xkey:          'typeLabel',
+            ykeys:         ['count'],
+            labels:        ['作品数量'],
+            barRatio:      0.4,
+            xLabelAngle:   35,
+            hideHover:     'auto',
+            barColors:     ['#ffffff'],
+            gridLineColor: '#ffffff',
+            gridTextColor: '#ffffff',
+            resize:        true
+        });
+
+
+        var productData2 = [[${productData2}]];
+        console.log(productData2);
+
+        $.plot($('#productPie'), productData2, {
+            series: {
+                shadowSize: 0,
+                pie: {
+                    show:        true,
+                    radius:      1,
+                    innerRadius: 0.5,
+
+                    label: {
+                        show:       true,
+                        radius:     3 / 4,
+                        background: { opacity: 0 },
+
+                        formatter: function(label, series) {
+                            return '<div style="font-size:11px;text-align:center;color:white;">' + Math.round(series.percent) + '%</div>';
+                        },
+                    },
+                },
+            },
+
+            grid: {
+                color:       '#999',
+                borderColor: 'rgba(255, 255, 255, 0)',
+                borderWidth: 1,
+                hoverable:   true,
+                clickable:   true,
+            },
+
+            xaxis: { tickColor: 'rgba(255, 255, 255, 0)' },
+            colors: ['#E51400', '#339933', '#F09609', '#1BA1E2','#8CBF26', '#00ABA9', '#FF0097', '#996600', '#E671B8', '#A200FF', '#DEDFDE', '#888888'],
+        });
+        //]]>
+    </script>
+</div>
+</html>

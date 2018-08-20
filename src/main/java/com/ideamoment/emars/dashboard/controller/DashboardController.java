@@ -13,11 +13,13 @@ import com.ideamoment.emars.sale.service.SaleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +41,7 @@ public class DashboardController {
     private DashboardService dashboardService;
 
     @RequestMapping(value="/", method = RequestMethod.GET)
-    public String dashboardPage(Model model) {
+    public String dashboardPage(Model model, HttpServletRequest request, Device device) {
         CopyrightContract condition1 = new CopyrightContract();
         long countCopyrights = copyrightService.countCopyrights(condition1);
 
@@ -73,6 +75,10 @@ public class DashboardController {
             model.addAttribute("newestContract", newestContract.subList(0, maxLength));
         }
 
-        return "dashboard";
+        if(device.isMobile()) {
+            return "m_dashboard";
+        }else{
+            return "dashboard";
+        }
     }
 }

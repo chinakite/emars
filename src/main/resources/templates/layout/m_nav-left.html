@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<nav th:fragment="m_nav-left" class="px-nav px-nav-left">
+    <button type="button" class="px-nav-toggle" data-toggle="px-nav">
+        <span class="px-nav-toggle-arrow"></span>
+        <span class="navbar-toggle-icon"></span>
+        <span class="px-nav-toggle-label font-size-11">HIDE MENU</span>
+    </button>
+
+    <ul class="px-nav-content">
+        <li class="px-nav-box p-a-3 b-b-1" id="demo-px-nav-box">
+            <img src="/assets/demo/avatars/1.jpg" alt="" class="pull-xs-left m-r-2 border-round" style="width: 54px; height: 54px;" />
+            <div class="font-size-16"><span class="font-weight-light">欢迎你，</span><br/><strong th:text="${curUserName}"></strong></div>
+        </li>
+
+        <li class="px-nav-item">
+            <a href="/"><i class="px-nav-icon ion-home"></i><span class="px-nav-label">首页</span></a>
+        </li>
+        <li class="px-nav-item">
+            <a href="/product/productPage"><i class="px-nav-icon ion-android-apps"></i><span class="px-nav-label">作品</span></a>
+        </li>
+        <li class="px-nav-item">
+            <a href="/copyright/copyrightPage"><i class="px-nav-icon ion-erlenmeyer-flask"></i><span class="px-nav-label">版权</span></a>
+        </li>
+        <li class="px-nav-item">
+            <a href="/mediares/mediaresPage"><i class="px-nav-icon ion-monitor"></i><span class="px-nav-label">媒资</span></a>
+        </li>
+        <li class="px-nav-item">
+            <a href="/make/contractProductPage"><i class="px-nav-icon ion-android-checkbox-outline"></i><span class="px-nav-label">制作</span></a>
+        </li>
+        <li class="px-nav-item">
+            <a href="/sale/salePage"><i class="px-nav-icon ion-aperture"></i><span class="px-nav-label">运营</span></a>
+        </li>
+    </ul>
+</nav>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:fragment="htmlhead(title)">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title th:text="|${title}-悦库时光音频资源管理系统|"></title>
+
+    <link th:href="@{/plugins/ionicons/css/ionicons.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/plugins//font-awesome/css/font-awesome.min.css}" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/assets/css/pixeladmin.min.css}" rel="stylesheet" />
+    <link th:href="@{/assets/css/widgets.min.css}" rel="stylesheet" />
+    <link th:href="@{/assets/css/themes/clean.min.css}" rel="stylesheet" />
+    <link th:href="@{/assets/demo/demo.css}" rel="stylesheet" />
+
+    <link th:href="@{/css/emars.css}" rel="stylesheet" />
+
+    <!-- holder.js -->
+    <script type="text/javascript" th:src="@{/plugins/holder/holder.js}"></script>
+
+    <!-- Pace.js -->
+    <script th:src="@{/assets/pace/pace.min.js}"></script>
+
+    <script th:src="@{/assets/demo/demo.js}"></script>
+
+</head>
+<body>
+<nav th:replace="layout/m_nav-left :: m_nav-left"></nav>
+<nav th:replace="layout/header :: header"></nav>
+<div layout:fragment="content" id="content"  class="px-content"></div>
+
+<!-- jQuery -->
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+
+<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/pixeladmin.min.js}"></script>
+
+<script th:src="@{/js/emars-commons.js}"></script>
+
+<script th:src="@{/plugins/nunjucks/nunjucks.min.js}"></script>
+
+<!--<script>-->
+<!--// -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--// Initialize DEMO sidebar-->
+
+<!--$(function() {-->
+<!--pxDemo.initializeDemoSidebar();-->
+
+<!--$('#px-demo-sidebar').pxSidebar();-->
+<!--pxDemo.initializeDemo();-->
+<!--});-->
+<!--</script>-->
+
+<script type="text/javascript">
+    // -------------------------------------------------------------------------
+    // Initialize DEMO
+
+    $(function() {
+        var file = String(document.location).split('/').pop();
+
+        // Remove unnecessary file parts
+        file = file.replace(/(\.html).*/i, '$1');
+
+        if (!/.html$/i.test(file)) {
+            file = 'index.html';
+        }
+
+        // Activate current nav item
+        $('body > .px-nav')
+            .find('.px-nav-item > a[href="' + file + '"]')
+            .parent()
+            .addClass('active');
+
+        $('body > .px-nav').pxNav();
+
+        $('#navbar-notifications').perfectScrollbar();
+        $('#navbar-messages').perfectScrollbar();
+    });
+</script>
+
+<div layout:fragment="scripts"></div>
+</body>
+</html>

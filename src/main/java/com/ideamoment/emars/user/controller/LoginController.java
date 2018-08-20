@@ -9,6 +9,7 @@ import com.ideamoment.emars.utils.UserCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,8 +30,12 @@ public class LoginController {
     private UserService userService;
 
     @RequestMapping(value="/login", method = RequestMethod.GET)
-    public String loginPage() {
-        return "login";
+    public String loginPage(Device device) {
+        if(device.isMobile()) {
+            return "m_login";
+        }else{
+            return "login";
+        }
     }
 
     @RequestMapping(value="/login/submit", method = RequestMethod.POST)
