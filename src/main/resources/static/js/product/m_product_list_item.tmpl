@@ -1,0 +1,23 @@
+{% for prod in prods %}
+<div class="widget-comments-item">
+    <img src="/img/default_product_logo.jpg" alt="" class="widget-comments-avatar"/>
+    <div class="widget-comments-header">
+        <strong><a href="#" title="">{{prod.name}}</a></strong>&nbsp;&nbsp; {{prod.authorsTextInline}}
+    </div>
+    <div class="widget-comments-text">
+        <p>
+            编号：<span>{{prod.copyrightCode + '-' + prod.sort}}</span><br/>
+            ISBN：<span>{{prod.isbn}}</span><br/>
+            题材：<span>{{prod.subjectName}}</span><br/>
+            字数：<span>{{prod.wordCount}}</span>万字<br/>
+            入库状态：<span>{{prod.stockInText}}</span>
+        </p>
+    </div>
+    <div class="widget-comments-footer">
+        {{prod.prettyCreateTime}}
+        <div class="pull-right">
+            <a href="#"><i class="fa fa-pencil"></i>&nbsp;{{prod.productionStateText}}</a>
+        </div>
+    </div>
+</div>
+{% endfor %}

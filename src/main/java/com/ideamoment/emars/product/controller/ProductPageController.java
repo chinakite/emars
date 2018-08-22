@@ -6,6 +6,7 @@ import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.product.service.ProductService;
 import com.ideamoment.emars.sale.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,8 +35,12 @@ public class ProductPageController {
     private SaleService saleService;
 
     @RequestMapping(value = "/productPage", method = RequestMethod.GET)
-    public String productPage() {
-        return "product/productPage";
+    public String productPage(Device device) {
+        if(device.isMobile()) {
+            return "product/m_productPage";
+        }else{
+            return "product/productPage";
+        }
     }
 
     //TODO

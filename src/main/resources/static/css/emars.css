@@ -109,3 +109,9 @@
     right: 3px;
     top: 2px;
 }
+
+#m_nomoreInfo {
+    text-align: center;
+    background-color: #efefef;
+    padding: 10px 0;
+}

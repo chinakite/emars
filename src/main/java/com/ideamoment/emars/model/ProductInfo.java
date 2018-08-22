@@ -4,8 +4,11 @@ import com.ideamoment.emars.model.enumeration.ProductionState;
 import com.ideamoment.emars.model.enumeration.PublishState;
 import com.ideamoment.emars.model.enumeration.StockInType;
 import com.ideamoment.emars.utils.StringUtils;
+import org.ocpsoft.prettytime.PrettyTime;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductInfo extends HistoriableEntity {
 
@@ -229,5 +232,11 @@ public class ProductInfo extends HistoriableEntity {
 
     public void setReservationAnnouncers(List<ReservationAnnouncer> reservationAnnouncers) {
         this.reservationAnnouncers = reservationAnnouncers;
+    }
+
+    public String getPrettyCreateTime() {
+        Locale.setDefault(Locale.CHINESE);
+        PrettyTime p = new PrettyTime(new Date());
+        return p.format(this.createTime).replaceAll("\\s", "") + "加入";
     }
 }
