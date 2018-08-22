@@ -336,3 +336,7 @@ PRODUCTLIST.addAuthor = function() {
         }
     );
 };
+
+PRODUCTLIST.viewProductDetail = function(id) {
+    window.location.href = '/product/productDetail/' + id;
+};

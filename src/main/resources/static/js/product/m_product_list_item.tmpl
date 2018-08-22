@@ -1,5 +1,5 @@
 {% for prod in prods %}
-<div class="widget-comments-item">
+<div class="widget-comments-item" onclick="PRODUCTLIST.viewProductDetail({{prod.id}});">
     <img src="/img/default_product_logo.jpg" alt="" class="widget-comments-avatar"/>
     <div class="widget-comments-header">
         <strong><a href="#" title="">{{prod.name}}</a></strong>&nbsp;&nbsp; {{prod.authorsTextInline}}
