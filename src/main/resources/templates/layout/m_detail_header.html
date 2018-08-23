@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<nav th:fragment="m_detail_header(title)" class="navbar px-navbar">
+    <!-- Header -->
+    <div class="navbar-header">
+        <a class="navbar-brand px-demo-brand" href="javascript:window.history.back(-1);"><i class="fa fa-angle-left font-size-28" style="line-height: 48px;"></i></a>
+        <a class="navbar-brand px-demo-brand m-l-2" th:text="${title}">悦库时光音频资源管理系统</a>
+    </div>
+</nav>
+
+</body>
+</html>

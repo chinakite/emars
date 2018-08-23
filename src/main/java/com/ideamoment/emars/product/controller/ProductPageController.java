@@ -45,7 +45,7 @@ public class ProductPageController {
 
     //TODO
     @RequestMapping(value = "/productDetail/{id}")
-    public String productDetail(@PathVariable("id") long id, Model model) {
+    public String productDetail(@PathVariable("id") long id, Model model, Device device) {
         ProductInfo product = productService.findProduct(id);
         CopyrightProductInfo copyrightProductInfo = copyrightService.queryProductCopyright(id);
         List<ProductMakeContract> makeContracts = makeService.findProductMakeContracts(id);
@@ -54,7 +54,12 @@ public class ProductPageController {
         model.addAttribute("productCopyright", copyrightProductInfo);
         model.addAttribute("makeContracts", makeContracts);
         model.addAttribute("saleContracts", saleContracts);
-        return "product/productDetail";
+
+        if(device.isMobile()) {
+            return "product/m_productDetail";
+        }else{
+            return "product/productDetail";
+        }
     }
 
 }
