@@ -522,26 +522,25 @@ CREATE TABLE `t_platform` (
 DROP TABLE IF EXISTS `t_sale_contract`;
 
 CREATE TABLE `t_sale_contract` (
-  `c_id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
-  `c_code` varchar(20) NOT NULL DEFAULT '',
-  `c_type` varchar(2) NOT NULL DEFAULT '',
-  `c_granter_id` bigint(20) NOT NULL,
-  `c_customer_id` bigint(11) NOT NULL,
-  `c_platform_id` bigint(11) NOT NULL,
-  `c_privileges` varchar(10) NOT NULL DEFAULT '',
-  `c_signdate` date NOT NULL,
-  `c_operator` bigint(20) NOT NULL,
-  `c_total_section` int(11) DEFAULT NULL,
-  `c_total_price` int(11) DEFAULT NULL,
-  `c_begin` date DEFAULT NULL,
-  `c_end` date DEFAULT NULL,
-  `c_project_code` varchar(60) DEFAULT NULL,
-  `c_creator` bigint(20) NOT NULL,
-  `c_createtime` datetime NOT NULL,
-  `c_modifier` bigint(20) DEFAULT NULL,
-  `c_modifytime` datetime DEFAULT NULL,
+  `c_id` BIGINT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `c_code` VARCHAR(20) NOT NULL DEFAULT '',
+  `c_type` VARCHAR(2) NOT NULL DEFAULT '',
+  `c_granter_id` BIGINT(20) NOT NULL,
+  `c_customer_id` BIGINT(11) NOT NULL,
+  `c_privileges` VARCHAR(10) NOT NULL DEFAULT '',
+  `c_signdate` DATE NOT NULL,
+  `c_operator` BIGINT(20) NOT NULL,
+  `c_total_section` INT(11) DEFAULT NULL,
+  `c_total_price` INT(11) DEFAULT NULL,
+  `c_begin` DATE DEFAULT NULL,
+  `c_end` DATE DEFAULT NULL,
+  `c_project_code` VARCHAR(60) DEFAULT NULL,
+  `c_creator` BIGINT(20) NOT NULL,
+  `c_createtime` DATETIME NOT NULL,
+  `c_modifier` BIGINT(20) DEFAULT NULL,
+  `c_modifytime` DATETIME DEFAULT NULL,
   PRIMARY KEY (`c_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS `t_sale_file`;
@@ -574,3 +573,15 @@ CREATE TABLE `t_sale_product` (
   `c_modifytime` datetime DEFAULT NULL,
   PRIMARY KEY (`c_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `t_sale_customer_platform`;
+
+CREATE TABLE `t_sale_customer_platform` (
+  `c_id` BIGINT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `c_sale_contract_id` BIGINT(11) DEFAULT NULL,
+  `c_customer_id` BIGINT(20) NOT NULL,
+  `c_platform_id` BIGINT(20) NOT NULL,
+  `c_creator` BIGINT(20) NOT NULL,
+  `c_createtime` DATETIME NOT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;

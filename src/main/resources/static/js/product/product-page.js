@@ -382,7 +382,6 @@ PRODUCTPAGE.popChangeProductionStateModel = function (id) {
                     $(".announcer").hide();
                 }
                 $('#changeProductionStateModel').modal('show');
-
             }else {
                 EMARS_COMMONS.showError(data.code, data.msg);
             }
