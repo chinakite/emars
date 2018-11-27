@@ -305,6 +305,15 @@ public class ExcelImportor {
                     System.out.println("Platform = " + platform);
                 }
 
+                if(i == 17) {
+
+                }
+
+                if(i == 18) {
+                    String subject = (String)obj;
+                    System.out.println("Subject = " + subject);
+                }
+
 
             }
         }
