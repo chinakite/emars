@@ -13,20 +13,496 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /**
  * Created by Chinakite on 2018/11/25.
  */
 public class ExcelImportor {
-    public void importExcelData() throws IOException, ParseException {
 
-//        String path = "E:\\yksg_181126.xlsx";
-        String path = "/Users/zhangzhonghua/yksg_20181126.xlsx";
+//    String path = "E:\\yksg_181126.xlsx";
+
+    String path = "/Users/zhangzhonghua/yksg_20181126.xlsx";
+
+    public void importGrantees() throws IOException, SQLException, ClassNotFoundException {
+        File excelFile = new File(path); // 创建文件对象
+        FileInputStream in = new FileInputStream(excelFile); // 文件流
+        Workbook workbook = new XSSFWorkbook(in);
+
+        Sheet sheet = workbook.getSheetAt(0);
+
+        HashSet<String> granteeSet = new HashSet<String>();
+
+        Connection conn = getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("insert into t_grantee (`c_name`, `c_creator`, `c_createtime`)values(?,?,now())");
+        try {
+            int c = 0;
+            int s = 0;
+            for(Row row : sheet) {
+                c++;
+                System.out.println("========== 第 " + c + " 行 ==========");
+                Cell cell = row.getCell(38);
+                if (cell == null) {
+                    System.out.print("cell is null" + "\t");
+                    continue;
+                }
+
+                Object obj = getValue(cell);
+                if(obj == null) {
+                    continue;
+                }
+
+                String granteeName = (String)obj;
+                if(granteeName != null) {
+                    granteeName = granteeName.trim();
+                    if(granteeName.length() > 0) {
+                        if(!granteeSet.contains(granteeName)) {
+                            granteeSet.add(granteeName);
+                            pstmt.setString(1, granteeName);
+                            pstmt.setString(2,"1");
+                            pstmt.executeUpdate();
+                        }
+                    }
+                }
+            }
+            commitConnection(conn);
+            pstmt.close();
+        }catch (Exception e) {
+            rollbackConnection(conn);
+            pstmt.close();
+            pstmt = null;
+        }finally {
+            pstmt = null;
+            closeConnection(conn);
+        }
+
+    }
+
+    public void importAnnouncers() throws IOException, SQLException, ClassNotFoundException {
+        File excelFile = new File(path); // 创建文件对象
+        FileInputStream in = new FileInputStream(excelFile); // 文件流
+        Workbook workbook = new XSSFWorkbook(in);
+
+        Sheet sheet = workbook.getSheetAt(0);
+
+        HashSet<String> announcerSet = new HashSet<String>();
+
+        Connection conn = getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("insert into t_announcer (`c_name`, `c_pseudonym`, `c_creator`, `c_createtime`)values(?,?,?,now())");
+        try {
+            int c = 0;
+            int s = 0;
+            for(Row row : sheet) {
+                c++;
+                System.out.println("========== 第 " + c + " 行 ==========");
+                Cell cell = row.getCell(15);
+                if (cell == null) {
+                    System.out.print("cell is null" + "\t");
+                    continue;
+                }
+
+                Object obj = getValue(cell);
+                if(obj == null) {
+                    continue;
+                }
+
+                String announcerStr = (String)obj;
+                if(announcerStr != null) {
+                    announcerStr = announcerStr.trim();
+                    if(announcerStr.indexOf("、") > 0) {
+                        String[] chunks = announcerStr.split("、");
+                        for(String chunk : chunks) {
+                            if(chunk.indexOf("(") > 0) {
+                                String announcerName = chunk.substring(0, chunk.indexOf("(")).trim();
+                                String announcerPseudonym = chunk.substring(chunk.indexOf("(")+1, chunk.length()-1).trim();
+                                if(!announcerSet.contains(announcerName+"__"+announcerPseudonym)) {
+                                    announcerSet.add(announcerName+"__"+announcerPseudonym);
+                                    pstmt.setString(1, announcerName);
+                                    pstmt.setString(2, announcerPseudonym);
+                                    pstmt.setString(3,"1");
+                                    pstmt.executeUpdate();
+                                }
+                            }else if(chunk.indexOf("（") > 0) {
+                                String announcerName = chunk.substring(0, chunk.indexOf("（")).trim();
+                                String announcerPseudonym = chunk.substring(chunk.indexOf("（")+1, chunk.length()-1).trim();
+                                if(!announcerSet.contains(announcerName+"__"+announcerPseudonym)) {
+                                    announcerSet.add(announcerName+"__"+announcerPseudonym);
+                                    pstmt.setString(1, announcerName);
+                                    pstmt.setString(2, announcerPseudonym);
+                                    pstmt.setString(3,"1");
+                                    pstmt.executeUpdate();
+                                }
+                            }else{
+                                chunk = chunk.trim();
+                                if(!announcerSet.contains(chunk)) {
+                                    announcerSet.add(chunk);
+                                    pstmt.setString(1, chunk);
+                                    pstmt.setString(2, null);
+                                    pstmt.setString(3,"1");
+                                    pstmt.executeUpdate();
+                                }
+                            }
+                        }
+                    }else{
+                        if(announcerStr.indexOf("(") > 0) {
+                            String announcerName = announcerStr.substring(0, announcerStr.indexOf("(")).trim();
+                            String announcerPseudonym = announcerStr.substring(announcerStr.indexOf("(")+1, announcerStr.length()-1).trim();
+                            if(!announcerSet.contains(announcerName+"__"+announcerPseudonym)) {
+                                announcerSet.add(announcerName+"__"+announcerPseudonym);
+                                pstmt.setString(1, announcerName);
+                                pstmt.setString(2, announcerPseudonym);
+                                pstmt.setString(3,"1");
+                                pstmt.executeUpdate();
+                            }
+                        }else if(announcerStr.indexOf("（") > 0) {
+                            String announcerName = announcerStr.substring(0, announcerStr.indexOf("（")).trim();
+                            String announcerPseudonym = announcerStr.substring(announcerStr.indexOf("（")+1, announcerStr.length()-1).trim();
+                            if(!announcerSet.contains(announcerName+"__"+announcerPseudonym)) {
+                                announcerSet.add(announcerName+"__"+announcerPseudonym);
+                                pstmt.setString(1, announcerName);
+                                pstmt.setString(2, announcerPseudonym);
+                                pstmt.setString(3,"1");
+                                pstmt.executeUpdate();
+                            }
+                        }else{
+                            if(!announcerSet.contains(announcerStr)) {
+                                announcerSet.add(announcerStr);
+                                pstmt.setString(1, announcerStr);
+                                pstmt.setString(2, null);
+                                pstmt.setString(3,"1");
+                                pstmt.executeUpdate();
+                            }
+                        }
+                    }
+                }
+            }
+            commitConnection(conn);
+            pstmt.close();
+        }catch (Exception e) {
+            rollbackConnection(conn);
+            pstmt.close();
+            pstmt = null;
+        }finally {
+            pstmt = null;
+            closeConnection(conn);
+        }
+
+    }
+
+    public void importMaker() throws IOException, SQLException, ClassNotFoundException {
+        File excelFile = new File(path); // 创建文件对象
+        FileInputStream in = new FileInputStream(excelFile); // 文件流
+        Workbook workbook = new XSSFWorkbook(in);
+
+        Sheet sheet = workbook.getSheetAt(0);
+
+        HashSet<String> makerSet = new HashSet<String>();
+
+        Connection conn = getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("insert into t_maker (`c_name`, `c_creator`, `c_createtime`)values(?,?,now())");
+        try {
+            int c = 0;
+            int s = 0;
+            for(Row row : sheet) {
+                c++;
+                System.out.println("========== 第 " + c + " 行 ==========");
+                Cell cell = row.getCell(14);
+                if (cell == null) {
+                    System.out.print("cell is null" + "\t");
+                    continue;
+                }
+
+                Object obj = getValue(cell);
+                if(obj == null) {
+                    continue;
+                }
+
+                String stateStr = (String)obj;
+                String makerName = null;
+                if(stateStr != null) {
+                    if(stateStr.indexOf("/") > 0) {
+                        String[] chunks = stateStr.split("/");
+                        for(String chunk : chunks) {
+                            //TODO 这里要记个日志
+                            if(chunk.indexOf("(") > 0) {
+                                makerName = chunk.substring(chunk.indexOf("(")+1, chunk.length()-1);
+                                if(!makerSet.contains(makerName)) {
+                                    makerSet.add(makerName);
+                                    pstmt.setString(1, makerName);
+                                    pstmt.setString(2,"1");
+                                    pstmt.executeUpdate();
+                                }
+                            }else if(chunk.indexOf("（") > 0) {
+                                makerName = chunk.substring(chunk.indexOf("（")+1, chunk.length()-1);
+                                if(!makerSet.contains(makerName)) {
+                                    makerSet.add(makerName);
+                                    pstmt.setString(1, makerName);
+                                    pstmt.setString(2,"1");
+                                    pstmt.executeUpdate();
+                                }
+                            }
+                        }
+                    }else{
+                        if(stateStr.indexOf("(") > 0) {
+                            makerName = stateStr.substring(stateStr.indexOf("(")+1, stateStr.length()-1);
+                            if(!makerSet.contains(makerName)) {
+                                makerSet.add(makerName);
+                                pstmt.setString(1, makerName);
+                                pstmt.setString(2,"1");
+                                pstmt.executeUpdate();
+                            }
+                        }else if(stateStr.indexOf("（") > 0) {
+                            makerName = stateStr.substring(stateStr.indexOf("（")+1, stateStr.length()-1);
+                            if(!makerSet.contains(makerName)) {
+                                makerSet.add(makerName);
+                                pstmt.setString(1, makerName);
+                                pstmt.setString(2,"1");
+                                pstmt.executeUpdate();
+                            }
+                        }
+                    }
+                }
+            }
+            commitConnection(conn);
+            pstmt.close();
+        }catch (Exception e) {
+            rollbackConnection(conn);
+            pstmt.close();
+            pstmt = null;
+        }finally {
+            pstmt = null;
+            closeConnection(conn);
+        }
+    }
+
+    public void importAuthors() throws IOException, SQLException, ClassNotFoundException {
+        File excelFile = new File(path); // 创建文件对象
+        FileInputStream in = new FileInputStream(excelFile); // 文件流
+        Workbook workbook = new XSSFWorkbook(in);
+
+        Sheet sheet = workbook.getSheetAt(0);
+
+        HashSet<String> authorSet = new HashSet<String>();
+
+        Connection conn = getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("insert into t_author (`c_name`, `c_pseudonym`, `c_creator`, `c_createtime`)values(?,?,?,now())");
+        try {
+            int c = 0;
+            int s = 0;
+            for(Row row : sheet) {
+                c++;
+                System.out.println("========== 第 " + c + " 行 ==========");
+                Cell cell = row.getCell(7);
+                if (cell == null) {
+                    System.out.print("cell is null" + "\t");
+                    continue;
+                }
+
+                Object obj = getValue(cell);
+                if(obj == null) {
+                    continue;
+                }
+
+                String authorStr = (String)obj;
+                if(authorStr != null) {
+                    authorStr = authorStr.trim();
+                    if(authorStr.indexOf("、") > 0) {
+                        String[] chunks = authorStr.split("、");
+                        for(String chunk : chunks) {
+                            if(chunk.indexOf("(") > 0) {
+                                String authorName = chunk.substring(0, chunk.indexOf("(")).trim();
+                                String authorPseudonym = chunk.substring(chunk.indexOf("(")+1, chunk.length()-1).trim();
+                                if(!authorSet.contains(authorName+"__"+authorPseudonym)) {
+                                    authorSet.add(authorName+"__"+authorPseudonym);
+                                    pstmt.setString(1, authorName);
+                                    pstmt.setString(2, authorPseudonym);
+                                    pstmt.setString(3,"1");
+                                    pstmt.executeUpdate();
+                                }
+                            }else if(chunk.indexOf("（") > 0) {
+                                String authorName = chunk.substring(0, chunk.indexOf("（")).trim();
+                                String authorPseudonym = chunk.substring(chunk.indexOf("（")+1, chunk.length()-1).trim();
+                                if(!authorSet.contains(authorName+"__"+authorPseudonym)) {
+                                    authorSet.add(authorName+"__"+authorPseudonym);
+                                    pstmt.setString(1, authorName);
+                                    pstmt.setString(2, authorPseudonym);
+                                    pstmt.setString(3,"1");
+                                    pstmt.executeUpdate();
+                                }
+                            }else{
+                                chunk = chunk.trim();
+                                if(!authorSet.contains(chunk)) {
+                                    authorSet.add(chunk);
+                                    pstmt.setString(1, chunk);
+                                    pstmt.setString(2, null);
+                                    pstmt.setString(3,"1");
+                                    pstmt.executeUpdate();
+                                }
+                            }
+                        }
+                    }else{
+                        if(authorStr.indexOf("(") > 0) {
+                            String authorName = authorStr.substring(0, authorStr.indexOf("(")).trim();
+                            String authorPseudonym = authorStr.substring(authorStr.indexOf("(")+1, authorStr.length()-1).trim();
+                            if(!authorSet.contains(authorName+"__"+authorPseudonym)) {
+                                authorSet.add(authorName+"__"+authorPseudonym);
+                                pstmt.setString(1, authorName);
+                                pstmt.setString(2, authorPseudonym);
+                                pstmt.setString(3,"1");
+                                pstmt.executeUpdate();
+                            }
+                        }else if(authorStr.indexOf("（") > 0) {
+                            String authorName = authorStr.substring(0, authorStr.indexOf("（")).trim();
+                            String authorPseudonym = authorStr.substring(authorStr.indexOf("（")+1, authorStr.length()-1).trim();
+                            if(!authorSet.contains(authorName+"__"+authorPseudonym)) {
+                                authorSet.add(authorName+"__"+authorPseudonym);
+                                pstmt.setString(1, authorName);
+                                pstmt.setString(2, authorPseudonym);
+                                pstmt.setString(3,"1");
+                                pstmt.executeUpdate();
+                            }
+                        }else{
+                            if(!authorSet.contains(authorStr)) {
+                                authorSet.add(authorStr);
+                                pstmt.setString(1, authorStr);
+                                pstmt.setString(2, null);
+                                pstmt.setString(3,"1");
+                                pstmt.executeUpdate();
+                            }
+                        }
+                    }
+                }
+            }
+            commitConnection(conn);
+            pstmt.close();
+        }catch (Exception e) {
+            rollbackConnection(conn);
+            pstmt.close();
+            pstmt = null;
+        }finally {
+            pstmt = null;
+            closeConnection(conn);
+        }
+
+    }
+
+    public void importGranters() throws IOException, SQLException, ClassNotFoundException {
+        File excelFile = new File(path); // 创建文件对象
+        FileInputStream in = new FileInputStream(excelFile); // 文件流
+        Workbook workbook = new XSSFWorkbook(in);
+
+        Sheet sheet = workbook.getSheetAt(0);
+
+        HashSet<String> granterSet = new HashSet<String>();
+
+        Connection conn = getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("insert into t_granter (`c_name`, `c_creator`, `c_createtime`)values(?,?,now())");
+        try {
+            int c = 0;
+            int s = 0;
+            for(Row row : sheet) {
+                c++;
+                System.out.println("========== 第 " + c + " 行 ==========");
+                Cell cell = row.getCell(6);
+                if (cell == null) {
+                    System.out.print("cell is null" + "\t");
+                    continue;
+                }
+
+                Object obj = getValue(cell);
+                if(obj == null) {
+                    continue;
+                }
+
+                String granterName = (String)obj;
+                if(granterName != null) {
+                    granterName = granterName.trim();
+                    if(granterName.length() > 0) {
+                        if(!granterSet.contains(granterName)) {
+                            granterSet.add(granterName);
+                            pstmt.setString(1, granterName);
+                            pstmt.setString(2,"1");
+                            pstmt.executeUpdate();
+                        }
+                    }
+                }
+            }
+            commitConnection(conn);
+            pstmt.close();
+        }catch (Exception e) {
+            rollbackConnection(conn);
+            pstmt.close();
+            pstmt = null;
+        }finally {
+            pstmt = null;
+            closeConnection(conn);
+        }
+
+    }
+
+    public void importSubjects() throws IOException, SQLException, ClassNotFoundException {
+        File excelFile = new File(path); // 创建文件对象
+        FileInputStream in = new FileInputStream(excelFile); // 文件流
+        Workbook workbook = new XSSFWorkbook(in);
+
+        Sheet sheet = workbook.getSheetAt(0);
+
+        HashSet<String> subjectSet = new HashSet<String>();
+
+        Connection conn = getConnection();
+        PreparedStatement pstmt = conn.prepareStatement("insert into t_subject (`c_name`, `c_order`, `c_creator`, `c_createtime`)values(?,?,?,now())");
+        try {
+            int c = 0;
+            int s = 0;
+            for(Row row : sheet) {
+                c++;
+                System.out.println("========== 第 " + c + " 行 ==========");
+                Cell cell = row.getCell(18);
+                if (cell == null) {
+                    System.out.print("cell is null" + "\t");
+                    continue;
+                }
+
+                Object obj = getValue(cell);
+                if(obj == null) {
+                    continue;
+                }
+
+                String subjectName = (String)obj;
+                if(subjectName != null) {
+                    subjectName = subjectName.trim();
+                    if(!subjectSet.contains(subjectName)) {
+                        subjectSet.add(subjectName);
+                        pstmt.setString(1, subjectName);
+                        pstmt.setInt(2, ++s);
+                        pstmt.setString(3,"1");
+                        pstmt.executeUpdate();
+                    }
+                }
+            }
+            commitConnection(conn);
+            pstmt.close();
+        }catch (Exception e) {
+            rollbackConnection(conn);
+            pstmt.close();
+            pstmt = null;
+        }finally {
+            pstmt = null;
+            closeConnection(conn);
+        }
+
+    }
+
+    public void importExcelData() throws IOException, ParseException {
         File excelFile = new File(path); // 创建文件对象
         FileInputStream in = new FileInputStream(excelFile); // 文件流
         Workbook workbook = new XSSFWorkbook(in);
@@ -342,9 +818,65 @@ public class ExcelImportor {
         return obj;
     }
 
+    private Connection getConnection() throws ClassNotFoundException, SQLException {
+        final String DB_URL = "jdbc:mysql://127.0.0.1:3306/emars2?characterEncoding=utf8&connectTimeout=10000&autoReconnect=true";
+        final String USER = "root";
+        final String PASS = "root";
+
+        // 注册 JDBC 驱动
+        Class.forName("com.mysql.jdbc.Driver");
+
+        // 打开链接
+        System.out.println("连接数据库...");
+        Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+        conn.setAutoCommit(false);
+
+        return conn;
+    }
+
+    private void rollbackConnection(Connection conn) {
+        if(conn != null) {
+            try {
+                conn.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                closeConnection(conn);
+            }
+        }
+    }
+
+    private void commitConnection(Connection conn) {
+        if(conn != null) {
+            try {
+                conn.commit();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                closeConnection(conn);
+            }
+        }
+    }
+
+    private void closeConnection(Connection conn) {
+        if(conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                conn = null;
+            }
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         ExcelImportor importor = new ExcelImportor();
-        importor.importExcelData();
+//        importor.importExcelData();
+//        importor.importSubjects();
+//        importor.importGranters();
+//        importor.importAuthors();
+//        importor.importMaker();
+//        importor.importAnnouncers();
+        importor.importGrantees();
     }
+
 
 }
