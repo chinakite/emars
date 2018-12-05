@@ -29,6 +29,37 @@ public class ExcelImportor {
 
     String path = "/Users/zhangzhonghua/yksg_20181126.xlsx";
 
+    public void refreshMakeTotal() throws IOException, SQLException, ClassNotFoundException {
+        Connection conn = getConnection();
+        String sql = "select c_mc_id, sum(c_price) as totalPrice, sum(c_section) as totalSection from t_make_constract_product group by c_mc_id";
+        PreparedStatement pstmt = conn.prepareStatement("update t_make_contract set c_total_price = ?, c_total_section = ? where c_id = ?");
+
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                Long mcId = rs.getLong("c_mc_id");
+                Double totalPrice = rs.getDouble("totalPrice");
+                Integer totalSection = rs.getInt("totalSection");
+
+                pstmt.setDouble(1, totalPrice);
+                pstmt.setInt(2, totalSection);
+                pstmt.setLong(3, mcId);
+
+                pstmt.executeUpdate();
+            }
+            commitConnection(conn);
+            pstmt.close();
+        }catch (Exception e) {
+            e.printStackTrace();;
+            rollbackConnection(conn);
+            pstmt.close();
+        }finally {
+            closeConnection(conn);
+        }
+
+    }
+
     public void importMakeProducts() throws IOException, SQLException, ClassNotFoundException {
         File excelFile = new File(path); // 创建文件对象
         FileInputStream in = new FileInputStream(excelFile); // 文件流
@@ -2143,7 +2174,8 @@ public class ExcelImportor {
 //        importor.importCopyrightProducts();
 //        importor.importMakeContracts();
 //        importor.importMakeProducts();
-        importor.importProductAnnouncers();
+//        importor.importProductAnnouncers();
+        importor.refreshMakeTotal();
     }
 
 }
