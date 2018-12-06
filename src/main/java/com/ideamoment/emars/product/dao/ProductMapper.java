@@ -64,7 +64,7 @@ public interface ProductMapper {
 
     @Select({"<script>",
             "SELECT p.*, s.c_name AS subjectName, c.c_code as copyrightCode FROM t_product_info p ",
-            "LEFT JOIN t_author a ON p.c_author_id = a.c_id ",
+//            "LEFT JOIN t_author a ON p.c_author_id = a.c_id ",
             "LEFT JOIN t_subject s ON p.c_subject_id = s.c_id ",
             "LEFT JOIN t_copyright_product cp ON p.c_id = cp.`c_product_id` ",
             "LEFT JOIN t_copyright c ON c.c_id = cp.`c_copyright_id` ",
@@ -107,7 +107,7 @@ public interface ProductMapper {
 
     @Select({"<script>",
             "SELECT p.*, s.c_name AS subjectName, c.c_code as copyrightCode FROM t_product_info p ",
-            "LEFT JOIN t_author a ON p.c_author_id = a.c_id ",
+//            "LEFT JOIN t_author a ON p.c_author_id = a.c_id ",
             "LEFT JOIN t_subject s ON p.c_subject_id = s.c_id ",
             "LEFT JOIN t_copyright_product cp ON p.c_id = cp.`c_product_id` ",
             "LEFT JOIN t_copyright c ON c.c_id = cp.`c_copyright_id` ",
@@ -226,7 +226,7 @@ public interface ProductMapper {
 
     @Select({"<script>",
             "SELECT p.*, s.c_name AS subjectName, c.c_code as copyrightCode FROM t_product_info p ",
-            "LEFT JOIN t_author a ON p.c_author_id = a.c_id ",
+//            "LEFT JOIN t_author a ON p.c_author_id = a.c_id ",
             "LEFT JOIN t_subject s ON p.c_subject_id = s.c_id ",
             "LEFT JOIN t_copyright_product cp ON p.c_id = cp.`c_product_id` ",
             "LEFT JOIN t_copyright c ON c.c_id = cp.`c_copyright_id` ",
