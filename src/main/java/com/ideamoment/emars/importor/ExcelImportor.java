@@ -1569,7 +1569,7 @@ public class ExcelImportor {
         HashSet<String> subjectSet = new HashSet<String>();
 
         Connection conn = getConnection();
-        PreparedStatement pstmt = conn.prepareStatement("insert into t_subject (`c_name`, `c_order`, `c_creator`, `c_createtime`)values(?,?,?,now())");
+        PreparedStatement pstmt = conn.prepareStatement("insert into t_subject (`c_name`, `c_order`, `c_type`, `c_creator`, `c_createtime`)values(?,?,'0',?,now())");
         try {
             int c = 0;
             int s = 0;
