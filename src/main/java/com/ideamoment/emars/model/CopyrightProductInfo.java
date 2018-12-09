@@ -152,7 +152,20 @@ public class CopyrightProductInfo extends HistoriableEntity {
     }
 
     public String getCopyrightPrice() {
-        return copyrightPrice;
+        int dotPos = copyrightPrice.indexOf(".");
+        if(dotPos > 0) {
+            if(dotPos == copyrightPrice.length() - 1) {
+                return copyrightPrice + "00";
+            }else if(dotPos == copyrightPrice.length() - 2) {
+                return copyrightPrice + "0";
+            }else if(dotPos == copyrightPrice.length() - 3) {
+                return copyrightPrice;
+            }else{
+                return copyrightPrice.substring(0, dotPos + 3);
+            }
+        }else{
+            return copyrightPrice + ".00";
+        }
     }
 
     public void setCopyrightPrice(String copyrightPrice) {

@@ -92,7 +92,7 @@
                                     <label>是否分成：</label><span th:text="${productCopyright.settlementTypeText}"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>分成比例：</label><span th:text="${productCopyright.proportions + ' %'}"></span>
+                                    <label>分成比例：</label><span th:text="${productCopyright.proportions != null ? productCopyright.proportions + ' %' : '-- %'}"></span>
                                 </div>
                             </p>
                             <p>
@@ -118,7 +118,7 @@
                             <div class="box bg-info darken">
                                 <div class="box-cell p-x-3 p-y-1">
                                     <div class="font-weight-semibold font-size-12">授权费用</div>
-                                    <div class="font-weight-bold font-size-20"><small class="font-weight-light">￥</small><span th:text="${productCopyright.copyrightPrice + '.00'}"></span></div>
+                                    <div class="font-weight-bold font-size-20"><small class="font-weight-light">￥</small><span th:text="${productCopyright.copyrightPrice}"></span></div>
                                     <i class="box-bg-icon middle right font-size-40 fa fa-gg"></i>
                                 </div>
                             </div>
