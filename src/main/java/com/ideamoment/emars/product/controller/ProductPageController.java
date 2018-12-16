@@ -1,5 +1,6 @@
 package com.ideamoment.emars.product.controller;
 
+import com.ideamoment.emars.announcer.service.AnnouncerService;
 import com.ideamoment.emars.copyright.service.CopyrightService;
 import com.ideamoment.emars.make.service.MakeService;
 import com.ideamoment.emars.model.*;

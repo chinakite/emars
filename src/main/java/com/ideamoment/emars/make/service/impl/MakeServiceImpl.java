@@ -7,6 +7,7 @@ import com.ideamoment.emars.constants.SuccessCode;
 import com.ideamoment.emars.make.dao.MakeContractMapper;
 import com.ideamoment.emars.make.dao.MakeTaskMapper;
 import com.ideamoment.emars.make.service.MakeService;
+import com.ideamoment.emars.maker.dao.MakerMapper;
 import com.ideamoment.emars.model.*;
 import com.ideamoment.emars.model.enumeration.MakeTaskState;
 import com.ideamoment.emars.product.dao.ProductMapper;
@@ -42,6 +43,9 @@ public class MakeServiceImpl implements MakeService {
 
     @Autowired
     private AnnouncerMapper announcerMapper;
+
+    @Autowired
+    private MakerMapper makerMapper;
 
     @Override
     @Transactional
@@ -308,7 +312,11 @@ public class MakeServiceImpl implements MakeService {
             productMakeContract.setTargetType(makeContract.getTargetType());
             productMakeContract.setCode(makeContract.getCode());
             productMakeContract.setOwner(makeContract.getOwner());
-            productMakeContract.setMaker(makeContract.getMaker());
+            Long makerId = makeContract.getMakerId();
+            Maker maker = makerMapper.findMaker(makerId);
+            if(maker != null) {
+                productMakeContract.setMaker(maker.getName());
+            }
             productMakeContract.setTotalSection(makeContract.getTotalSection());
             productMakeContract.setTotalPrice(makeContract.getTotalPrice());
 
@@ -317,6 +325,15 @@ public class MakeServiceImpl implements MakeService {
             productMakeContract.setPrice(makeContractProduct.getPrice());
             productMakeContract.setWorker(makeContractProduct.getWorker());
             productMakeContract.setMcProductId(makeContractProduct.getId());
+
+            ArrayList<ProductAnnouncer> productAnnouncers = makeContractMapper.listContractProductAnnouncers(makeContract.getId(), productId);
+            ArrayList<Announcer> announcers = new ArrayList<Announcer>();
+            for(ProductAnnouncer productAnnouncer : productAnnouncers) {
+                Announcer announcer = announcerMapper.findAnnouncer(productAnnouncer.getAnnouncerId());
+                announcers.add(announcer);
+            }
+            makeContractProduct.setAnnouncers(announcers);
+            productMakeContract.setMakeProduct(makeContractProduct);
 
             productMakeContracts.add(productMakeContract);
         }

@@ -20,6 +20,8 @@ public class ProductMakeContract {
     private BigDecimal totalPrice;
     private long mcProductId;
 
+    private MakeContractProduct makeProduct;
+
 
     public String getCode() {
         return code;
@@ -107,5 +109,13 @@ public class ProductMakeContract {
 
     public void setMcProductId(long mcProductId) {
         this.mcProductId = mcProductId;
+    }
+
+    public MakeContractProduct getMakeProduct() {
+        return makeProduct;
+    }
+
+    public void setMakeProduct(MakeContractProduct makeProduct) {
+        this.makeProduct = makeProduct;
     }
 }

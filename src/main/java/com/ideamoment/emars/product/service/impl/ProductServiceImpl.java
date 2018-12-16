@@ -95,6 +95,7 @@ public class ProductServiceImpl implements ProductService{
         product.setAuthors(authors);
         List<ReservationAnnouncer> reservationAnnouncers = productMapper.queryAnnouncerByProductId(id);
         product.setReservationAnnouncers(reservationAnnouncers);
+
         return product;
     }
 
