@@ -7,9 +7,13 @@ import com.aliyun.oss.model.PutObjectRequest;
 import com.aliyun.oss.model.PutObjectResult;
 import com.ideamoment.emars.constants.ErrorCode;
 import com.ideamoment.emars.constants.AliyunOSSConstants;
+import com.ideamoment.emars.upload.dao.OssFileMapper;
 import com.ideamoment.emars.utils.JsonData;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +37,9 @@ public class UploadController {
 
     @Autowired
     private OSSClient ossClient;
+
+    @Autowired
+    private OssFileMapper ossFileMapper;
 
     @RequestMapping(value = "/upload", method = { RequestMethod.POST })
     @ResponseBody
@@ -79,6 +86,32 @@ public class UploadController {
             return JsonData.error(ErrorCode.UPLOAD_ERROR, ErrorCode.ERROR_MSG.get(ErrorCode.UPLOAD_ERROR));
         }
 
+    }
+
+    @RequestMapping(value = "/importAllFiles", method = { RequestMethod.GET })
+    @ResponseBody
+    @Transactional
+    public JsonData importAllFiles() {
+        String rootPath = "/Users/zhangzhonghua/emars_files";
+
+        Collection<File> files = FileUtils.listFilesAndDirs(new File(rootPath), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+        int c = 0;
+        for(File file : files) {
+            if(file.isFile() && !file.getName().equals(".DS_Store")) {
+                System.out.println(file.getAbsolutePath());
+                String fileName = file.getName();
+                String filePath = file.getAbsolutePath();
+                filePath = filePath.replace(rootPath, "");
+                if(c == 0) {
+                    String ossPath = upload(file);
+                    System.out.println(ossPath);
+                    ossFileMapper.insertOssFile(filePath, fileName, ossPath);
+                }
+                c++;
+            }
+        }
+
+        return JsonData.SUCCESS;
     }
 
     public String upload(File file) {
