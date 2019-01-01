@@ -33,7 +33,9 @@ import java.util.*;
 @Controller
 public class UploadController {
 
-    private static final String FILE_HOST = "http://emars-dev.oss-cn-hangzhou.aliyuncs.com/";
+//    private static final String FILE_HOST = "http://emars-dev.oss-cn-hangzhou.aliyuncs.com/";
+
+    private static final String FILE_HOST = "http://emars-prod.oss-cn-beijing.aliyuncs.com/";
 
     @Autowired
     private OSSClient ossClient;
@@ -92,7 +94,7 @@ public class UploadController {
     @ResponseBody
     @Transactional
     public JsonData importAllFiles() {
-        String rootPath = "/Users/zhangzhonghua/emars_files";
+        String rootPath = "D:/emars_files";
 
         Collection<File> files = FileUtils.listFilesAndDirs(new File(rootPath), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
         int c = 0;
@@ -102,15 +104,15 @@ public class UploadController {
                 String fileName = file.getName();
                 String filePath = file.getAbsolutePath();
                 filePath = filePath.replace(rootPath, "");
-                if(c == 0) {
+//                if(c == 0) {
                     String ossPath = upload(file);
                     System.out.println(ossPath);
                     ossFileMapper.insertOssFile(filePath, fileName, ossPath);
-                }
+//                }
                 c++;
             }
         }
-
+        System.out.println("导入完成，共 " + c + " 个文件");
         return JsonData.SUCCESS;
     }
 
