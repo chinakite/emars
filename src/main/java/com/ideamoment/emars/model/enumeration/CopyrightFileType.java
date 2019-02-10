@@ -30,4 +30,10 @@ public class CopyrightFileType {
      * 面向营销的合同，会隐去成本等信息。
      */
     public static final String CONTRACT_TO_SALE = "6";
+
+    /**
+     * 权属证明文件
+     */
+    public static final String RIGHTS = "7";
+
 }

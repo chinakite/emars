@@ -113,6 +113,9 @@ PRODUCTPAGE.submitProductFiles = function() {
         }else if(fileType == 'cpr_contract_to_sale') {
             fileMetas[i].type = '6';
             postUrl = saveCopyrightFileUrl;
+        }else if(fileType == 'cpr_rights') {
+            fileMetas[i].type = '7';
+            postUrl = saveCopyrightFileUrl;
         }else if(fileType == 'prod_pic') {
             fileMetas[i].type = '0';
             postUrl = saveProdPicUrl;
@@ -144,6 +147,8 @@ PRODUCTPAGE.submitProductFiles = function() {
                         PRODUCTPAGE.refreshProductPublishContractFiles($('#productId').val());
                     }else if(fileType == 'cpr_contract_to_sale') {
                         PRODUCTPAGE.refreshProductToSaleContractFiles($('#productId').val());
+                    }else if(fileType == 'cpr_rights') {
+                        PRODUCTPAGE.refreshProductRightsFiles($('#productId').val());
                     }else if(fileType == 'prod_pic') {
                         PRODUCTPAGE.refreshProductPicFiles($('#productId').val());
                     }
@@ -161,11 +166,12 @@ PRODUCTPAGE.submitProductFiles = function() {
 PRODUCTPAGE.refreshProductFiles = function() {
     var productId = $('#productId').val();
     PRODUCTPAGE.refreshProductCopyrightContractFiles(productId);
-    PRODUCTPAGE.refreshProductCopyrightPageFiles(productId);
-    PRODUCTPAGE.refreshProductAuthorIdCardFiles(productId);
+    // PRODUCTPAGE.refreshProductCopyrightPageFiles(productId);
+    // PRODUCTPAGE.refreshProductAuthorIdCardFiles(productId);
     PRODUCTPAGE.refreshProductGrantPaperFiles(productId);
-    PRODUCTPAGE.refreshProductPublishContractFiles(productId);
+    // PRODUCTPAGE.refreshProductPublishContractFiles(productId);
     PRODUCTPAGE.refreshProductToSaleContractFiles(productId);
+    PRODUCTPAGE.refreshProductRightsFiles(productId);
     PRODUCTPAGE.refreshProductPicFiles(productId);
 };
 
@@ -283,6 +289,25 @@ PRODUCTPAGE.refreshProductToSaleContractFiles = function(productId) {
     );
 };
 
+PRODUCTPAGE.refreshProductRightsFiles = function(productId) {
+    $.get(
+        '/copyright/rightsFiles',
+        {productId: productId},
+        function(data) {
+            if(data.code == '0') {
+                var files = data.data;
+                for(var i=0; i<files.length; i++) {
+                    PRODUCTPAGE.convertTypeName(files[i]);
+                }
+                var filesHtml = nunjucks.render('../../../js/product/product_files.tmpl', {files: files, editable: true});
+                $('#copyrightRightsFileList').html(filesHtml);
+            }else{
+                EMARS_COMMONS.showError(data.code, data.msg);
+            }
+        }
+    );
+};
+
 PRODUCTPAGE.convertTypeName = function(file) {
     if(file.type == '1') {
         file.typeName = 'cpr_contract';
@@ -296,6 +321,8 @@ PRODUCTPAGE.convertTypeName = function(file) {
         file.typeName = 'cpr_publish_contract';
     }else if(file.type == '6') {
         file.typeName = 'cpr_contract_to_sale';
+    }else if(file.type == '7') {
+        file.typeName = 'cpr_rights';
     }
     return file;
 };
@@ -325,6 +352,7 @@ PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
         || type == 'cpr_author_id_card'
         || type == 'cpr_publish_contract'
         || type == 'cpr_contract_to_sale'
+        || type == 'cpr_rights'
     ){
         deleteUrl = "/copyright/deleteCopyrightFile";
     }else if(type == 'prod_pic'){
@@ -349,6 +377,8 @@ PRODUCTPAGE.deleteCopyrightFile = function(id, name, type) {
                         PRODUCTPAGE.refreshProductPublishContractFiles($('#productId').val());
                     }else if(type == 'cpr_contract_to_sale') {
                         PRODUCTPAGE.refreshProductToSaleContractFiles($('#productId').val());
+                    }else if(type == 'cpr_rights') {
+                        PRODUCTPAGE.refreshProductRightsFiles($('#productId').val());
                     }else if(type == 'prod_pic'){
                         PRODUCTPAGE.refreshProductPicFiles($('#productId').val());
                     }

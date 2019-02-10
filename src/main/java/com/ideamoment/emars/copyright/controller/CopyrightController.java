@@ -53,7 +53,7 @@ public class CopyrightController {
             String auditState
     ) {
         CopyrightContract condition = new CopyrightContract();
-//        condition.setCode(code);
+        condition.setContractCode(code);
 //        condition.setOwner(owner);
 //        condition.setAuditState(auditState);
         Page<CopyrightContract> copyrights = copyrightService.listCopyrights(condition, start, length);
@@ -141,6 +141,12 @@ public class CopyrightController {
     @RequestMapping(value="/toSaleContractFiles", method = RequestMethod.GET)
     public JsonData<List<CopyrightFile>> loadToSaleContractFiles(String productId) {
         List<CopyrightFile> files = copyrightService.loadToSaleContractFiles(productId);
+        return JsonData.success(files);
+    }
+
+    @RequestMapping(value="/rightsFiles", method = RequestMethod.GET)
+    public JsonData<List<CopyrightFile>> loadRightsFiles(String productId) {
+        List<CopyrightFile> files = copyrightService.loadRightsFiles(productId);
         return JsonData.success(files);
     }
 

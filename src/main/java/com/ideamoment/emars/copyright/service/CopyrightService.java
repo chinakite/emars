@@ -52,4 +52,6 @@ public interface CopyrightService {
     List<CopyrightFile> loadToSaleContractFiles(String productId);
 
     String changeCopyrightState(long id, String state);
+
+    List<CopyrightFile> loadRightsFiles(String productId);
 }

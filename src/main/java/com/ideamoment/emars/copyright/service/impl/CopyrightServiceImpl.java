@@ -450,6 +450,11 @@ public class CopyrightServiceImpl implements CopyrightService {
         return resultString(result);
     }
 
+    @Override
+    public List<CopyrightFile> loadRightsFiles(String productId) {
+        return copyrightMapper.queryCopyrightFiles(productId, CopyrightFileType.RIGHTS);
+    }
+
     private synchronized String createCode(Copyright cc) {
         Date curDate = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
