@@ -168,9 +168,9 @@ public class OssFileImportor {
             List<ProductInfo> products = loadProducts(conn);
             int c = 0;
             for(ProductInfo product : products) {
-                if(c > 9) {
-                    break;
-                }
+//                if(c > 9) {
+//                    break;
+//                }
                 c++;
                 System.out.println("第 " + c + " 部作品正在处理...");
                 String copyrightCode = product.getCopyrightCode();

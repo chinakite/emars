@@ -75,10 +75,19 @@ PRODUCTLIST.initProductTbl = function(){
             },
             {
                 "render": function(data, type, full) {
-                    if(full.type == 'wz') {
+                    if(full.wordCount) {
                         return full.wordCount + "万字";
                     }else{
+                        return "";
+                    }
+                }
+            },
+            {
+                "render": function(data, type, full) {
+                    if(full.section) {
                         return full.section + "集";
+                    }else{
+                        return "";
                     }
                 }
             },

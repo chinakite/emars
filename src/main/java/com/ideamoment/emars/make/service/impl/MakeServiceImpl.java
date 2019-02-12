@@ -255,7 +255,7 @@ public class MakeServiceImpl implements MakeService {
 
     @Override
     public List<ProductInfo> listProducts(ProductInfo condition) {
-        List<ProductInfo> products = productMapper.listMakableProducts(condition, 0, 1000000000);
+        List<ProductInfo> products = productMapper.listMakableProducts(condition);
         return products;
     }
 

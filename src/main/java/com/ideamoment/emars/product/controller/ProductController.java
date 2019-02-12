@@ -42,11 +42,8 @@ public class ProductController {
             int start,
             int length,
             String productName,
-            String authorName,
             String isbn,
-            Long subjectId,
-            String publishState,
-            String state
+            Long subjectId
     ) {
         ProductInfo condition = new ProductInfo();
         condition.setName(productName);

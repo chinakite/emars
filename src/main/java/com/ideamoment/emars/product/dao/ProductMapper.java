@@ -81,7 +81,7 @@ public interface ProductMapper {
             "<if test='condition.stockIn != null'>",
             " AND p.C_STOCKIN = #{condition.stockIn}",
             "</if>",
-            " ORDER BY p.C_MODIFYTIME DESC ",
+            " ORDER BY c.C_CODE DESC, p.C_CREATETIME DESC ",
             " LIMIT #{offset}, #{size}",
             "</script>"})
     @ResultMap("productMap")
@@ -106,11 +106,7 @@ public interface ProductMapper {
     long listProductsCount(ProductInfo condition);
 
     @Select({"<script>",
-            "SELECT p.*, s.c_name AS subjectName, c.c_code as copyrightCode FROM t_product_info p ",
-//            "LEFT JOIN t_author a ON p.c_author_id = a.c_id ",
-            "LEFT JOIN t_subject s ON p.c_subject_id = s.c_id ",
-            "LEFT JOIN t_copyright_product cp ON p.c_id = cp.`c_product_id` ",
-            "LEFT JOIN t_copyright c ON c.c_id = cp.`c_copyright_id` ",
+            "SELECT p.* FROM t_product_info p ",
             "WHERE p.c_id > 0",
             "<if test='condition.name != null'>",
             " AND p.C_NAME like concat(concat('%',#{condition.name}),'%')",
@@ -118,18 +114,37 @@ public interface ProductMapper {
             "<if test='condition.isbn != null'>",
             " AND p.C_ISBN = #{condition.isbn}",
             "</if>",
-            "<if test='condition.subjectId != null'>",
-            " AND p.C_SUBJECT_ID = #{condition.subjectId}",
-            "</if>",
-            "<if test='condition.stockIn != null'>",
-            " AND p.C_STOCKIN = #{condition.stockIn}",
-            "</if>",
-            " AND c.c_state = '2'",
-            " ORDER BY p.C_MODIFYTIME DESC ",
-            " LIMIT #{offset}, #{size}",
+            " AND p.c_production_state = '3'",
+            " ORDER BY p.C_CREATETIME DESC ",
             "</script>"})
     @ResultMap("productMap")
-    List<ProductInfo> listMakableProducts(@Param("condition") ProductInfo condition, @Param("offset") int offset, @Param("size") int size);
+    List<ProductInfo> listMakableProducts(@Param("condition") ProductInfo condition);
+
+//    @Select({"<script>",
+//            "SELECT p.*, s.c_name AS subjectName, c.c_code as copyrightCode FROM t_product_info p ",
+////            "LEFT JOIN t_author a ON p.c_author_id = a.c_id ",
+//            "LEFT JOIN t_subject s ON p.c_subject_id = s.c_id ",
+//            "LEFT JOIN t_copyright_product cp ON p.c_id = cp.`c_product_id` ",
+//            "LEFT JOIN t_copyright c ON c.c_id = cp.`c_copyright_id` ",
+//            "WHERE p.c_id > 0",
+//            "<if test='condition.name != null'>",
+//            " AND p.C_NAME like concat(concat('%',#{condition.name}),'%')",
+//            "</if>",
+//            "<if test='condition.isbn != null'>",
+//            " AND p.C_ISBN = #{condition.isbn}",
+//            "</if>",
+//            "<if test='condition.subjectId != null'>",
+//            " AND p.C_SUBJECT_ID = #{condition.subjectId}",
+//            "</if>",
+//            "<if test='condition.stockIn != null'>",
+//            " AND p.C_STOCKIN = #{condition.stockIn}",
+//            "</if>",
+//            " AND c.c_state = '2'",
+//            " ORDER BY p.C_MODIFYTIME DESC ",
+//            " LIMIT #{offset}, #{size}",
+//            "</script>"})
+//    @ResultMap("productMap")
+//    List<ProductInfo> listMakableProducts(@Param("condition") ProductInfo condition, @Param("offset") int offset, @Param("size") int size);
 
     //TODO not this table
     @Select("SELECT if(count(c_id) > 0, true, false) from T_PRODUCT_COPYRIGHT_FILE where C_PRODUCT_ID = #{id}")

@@ -41,7 +41,7 @@ public class MakeController {
         condition.setCode(code);
         condition.setTargetType(targetType);
         Page<MakeContract> makeContractPage = makeService.pageMakeContracts(condition, start, length);
-        DataTableSource<MakeContract> dts = new DataTableSource().convertToDataTableSource(draw, start, length, makeContractPage.getData(), makeContractPage.getTotalPage());
+        DataTableSource<MakeContract> dts = new DataTableSource().convertToDataTableSource(draw, start, length, makeContractPage.getData(), makeContractPage.getTotalRecord());
         return dts;
     }
 

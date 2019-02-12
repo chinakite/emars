@@ -90,7 +90,7 @@ public interface CopyrightMapper {
             " AND t_copyright.c_operator = t_user.c_id",
             " AND t_copyright.c_grantee_id = t_grantee.c_id",
             " AND t_copyright.c_granter_id = t_granter.c_id",
-            " ORDER BY C_MODIFYTIME DESC ",
+            " ORDER BY C_CODE DESC, C_CREATETIME DESC ",
             " LIMIT #{offset}, #{size}",
             "</script>"})
     @ResultMap("copyrightMap")

@@ -48,14 +48,10 @@ public class CopyrightController {
             int draw,
             int start,
             int length,
-            String code,
-            String owner,
-            String auditState
+            String code
     ) {
         CopyrightContract condition = new CopyrightContract();
         condition.setContractCode(code);
-//        condition.setOwner(owner);
-//        condition.setAuditState(auditState);
         Page<CopyrightContract> copyrights = copyrightService.listCopyrights(condition, start, length);
         DataTableSource<CopyrightContract> dts = convertProductsToDataTableSource(draw, copyrights);
         return dts;

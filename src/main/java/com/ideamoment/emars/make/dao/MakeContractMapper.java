@@ -65,7 +65,7 @@ public interface MakeContractMapper {
             "<if test='condition.targetType != null'>",
             " AND m.c_target_type = #{condition.targetType}",
             "</if>",
-            " ORDER BY m.C_MODIFYTIME DESC ",
+            " ORDER BY m.C_CODE DESC, m.C_CREATETIME DESC ",
             " LIMIT #{offset}, #{size}",
             "</script>"})
     @ResultMap("makeContractMap")
