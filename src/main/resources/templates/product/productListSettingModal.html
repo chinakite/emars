@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <body>
+        <!-- Modal -->
+        <div th:fragment="productListSettingModal" class="modal fade" id="productListSettingModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id="productModalContent">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h4 class="modal-title">页面设置</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#tabs-search" data-toggle="tab">
+                                        查询条件
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tabs-table" data-toggle="tab">
+                                        表格
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content tab-content-bordered">
+                                <div class="tab-pane fade in active" id="tabs-search">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="sc-productName" name="sc-productName" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                作品名称
+                                            </label>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="sc-isbn" name="sc-isbn" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                ISBN号
+                                            </label>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="sc-subject" name="sc-subject" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                作品题材
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane fade" id="tabs-table">
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="tc-productName" name="tc-productName" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                名称
+                                            </label>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="tc-authorName" name="tc-authorName" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                作者
+                                            </label>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="tc-isbn" name="tc-isbn" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                ISBN
+                                            </label>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="tc-subject" name="tc-subject" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                题材
+                                            </label>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="tc-wordcount" name="tc-wordcount" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                字数
+                                            </label>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="tc-section" name="tc-section" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                集数
+                                            </label>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="tc-stockin" name="tc-stockin" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                入库状态
+                                            </label>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <label class="custom-control custom-checkbox">
+                                                <input id="tc-makestate" name="tc-makestate" type="checkbox" class="custom-control-input"/>
+                                                <span class="custom-control-indicator"></span>
+                                                制作状态
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="PRODUCTLIST.submitListSetting();">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

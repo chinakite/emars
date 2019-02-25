@@ -49,7 +49,7 @@ public interface ProductCopyrightFileMapper {
     @Insert("insert into t_copyright_file (c_name, c_product_id, c_type, c_path, c_desc, c_creator, c_createtime)values(#{name}, #{productId}, #{type}, #{path}, #{desc}, #{creator}, #{createTime})")
     boolean insertCopyrightFile(CopyrightFile copyrightFile);
 
-    @Select("select * from t_copyright_file where c_product_id = #{productId} and c_type > 1")
+    @Select("select * from t_copyright_file where c_product_id = #{productId} and c_type = '6'")
     @ResultMap("copyrightFileMap")
     List<CopyrightFile> listCopyrightToSaleFiles(Long productId);
 }

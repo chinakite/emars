@@ -4,7 +4,28 @@ var PRODUCTLIST = {};
 var productTable;
 
 $(document).ready(function(){
-    PRODUCTLIST.initProductTbl();
+    $.get(
+        '/usercustomizes?page=1',
+        {},
+        function(data) {
+            var searchCons = data['search'];
+            for(var i=0; i<searchCons.length; i++) {
+                var searchCon = searchCons[i];
+                var fieldName = searchCon['fieldName'];
+                $('#sf-' + fieldName).show();
+            }
+
+            var tableCons = data['table'];
+
+            PRODUCTLIST.initProductTbl();
+            for(var j=0; j<tableCons.length; j++) {
+                var tableCon = tableCons[j];
+                var fieldName = tableCon['fieldName'];
+                productTable.api().column(fieldName + ":name").visible(true);
+            }
+        }
+    );
+
     PRODUCTLIST.loadCategories();
     PRODUCTLIST.loadAuthors();
 });
@@ -48,9 +69,13 @@ PRODUCTLIST.initProductTbl = function(){
         },
         "columns": [
             {
-                "data": "name"
+                "name": "tc-productName",
+                "data": "name",
+                "visible": false
             },
             {
+                "name": "tc-authorName",
+                "visible": false,
                 "render": function (data, type, full) {
                     var authors = full.authors;
                     var content = '';
@@ -68,12 +93,18 @@ PRODUCTLIST.initProductTbl = function(){
                 }
             },
             {
+                "name": "tc-isbn",
+                "visible": false,
                 "data": "isbn"
             },
             {
+                "name": "tc-subject",
+                "visible": false,
                 "data": "subjectName"
             },
             {
+                "name": "tc-wordcount",
+                "visible": false,
                 "render": function(data, type, full) {
                     if(full.wordCount) {
                         return full.wordCount + "万字";
@@ -83,6 +114,8 @@ PRODUCTLIST.initProductTbl = function(){
                 }
             },
             {
+                "name": "tc-section",
+                "visible": false,
                 "render": function(data, type, full) {
                     if(full.section) {
                         return full.section + "集";
@@ -92,9 +125,13 @@ PRODUCTLIST.initProductTbl = function(){
                 }
             },
             {
+                "name": "tc-stockin",
+                "visible": false,
                 "data": "stockInText"
             },
             {
+                "name": "tc-makestate",
+                "visible": false,
                 "data": "productionStateText"
             },
             {
@@ -375,4 +412,90 @@ PRODUCTLIST.addAuthor = function() {
             }
         }
     );
+};
+
+PRODUCTLIST.toggleSearchForm = function(btn) {
+    var icon = $(btn).find('i');
+    var searchForm = $('#search-form');
+    if(searchForm.css('display') == 'none') {
+        searchForm.show();
+        icon.removeClass("fa-angle-up");
+        icon.addClass("fa-angle-down");
+    }else{
+        searchForm.hide();
+        icon.removeClass("fa-angle-down");
+        icon.addClass("fa-angle-up");
+    }
+};
+
+PRODUCTLIST.popListSettingModal = function() {
+    $.get(
+        '/usercustomizes?page=1',
+        {},
+        function(data) {
+            var searchCons = data['search'];
+            var tableCons = data['table'];
+
+            for(var i=0; i<searchCons.length; i++) {
+                var searchCon = searchCons[i];
+                var fieldName = searchCon['fieldName'];
+                $('#' + fieldName).prop('checked', true);
+            }
+
+            for(var j=0; j<tableCons.length; j++) {
+                var tableCon = tableCons[j];
+                var fieldName = tableCon['fieldName'];
+                $('#' + fieldName).prop('checked', true);
+            }
+
+            $('#productListSettingModal').modal('show');
+        }
+    );
+};
+
+PRODUCTLIST.submitListSetting = function() {
+    var data = {'search':[], 'table':[]};
+
+    var scs = $("input[id^='sc-']");
+    for(var i=0; i<scs.length; i++) {
+        var obj = $(scs[i]);
+        if(obj.prop('checked')) {
+            var fieldName = obj.attr('id');
+            data.search.push({
+                'fieldName': fieldName,
+                'page': '1',
+                'position': '1'
+            });
+        }
+    }
+
+    var tcs = $("input[id^='tc-']");
+    for(var i=0; i<tcs.length; i++) {
+        var obj = $(tcs[i]);
+        if(obj.prop('checked')) {
+            var fieldName = obj.attr('id');
+            data.table.push({
+                'fieldName': fieldName,
+                'page': '1',
+                'position': '2'
+            });
+        }
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: "/usercustomizes",
+        data: JSON.stringify(data),
+        contentType: 'application/json;charset=utf-8',
+        dataType: "json",
+        success: function(resp) {
+            if(resp.code == '0') {
+                EMARS_COMMONS.showSuccess("设置保存成功！", function(){
+                    window.location.reload();
+                });
+            }else{
+                EMARS_COMMONS.showError(resp.code, resp.msg);
+            }
+        }
+    });
 };

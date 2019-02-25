@@ -384,7 +384,9 @@ public class ProductServiceImpl implements ProductService{
         File cpAuthorIdCardDir = new File(cpAuthorIdCardDirPath);
         String cpPublishContractDirPath = cpFileDirPath + "/出版合同";
         File cpPublishContractDir = new File(cpPublishContractDirPath);
-        String cpContractToSaleDirPath = cpFileDirPath + "/合同_给营销";
+        String cpRightsDirPath = cpFileDirPath + "/权属证明文件";
+        File cpRightsDir = new File(cpRightsDirPath);
+        String cpContractToSaleDirPath = cpFileDirPath + "/营销文件";
         File cpContractToSaleDir = new File(cpContractToSaleDirPath);
         for(CopyrightFile cpFile : copyrightFiles) {
             String path = cpFile.getPath();
@@ -420,6 +422,11 @@ public class ProductServiceImpl implements ProductService{
                     cpContractToSaleDir.mkdir();
                 }
                 cpFilePath = cpContractToSaleDirPath + "/" + cpFile.getName();
+            }else if(CopyrightFileType.RIGHTS.equals(cpFile.getType())){
+                if(!cpRightsDir.exists()) {
+                    cpRightsDir.mkdir();
+                }
+                cpFilePath = cpRightsDirPath + "/" + cpFile.getName();
             }
 
             if(cpFilePath != null) {
